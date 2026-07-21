@@ -1,7 +1,9 @@
+import Link from "next/link";
+
 export default function PrivacyPage() {
   return (
     <main className="legal-page">
-      <a className="legal-back" href="/">← Mind Rhythm</a>
+      <Link className="legal-back" href="/">← Mind Rhythm</Link>
       <span>Legal / Privacy</span>
       <h1>Privacy policy</h1>
       <section>

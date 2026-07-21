@@ -2,6 +2,7 @@
 
 import type { ContentItem, SiteContent } from "@/lib/content";
 import { type FormEvent, useMemo, useState } from "react";
+import Link from "next/link";
 
 export type EditorialPageKind = "work" | "gallery" | "team" | "story" | "contact";
 
@@ -15,9 +16,9 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
     ...item,
     id: `team-${item.id}-${index}`,
     kind: "team" as const,
-    title: ["Creative direction", "Image & motion", "Design & post"][index] || "Studio collaborator",
-    body: ["Ideas, narrative and visual direction.", "Cinematography, photography and movement.", "Identity, edit, colour and finishing."][index] || item.body,
-    category: ["Creative Director", "Image & Motion", "Design & Post"][index] || "Collaborator",
+    title: ["Lead photography", "Architecture & interiors", "Aerial film & post"][index] || "Property specialist",
+    body: ["Resort, real-estate and architectural photography.", "Composition, lighting, styling and spatial storytelling.", "Drone capture, film, edit, colour and campaign delivery."][index] || item.body,
+    category: ["Lead Photographer", "Interiors Photographer", "Film & Post"][index] || "Specialist",
     href: index === 1 ? settings.linkedin : settings.instagram,
   }));
   const team = [...savedTeam, ...teamFallbacks].slice(0, 3);
@@ -25,11 +26,11 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   const [formState, setFormState] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   const pageMeta = useMemo(() => ({
-    work: ["Our Work", "Visual stories built to last beyond the moment."],
-    gallery: ["Stories & Moments", "A living visual archive of spaces, gestures and observations."],
-    team: ["Meet the Team", "A flexible collective assembled around the needs of every story."],
-    story: ["Our Story", "The thinking, people and process behind Mind Rhythm."],
-    contact: ["Let’s Connect", "Bring us an idea, a question or the beginning of a story."],
+    work: ["Properties", "Resorts, residences and hospitality spaces photographed to be remembered."],
+    gallery: ["Photography", "An immersive visual archive of architecture, interiors and atmosphere."],
+    team: ["The Team", "A specialist collective assembled around the needs of every property."],
+    story: ["Our Story", "The thinking, people and process behind Mind Rhythm property imagery."],
+    contact: ["Enquire", "Tell us about your property, location and the visual story it needs."],
   }[page]), [page]);
 
   async function sendEnquiry(event: FormEvent<HTMLFormElement>) {
@@ -52,15 +53,15 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   return (
     <div className="inner-shell">
       <header className="inner-header">
-        <a className="wordmark" href="/"><img src="/mindrythm-logomark.png" alt="" /><span>MIND <em>RHYTHM</em></span></a>
+        <Link className="wordmark" href="/"><img src="/mindrythm-logomark.png" alt="" /><span>MIND <em>RHYTHM</em></span></Link>
         <nav aria-label="Site navigation">
-          <a className={page === "work" ? "active" : ""} href="/work">Our Work</a>
-          <a className={page === "gallery" ? "active" : ""} href="/gallery">Stories & Moments</a>
-          <a className={page === "team" ? "active" : ""} href="/team">Meet the Team</a>
+          <a className={page === "work" ? "active" : ""} href="/work">Properties</a>
+          <a className={page === "gallery" ? "active" : ""} href="/gallery">Photography</a>
+          <a className={page === "team" ? "active" : ""} href="/team">The Team</a>
           <a className={page === "story" ? "active" : ""} href="/story">Our Story</a>
-          <a className={page === "contact" ? "active" : ""} href="/contact">Let’s Connect</a>
+          <a className={page === "contact" ? "active" : ""} href="/contact">Enquire</a>
         </nav>
-        <a className="inner-home" href="/">Home ↗</a>
+        <Link className="inner-home" href="/">Home ↗</Link>
       </header>
 
       <main>
@@ -91,12 +92,12 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
 
         {page === "gallery" && (
           <div className="gallery-page">
-            {(["Spaces", "Moments"] as const).map((category, categoryIndex) => {
+            {(["Exteriors", "Interiors"] as const).map((category, categoryIndex) => {
               const matching = galleryItems.filter((item) => item.category.toLowerCase() === category.toLowerCase());
               const items = matching.length ? matching : galleryItems.filter((_, index) => index % 2 === categoryIndex);
               return (
                 <section className="gallery-page-section" key={category}>
-                  <header><span>0{categoryIndex + 1}</span><h2>{category}</h2><p>{category === "Spaces" ? "Architecture, atmosphere and the places that hold a story." : "Movement, people and the brief gestures that stay with us."}</p></header>
+                  <header><span>0{categoryIndex + 1}</span><h2>{category}</h2><p>{category === "Exteriors" ? "Architecture, landscape and the first impression of arrival." : "Material, light and the atmosphere experienced within."}</p></header>
                   <div className="gallery-page-grid">
                     {items.map((item, index) => <button type="button" className={`gallery-page-card gallery-page-card-${(index % 4) + 1}`} key={item.id} onClick={() => setSelected(item)}><Media item={item} /><span>{item.title} ↗</span></button>)}
                   </div>
@@ -116,7 +117,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                 </button>
               ))}
             </section>
-            <section className="team-page-note"><span>Built around the story</span><h2>A focused core.<br /><em>The right collaborators.</em></h2><p>Each project brings together the precise mix of direction, image-making, design and post-production it needs.</p><a href="/contact">Work with the team ↗</a></section>
+            <section className="team-page-note"><span>Built around the property</span><h2>A focused core.<br /><em>The right specialists.</em></h2><p>Each commission brings together the precise mix of architectural photography, styling, aerial film and post-production it needs.</p><a href="/contact">Work with the team ↗</a></section>
           </>
         )}
 
@@ -124,9 +125,9 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
           <div className="story-page">
             <section className="story-manifesto"><span>What is Mind Rhythm?</span><p>{settings.description}</p></section>
             <section className="story-pillars">
-              <article><span>01</span><h2>What we do</h2><p>We work across moving image, photography, visual identity, creative direction and post-production.</p></article>
-              <article><span>02</span><h2>Who we work with</h2><p>Brands, artists, cultural institutions and independent voices looking for a distinct visual point of view.</p></article>
-              <article><span>03</span><h2>How we work</h2><p>{settings.idea} Every collaboration begins with listening, distilling and building a world around the central idea.</p></article>
+              <article><span>01</span><h2>What we photograph</h2><p>We work across resorts, residences, architecture and interiors through photography, film and aerial capture.</p></article>
+              <article><span>02</span><h2>Who we work with</h2><p>Developers, resort teams, architects, interior studios and hospitality brands seeking a distinct visual point of view.</p></article>
+              <article><span>03</span><h2>How we work</h2><p>{settings.idea} Every commission begins with a location scout, a clear shot plan and the best light for the property.</p></article>
             </section>
             <section className="story-vision"><img src="/mindrythm-logomark.png" alt="Mind Rhythm logomark" /><div><span>Our vision</span><h2>{settings.vision}</h2></div></section>
           </div>
@@ -137,7 +138,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
             <section className="contact-page-info">
               <div><span>Call</span><a href={`tel:${settings.phonePrimary}`}>{settings.phonePrimary}</a><a href={`tel:${settings.phoneSecondary}`}>{settings.phoneSecondary}</a></div>
               <div><span>Email</span><a href={`mailto:${settings.contactEmail}`}>{settings.contactEmail}</a></div>
-              <div><span>Visit</span><p>{settings.address}</p></div>
+              <div><span>Visit</span><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(settings.address)}`} target="_blank" rel="noreferrer">{settings.address} ↗</a></div>
               <div><span>Social</span><a href={settings.instagram}>Instagram ↗</a><a href={settings.facebook}>Facebook ↗</a><a href={settings.youtube}>YouTube ↗</a></div>
             </section>
             <form className="contact-page-form" onSubmit={sendEnquiry}>
@@ -153,7 +154,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
         )}
       </main>
 
-      <footer className="inner-footer"><a href="/"><img src="/mindrythm-logomark.png" alt="" />Mind Rhythm</a><span>© {new Date().getFullYear()}</span><a href="/privacy">Privacy Policy</a><a href="/terms">Terms &amp; Conditions</a><a href="/studio">Admin studio ↗</a></footer>
+      <footer className="inner-footer"><Link href="/"><img src="/mindrythm-logomark.png" alt="" />Mind Rhythm</Link><span>© {new Date().getFullYear()}</span><a href="/privacy">Privacy Policy</a><a href="/terms">Terms &amp; Conditions</a><a href="/studio">Admin studio ↗</a></footer>
 
       {selected && (
         <div className="lightbox" role="dialog" aria-modal="true" aria-label={selected.title}>
@@ -168,6 +169,6 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
 
 function Media({ item }: { item: ContentItem }) {
   const isVideo = /\.(mp4|webm|mov)(\?.*)?$/i.test(item.mediaUrl);
-  if (isVideo) return <video src={item.mediaUrl} muted loop autoPlay playsInline aria-label={item.mediaAlt} />;
-  return <img src={item.mediaUrl || "/images/tokyo-rain.jpg"} alt={item.mediaAlt || item.title} />;
+  if (isVideo) return <video src={item.mediaUrl} muted loop autoPlay playsInline preload="metadata" aria-label={item.mediaAlt} />;
+  return <img src={item.mediaUrl || "/images/resort-exterior.jpg"} alt={item.mediaAlt || item.title} />;
 }
