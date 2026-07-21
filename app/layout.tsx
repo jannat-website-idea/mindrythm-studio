@@ -14,8 +14,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "localhost:3000";
   const protocol = requestHeaders.get("x-forwarded-proto") ?? (host.includes("localhost") ? "http" : "https");
   const origin = `${protocol}://${host}`;
-  const title = "Mind Rhythm — Resort & Real Estate Photography";
-  const description = "Professional photography and film for resorts, real estate, architecture and interiors.";
+  const title = "Mind Rhythm — Property, Event & Wedding Photography";
+  const description = "Professional photography and films for properties, resorts, events, weddings and brands.";
 
   return {
     metadataBase: new URL(origin),
@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       type: "website",
-      images: [{ url: "/og-final.png", width: 1200, height: 630, alt: "Mind Rhythm — Property photography with a pulse" }],
+      images: [{ url: "/og-final.png", width: 1200, height: 630, alt: "Mind Rhythm — Photography and films with a pulse" }],
     },
     twitter: {
       card: "summary_large_image",
