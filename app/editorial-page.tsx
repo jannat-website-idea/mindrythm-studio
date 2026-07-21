@@ -12,14 +12,16 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   const gallery = content.items.filter((item) => item.kind === "gallery");
   const galleryItems = gallery.length ? gallery : projects;
   const savedTeam = content.items.filter((item) => item.kind === "team");
-  const team = savedTeam.length ? savedTeam : projects.slice(0, 3).map((item, index) => ({
+  const teamFallbacks = projects.slice(0, 3).map((item, index) => ({
     ...item,
-    id: `team-${item.id}`,
+    id: `team-${item.id}-${index}`,
     kind: "team" as const,
     title: ["Creative direction", "Image & motion", "Design & post"][index] || "Studio collaborator",
+    body: ["Ideas, narrative and visual direction.", "Cinematography, photography and movement.", "Identity, edit, colour and finishing."][index] || item.body,
     category: ["Creative Director", "Image & Motion", "Design & Post"][index] || "Collaborator",
-    href: settings.instagram,
+    href: index === 1 ? settings.linkedin : settings.instagram,
   }));
+  const team = [...savedTeam, ...teamFallbacks].slice(0, 3);
   const [selected, setSelected] = useState<ContentItem | null>(null);
   const [formState, setFormState] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
@@ -107,13 +109,16 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
         )}
 
         {page === "team" && (
-          <section className="team-page-grid">
-            {team.map((member, index) => (
-              <button type="button" className="team-page-card" key={`${member.id}-${index}`} onClick={() => setSelected(member)}>
-                <div><Media item={member} /></div><span>0{index + 1} / {member.category}</span><h2>{member.title}</h2><p>{member.body}</p><b>Profile &amp; social links ↗</b>
-              </button>
-            ))}
-          </section>
+          <>
+            <section className="team-page-grid">
+              {team.map((member, index) => (
+                <button type="button" className="team-page-card" key={`${member.id}-${index}`} onClick={() => setSelected(member)}>
+                  <div><Media item={member} /></div><span>0{index + 1} / {member.category}</span><h2>{member.title}</h2><p>{member.body}</p><b>Profile &amp; social links ↗</b>
+                </button>
+              ))}
+            </section>
+            <section className="team-page-note"><span>Built around the story</span><h2>A focused core.<br /><em>The right collaborators.</em></h2><p>Each project brings together the precise mix of direction, image-making, design and post-production it needs.</p><Link href="/contact">Work with the team ↗</Link></section>
+          </>
         )}
 
         {page === "story" && (
@@ -149,7 +154,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
         )}
       </main>
 
-      <footer className="inner-footer"><Link href="/"><img src="/mindrythm-logomark.png" alt="" />Mind Rhythm</Link><span>© {new Date().getFullYear()}</span><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link><Link href="/studio">Admin studio ↗</Link></footer>
+      <footer className="inner-footer"><Link href="/"><img src="/mindrythm-logomark.png" alt="" />Mind Rhythm</Link><span>© {new Date().getFullYear()}</span><Link href="/privacy">Privacy Policy</Link><Link href="/terms">Terms &amp; Conditions</Link><Link href="/studio">Admin studio ↗</Link></footer>
 
       {selected && (
         <div className="lightbox" role="dialog" aria-modal="true" aria-label={selected.title}>

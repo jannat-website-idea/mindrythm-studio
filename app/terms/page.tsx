@@ -4,8 +4,8 @@ export default function TermsPage() {
   return (
     <main className="legal-page">
       <Link className="legal-back" href="/">← Mind Rhythm</Link>
-      <span>Legal / Terms</span>
-      <h1>Terms of use</h1>
+      <span>Legal / Terms &amp; Conditions</span>
+      <h1>Terms &amp;<br />Conditions</h1>
       <section>
         <h2>Website content</h2>
         <p>This website presents the work, services and creative perspective of Mind Rhythm. Project information is provided for general reference and may change.</p>

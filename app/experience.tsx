@@ -97,10 +97,10 @@ export function Experience({ content }: { content: SiteContent }) {
     const startedAt = performance.now();
     let frame = 0;
     const tick = (now: number) => {
-      const next = Math.min(100, Math.round(((now - startedAt) / 1750) * 100));
+      const next = Math.min(100, Math.round(((now - startedAt) / 2400) * 100));
       setProgress(next);
       if (next < 100) frame = window.requestAnimationFrame(tick);
-      else window.setTimeout(() => setLoaded(true), 380);
+      else window.setTimeout(() => setLoaded(true), 520);
     };
     frame = window.requestAnimationFrame(tick);
     return () => window.cancelAnimationFrame(frame);
@@ -160,10 +160,28 @@ export function Experience({ content }: { content: SiteContent }) {
   return (
     <>
       <div className={`preloader ${loaded ? "preloader-done" : ""}`} aria-hidden={loaded}>
-        <img className="loader-logo" src="/mindrythm-logomark.png" alt="" />
-        <div className="loader-name"><span>MIND</span><em>RHYTHM</em></div>
-        <div className="loader-caption">Independent image-making studio</div>
-        <div className="preloader-progress">{String(progress).padStart(3, "0")}</div>
+        <div className="loader-topline">
+          <div><img src="/mindrythm-logomark.png" alt="" /><span>Mind Rhythm®</span></div>
+          <span>Kolkata / Everywhere</span>
+        </div>
+        <div className="loader-stage">
+          <div className="loader-copy">
+            <span className="loader-caption">An independent image-making studio</span>
+            <div className="loader-words" aria-label="Images that move, stories that stay">
+              <span><i>Images</i></span>
+              <span><i>that <em>move,</em></i></span>
+              <span><i>stories that stay.</i></span>
+            </div>
+            <p>Image / Motion / Identity</p>
+          </div>
+          <div className="loader-film" aria-hidden="true">
+            {heroItems.slice(0, 3).map((item, index) => <div className={`loader-frame loader-frame-${index + 1}`} key={`intro-${item.id}`}><Media item={item} /></div>)}
+          </div>
+        </div>
+        <div className="loader-footer">
+          <span>Loading the visual world</span>
+          <span className="preloader-progress">{String(progress).padStart(3, "0")}%</span>
+        </div>
         <div className="preloader-line"><span style={{ width: `${progress}%` }} /></div>
       </div>
 
@@ -176,7 +194,7 @@ export function Experience({ content }: { content: SiteContent }) {
           <nav className={menuOpen ? "nav-open" : ""} aria-label="Main navigation">
             <Link href="/work" onClick={() => setMenuOpen(false)}>Our Work</Link>
             <Link href="/gallery" onClick={() => setMenuOpen(false)}>Stories</Link>
-            <Link href="/team" onClick={() => setMenuOpen(false)}>Team</Link>
+            <Link href="/team" onClick={() => setMenuOpen(false)}>Meet the Team</Link>
             <Link href="/story" onClick={() => setMenuOpen(false)}>Our Story</Link>
             <Link href="/contact" onClick={() => setMenuOpen(false)}>Connect</Link>
           </nav>
@@ -197,10 +215,13 @@ export function Experience({ content }: { content: SiteContent }) {
             </div>
             <div className="hero-overlay" />
             <div className="hero-content">
-              <div className="hero-kicker"><span>Image / Motion / Identity</span><span>Kolkata / Everywhere</span></div>
+              <div className="hero-kicker"><span>Images with a pulse®</span><span>Image / Motion / Identity</span><span>Kolkata / Everywhere</span></div>
               <div className="hero-title-row">
-                <div className="hero-emblem"><img src="/mindrythm-logomark.png" alt="Mind Rhythm logomark" /></div>
-                <h1 id="hero-title">Images with<br />a <em>pulse.</em></h1>
+                <h1 id="hero-title">
+                  <span className="hero-title-line"><span>Every frame</span></span>
+                  <span className="hero-title-line"><span>has a <em>rhythm.</em></span></span>
+                </h1>
+                <div className="hero-emblem"><img src="/mindrythm-logomark.png" alt="Mind Rhythm logomark" /><span>Independent creative studio</span></div>
               </div>
               <div className="hero-lower">
                 <p>{settings.description}</p>
@@ -219,9 +240,19 @@ export function Experience({ content }: { content: SiteContent }) {
             <div className="vision-note" data-reveal><span>How we see it</span><p>Thoughtful images can slow people down, draw them closer and continue to resonate after the screen goes dark.</p></div>
           </section>
 
+          <section className="capabilities-band" aria-label="Mind Rhythm capabilities">
+            <span data-reveal>02 / What we shape</span>
+            <div>
+              <p data-reveal><b>01</b> Moving image</p>
+              <p data-reveal><b>02</b> Photography</p>
+              <p data-reveal><b>03</b> Visual identity</p>
+              <p data-reveal><b>04</b> Direction &amp; post</p>
+            </div>
+          </section>
+
           <section className="work-section" id="projects">
             <div className="section-intro" data-reveal>
-              <span className="section-index">02 / Projects</span>
+              <span className="section-index">03 / Projects</span>
               <h2>Selected work,<br /><em>made to stay.</em></h2>
               <p>{settings.idea}</p>
             </div>
@@ -247,7 +278,7 @@ export function Experience({ content }: { content: SiteContent }) {
 
           <section className="gallery-section" id="gallery">
             <div className="gallery-heading" data-reveal>
-              <span>03 / Gallery</span>
+              <span>04 / Gallery</span>
               <h2>Spaces &amp;<br /><em>moments.</em></h2>
               <div className="gallery-heading-copy">
                 <p>A living mix of photographs, motion fragments and observations from the studio.</p>
@@ -267,7 +298,7 @@ export function Experience({ content }: { content: SiteContent }) {
 
           <section className="testimonials-section" id="testimonials">
             <div className="testimonials-heading" data-reveal>
-              <span>04 / Testimonials</span>
+              <span>05 / Testimonials</span>
               <h2>Words from<br /><em>our collaborators.</em></h2>
               <div className="testimonial-source"><span>Curated Google reviews</span><a href="https://www.google.com/search?q=Mind+Rhythm+Kolkata+reviews" target="_blank" rel="noreferrer">Read on Google ↗</a></div>
             </div>
@@ -285,9 +316,9 @@ export function Experience({ content }: { content: SiteContent }) {
 
           <section className="team-section" id="team">
             <div className="team-heading" data-reveal>
-              <span>05 / Our team</span>
+              <span>06 / Meet the team</span>
               <h2>The right minds<br />for <em>every story.</em></h2>
-              <p>A small, shape-shifting collective of directors, image-makers, designers and post artists.</p>
+              <div className="team-heading-action"><p>A small, shape-shifting collective of directors, image-makers, designers and post artists.</p><Link href="/team">Meet every member ↗</Link></div>
             </div>
             <div className="team-grid">
               {team.map((member, index) => (
@@ -297,11 +328,12 @@ export function Experience({ content }: { content: SiteContent }) {
                 </button>
               ))}
             </div>
+            <Link className="team-page-link" href="/team"><span>People behind the images</span><strong>Explore the full team</strong><i>↗</i></Link>
           </section>
 
           <section className="about-section" id="about">
             <div className="about-heading" data-reveal>
-              <span>06 / About us</span>
+              <span>07 / About us</span>
               <h2>Mind Rhythm is where<br />clarity meets <em>instinct.</em></h2>
             </div>
             <div className="about-grid">
@@ -312,9 +344,23 @@ export function Experience({ content }: { content: SiteContent }) {
             </div>
           </section>
 
+          <section className="process-section" id="process">
+            <div className="process-heading" data-reveal>
+              <span>08 / Our rhythm</span>
+              <h2>From first instinct<br />to <em>final frame.</em></h2>
+              <p>A clear process gives ambitious ideas room to breathe.</p>
+            </div>
+            <div className="process-steps">
+              <article data-reveal><span>01</span><h3>Listen</h3><p>We find the emotional centre of the brief before deciding how it should look.</p></article>
+              <article data-reveal><span>02</span><h3>Distill</h3><p>We reduce the noise into one precise visual idea, tone and system.</p></article>
+              <article data-reveal><span>03</span><h3>Compose</h3><p>People, image, motion and design are shaped into one coherent world.</p></article>
+              <article data-reveal><span>04</span><h3>Release</h3><p>Every detail is finished for the place, pace and audience it needs to reach.</p></article>
+            </div>
+          </section>
+
           <section className="contact-section" id="contact">
             <div className="contact-heading" data-reveal>
-              <span>07 / Reach out</span>
+              <span>09 / Reach out</span>
               <h2>Let’s make<br />something that <em>moves.</em></h2>
             </div>
             <div className="contact-layout">
@@ -340,9 +386,14 @@ export function Experience({ content }: { content: SiteContent }) {
         </main>
 
         <footer className="site-footer">
-          <div className="footer-brand"><img src="/mindrythm-logomark.png" alt="Mind Rhythm logomark" /><span>MIND <em>RHYTHM</em></span></div>
-          <div className="footer-links"><a href={settings.instagram}>Instagram ↗</a><a href={settings.facebook}>Facebook ↗</a><a href={settings.youtube}>YouTube ↗</a></div>
-          <div className="footer-meta"><span>© {new Date().getFullYear()} Mind Rhythm</span><Link href="/privacy">Privacy policy</Link><Link href="/terms">Terms of use</Link><Link href="/studio">Content studio ↗</Link></div>
+          <div className="footer-cta"><span>Have a story in mind?</span><Link href="/contact">Let’s make it move. <i>↗</i></Link></div>
+          <div className="footer-grid">
+            <div className="footer-brand"><img src="/mindrythm-logomark.png" alt="Mind Rhythm logomark" /><span>MIND <em>RHYTHM</em></span></div>
+            <div className="footer-column"><span>Explore</span><Link href="/work">Our Work</Link><Link href="/gallery">Stories &amp; Moments</Link><Link href="/team">Meet the Team</Link><Link href="/story">Our Story</Link></div>
+            <div className="footer-column"><span>Follow</span><a href={settings.instagram}>Instagram ↗</a><a href={settings.facebook}>Facebook ↗</a><a href={settings.youtube}>YouTube ↗</a></div>
+            <div className="footer-column"><span>Legal</span><Link href="/privacy">Privacy Policy</Link><Link href="/terms">Terms &amp; Conditions</Link><Link href="/studio">Content Studio ↗</Link></div>
+          </div>
+          <div className="footer-meta"><span>© {new Date().getFullYear()} Mind Rhythm</span><span>Kolkata / Everywhere</span><a href="#home">Back to top ↑</a></div>
         </footer>
       </div>
 
