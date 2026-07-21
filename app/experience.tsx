@@ -196,6 +196,7 @@ export function Experience({ content }: { content: SiteContent }) {
         <div className="loader-stage">
           <div className="loader-copy">
             <span className="loader-caption">An independent image-making studio</span>
+            <div className="loader-echo" aria-hidden="true"><span>Mind Rhythm · Mind Rhythm · Mind Rhythm ·</span></div>
             <div className="loader-brand" aria-label="Mind Rhythm">
               <span className="loader-brand-line"><i>M</i><i>I</i><i>N</i><i>D</i></span>
               <span className="loader-brand-line"><i>R</i><i>H</i><i>Y</i><i>T</i><i>H</i><i>M</i></span>
@@ -236,22 +237,24 @@ export function Experience({ content }: { content: SiteContent }) {
 
         <main>
           <section className="hero" id="home" aria-labelledby="hero-title">
-            <div className="hero-slides" aria-hidden="true">
+            <a className="hero-slides" href="/work" aria-label="Explore Mind Rhythm projects">
               {heroItems.map((item, index) => (
                 <div className={`hero-slide ${index === heroIndex ? "active" : ""}`} key={item.id}>
                   <Media item={item} />
                 </div>
               ))}
-            </div>
+            </a>
             <div className="hero-overlay" />
             <div className="hero-content">
-              <div className="hero-kicker"><span>Images with a pulse®</span><span>Image / Motion / Identity</span><span>Kolkata / Everywhere</span></div>
+              <div className="hero-kicker"><a href="/gallery">Images with a pulse®</a><a href="/work">Image / Motion / Identity</a><a href="/contact">Kolkata / Everywhere</a></div>
               <div className="hero-title-row">
                 <h1 id="hero-title">
-                  <span className="hero-title-line"><span>Every frame</span></span>
-                  <span className="hero-title-line"><span>has a <em>rhythm.</em></span></span>
+                  <a href="/work" aria-label="Explore our work">
+                    <span className="hero-title-line"><span>Every frame</span></span>
+                    <span className="hero-title-line"><span>has a <em>rhythm.</em></span></span>
+                  </a>
                 </h1>
-                <div className="hero-emblem"><img src="/mindrythm-logomark.png" alt="Mind Rhythm logomark" /><span>Independent creative studio</span></div>
+                <a className="hero-emblem" href="/story"><img src="/mindrythm-logomark.png" alt="Mind Rhythm logomark" /><span>Independent creative studio</span></a>
               </div>
               <div className="hero-lower">
                 <p>{settings.description}</p>
@@ -273,10 +276,10 @@ export function Experience({ content }: { content: SiteContent }) {
           <section className="capabilities-band" aria-label="Mind Rhythm capabilities">
             <span data-reveal>02 / What we shape</span>
             <div>
-              <p data-reveal><b>01</b> Moving image</p>
-              <p data-reveal><b>02</b> Photography</p>
-              <p data-reveal><b>03</b> Visual identity</p>
-              <p data-reveal><b>04</b> Direction &amp; post</p>
+              <a href="/work" data-reveal><b>01</b> Moving image <i>↗</i></a>
+              <a href="/work" data-reveal><b>02</b> Photography <i>↗</i></a>
+              <a href="/work" data-reveal><b>03</b> Visual identity <i>↗</i></a>
+              <a href="/work" data-reveal><b>04</b> Direction &amp; post <i>↗</i></a>
             </div>
           </section>
 
@@ -286,10 +289,10 @@ export function Experience({ content }: { content: SiteContent }) {
               <div className="scroll-cinema-window">
                 <div className="scroll-cinema-track">
                   {heroItems.slice(0, 3).map((item, index) => (
-                    <article className="scroll-cinema-panel" key={`scroll-${item.id}`}>
+                    <button type="button" className="scroll-cinema-panel" key={`scroll-${item.id}`} onClick={() => setSelectedItem(item)} aria-label={`Open ${item.title}`}>
                       <Media item={item} />
                       <div><span>0{index + 1} / {item.category || "Selected frame"}</span><h2>{item.title}</h2><p>{item.eyebrow}</p></div>
-                    </article>
+                    </button>
                   ))}
                   <article className="scroll-cinema-panel scroll-cinema-statement">
                     <span>Mind Rhythm / Visual narratives</span>
@@ -311,21 +314,21 @@ export function Experience({ content }: { content: SiteContent }) {
             </div>
             <div className="projects-bento">
               {projects.map((project, index) => <ProjectCard key={project.id} project={project} index={index} onOpen={() => setSelectedItem(project)} />)}
-              <article className="project-tile project-statement" data-reveal>
+              <a className="project-tile project-statement" href="/story" data-reveal>
                 <span>Our approach</span>
                 <blockquote>“Every project begins with listening closely enough to find its own visual rhythm.”</blockquote>
                 <div className="pulse-glyph" aria-hidden="true"><i /><i /><i /></div>
-              </article>
-              <article className="project-tile project-process" data-reveal>
+              </a>
+              <a className="project-tile project-process" href="#process" data-reveal>
                 <span>Method / Collaborative</span>
                 <h3>Listen.<br /><em>Distill.</em><br />Make it move.</h3>
                 <p>Direction without noise. Craft without decoration.</p>
-              </article>
-              <article className="project-tile project-metric" data-reveal>
+              </a>
+              <a className="project-tile project-metric" href="/work" data-reveal>
                 <div className="metric-ring"><strong>∞</strong></div>
                 <h3>One idea.<br />Many forms.</h3>
                 <p>Film / Image / Identity / Experience</p>
-              </article>
+              </a>
             </div>
           </section>
 
@@ -357,12 +360,12 @@ export function Experience({ content }: { content: SiteContent }) {
             </div>
             <div className="testimonials-grid">
               {testimonials.map((item, index) => (
-                <article className="testimonial-card" data-reveal key={item.id}>
+                <a className="testimonial-card" href="https://www.google.com/search?q=Mind+Rhythm+Kolkata+reviews" target="_blank" rel="noreferrer" data-reveal key={item.id}>
                   <div className="review-stars" aria-label={`${item.year || "5.0"} out of 5 stars`}>★★★★★</div>
                   <blockquote>“{item.body}”</blockquote>
                   <div><strong>{item.title}</strong><span>{item.eyebrow || item.category}</span></div>
                   <span className="testimonial-number">0{index + 1}</span>
-                </article>
+                </a>
               ))}
             </div>
           </section>
@@ -390,10 +393,10 @@ export function Experience({ content }: { content: SiteContent }) {
               <h2>Mind Rhythm is where<br />clarity meets <em>instinct.</em></h2>
             </div>
             <div className="about-grid">
-              <article data-reveal><span>01</span><h3>What is Mind Rhythm?</h3><p>{settings.description}</p></article>
-              <article data-reveal><span>02</span><h3>What we do</h3><p>Moving image, photography, visual identity, direction and post-production—shaped as one coherent visual world.</p></article>
-              <article data-reveal><span>03</span><h3>Who we work with</h3><p>Brands, artists, institutions and independent voices looking for work with atmosphere, precision and emotional recall.</p></article>
-              <article data-reveal><span>04</span><h3>How we work</h3><p>We assemble the right collaborators around each story, keeping the process open, focused and responsive from first thought to final frame.</p></article>
+              <a href="/story" data-reveal><span>01</span><h3>What is Mind Rhythm?</h3><p>{settings.description}</p><i>Read our story ↗</i></a>
+              <a href="/work" data-reveal><span>02</span><h3>What we do</h3><p>Moving image, photography, visual identity, direction and post-production—shaped as one coherent visual world.</p><i>Explore our work ↗</i></a>
+              <a href="/contact" data-reveal><span>03</span><h3>Who we work with</h3><p>Brands, artists, institutions and independent voices looking for work with atmosphere, precision and emotional recall.</p><i>Work with us ↗</i></a>
+              <a href="#process" data-reveal><span>04</span><h3>How we work</h3><p>We assemble the right collaborators around each story, keeping the process open, focused and responsive from first thought to final frame.</p><i>See the process ↓</i></a>
             </div>
           </section>
 
@@ -403,12 +406,12 @@ export function Experience({ content }: { content: SiteContent }) {
               <h2>From first instinct<br />to <em>final frame.</em></h2>
               <p>A clear process gives ambitious ideas room to breathe.</p>
             </div>
-            {heroItems[1] && <div className="process-film" data-reveal><Media item={heroItems[1]} /><div><span>Direction / Image / Motion</span><p>The process stays clear so the image can stay alive.</p></div></div>}
+            {heroItems[1] && <a className="process-film" href="/work" data-reveal><Media item={heroItems[1]} /><div><span>Direction / Image / Motion</span><p>The process stays clear so the image can stay alive. <b>View work ↗</b></p></div></a>}
             <div className="process-steps">
-              <article data-reveal><span>01</span><h3>Listen</h3><p>We find the emotional centre of the brief before deciding how it should look.</p></article>
-              <article data-reveal><span>02</span><h3>Distill</h3><p>We reduce the noise into one precise visual idea, tone and system.</p></article>
-              <article data-reveal><span>03</span><h3>Compose</h3><p>People, image, motion and design are shaped into one coherent world.</p></article>
-              <article data-reveal><span>04</span><h3>Release</h3><p>Every detail is finished for the place, pace and audience it needs to reach.</p></article>
+              <a href="/contact" data-reveal><span>01</span><h3>Listen</h3><p>We find the emotional centre of the brief before deciding how it should look.</p><i>Begin a brief ↗</i></a>
+              <a href="/contact" data-reveal><span>02</span><h3>Distill</h3><p>We reduce the noise into one precise visual idea, tone and system.</p><i>Begin a brief ↗</i></a>
+              <a href="/contact" data-reveal><span>03</span><h3>Compose</h3><p>People, image, motion and design are shaped into one coherent world.</p><i>Begin a brief ↗</i></a>
+              <a href="/contact" data-reveal><span>04</span><h3>Release</h3><p>Every detail is finished for the place, pace and audience it needs to reach.</p><i>Begin a brief ↗</i></a>
             </div>
           </section>
 
@@ -421,7 +424,7 @@ export function Experience({ content }: { content: SiteContent }) {
               <div className="contact-details" data-reveal>
                 <div><span>Call</span><a href={`tel:${phonePrimary.replace(/\s/g, "")}`}>{phonePrimary}</a><a href={`tel:${phoneSecondary.replace(/\s/g, "")}`}>{phoneSecondary}</a></div>
                 <div><span>Email</span><a href={`mailto:${contactEmail}`}>{contactEmail}</a></div>
-                <div><span>Visit</span><p>{address}</p></div>
+                <div><span>Visit</span><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noreferrer">{address} ↗</a></div>
                 <div className="contact-socials"><a href={settings.instagram}>Instagram ↗</a><a href={settings.facebook}>Facebook ↗</a><a href={settings.youtube}>YouTube ↗</a></div>
               </div>
               <form className="enquiry-form" onSubmit={submitEnquiry} data-reveal>
@@ -495,7 +498,7 @@ function GalleryCollection({ title, index, items, onOpen }: { title: string; ind
             <Media item={item} /><span>{item.title}</span>
           </button>
         ))}
-        <div className="gallery-card gallery-note"><span>Mind Rhythm archive</span><p>Looking closely is part of the work.</p></div>
+        <a className="gallery-card gallery-note" href="/gallery"><span>Mind Rhythm archive</span><p>Looking closely is part of the work.</p><i>Open archive ↗</i></a>
       </div>
     </article>
   );
