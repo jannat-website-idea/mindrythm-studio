@@ -225,11 +225,19 @@ export async function removeItem(id: string) {
 }
 
 export async function saveEnquiry(enquiry: Enquiry) {
-  await ensureDatabase();
-  await database()
-    .prepare("INSERT INTO enquiries (id, name, phone, email, query, created_at) VALUES (?, ?, ?, ?, ?, ?)")
-    .bind(enquiry.id, enquiry.name, enquiry.phone, enquiry.email, enquiry.query, enquiry.createdAt)
-    .run();
+  try {
+    await ensureDatabase();
+    await database()
+      .prepare("INSERT INTO enquiries (id, name, phone, email, query, created_at) VALUES (?, ?, ?, ?, ?, ?)")
+      .bind(enquiry.id, enquiry.name, enquiry.phone, enquiry.email, enquiry.query, enquiry.createdAt)
+      .run();
+  } catch (error) {
+    if (process.env.VERCEL !== "1") throw error;
+
+    // The Vercel presentation deployment has no Cloudflare D1 binding.
+    // Enquiry notification can still be delivered through Resend when its
+    // environment variables are configured.
+  }
 }
 
 export async function getEnquiries(): Promise<Enquiry[]> {
