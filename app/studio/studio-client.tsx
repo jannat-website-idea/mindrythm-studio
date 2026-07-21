@@ -6,12 +6,21 @@ import type {
   SiteContent,
   SiteSettings,
 } from "@/lib/content";
+import type { Enquiry } from "@/db/content";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
 type SaveState = "idle" | "saving" | "saved" | "error";
 
-const kinds: ContentKind[] = ["project", "team", "social", "note"];
+const kinds: ContentKind[] = [
+  "hero",
+  "project",
+  "gallery",
+  "team",
+  "testimonial",
+  "social",
+  "note",
+];
 
 function newItem(position: number): ContentItem {
   return {
@@ -32,9 +41,11 @@ function newItem(position: number): ContentItem {
 
 export function StudioClient({
   initialContent,
+  initialEnquiries,
   editorName,
 }: {
   initialContent: SiteContent;
+  initialEnquiries: Enquiry[];
   editorName: string;
 }) {
   const [settings, setSettings] = useState(initialContent.settings);
@@ -110,6 +121,19 @@ export function StudioClient({
     setSaveState("saved");
   }
 
+  async function setTestimonialStatus(status: "approved" | "rejected") {
+    if (!selected) return;
+    const updated = { ...selected, accent: status };
+    setItems((current) => current.map((item) => item.id === selected.id ? updated : item));
+    setSaveState("saving");
+    const response = await fetch("/api/studio", {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ item: updated }),
+    });
+    setSaveState(response.ok ? "saved" : "error");
+  }
+
   async function uploadFile(file: File) {
     setUploading(true);
     const body = new FormData();
@@ -174,6 +198,9 @@ export function StudioClient({
           <div className="form-grid">
             <Field label="Studio name" value={settings.siteName} onChange={(value) => updateSettings("siteName", value)} />
             <Field label="Contact email" value={settings.contactEmail} onChange={(value) => updateSettings("contactEmail", value)} />
+            <Field label="Primary phone" value={settings.phonePrimary} onChange={(value) => updateSettings("phonePrimary", value)} />
+            <Field label="Secondary phone" value={settings.phoneSecondary} onChange={(value) => updateSettings("phoneSecondary", value)} />
+            <Field wide label="Studio address" value={settings.address} onChange={(value) => updateSettings("address", value)} />
             <Field wide label="Tagline" value={settings.tagline} onChange={(value) => updateSettings("tagline", value)} />
             <Field wide multiline label="Description" value={settings.description} onChange={(value) => updateSettings("description", value)} />
             <Field wide multiline label="Vision" value={settings.vision} onChange={(value) => updateSettings("vision", value)} />
@@ -181,6 +208,25 @@ export function StudioClient({
             <Field label="Instagram" value={settings.instagram} onChange={(value) => updateSettings("instagram", value)} />
             <Field label="Vimeo" value={settings.vimeo} onChange={(value) => updateSettings("vimeo", value)} />
             <Field wide label="LinkedIn" value={settings.linkedin} onChange={(value) => updateSettings("linkedin", value)} />
+            <Field label="Facebook" value={settings.facebook} onChange={(value) => updateSettings("facebook", value)} />
+            <Field label="YouTube" value={settings.youtube} onChange={(value) => updateSettings("youtube", value)} />
+          </div>
+
+          <div className="panel-heading item-heading">
+            <div>
+              <span className="studio-kicker">Enquiry inbox</span>
+              <h2>Recent messages</h2>
+            </div>
+            <span className="editor-pill">{initialEnquiries.length} received</span>
+          </div>
+          <div className="enquiry-list">
+            {initialEnquiries.length ? initialEnquiries.map((enquiry) => (
+              <article className="enquiry-card" key={enquiry.id}>
+                <div><strong>{enquiry.name}</strong><span>{new Date(enquiry.createdAt).toLocaleDateString()}</span></div>
+                <p>{enquiry.query}</p>
+                <div><a href={`tel:${enquiry.phone}`}>{enquiry.phone}</a>{enquiry.email && <a href={`mailto:${enquiry.email}`}>{enquiry.email}</a>}</div>
+              </article>
+            )) : <p className="empty-enquiries">New website enquiries will appear here.</p>}
           </div>
 
           {selected && (
@@ -191,6 +237,16 @@ export function StudioClient({
                   <h2>{selected.title}</h2>
                 </div>
                 <div className="panel-actions">
+                  {selected.kind === "testimonial" && (
+                    <>
+                      <button type="button" className="button secondary" onClick={() => setTestimonialStatus("rejected")}>
+                        Reject
+                      </button>
+                      <button type="button" className="button secondary" onClick={() => setTestimonialStatus("approved")}>
+                        Approve
+                      </button>
+                    </>
+                  )}
                   <button type="button" className="button danger" onClick={deleteSelected}>
                     Delete
                   </button>
@@ -213,6 +269,7 @@ export function StudioClient({
                 <Field wide multiline label="Description" value={selected.body} onChange={(value) => updateItem("body", value)} />
                 <Field label="Year" value={selected.year} onChange={(value) => updateItem("year", value)} />
                 <Field label="Link" value={selected.href} onChange={(value) => updateItem("href", value)} />
+                <Field label="Status / accent" value={selected.accent} onChange={(value) => updateItem("accent", value)} />
                 <Field wide label="Image/video URL" value={selected.mediaUrl} onChange={(value) => updateItem("mediaUrl", value)} />
                 <label className="field field-wide upload-field">
                   <span>Or upload media</span>

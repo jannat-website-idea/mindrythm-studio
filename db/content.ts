@@ -38,6 +38,26 @@ const CREATE_SITE_SETTINGS = `
 const CREATE_SORT_INDEX =
   "CREATE INDEX IF NOT EXISTS content_items_sort_idx ON content_items(sort_order)";
 
+const CREATE_ENQUIRIES = `
+  CREATE TABLE IF NOT EXISTS enquiries (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    phone TEXT NOT NULL,
+    email TEXT NOT NULL DEFAULT '',
+    query TEXT NOT NULL,
+    created_at TEXT NOT NULL
+  )
+`;
+
+export type Enquiry = {
+  id: string;
+  name: string;
+  phone: string;
+  email: string;
+  query: string;
+  createdAt: string;
+};
+
 function database(): D1Database {
   const db = env.DB as D1Database | undefined;
   if (!db) throw new Error("The Mindrythm content database is unavailable.");
@@ -50,6 +70,7 @@ async function ensureDatabase() {
     db.prepare(CREATE_CONTENT_ITEMS),
     db.prepare(CREATE_SITE_SETTINGS),
     db.prepare(CREATE_SORT_INDEX),
+    db.prepare(CREATE_ENQUIRIES),
   ]);
 
   const itemCount = await db
@@ -130,10 +151,15 @@ export async function getSiteContent(): Promise<SiteContent> {
         .first<{ value: string }>(),
     ]);
 
+    const mergedSettings = settingsRow?.value
+      ? ({ ...defaultSettings, ...JSON.parse(settingsRow.value) } as SiteSettings)
+      : defaultSettings;
+    if (mergedSettings.contactEmail === "hello@mindrythm.studio") {
+      mergedSettings.contactEmail = defaultSettings.contactEmail;
+    }
+
     return {
-      settings: settingsRow?.value
-        ? ({ ...defaultSettings, ...JSON.parse(settingsRow.value) } as SiteSettings)
-        : defaultSettings,
+      settings: mergedSettings,
       items: (itemsResult.results as Record<string, unknown>[]).map(rowToItem),
     };
   } catch {
@@ -196,4 +222,29 @@ export async function saveItem(item: ContentItem) {
 export async function removeItem(id: string) {
   await ensureDatabase();
   await database().prepare("DELETE FROM content_items WHERE id = ?").bind(id).run();
+}
+
+export async function saveEnquiry(enquiry: Enquiry) {
+  await ensureDatabase();
+  await database()
+    .prepare("INSERT INTO enquiries (id, name, phone, email, query, created_at) VALUES (?, ?, ?, ?, ?, ?)")
+    .bind(enquiry.id, enquiry.name, enquiry.phone, enquiry.email, enquiry.query, enquiry.createdAt)
+    .run();
+}
+
+export async function getEnquiries(): Promise<Enquiry[]> {
+  try {
+    await ensureDatabase();
+    const result = await database().prepare("SELECT * FROM enquiries ORDER BY created_at DESC LIMIT 100").all();
+    return (result.results as Record<string, unknown>[]).map((row) => ({
+      id: String(row.id),
+      name: String(row.name),
+      phone: String(row.phone),
+      email: String(row.email ?? ""),
+      query: String(row.query),
+      createdAt: String(row.created_at),
+    }));
+  } catch {
+    return [];
+  }
 }

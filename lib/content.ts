@@ -1,4 +1,11 @@
-export type ContentKind = "project" | "team" | "social" | "note";
+export type ContentKind =
+  | "hero"
+  | "project"
+  | "gallery"
+  | "team"
+  | "testimonial"
+  | "social"
+  | "note";
 
 export type ContentItem = {
   id: string;
@@ -22,9 +29,14 @@ export type SiteSettings = {
   vision: string;
   idea: string;
   contactEmail: string;
+  phonePrimary: string;
+  phoneSecondary: string;
+  address: string;
   instagram: string;
   vimeo: string;
   linkedin: string;
+  facebook: string;
+  youtube: string;
 };
 
 export type SiteContent = {
@@ -41,10 +53,15 @@ export const defaultSettings: SiteSettings = {
     "To make thoughtful visual work that slows people down, draws them closer and keeps resonating after the screen goes dark.",
   idea:
     "A fluid collective of directors, image-makers and designers, assembled around the needs of every story.",
-  contactEmail: "hello@mindrythm.studio",
+  contactEmail: "Admin@mindrythm.com",
+  phonePrimary: "+91 90735 73878",
+  phoneSecondary: "+91 62923 33492",
+  address: "250, Bansdroni, Rifle Club Playground, Kolkata - 700070",
   instagram: "https://instagram.com/",
   vimeo: "https://vimeo.com/",
   linkedin: "https://linkedin.com/",
+  facebook: "https://facebook.com/",
+  youtube: "https://youtube.com/",
 };
 
 export const defaultItems: ContentItem[] = [

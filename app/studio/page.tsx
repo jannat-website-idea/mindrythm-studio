@@ -1,5 +1,5 @@
 import { chatGPTSignInPath, getChatGPTUser } from "@/app/chatgpt-auth";
-import { getSiteContent } from "@/db/content";
+import { getEnquiries, getSiteContent } from "@/db/content";
 import { redirect } from "next/navigation";
 import { StudioClient } from "./studio-client";
 
@@ -14,6 +14,7 @@ export default async function StudioPage() {
   return (
     <StudioClient
       initialContent={await getSiteContent()}
+      initialEnquiries={await getEnquiries()}
       editorName={user?.displayName ?? "Demo editor"}
     />
   );

@@ -22,3 +22,12 @@ export const siteSettings = sqliteTable("site_settings", {
   value: text("value").notNull(),
   updatedAt: text("updated_at").notNull(),
 });
+
+export const enquiries = sqliteTable("enquiries", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  phone: text("phone").notNull(),
+  email: text("email").notNull().default(""),
+  query: text("query").notNull(),
+  createdAt: text("created_at").notNull(),
+});
