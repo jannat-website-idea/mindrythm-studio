@@ -1,9 +1,7 @@
-import Link from "next/link";
-
 export default function TermsPage() {
   return (
     <main className="legal-page">
-      <Link className="legal-back" href="/">← Mind Rhythm</Link>
+      <a className="legal-back" href="/">← Mind Rhythm</a>
       <span>Legal / Terms &amp; Conditions</span>
       <h1>Terms &amp;<br />Conditions</h1>
       <section>

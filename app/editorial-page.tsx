@@ -1,7 +1,6 @@
 "use client";
 
 import type { ContentItem, SiteContent } from "@/lib/content";
-import Link from "next/link";
 import { type FormEvent, useMemo, useState } from "react";
 
 export type EditorialPageKind = "work" | "gallery" | "team" | "story" | "contact";
@@ -53,15 +52,15 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   return (
     <div className="inner-shell">
       <header className="inner-header">
-        <Link className="wordmark" href="/"><img src="/mindrythm-logomark.png" alt="" /><span>MIND <em>RHYTHM</em></span></Link>
+        <a className="wordmark" href="/"><img src="/mindrythm-logomark.png" alt="" /><span>MIND <em>RHYTHM</em></span></a>
         <nav aria-label="Site navigation">
-          <Link className={page === "work" ? "active" : ""} href="/work">Our Work</Link>
-          <Link className={page === "gallery" ? "active" : ""} href="/gallery">Stories & Moments</Link>
-          <Link className={page === "team" ? "active" : ""} href="/team">Meet the Team</Link>
-          <Link className={page === "story" ? "active" : ""} href="/story">Our Story</Link>
-          <Link className={page === "contact" ? "active" : ""} href="/contact">Let’s Connect</Link>
+          <a className={page === "work" ? "active" : ""} href="/work">Our Work</a>
+          <a className={page === "gallery" ? "active" : ""} href="/gallery">Stories & Moments</a>
+          <a className={page === "team" ? "active" : ""} href="/team">Meet the Team</a>
+          <a className={page === "story" ? "active" : ""} href="/story">Our Story</a>
+          <a className={page === "contact" ? "active" : ""} href="/contact">Let’s Connect</a>
         </nav>
-        <Link className="inner-home" href="/">Home ↗</Link>
+        <a className="inner-home" href="/">Home ↗</a>
       </header>
 
       <main>
@@ -117,7 +116,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                 </button>
               ))}
             </section>
-            <section className="team-page-note"><span>Built around the story</span><h2>A focused core.<br /><em>The right collaborators.</em></h2><p>Each project brings together the precise mix of direction, image-making, design and post-production it needs.</p><Link href="/contact">Work with the team ↗</Link></section>
+            <section className="team-page-note"><span>Built around the story</span><h2>A focused core.<br /><em>The right collaborators.</em></h2><p>Each project brings together the precise mix of direction, image-making, design and post-production it needs.</p><a href="/contact">Work with the team ↗</a></section>
           </>
         )}
 
@@ -154,7 +153,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
         )}
       </main>
 
-      <footer className="inner-footer"><Link href="/"><img src="/mindrythm-logomark.png" alt="" />Mind Rhythm</Link><span>© {new Date().getFullYear()}</span><Link href="/privacy">Privacy Policy</Link><Link href="/terms">Terms &amp; Conditions</Link><Link href="/studio">Admin studio ↗</Link></footer>
+      <footer className="inner-footer"><a href="/"><img src="/mindrythm-logomark.png" alt="" />Mind Rhythm</a><span>© {new Date().getFullYear()}</span><a href="/privacy">Privacy Policy</a><a href="/terms">Terms &amp; Conditions</a><a href="/studio">Admin studio ↗</a></footer>
 
       {selected && (
         <div className="lightbox" role="dialog" aria-modal="true" aria-label={selected.title}>

@@ -1,8 +1,7 @@
 "use client";
 
 import type { ContentItem, SiteContent } from "@/lib/content";
-import Link from "next/link";
-import { type FormEvent, useEffect, useMemo, useState } from "react";
+import { type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 
 const fallbackTestimonials: ContentItem[] = [
   {
@@ -87,6 +86,7 @@ export function Experience({ content }: { content: SiteContent }) {
   const [selectedItem, setSelectedItem] = useState<ContentItem | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [enquiryState, setEnquiryState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const scrollCinemaRef = useRef<HTMLElement | null>(null);
 
   const contactEmail = settings.contactEmail === "hello@mindrythm.studio" ? "Admin@mindrythm.com" : settings.contactEmail;
   const phonePrimary = settings.phonePrimary || "+91 90735 73878";
@@ -135,6 +135,26 @@ export function Experience({ content }: { content: SiteContent }) {
     };
   }, [selectedItem]);
 
+  useEffect(() => {
+    const section = scrollCinemaRef.current;
+    if (!section) return;
+    const update = () => {
+      const track = section.querySelector<HTMLElement>(".scroll-cinema-track");
+      if (!track || window.innerWidth <= 680) return;
+      const distance = Math.max(1, section.offsetHeight - window.innerHeight);
+      const progress = Math.min(1, Math.max(0, (window.scrollY - section.offsetTop) / distance));
+      const travel = Math.max(0, track.scrollWidth - window.innerWidth);
+      section.style.setProperty("--scroll-x", `${-progress * travel}px`);
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
   async function submitEnquiry(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setEnquiryState("sending");
@@ -167,12 +187,11 @@ export function Experience({ content }: { content: SiteContent }) {
         <div className="loader-stage">
           <div className="loader-copy">
             <span className="loader-caption">An independent image-making studio</span>
-            <div className="loader-words" aria-label="Images that move, stories that stay">
-              <span><i>Images</i></span>
-              <span><i>that <em>move,</em></i></span>
-              <span><i>stories that stay.</i></span>
+            <div className="loader-brand" aria-label="Mind Rhythm">
+              <span className="loader-brand-line"><i>M</i><i>I</i><i>N</i><i>D</i></span>
+              <span className="loader-brand-line"><i>R</i><i>H</i><i>Y</i><i>T</i><i>H</i><i>M</i></span>
             </div>
-            <p>Image / Motion / Identity</p>
+            <p><b aria-hidden="true" /> Images with a pulse / Image / Motion / Identity</p>
           </div>
           <div className="loader-film" aria-hidden="true">
             {heroItems.slice(0, 3).map((item, index) => <div className={`loader-frame loader-frame-${index + 1}`} key={`intro-${item.id}`}><Media item={item} /></div>)}
@@ -192,13 +211,13 @@ export function Experience({ content }: { content: SiteContent }) {
             <span>MIND <em>RHYTHM</em></span>
           </a>
           <nav className={menuOpen ? "nav-open" : ""} aria-label="Main navigation">
-            <Link href="/work" onClick={() => setMenuOpen(false)}>Our Work</Link>
-            <Link href="/gallery" onClick={() => setMenuOpen(false)}>Stories</Link>
-            <Link href="/team" onClick={() => setMenuOpen(false)}>Meet the Team</Link>
-            <Link href="/story" onClick={() => setMenuOpen(false)}>Our Story</Link>
-            <Link href="/contact" onClick={() => setMenuOpen(false)}>Connect</Link>
+            <a href="/work" onClick={() => setMenuOpen(false)}>Our Work</a>
+            <a href="/gallery" onClick={() => setMenuOpen(false)}>Stories</a>
+            <a href="/team" onClick={() => setMenuOpen(false)}>Meet the Team</a>
+            <a href="/story" onClick={() => setMenuOpen(false)}>Our Story</a>
+            <a href="/contact" onClick={() => setMenuOpen(false)}>Connect</a>
           </nav>
-          <Link className="header-contact" href="/contact">Start a project ↗</Link>
+          <a className="header-contact" href="/contact">Start a project ↗</a>
           <button type="button" className="menu-toggle" aria-expanded={menuOpen} aria-label="Toggle navigation" onClick={() => setMenuOpen((open) => !open)}>
             {menuOpen ? "Close" : "Menu"}
           </button>
@@ -247,6 +266,29 @@ export function Experience({ content }: { content: SiteContent }) {
               <p data-reveal><b>02</b> Photography</p>
               <p data-reveal><b>03</b> Visual identity</p>
               <p data-reveal><b>04</b> Direction &amp; post</p>
+            </div>
+          </section>
+
+          <section className="scroll-cinema" ref={scrollCinemaRef} aria-label="A scroll-led view of Mind Rhythm">
+            <div className="scroll-cinema-sticky">
+              <div className="scroll-cinema-top"><span>Scroll to move through the studio</span><span>Selected frames / 2026</span></div>
+              <div className="scroll-cinema-window">
+                <div className="scroll-cinema-track">
+                  {heroItems.slice(0, 3).map((item, index) => (
+                    <article className="scroll-cinema-panel" key={`scroll-${item.id}`}>
+                      <Media item={item} />
+                      <div><span>0{index + 1} / {item.category || "Selected frame"}</span><h2>{item.title}</h2><p>{item.eyebrow}</p></div>
+                    </article>
+                  ))}
+                  <article className="scroll-cinema-panel scroll-cinema-statement">
+                    <span>Mind Rhythm / Visual narratives</span>
+                    <h2>Images that make time feel <em>different.</em></h2>
+                    <p>Moving image, photography and identity built around one clear emotional centre.</p>
+                    <a href="/work">Explore all work ↗</a>
+                  </article>
+                </div>
+              </div>
+              <div className="scroll-cinema-progress"><span /><i>Keep scrolling →</i></div>
             </div>
           </section>
 
@@ -318,7 +360,7 @@ export function Experience({ content }: { content: SiteContent }) {
             <div className="team-heading" data-reveal>
               <span>06 / Meet the team</span>
               <h2>The right minds<br />for <em>every story.</em></h2>
-              <div className="team-heading-action"><p>A small, shape-shifting collective of directors, image-makers, designers and post artists.</p><Link href="/team">Meet every member ↗</Link></div>
+              <div className="team-heading-action"><p>A small, shape-shifting collective of directors, image-makers, designers and post artists.</p><a href="/team">Meet every member ↗</a></div>
             </div>
             <div className="team-grid">
               {team.map((member, index) => (
@@ -328,7 +370,7 @@ export function Experience({ content }: { content: SiteContent }) {
                 </button>
               ))}
             </div>
-            <Link className="team-page-link" href="/team"><span>People behind the images</span><strong>Explore the full team</strong><i>↗</i></Link>
+            <a className="team-page-link" href="/team"><span>People behind the images</span><strong>Explore the full team</strong><i>↗</i></a>
           </section>
 
           <section className="about-section" id="about">
@@ -350,6 +392,7 @@ export function Experience({ content }: { content: SiteContent }) {
               <h2>From first instinct<br />to <em>final frame.</em></h2>
               <p>A clear process gives ambitious ideas room to breathe.</p>
             </div>
+            {heroItems[1] && <div className="process-film" data-reveal><Media item={heroItems[1]} /><div><span>Direction / Image / Motion</span><p>The process stays clear so the image can stay alive.</p></div></div>}
             <div className="process-steps">
               <article data-reveal><span>01</span><h3>Listen</h3><p>We find the emotional centre of the brief before deciding how it should look.</p></article>
               <article data-reveal><span>02</span><h3>Distill</h3><p>We reduce the noise into one precise visual idea, tone and system.</p></article>
@@ -386,12 +429,12 @@ export function Experience({ content }: { content: SiteContent }) {
         </main>
 
         <footer className="site-footer">
-          <div className="footer-cta"><span>Have a story in mind?</span><Link href="/contact">Let’s make it move. <i>↗</i></Link></div>
+          <div className="footer-cta"><span>Have a story in mind?</span><a href="/contact">Let’s make it move. <i>↗</i></a></div>
           <div className="footer-grid">
             <div className="footer-brand"><img src="/mindrythm-logomark.png" alt="Mind Rhythm logomark" /><span>MIND <em>RHYTHM</em></span></div>
-            <div className="footer-column"><span>Explore</span><Link href="/work">Our Work</Link><Link href="/gallery">Stories &amp; Moments</Link><Link href="/team">Meet the Team</Link><Link href="/story">Our Story</Link></div>
+            <div className="footer-column"><span>Explore</span><a href="/work">Our Work</a><a href="/gallery">Stories &amp; Moments</a><a href="/team">Meet the Team</a><a href="/story">Our Story</a></div>
             <div className="footer-column"><span>Follow</span><a href={settings.instagram}>Instagram ↗</a><a href={settings.facebook}>Facebook ↗</a><a href={settings.youtube}>YouTube ↗</a></div>
-            <div className="footer-column"><span>Legal</span><Link href="/privacy">Privacy Policy</Link><Link href="/terms">Terms &amp; Conditions</Link><Link href="/studio">Content Studio ↗</Link></div>
+            <div className="footer-column"><span>Legal</span><a href="/privacy">Privacy Policy</a><a href="/terms">Terms &amp; Conditions</a><a href="/studio">Content Studio ↗</a></div>
           </div>
           <div className="footer-meta"><span>© {new Date().getFullYear()} Mind Rhythm</span><span>Kolkata / Everywhere</span><a href="#home">Back to top ↑</a></div>
         </footer>
