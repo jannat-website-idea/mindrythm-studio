@@ -95,16 +95,25 @@ export function Experience({ content }: { content: SiteContent }) {
 
   useEffect(() => {
     const startedAt = performance.now();
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const duration = reducedMotion ? 900 : 2800;
     let frame = 0;
     const tick = (now: number) => {
-      const next = Math.min(100, Math.round(((now - startedAt) / 2400) * 100));
+      const next = Math.min(100, Math.round(((now - startedAt) / duration) * 100));
       setProgress(next);
       if (next < 100) frame = window.requestAnimationFrame(tick);
-      else window.setTimeout(() => setLoaded(true), 520);
+      else window.setTimeout(() => setLoaded(true), reducedMotion ? 80 : 560);
     };
     frame = window.requestAnimationFrame(tick);
     return () => window.cancelAnimationFrame(frame);
   }, []);
+
+  useEffect(() => {
+    document.documentElement.style.overflow = loaded ? "" : "hidden";
+    return () => {
+      document.documentElement.style.overflow = "";
+    };
+  }, [loaded]);
 
   useEffect(() => {
     if (heroItems.length < 2) return;
@@ -181,7 +190,7 @@ export function Experience({ content }: { content: SiteContent }) {
     <>
       <div className={`preloader ${loaded ? "preloader-done" : ""}`} aria-hidden={loaded}>
         <div className="loader-topline">
-          <div><img src="/mindrythm-logomark.png" alt="" /><span>Mind Rhythm®</span></div>
+          <span>Image / Motion / Identity</span>
           <span>Kolkata / Everywhere</span>
         </div>
         <div className="loader-stage">
@@ -191,10 +200,12 @@ export function Experience({ content }: { content: SiteContent }) {
               <span className="loader-brand-line"><i>M</i><i>I</i><i>N</i><i>D</i></span>
               <span className="loader-brand-line"><i>R</i><i>H</i><i>Y</i><i>T</i><i>H</i><i>M</i></span>
             </div>
-            <p><b aria-hidden="true" /> Images with a pulse / Image / Motion / Identity</p>
-          </div>
-          <div className="loader-film" aria-hidden="true">
-            {heroItems.slice(0, 3).map((item, index) => <div className={`loader-frame loader-frame-${index + 1}`} key={`intro-${item.id}`}><Media item={item} /></div>)}
+            <div className="loader-sequence" aria-hidden="true">
+              <span>We listen.</span>
+              <span>We compose.</span>
+              <span>We release.</span>
+            </div>
+            <p><b aria-hidden="true" /> Images with a pulse</p>
           </div>
         </div>
         <div className="loader-footer">
