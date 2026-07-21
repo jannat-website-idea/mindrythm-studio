@@ -21,23 +21,26 @@ export function Experience({ content }: { content: SiteContent }) {
     () => ["All", ...Array.from(new Set(projects.map((project) => project.category).filter(Boolean)))],
     [projects],
   );
-
   const visibleProjects = activeFilter === "All"
     ? projects
     : projects.filter((project) => project.category === activeFilter);
+  const galleryItems = projects.length ? projects : content.items;
 
   useEffect(() => {
-    let value = 0;
-    const timer = window.setInterval(() => {
-      value += Math.ceil((100 - value) * 0.16);
-      if (value >= 99) value = 100;
-      setProgress(value);
-      if (value === 100) {
-        window.clearInterval(timer);
-        window.setTimeout(() => setLoaded(true), 450);
+    const startedAt = performance.now();
+    let frame = 0;
+    const tick = (now: number) => {
+      const elapsed = now - startedAt;
+      const next = Math.min(100, Math.round((elapsed / 2100) * 100));
+      setProgress(next);
+      if (next < 100) {
+        frame = window.requestAnimationFrame(tick);
+      } else {
+        window.setTimeout(() => setLoaded(true), 480);
       }
-    }, 80);
-    return () => window.clearInterval(timer);
+    };
+    frame = window.requestAnimationFrame(tick);
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   useEffect(() => {
@@ -48,7 +51,7 @@ export function Experience({ content }: { content: SiteContent }) {
           if (entry.isIntersecting) entry.target.classList.add("is-visible");
         });
       },
-      { threshold: 0.12 },
+      { threshold: 0.1 },
     );
     nodes.forEach((node) => observer.observe(node));
     return () => observer.disconnect();
@@ -67,28 +70,41 @@ export function Experience({ content }: { content: SiteContent }) {
     };
   }, [selectedProject]);
 
+  const imageAt = (index: number) => galleryItems[index % Math.max(galleryItems.length, 1)];
+
   return (
     <>
       <div className={`preloader ${loaded ? "preloader-done" : ""}`} aria-hidden={loaded}>
-        <div className="preloader-word preloader-left">MIND</div>
-        <div className="preloader-mark">•</div>
-        <div className="preloader-word preloader-right">RHYTHM</div>
-        <div className="preloader-progress">{String(progress).padStart(2, "0")}%</div>
+        <div className={`loader-frame loader-frame-a ${progress > 14 ? "is-on" : ""}`}>
+          <img src={imageAt(0)?.mediaUrl || "/images/tokyo-rain.jpg"} alt="" />
+        </div>
+        <div className={`loader-frame loader-frame-b ${progress > 34 ? "is-on" : ""}`}>
+          <img src={imageAt(1)?.mediaUrl || "/images/dance-study.jpg"} alt="" />
+        </div>
+        <div className={`loader-frame loader-frame-c ${progress > 58 ? "is-on" : ""}`}>
+          <img src={imageAt(2)?.mediaUrl || "/images/filmmaker.jpg"} alt="" />
+        </div>
+        <div className="loader-name" aria-label="Mind Rhythm">
+          <span>MIND</span>
+          <em>RHYTHM</em>
+        </div>
+        <div className="loader-caption">Independent image-making studio</div>
+        <div className="preloader-progress">{String(progress).padStart(3, "0")}</div>
         <div className="preloader-line"><span style={{ width: `${progress}%` }} /></div>
       </div>
 
-      <div className="site-shell">
+      <div className={`site-shell ${loaded ? "site-ready" : ""}`}>
         <header className="site-header">
-          <a className="wordmark" href="#top" aria-label="Mindrythm home">
-            MIND<span>RHYTHM</span><sup>°</sup>
+          <a className="wordmark" href="#top" aria-label="Mind Rhythm home">
+            <span>MIND</span><em>RHYTHM</em><sup>°</sup>
           </a>
           <nav className={menuOpen ? "nav-open" : ""} aria-label="Main navigation">
             <a href="#work" onClick={() => setMenuOpen(false)}>Work</a>
+            <a href="#gallery" onClick={() => setMenuOpen(false)}>Gallery</a>
             <a href="#studio" onClick={() => setMenuOpen(false)}>Studio</a>
             <a href="#people" onClick={() => setMenuOpen(false)}>People</a>
-            <a href="#contact" onClick={() => setMenuOpen(false)}>Contact</a>
           </nav>
-          <div className="header-meta">Independent creative studio</div>
+          <a className="header-contact" href={`mailto:${settings.contactEmail}`}>Start a project ↗</a>
           <button
             type="button"
             className="menu-toggle"
@@ -102,27 +118,31 @@ export function Experience({ content }: { content: SiteContent }) {
 
         <main id="top">
           <section className="hero" aria-labelledby="hero-title">
-            <div className="hero-meta">
-              <span>Image / Motion / Identity</span>
-              <span>Available for selected collaborations</span>
-            </div>
-            <h1 id="hero-title">
-              <span>We create images</span>
-              <span>with a <em>pulse.</em></span>
+            <div className="hero-label hero-label-left">Visual narratives<br />with a pulse.</div>
+            <div className="hero-label hero-label-right">Kolkata / Everywhere<br />2026</div>
+            <h1 id="hero-title" className="hero-brand" aria-label="Mind Rhythm">
+              <span className="hero-mind">MIND</span>
+              <em className="hero-rhythm">RHYTHM</em>
             </h1>
-            <div className="hero-bottom">
-              <p>{settings.description}</p>
-              <a href="#work" className="round-link" aria-label="Explore selected work">↓</a>
+            <div className="hero-copy">
+              <span className="hero-index">(00)</span>
+              <p>We make moving images, identities and visual worlds that stay in the mind.</p>
             </div>
+            <div className="hero-image hero-image-main">
+              <img src={imageAt(0)?.mediaUrl || "/images/tokyo-rain.jpg"} alt={imageAt(0)?.mediaAlt || "Mind Rhythm visual study"} />
+              <span>Selected frame / 01</span>
+            </div>
+            <div className="hero-image hero-image-small">
+              <img src={imageAt(1)?.mediaUrl || "/images/dance-study.jpg"} alt={imageAt(1)?.mediaAlt || "Mind Rhythm movement study"} />
+            </div>
+            <a className="hero-scroll" href="#work"><span>Scroll to explore</span><b>↓</b></a>
           </section>
 
           <section className="work-section" id="work">
-            <div className="section-heading" data-reveal>
-              <div>
-                <span className="index">01</span>
-                <p>Selected work</p>
-              </div>
-              <h2>Stories arranged<br /><em>by instinct.</em></h2>
+            <div className="section-intro" data-reveal>
+              <span className="section-index">01 / Selected work</span>
+              <h2>Ideas, shaped<br />into <em>feeling.</em></h2>
+              <p>A selection of moving image, photography and identity work—arranged as a living editorial archive.</p>
             </div>
 
             <div className="filters" data-reveal role="group" aria-label="Filter projects">
@@ -138,7 +158,7 @@ export function Experience({ content }: { content: SiteContent }) {
               ))}
             </div>
 
-            <div className="bento-grid">
+            <div className="projects-bento">
               {visibleProjects.map((project, index) => (
                 <ProjectCard
                   key={project.id}
@@ -148,29 +168,62 @@ export function Experience({ content }: { content: SiteContent }) {
                 />
               ))}
 
-              <article className="bento-card vision-card" data-reveal>
-                <span className="card-number">Vision / 01</span>
+              <article className="project-tile project-statement" data-reveal>
+                <span>Our vision / 01</span>
                 <blockquote>“{settings.vision}”</blockquote>
-                <div className="orbit-mark" aria-hidden="true"><span /></div>
+                <div className="pulse-glyph" aria-hidden="true"><i /><i /><i /></div>
               </article>
 
-              <article className="bento-card process-card" data-reveal>
-                <span className="card-number">How we work</span>
-                <div className="process-list">
-                  <span><b>01</b> Listen closely</span>
-                  <span><b>02</b> Find the rhythm</span>
-                  <span><b>03</b> Build the world</span>
-                </div>
+              <article className="project-tile project-process" data-reveal>
+                <span>Method / always collaborative</span>
+                <h3>Listen.<br /><em>Distill.</em><br />Make it move.</h3>
                 <p>Direction without noise. Craft without decoration.</p>
+              </article>
+
+              <article className="project-tile project-metric" data-reveal>
+                <div className="metric-ring"><strong>∞</strong></div>
+                <h3>One idea.<br />Many forms.</h3>
+                <p>Film / Image / Identity / Experience</p>
               </article>
             </div>
           </section>
 
+          <section className="gallery-section" id="gallery">
+            <div className="gallery-heading" data-reveal>
+              <span>02 / Gallery</span>
+              <h2>Field notes from<br /><em>our visual world.</em></h2>
+              <p>Fragments, places, gestures and details collected between projects.</p>
+            </div>
+
+            <div className="gallery-bento">
+              <GalleryImage item={imageAt(0)} className="gallery-a" label="City / After rain" onOpen={setSelectedProject} />
+              <article className="gallery-card gallery-copy gallery-b" data-reveal>
+                <span>Explore</span>
+                <p>Follow the rhythm between one frame and the next.</p>
+              </article>
+              <GalleryImage item={imageAt(3)} className="gallery-c" label="Botanical / Form" onOpen={setSelectedProject} />
+              <article className="gallery-card gallery-copy gallery-d" data-reveal>
+                <h3>Where instinct<br />meets intention.</h3>
+                <p>{settings.tagline}</p>
+              </article>
+              <GalleryImage item={imageAt(2)} className="gallery-e" label="Portrait / Process" onOpen={setSelectedProject} />
+              <GalleryImage item={imageAt(1)} className="gallery-f" label="Movement / Study" onOpen={setSelectedProject} />
+              <article className="gallery-card gallery-copy gallery-g" data-reveal>
+                <span>Archive note / 07</span>
+                <h3>Stay<br /><em>curious.</em></h3>
+                <p>Every project begins with looking more closely.</p>
+              </article>
+              <div className="gallery-controls" data-reveal>
+                <a href="#work">Previous</a><span>04 / 12</span><a href="#studio">Next</a>
+              </div>
+            </div>
+          </section>
+
           <section className="studio-section" id="studio">
-            <div className="studio-statement" data-reveal>
-              <span className="index">02 / Studio</span>
-              <p>{settings.tagline}</p>
-              <h2>Between a clear idea<br />and an <em>unexpected image.</em></h2>
+            <div className="studio-word" aria-hidden="true">STUDIO</div>
+            <div className="studio-heading" data-reveal>
+              <span>03 / About Mind Rhythm</span>
+              <h2>A clear idea.<br />An <em>unexpected image.</em></h2>
             </div>
             <div className="studio-copy" data-reveal>
               <p className="lead">{settings.idea}</p>
@@ -180,14 +233,14 @@ export function Experience({ content }: { content: SiteContent }) {
           </section>
 
           <section className="people-section" id="people">
-            <div className="section-heading inverse" data-reveal>
-              <div><span className="index">03</span><p>People</p></div>
+            <div className="people-heading" data-reveal>
+              <span>04 / The collective</span>
               <h2>Built around<br /><em>good chemistry.</em></h2>
             </div>
-            <div className="people-grid">
+            <div className="people-layout">
               <div className="people-portrait" data-reveal>
-                <img src={team[0]?.mediaUrl || "/images/filmmaker.jpg"} alt={team[0]?.mediaAlt || "Mindrythm creative collaborator"} />
-                <span>Mindrythm / Core collective</span>
+                <img src={team[0]?.mediaUrl || "/images/filmmaker.jpg"} alt={team[0]?.mediaAlt || "Mind Rhythm creative collaborator"} />
+                <span>Mind Rhythm / Core collective</span>
               </div>
               <div className="people-copy" data-reveal>
                 <span>Not a fixed roster.</span>
@@ -202,23 +255,21 @@ export function Experience({ content }: { content: SiteContent }) {
           </section>
 
           <section className="contact-section" id="contact">
-            <div className="contact-orbit" aria-hidden="true"><span>Let’s make something that moves.</span></div>
-            <div className="contact-copy" data-reveal>
-              <span>Have a story in mind?</span>
-              <a href={`mailto:${settings.contactEmail}`}>{settings.contactEmail}</a>
-            </div>
+            <span className="contact-kicker">05 / Begin a project</span>
+            <p>Have a story<br />that needs a <em>rhythm?</em></p>
+            <a href={`mailto:${settings.contactEmail}`}>{settings.contactEmail}<span>↗</span></a>
           </section>
         </main>
 
         <footer className="site-footer">
-          <a className="wordmark footer-wordmark" href="#top">MIND<span>RHYTHM</span><sup>°</sup></a>
+          <a className="wordmark footer-wordmark" href="#top"><span>MIND</span><em>RHYTHM</em><sup>°</sup></a>
           <div className="footer-links">
             <a href={settings.instagram} target="_blank" rel="noreferrer">Instagram ↗</a>
             <a href={settings.vimeo} target="_blank" rel="noreferrer">Vimeo ↗</a>
             <a href={settings.linkedin} target="_blank" rel="noreferrer">LinkedIn ↗</a>
           </div>
           <div className="footer-meta">
-            <span>© {new Date().getFullYear()} Mindrythm</span>
+            <span>© {new Date().getFullYear()} Mind Rhythm</span>
             <Link href="/studio">Content studio ↗</Link>
           </div>
         </footer>
@@ -232,7 +283,7 @@ export function Experience({ content }: { content: SiteContent }) {
             <span>{selectedProject.eyebrow} / {selectedProject.year}</span>
             <h2>{selectedProject.title}</h2>
             <p>{selectedProject.body}</p>
-            <div className="modal-footer"><span>{selectedProject.category}</span><span>Mindrythm Studio</span></div>
+            <div className="modal-footer"><span>{selectedProject.category}</span><span>Mind Rhythm Studio</span></div>
           </div>
         </div>
       )}
@@ -240,19 +291,11 @@ export function Experience({ content }: { content: SiteContent }) {
   );
 }
 
-function ProjectCard({
-  project,
-  index,
-  onOpen,
-}: {
-  project: ContentItem;
-  index: number;
-  onOpen: () => void;
-}) {
+function ProjectCard({ project, index, onOpen }: { project: ContentItem; index: number; onOpen: () => void }) {
   return (
     <button
       type="button"
-      className={`bento-card project-card project-${(index % 6) + 1}`}
+      className={`project-tile project-card project-${(index % 6) + 1}`}
       onClick={onOpen}
       data-reveal
     >
@@ -264,6 +307,21 @@ function ProjectCard({
         <h3>{project.title}</h3>
       </div>
       <span className="project-arrow">↗</span>
+    </button>
+  );
+}
+
+function GalleryImage({ item, className, label, onOpen }: {
+  item?: ContentItem;
+  className: string;
+  label: string;
+  onOpen: (item: ContentItem) => void;
+}) {
+  if (!item) return null;
+  return (
+    <button type="button" className={`gallery-card gallery-image ${className}`} onClick={() => onOpen(item)} data-reveal>
+      <Media item={item} />
+      <span>{label}</span>
     </button>
   );
 }
