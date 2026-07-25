@@ -124,13 +124,13 @@ export function Experience({ content }: { content: SiteContent }) {
   useEffect(() => {
     const startedAt = performance.now();
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const duration = reducedMotion ? 900 : 3600;
+    const duration = reducedMotion ? 900 : 3800;
     let frame = 0;
     const tick = (now: number) => {
       const next = Math.min(100, Math.round(((now - startedAt) / duration) * 100));
       setProgress(next);
       if (next < 100) frame = window.requestAnimationFrame(tick);
-      else window.setTimeout(() => setLoaded(true), reducedMotion ? 250 : 520);
+      else window.setTimeout(() => setLoaded(true), reducedMotion ? 250 : 420);
     };
     frame = window.requestAnimationFrame(tick);
     return () => window.cancelAnimationFrame(frame);
@@ -249,10 +249,14 @@ export function Experience({ content }: { content: SiteContent }) {
       <div className={`preloader ${loaded ? "preloader-done" : ""}`} aria-hidden={loaded}>
         <div className="loader-stage">
           <div className="loader-copy">
+            <div className="loader-fragments" aria-hidden="true">
+              <span>M</span><span>I</span><span>R</span><span>H</span>
+            </div>
             <div className="loader-brand" aria-label="Mind Rhythm">
               <span className="loader-brand-line">
                 <span className="loader-brand-word"><i><span>M</span></i><i><span>I</span></i><i><span>N</span></i><i><span>D</span></i></span>
               </span>
+              <span className="loader-brand-pulse" aria-hidden="true" />
               <span className="loader-brand-line">
                 <span className="loader-brand-word"><i><span>R</span></i><i><span>H</span></i><i><span>Y</span></i><i><span>T</span></i><i><span>H</span></i><i><span>M</span></i></span>
               </span>
@@ -260,10 +264,9 @@ export function Experience({ content }: { content: SiteContent }) {
           </div>
         </div>
         <div className="loader-footer">
-          <span>Loading the visual world</span>
+          <span>Composing the visual world</span>
           <span className="preloader-progress">{String(progress).padStart(3, "0")}%</span>
         </div>
-        <div className="preloader-line"><span style={{ width: `${progress}%` }} /></div>
       </div>
 
       <div className={`site-shell ${loaded ? "site-ready" : ""}`}>
