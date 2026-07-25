@@ -21,9 +21,10 @@ test("includes the complete client narratives and service scope", async () => {
   assert.match(content, /every meaningful project begins with a conversation/i);
   assert.match(content, /Mindrythm has never been about one person/);
 
-  for (const service of ["Real-estate", "Hospitality", "Wellness", "Fashion", "Wedding / Moments"]) {
+  for (const service of ["Real-estate", "Hospitality", "Wellness", "Wedding / Moments"]) {
     assert.match(experience, new RegExp(service.replace("/", "\\/")));
   }
+  assert.doesNotMatch(experience, /title: "Fashion"/);
   assert.match(editorial, /visionParagraphs\.map/);
   assert.match(editorial, /missionParagraphs\.map/);
 });

@@ -186,7 +186,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
               <div className="form-field"><label htmlFor="contact-service">Service *</label><select id="contact-service" name="service" required defaultValue=""><option value="" disabled>Select a service</option><option>Property photography</option><option>Resort &amp; hospitality</option><option>Event photography</option><option>Event film</option><option>Wedding photography</option><option>Wedding or pre-wedding film</option><option>Other</option></select></div>
               <div className="form-field form-field-wide"><label htmlFor="contact-query">Your query *</label><textarea id="contact-query" name="query" rows={7} maxLength={1000} required /></div>
               <button type="submit" disabled={formState === "sending"}>{formState === "sending" ? "Sending…" : "Send enquiry ↗"}</button>
-              <p className={`form-message ${formState}`}>{formState === "sent" ? "Thank you. Your enquiry has been received." : formState === "error" ? "We could not send this yet. Please email us directly." : "Your message will be saved securely in the studio dashboard."}</p>
+              <p className={`form-message ${formState}`}>{formState === "sent" ? "Thank you. Your enquiry has been sent to Admin@mindrythm.com." : formState === "error" ? "Your enquiry was saved, but the email could not be delivered. Please email Admin@mindrythm.com directly." : "Your message will be saved securely and emailed to Admin@mindrythm.com."}</p>
             </form>
             <div className="contact-page-map"><iframe title="Mind Rhythm location" loading="lazy" src={`https://www.google.com/maps?q=${encodeURIComponent(settings.address)}&output=embed`} /></div>
           </div>

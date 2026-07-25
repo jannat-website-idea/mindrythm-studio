@@ -770,7 +770,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .loader-brand-line:last-child i:nth-child(4) { animation-delay: 1.2s; }
 .loader-brand-line:last-child i:nth-child(5) { animation-delay: 1.28s; }
 .loader-brand-line:last-child i:nth-child(6) { animation-delay: 1.36s; }
-.loader-brand-pulse { position: absolute; z-index: 4; top: 51%; left: 50%; width: 7px; height: 7px; border-radius: 50%; background: var(--olive); opacity: 0; transform: translate(-50%,-50%) scale(0); animation: loader-pulse-arrive 3.8s cubic-bezier(.16,1,.3,1) both; }
 .loader-fragments { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
 .loader-fragments span { position: absolute; top: 50%; left: 50%; color: var(--ink); font-size: clamp(.95rem, 1.45vw, 1.5rem); font-weight: 400; letter-spacing: .18em; opacity: 0; will-change: transform, opacity, filter; }
 .loader-fragments span:nth-child(1) { animation: loader-fragment-one 1.65s cubic-bezier(.16,1,.3,1) .18s both; }
@@ -789,7 +788,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 @keyframes loader-brand-grow { 0%, 70% { transform: scale(1); } 78% { transform: scale(1.025); } 100% { transform: scale(var(--loader-final-scale)); } }
 @keyframes loader-mind-assemble { 0%, 14% { opacity: 0; transform: translate(-57%,-.2em) scaleX(.7); } 34%, 68% { opacity: 1; transform: translate(-50%,0) scaleX(1); } 84%, 100% { opacity: 1; transform: translate(-50%,-.06em) scaleX(1.025); } }
 @keyframes loader-rhythm-turn { 0%, 18% { opacity: 0; transform: translate(-43%,-.1em) rotate(180deg) scaleX(.72); } 36%, 50% { opacity: 1; transform: translate(-50%,0) rotate(180deg) scaleX(1); } 68%, 100% { opacity: 1; transform: translate(-50%,0) rotate(0deg) scaleX(1); } }
-@keyframes loader-pulse-arrive { 0%, 36% { opacity: 0; transform: translate(-50%,-50%) scale(0); } 48%, 67% { opacity: 1; transform: translate(-50%,-50%) scale(1); } 78% { opacity: .3; transform: translate(-50%,-50%) scale(.55); } 100% { opacity: 1; transform: translate(-50%,-50%) scale(.82); } }
 @keyframes loader-fragment-one { 0% { opacity: 0; filter: blur(6px); transform: translate(-260%,-180%) rotate(-32deg); } 32%, 55% { opacity: 1; filter: none; } 100% { opacity: 0; transform: translate(-145%,-55%) rotate(0); } }
 @keyframes loader-fragment-two { 0% { opacity: 0; filter: blur(6px); transform: translate(180%,-220%) rotate(24deg); } 32%, 55% { opacity: 1; filter: none; } 100% { opacity: 0; transform: translate(35%,-55%) rotate(0); } }
 @keyframes loader-fragment-three { 0% { opacity: 0; filter: blur(6px); transform: translate(-240%,165%) rotate(155deg); } 32%, 55% { opacity: 1; filter: none; } 100% { opacity: 0; transform: translate(-135%,20%) rotate(180deg); } }
@@ -888,8 +886,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .services-list > button:hover, .services-list > button.active { padding-right: 1rem; padding-left: 1rem; color: var(--ivory); background: var(--ink); }
 .services-list b { font-size: .6rem; letter-spacing: .08em; }
 .services-list strong { font-size: clamp(1.35rem, 2.1vw, 2.5rem); font-weight: 300; letter-spacing: -.04em; text-transform: uppercase; }
-.services-list span { max-width: 410px; color: #4f4f4b; font-size: .9rem; line-height: 1.5; }
-.services-list > button:hover span, .services-list > button.active span { color: rgba(255,255,255,.66); }
+.services-list span { max-width: 410px; color: #292926; font-size: .9rem; line-height: 1.5; }
+.services-list > button:hover span, .services-list > button.active span { color: rgba(255,255,255,.88); }
 .services-list i { font-size: .78rem; font-style: normal; }
 .services-preview { position: sticky; top: 1rem; min-height: 620px; overflow: hidden; background: #111; }
 .services-preview > div { position: absolute; inset: 0; opacity: 0; transform: scale(1.06); transition: opacity .6s ease, transform 1.2s cubic-bezier(.16,1,.3,1); }
@@ -934,7 +932,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 /* Team cards always fit and scroll horizontally as the roster grows */
 .team-section { position: relative; overflow: hidden; }
 .team-heading { position: relative; z-index: 1; }
-.team-heading-action p { max-width: 620px; color: #4f4f4b; font-size: 1rem; line-height: 1.6; }
+.team-heading-action p { max-width: 620px; color: #292926; font-size: 1rem; line-height: 1.6; }
 .team-grid { position: relative; z-index: 1; display: flex; gap: .8rem; overflow-x: auto; padding: 2rem 0 1rem; scroll-snap-type: x mandatory; scrollbar-width: thin; }
 .team-card, .team-card:last-child { min-width: clamp(280px, 28vw, 430px); height: min(68svh, 660px); min-height: 500px; flex: 0 0 auto; border-radius: 0; scroll-snap-align: start; }
 .team-card::after { z-index: 1; opacity: 0; pointer-events: none; transition: opacity .55s cubic-bezier(.22,1,.36,1); }
@@ -991,7 +989,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .gallery-page-card { border-radius: 0; }
 .team-introduction { display: grid; grid-template-columns: .7fr 2.3fr; gap: 2rem; padding: 8rem 2rem; border-bottom: 1px solid var(--line); background: var(--ivory); }
 .team-introduction span { font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; }
-.team-introduction p { max-width: 1000px; margin: 0; font-size: clamp(1.4rem, 2.7vw, 3rem); letter-spacing: -.035em; line-height: 1.22; }
+.team-introduction p { max-width: 1000px; margin: 0; color: #20201e; font-size: clamp(1.4rem, 2.7vw, 3rem); letter-spacing: -.035em; line-height: 1.22; }
 .team-page-grid { display: flex; gap: .8rem; overflow-x: auto; padding: 2rem; background: var(--paper); scroll-snap-type: x mandatory; }
 .team-page-card { position: relative; display: block; width: clamp(300px, 31vw, 460px); min-width: clamp(300px, 31vw, 460px); height: min(75svh, 760px); min-height: 620px; flex: 0 0 auto; overflow: hidden; padding: 0; border-radius: 0; color: var(--ivory); background: var(--ink); scroll-snap-align: start; }
 .team-page-card-trigger { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; padding: 0; border: 0; background: transparent; cursor: pointer; }
@@ -1073,6 +1071,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 /* Remove editorial italics and reinforce legibility */
 .project-title h3, .gallery-board h3, .team-card-copy h3, .about-grid h3, .process-steps h3, .footer-cta a, .work-page-card h2, .team-page-card h2, .lightbox-copy h2 { font-weight: 300; text-transform: uppercase; }
 .contact-details a, .contact-page-info a, .footer-column a, .site-header button, .inner-header a { text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.contact-details span, .contact-page-info span, .form-field label { color: #30302d; }
+.contact-details a, .contact-details p, .contact-page-info a, .contact-page-info p { color: var(--ink); font-weight: 400; }
+.form-field input, .form-field textarea, .form-field select { color: var(--ink); font-weight: 400; }
+.form-message { color: #454540; }
 
 @media (max-width: 1050px) {
   .menu-overlay { grid-template-columns: .65fr 1.35fr; background: linear-gradient(108deg, var(--ink) 0 32%, var(--ivory) 32% 100%); }
@@ -1116,7 +1118,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   .loader-brand { --loader-final-scale: 1.55; width: min(300px, 82vw); height: 104px; font-size: clamp(2rem, 10.5vw, 3.25rem); line-height: .82; }
   .preloader-done .loader-brand { transform: scale(1.65); }
   .loader-brand-line:last-child { font-size: 1em; }
-  .loader-brand-pulse { width: 6px; height: 6px; }
   .loader-fragments span { font-size: .82rem; }
   .loader-footer { right: 1rem; bottom: 1.5rem; left: 1rem; }
   .loader-footer > span:first-child { display: inline-flex; font-size: .5rem; }

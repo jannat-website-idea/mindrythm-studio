@@ -46,7 +46,6 @@ const serviceItems = [
   { title: "Real-estate", copy: "Architecture, interiors and property campaigns shaped around light, proportion and a true sense of place.", mediaUrl: "/images/villa-pool.jpg", mediaAlt: "Modern villa and pool" },
   { title: "Hospitality", copy: "Cinematic films and photography that let future guests feel the atmosphere before they arrive.", mediaUrl: "/videos/resort-pool.mp4", mediaAlt: "Resort pool in warm daylight" },
   { title: "Wellness", copy: "Quiet, human imagery for retreats, rituals and brands built around restoration and care.", mediaUrl: "/images/green-object.jpg", mediaAlt: "Wellness still life" },
-  { title: "Fashion", copy: "Editorial image-making led by movement, texture, character and a distinct visual point of view.", mediaUrl: "/images/dance-study.jpg", mediaAlt: "Fashion and movement study" },
   { title: "Wedding / Moments", copy: "Photography and films that preserve the emotion, rituals and unscripted moments that make a day your own.", mediaUrl: "/videos/wedding-film.mp4", mediaAlt: "A cinematic wedding moment" },
 ] as const;
 
@@ -256,7 +255,6 @@ export function Experience({ content }: { content: SiteContent }) {
               <span className="loader-brand-line">
                 <span className="loader-brand-word"><i><span>M</span></i><i><span>I</span></i><i><span>N</span></i><i><span>D</span></i></span>
               </span>
-              <span className="loader-brand-pulse" aria-hidden="true" />
               <span className="loader-brand-line">
                 <span className="loader-brand-word"><i><span>R</span></i><i><span>H</span></i><i><span>Y</span></i><i><span>T</span></i><i><span>H</span></i><i><span>M</span></i></span>
               </span>
@@ -559,7 +557,7 @@ export function Experience({ content }: { content: SiteContent }) {
                 <div className="form-field"><label htmlFor="service">Service *</label><select id="service" name="service" required defaultValue=""><option value="" disabled>Select a service</option><option>Property photography</option><option>Resort &amp; hospitality</option><option>Event photography</option><option>Event film</option><option>Wedding photography</option><option>Wedding or pre-wedding film</option><option>Other</option></select></div>
                 <div className="form-field form-field-wide"><label htmlFor="query">Your query *</label><textarea id="query" name="query" required maxLength={1000} rows={6} /></div>
                 <button type="submit" disabled={enquiryState === "sending"}>{enquiryState === "sending" ? "Sending…" : "Send enquiry"} <span>↗</span></button>
-                <p className={`form-message ${enquiryState}`}>{enquiryState === "sent" ? "Thank you. Your enquiry has been received." : enquiryState === "error" ? `Please email us directly at ${contactEmail}.` : "Your message will be saved securely in the studio dashboard."}</p>
+                <p className={`form-message ${enquiryState}`}>{enquiryState === "sent" ? "Thank you. Your enquiry has been sent to Admin@mindrythm.com." : enquiryState === "error" ? "Your enquiry was saved, but the email could not be delivered. Please email Admin@mindrythm.com directly." : "Your message will be saved securely and emailed to Admin@mindrythm.com."}</p>
               </form>
             </div>
           </section>

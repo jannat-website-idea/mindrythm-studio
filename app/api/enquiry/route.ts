@@ -1,6 +1,7 @@
-import { getSiteContent, saveEnquiry, type Enquiry } from "@/db/content";
+import { saveEnquiry, type Enquiry } from "@/db/content";
 
 export const dynamic = "force-dynamic";
+const enquiryRecipient = process.env.ENQUIRY_TO_EMAIL?.trim() || "Admin@mindrythm.com";
 
 export async function POST(request: Request) {
   const payload = (await request.json()) as Partial<Enquiry>;
@@ -23,23 +24,36 @@ export async function POST(request: Request) {
   };
   await saveEnquiry(enquiry);
 
-  let emailSent = false;
   const apiKey = process.env.RESEND_API_KEY;
-  if (apiKey) {
-    const { settings } = await getSiteContent();
-    const response = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { authorization: `Bearer ${apiKey}`, "content-type": "application/json" },
-      body: JSON.stringify({
-        from: process.env.RESEND_FROM_EMAIL || "Mind Rhythm Website <onboarding@resend.dev>",
-        to: [settings.contactEmail || "Admin@mindrythm.com"],
-        reply_to: email || undefined,
-        subject: `Website enquiry from ${name}`,
-        text: `Name: ${name}\nPhone: ${phone}\nEmail: ${email || "Not provided"}\n\n${query}`,
-      }),
-    });
-    emailSent = response.ok;
+  if (!apiKey) {
+    return Response.json(
+      { ok: false, emailSent: false, saved: true, error: "Email delivery is not configured." },
+      { status: 503 },
+    );
   }
 
-  return Response.json({ ok: true, emailSent });
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      authorization: `Bearer ${apiKey}`,
+      "content-type": "application/json",
+      "Idempotency-Key": `mindrythm-enquiry-${enquiry.id}`,
+    },
+    body: JSON.stringify({
+      from: process.env.RESEND_FROM_EMAIL || "Mind Rhythm Website <onboarding@resend.dev>",
+      to: [enquiryRecipient],
+      reply_to: email || undefined,
+      subject: `Website enquiry from ${name}`,
+      text: `Name: ${name}\nPhone: ${phone}\nEmail: ${email || "Not provided"}\n\n${query}`,
+    }),
+  });
+
+  if (!response.ok) {
+    return Response.json(
+      { ok: false, emailSent: false, saved: true, error: "The enquiry was saved, but the notification email could not be delivered." },
+      { status: 502 },
+    );
+  }
+
+  return Response.json({ ok: true, emailSent: true, saved: true });
 }
