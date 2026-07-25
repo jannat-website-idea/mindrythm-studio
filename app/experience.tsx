@@ -1,6 +1,14 @@
 "use client";
 
-import type { ContentItem, SiteContent } from "@/lib/content";
+import {
+  brandTaglines,
+  enquiryTaglines,
+  footerTaglines,
+  teamIntroduction,
+  visionParagraphs,
+  type ContentItem,
+  type SiteContent,
+} from "@/lib/content";
 import { type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 
 const fallbackTestimonials: ContentItem[] = [
@@ -33,6 +41,14 @@ const fallbackTestimonials: ContentItem[] = [
     accent: "approved",
   },
 ];
+
+const serviceItems = [
+  { title: "Real-estate", copy: "Architecture, interiors and property campaigns shaped around light, proportion and a true sense of place.", mediaUrl: "/images/villa-pool.jpg", mediaAlt: "Modern villa and pool" },
+  { title: "Hospitality", copy: "Cinematic films and photography that let future guests feel the atmosphere before they arrive.", mediaUrl: "/videos/resort-pool.mp4", mediaAlt: "Resort pool in warm daylight" },
+  { title: "Wellness", copy: "Quiet, human imagery for retreats, rituals and brands built around restoration and care.", mediaUrl: "/images/green-object.jpg", mediaAlt: "Wellness still life" },
+  { title: "Fashion", copy: "Editorial image-making led by movement, texture, character and a distinct visual point of view.", mediaUrl: "/images/dance-study.jpg", mediaAlt: "Fashion and movement study" },
+  { title: "Wedding / Moments", copy: "Photography and films that preserve the emotion, rituals and unscripted moments that make a day your own.", mediaUrl: "/videos/wedding-film.mp4", mediaAlt: "A cinematic wedding moment" },
+] as const;
 
 export function Experience({ content }: { content: SiteContent }) {
   const { settings } = content;
@@ -85,6 +101,7 @@ export function Experience({ content }: { content: SiteContent }) {
   const [heroIndex, setHeroIndex] = useState(0);
   const [selectedItem, setSelectedItem] = useState<ContentItem | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeService, setActiveService] = useState(0);
   const [enquiryState, setEnquiryState] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const scrollCinemaRef = useRef<HTMLElement | null>(null);
 
@@ -114,6 +131,17 @@ export function Experience({ content }: { content: SiteContent }) {
       document.documentElement.style.overflow = "";
     };
   }, [loaded]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const close = (event: KeyboardEvent) => event.key === "Escape" && setMenuOpen(false);
+    document.body.classList.add("menu-open");
+    window.addEventListener("keydown", close);
+    return () => {
+      document.body.classList.remove("menu-open");
+      window.removeEventListener("keydown", close);
+    };
+  }, [menuOpen]);
 
   useEffect(() => {
     if (heroItems.length < 2) return;
@@ -191,28 +219,16 @@ export function Experience({ content }: { content: SiteContent }) {
   return (
     <>
       <div className={`preloader ${loaded ? "preloader-done" : ""}`} aria-hidden={loaded}>
-        <div className="loader-topline">
-          <span>Property / Events / Weddings</span>
-          <span>Kolkata / Everywhere</span>
-        </div>
         <div className="loader-stage">
           <div className="loader-copy">
-            <span className="loader-caption">A photography and film studio for every kind of story</span>
-            <div className="loader-echo" aria-hidden="true"><span>Mind Rhythm · Mind Rhythm · Mind Rhythm ·</span></div>
             <div className="loader-brand" aria-label="Mind Rhythm">
               <span className="loader-brand-line"><i>M</i><i>I</i><i>N</i><i>D</i></span>
               <span className="loader-brand-line"><i>R</i><i>H</i><i>Y</i><i>T</i><i>H</i><i>M</i></span>
             </div>
-            <div className="loader-sequence" aria-hidden="true">
-              <span>We listen.</span>
-              <span>We capture.</span>
-              <span>We remember.</span>
-            </div>
-            <p><b aria-hidden="true" /> Stories with a pulse</p>
           </div>
         </div>
         <div className="loader-footer">
-          <span>Preparing the visual stories</span>
+          <span>Loading the visual world</span>
           <span className="preloader-progress">{String(progress).padStart(3, "0")}%</span>
         </div>
         <div className="preloader-line"><span style={{ width: `${progress}%` }} /></div>
@@ -222,20 +238,20 @@ export function Experience({ content }: { content: SiteContent }) {
         <header className="site-header">
           <a className="wordmark" href="#home" aria-label="Mind Rhythm home">
             <img src="/mindrythm-logomark.png" alt="" />
-            <span>MIND <em>RHYTHM</em></span>
           </a>
-          <nav className={menuOpen ? "nav-open" : ""} aria-label="Main navigation">
-            <a href="#home" onClick={() => setMenuOpen(false)}>Home</a>
-            <a href="#services" onClick={() => setMenuOpen(false)}>Services</a>
-            <a href="/work" onClick={() => setMenuOpen(false)}>Our Work</a>
-            <a href="/gallery" onClick={() => setMenuOpen(false)}>Gallery</a>
-            <a href="/team" onClick={() => setMenuOpen(false)}>Our Team</a>
-          </nav>
-          <a className="header-contact" href="/contact">Enquire now ↗</a>
           <button type="button" className="menu-toggle" aria-expanded={menuOpen} aria-label="Toggle navigation" onClick={() => setMenuOpen((open) => !open)}>
-            {menuOpen ? "Close" : "Menu"}
+            <span>{menuOpen ? "Close" : "Menu"}</span><i aria-hidden="true" />
           </button>
         </header>
+
+        <div className={`menu-overlay ${menuOpen ? "nav-open" : ""}`} aria-hidden={!menuOpen}>
+          <nav aria-label="Main navigation">
+            {[["Home", "#home"], ["Services", "#services"], ["Our Work", "/work"], ["Gallery", "/gallery"], ["Our Team", "/team"], ["Our Story", "/story"], ["Enquire", "/contact"]].map(([label, href], index) => (
+              <a href={href} key={label} onClick={() => setMenuOpen(false)}><span>0{index + 1}</span>{label}<i>↗</i></a>
+            ))}
+          </nav>
+          <div className="menu-overlay-meta"><span>Kolkata / Everywhere</span><a href={`mailto:${contactEmail}`}>{contactEmail}</a><div><a href={settings.instagram}>Instagram</a><a href={settings.youtube}>YouTube</a><a href={settings.x}>X</a></div></div>
+        </div>
 
         <main>
           <section className="hero" id="home" aria-labelledby="hero-title">
@@ -248,44 +264,44 @@ export function Experience({ content }: { content: SiteContent }) {
             </a>
             <div className="hero-overlay" />
             <div className="hero-content">
-              <div className="hero-kicker"><a href="/gallery">Stories with a pulse®</a><a href="#services">Property / Events / Weddings</a><a href="/contact">Kolkata / Everywhere</a></div>
               <div className="hero-title-row">
                 <h1 id="hero-title">
                   <a href="/work" aria-label="Explore our work">
                     <span className="hero-title-line"><span>Every story</span></span>
-                    <span className="hero-title-line"><span>has a <em>rhythm.</em></span></span>
+                    <span className="hero-title-line"><span>has a rhythm.</span></span>
                   </a>
                 </h1>
-                <a className="hero-emblem" href="#services"><img src="/mindrythm-logomark.png" alt="Mind Rhythm logomark" /><span>Photography &amp; film studio</span></a>
               </div>
-              <div className="hero-lower">
-                <p>{settings.description}</p>
-                <a href="#services">Explore our services <span>↓</span></a>
-              </div>
-            </div>
-            <div className="hero-pagination" aria-label="Hero slideshow">
-              <span>{String(heroIndex + 1).padStart(2, "0")} / {String(heroItems.length).padStart(2, "0")}</span>
-              <div>{heroItems.map((item, index) => <button type="button" key={item.id} className={index === heroIndex ? "active" : ""} aria-label={`Show slide ${index + 1}`} onClick={() => setHeroIndex(index)} />)}</div>
             </div>
           </section>
 
           <section className="vision-section" id="vision">
             <span className="section-index" data-reveal>01 / Our vision</span>
-            <p data-reveal>{settings.vision}</p>
-            <div className="vision-note" data-reveal><span>How we see it</span><p>Thoughtful imagery can make a destination feel real, let an event live longer and return a couple to how their wedding day truly felt.</p></div>
+            <p data-reveal>{visionParagraphs[3]}</p>
+            <div className="vision-note" data-reveal><span>Where we begin</span><p>{visionParagraphs[0]}</p></div>
           </section>
 
-          <section className="capabilities-band" id="services" aria-label="Mind Rhythm services">
-            <span data-reveal>02 / Our services</span>
-            <div>
-              <a href="/contact" data-reveal><b>01</b><strong>Property photography</strong><span>Real estate, architecture and interior imagery for listings and campaigns.</span><i>↗</i></a>
-              <a href="/contact" data-reveal><b>02</b><strong>Resort &amp; hospitality</strong><span>Photography, walkthrough films and social content that sell the stay.</span><i>↗</i></a>
-              <a href="/contact" data-reveal><b>03</b><strong>Event photography</strong><span>Corporate, cultural and private events covered with clarity and energy.</span><i>↗</i></a>
-              <a href="/contact" data-reveal><b>04</b><strong>Event films</strong><span>Highlights, aftermovies, interviews and fast social-first edits.</span><i>↗</i></a>
-              <a href="/contact" data-reveal><b>05</b><strong>Wedding photography</strong><span>Candid emotion, portraits, rituals and every detail that makes the day yours.</span><i>↗</i></a>
-              <a href="/contact" data-reveal><b>06</b><strong>Wedding &amp; pre-wedding films</strong><span>Cinematic films shaped around real people, movement and memory.</span><i>↗</i></a>
+          <section className="services-experience" id="services" aria-label="Mind Rhythm services">
+            <header data-reveal><span>02 / Our services</span><h2>One studio.<br />Many visual languages.</h2><p>{brandTaglines[0]}</p></header>
+            <div className="services-layout">
+              <div className="services-list" role="list">
+                {serviceItems.map((service, index) => (
+                  <a href="/contact#enquiry" role="listitem" className={activeService === index ? "active" : ""} key={service.title} onMouseEnter={() => setActiveService(index)} onFocus={() => setActiveService(index)} onClick={() => setActiveService(index)} data-reveal>
+                    <b>0{index + 1}</b><strong>{service.title}</strong><span>{service.copy}</span><i>↗</i>
+                  </a>
+                ))}
+              </div>
+              <a className="services-preview" href="/contact#enquiry" aria-label={`Enquire about ${serviceItems[activeService].title}`}>
+                {serviceItems.map((service, index) => {
+                  const item: ContentItem = { id: `service-${index}`, kind: "project", sortOrder: index, title: service.title, eyebrow: "Service", body: service.copy, mediaUrl: service.mediaUrl, mediaAlt: service.mediaAlt, category: service.title, year: "", href: "/contact", accent: "ink" };
+                  return <div className={activeService === index ? "active" : ""} key={service.title}><Media item={item} /></div>;
+                })}
+                <span>{serviceItems[activeService].title}<i>Explore service ↗</i></span>
+              </a>
             </div>
           </section>
+
+          <aside className="story-whisper" data-reveal><span>Our point of view</span><p>{brandTaglines[1]}</p></aside>
 
           <section className="scroll-cinema" ref={scrollCinemaRef} aria-label="A scroll-led view of Mind Rhythm">
             <div className="scroll-cinema-sticky">
@@ -300,8 +316,8 @@ export function Experience({ content }: { content: SiteContent }) {
                   ))}
                   <article className="scroll-cinema-panel scroll-cinema-statement">
                     <span>Mind Rhythm / Places &amp; people</span>
-                    <h2>Stories that make time feel <em>different.</em></h2>
-                    <p>Photography and film for spaces, celebrations and the moments people want to remember.</p>
+                    <h2>Stories that make time feel different.</h2>
+                    <p>{brandTaglines[2]}</p>
                     <a href="/work">Explore all work ↗</a>
                   </article>
                 </div>
@@ -314,7 +330,7 @@ export function Experience({ content }: { content: SiteContent }) {
             <div className="section-intro" data-reveal>
               <span className="section-index">03 / Our work</span>
               <h2>Selected stories,<br /><em>across every service.</em></h2>
-              <p>{settings.idea}</p>
+              <p>{brandTaglines[2]}</p>
             </div>
             <div className="projects-bento">
               {projects.map((project, index) => <ProjectCard key={project.id} project={project} index={index} onOpen={() => setSelectedItem(project)} />)}
@@ -337,6 +353,7 @@ export function Experience({ content }: { content: SiteContent }) {
           </section>
 
           <section className="gallery-section" id="gallery">
+            <img className="section-watermark section-watermark-one" src="/mindrythm-logomark.png" alt="" aria-hidden="true" />
             <div className="gallery-heading" data-reveal>
               <span>04 / Gallery</span>
               <h2>Spaces, people &amp;<br /><em>celebrations.</em></h2>
@@ -346,6 +363,7 @@ export function Experience({ content }: { content: SiteContent }) {
                   <a href={settings.instagram} target="_blank" rel="noreferrer">Instagram ↗</a>
                   <a href={settings.facebook} target="_blank" rel="noreferrer">Facebook ↗</a>
                   <a href={settings.youtube} target="_blank" rel="noreferrer">YouTube ↗</a>
+                  <a href={settings.x} target="_blank" rel="noreferrer">X ↗</a>
                 </div>
               </div>
             </div>
@@ -355,6 +373,8 @@ export function Experience({ content }: { content: SiteContent }) {
             </div>
             <div className="gallery-scroll-note"><span>Scroll sideways</span><span>Spaces → Celebrations</span></div>
           </section>
+
+          <aside className="story-whisper story-whisper-light" data-reveal><span>Our point of view</span><p>{brandTaglines[3]}</p></aside>
 
           <section className="testimonials-section" id="testimonials">
             <div className="testimonials-heading" data-reveal>
@@ -374,13 +394,16 @@ export function Experience({ content }: { content: SiteContent }) {
             </div>
           </section>
 
+          <aside className="story-whisper" data-reveal><span>On collaboration</span><p>{brandTaglines[4]}</p></aside>
+
           <section className="team-section" id="team">
+            <img className="section-watermark section-watermark-two" src="/mindrythm-logomark.png" alt="" aria-hidden="true" />
             <div className="team-heading" data-reveal>
               <span>06 / Meet the team</span>
               <h2>The right eye<br />for <em>every story.</em></h2>
-              <div className="team-heading-action"><p>Property, event and wedding photographers, filmmakers, aerial operators and editors working as one focused team.</p><a href="/team">Meet our team ↗</a></div>
+              <div className="team-heading-action"><p>{teamIntroduction}</p><a href="/team">Meet our team ↗</a></div>
             </div>
-            <div className="team-grid">
+            <div className="team-grid" aria-label="Meet the Mind Rhythm team">
               {team.map((member, index) => (
                 <button type="button" className="team-card" key={`${member.id}-${index}`} onClick={() => setSelectedItem(member)} data-reveal>
                   <Media item={member} />
@@ -394,10 +417,10 @@ export function Experience({ content }: { content: SiteContent }) {
           <section className="about-section" id="about">
             <div className="about-heading" data-reveal>
               <span>07 / About us</span>
-              <h2>Mind Rhythm is where<br />moments become <em>memory.</em></h2>
+              <h2>Mind Rhythm is where<br />ideas find a visual language.</h2>
             </div>
             <div className="about-grid">
-              <a href="/story" data-reveal><span>01</span><h3>What is Mind Rhythm?</h3><p>{settings.description}</p><i>Read our story ↗</i></a>
+              <a href="/story" data-reveal><span>01</span><h3>What is Mind Rhythm?</h3><p>{visionParagraphs[1]}</p><i>Read our story ↗</i></a>
               <a href="/work" data-reveal><span>02</span><h3>What we capture</h3><p>Properties, resorts, corporate events and weddings—through photography, cinematic film, aerial footage and social edits.</p><i>Explore our work ↗</i></a>
               <a href="/contact" data-reveal><span>03</span><h3>Who we work with</h3><p>Couples, families, event teams, developers, architects, resorts and brands looking for imagery with feeling and precision.</p><i>Work with us ↗</i></a>
               <a href="#process" data-reveal><span>04</span><h3>How we work</h3><p>We plan timing, light, shot lists and delivery around each brief, keeping the experience calm from first conversation to final files.</p><i>See the process ↓</i></a>
@@ -419,17 +442,20 @@ export function Experience({ content }: { content: SiteContent }) {
             </div>
           </section>
 
+          <aside className="story-whisper story-whisper-light" data-reveal><span>Every beginning</span><p>{brandTaglines[5]}</p></aside>
+
           <section className="contact-section" id="contact">
             <div className="contact-heading" data-reveal>
               <span>09 / Reach out</span>
               <h2>Let’s capture<br />your next <em>story.</em></h2>
             </div>
+            <div className="enquiry-reassurance" data-reveal>{enquiryTaglines.map((line, index) => <p key={line}><span>0{index + 1}</span>{line}</p>)}</div>
             <div className="contact-layout">
               <div className="contact-details" data-reveal>
                 <div><span>Call</span><a href={`tel:${phonePrimary.replace(/\s/g, "")}`}>{phonePrimary}</a><a href={`tel:${phoneSecondary.replace(/\s/g, "")}`}>{phoneSecondary}</a></div>
                 <div><span>Email</span><a href={`mailto:${contactEmail}`}>{contactEmail}</a></div>
                 <div><span>Visit</span><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noreferrer">{address} ↗</a></div>
-                <div className="contact-socials"><a href={settings.instagram}>Instagram ↗</a><a href={settings.facebook}>Facebook ↗</a><a href={settings.youtube}>YouTube ↗</a></div>
+                <div className="contact-socials"><a href={settings.instagram}>Instagram ↗</a><a href={settings.facebook}>Facebook ↗</a><a href={settings.youtube}>YouTube ↗</a><a href={settings.x}>X ↗</a></div>
               </div>
               <form className="enquiry-form" onSubmit={submitEnquiry} data-reveal>
                 <div className="form-field"><label htmlFor="name">Full name *</label><input id="name" name="name" required autoComplete="name" /></div>
@@ -448,11 +474,11 @@ export function Experience({ content }: { content: SiteContent }) {
         </main>
 
         <footer className="site-footer">
-          <div className="footer-cta"><span>Have a place, event or wedding in mind?</span><a href="/contact">Let’s make it unforgettable. <i>↗</i></a></div>
+          <div className="footer-cta"><span>{footerTaglines[1]}</span><a href="/contact">{footerTaglines[0]} <i>↗</i></a></div>
           <div className="footer-grid">
             <div className="footer-brand"><img src="/mindrythm-logomark.png" alt="Mind Rhythm logomark" /><span>MIND <em>RHYTHM</em></span></div>
             <div className="footer-column"><span>Explore</span><a href="#services">Services</a><a href="/work">Our Work</a><a href="/gallery">Gallery</a><a href="/team">Our Team</a></div>
-            <div className="footer-column"><span>Follow</span><a href={settings.instagram}>Instagram ↗</a><a href={settings.facebook}>Facebook ↗</a><a href={settings.youtube}>YouTube ↗</a></div>
+            <div className="footer-column"><span>Follow</span><a href={settings.instagram}>Instagram ↗</a><a href={settings.facebook}>Facebook ↗</a><a href={settings.youtube}>YouTube ↗</a><a href={settings.x}>X ↗</a></div>
             <div className="footer-column"><span>Legal</span><a href="/privacy">Privacy Policy</a><a href="/terms">Terms &amp; Conditions</a><a href="/studio">Content Studio ↗</a></div>
           </div>
           <div className="footer-meta"><span>© {new Date().getFullYear()} Mind Rhythm</span><span>Kolkata / Everywhere</span><a href="#home">Back to top ↑</a></div>

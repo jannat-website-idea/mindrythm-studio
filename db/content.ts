@@ -158,9 +158,17 @@ export async function getSiteContent(): Promise<SiteContent> {
       mergedSettings.contactEmail = defaultSettings.contactEmail;
     }
 
+    const savedItems = (itemsResult.results as Record<string, unknown>[]).map(rowToItem);
+    const legacySeedIds = new Set(["quiet-frequency", "in-passing", "field-notes", "object-ritual"]);
+    const hasLegacySeed = savedItems.some((item) => legacySeedIds.has(item.id) && ["Quiet Frequency", "In Passing", "Field Notes", "Object / Ritual"].includes(item.title));
+    const defaultIds = new Set(defaultItems.map((item) => item.id));
+    const items = hasLegacySeed
+      ? [...defaultItems, ...savedItems.filter((item) => !legacySeedIds.has(item.id) && !defaultIds.has(item.id))]
+      : savedItems;
+
     return {
       settings: mergedSettings,
-      items: (itemsResult.results as Record<string, unknown>[]).map(rowToItem),
+      items,
     };
   } catch {
     return defaultContent;

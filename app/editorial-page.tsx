@@ -1,6 +1,13 @@
 "use client";
 
-import type { ContentItem, SiteContent } from "@/lib/content";
+import {
+  enquiryTaglines,
+  missionParagraphs,
+  teamIntroduction,
+  visionParagraphs,
+  type ContentItem,
+  type SiteContent,
+} from "@/lib/content";
 import { type FormEvent, useMemo, useState } from "react";
 import Link from "next/link";
 
@@ -113,6 +120,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
 
         {page === "team" && (
           <>
+            <section className="team-introduction"><span>Built together</span><p>{teamIntroduction}</p></section>
             <section className="team-page-grid">
               {team.map((member, index) => (
                 <button type="button" className="team-page-card" key={`${member.id}-${index}`} onClick={() => setSelected(member)}>
@@ -126,25 +134,29 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
 
         {page === "story" && (
           <div className="story-page">
-            <section className="story-manifesto"><span>What is Mind Rhythm?</span><p>{settings.description}</p></section>
+            <section className="story-manifesto"><span>What is Mind Rhythm?</span><p>{visionParagraphs[0]}</p></section>
             <section className="story-pillars">
               <article><span>01</span><h2>What we capture</h2><p>We work across properties, resorts, events and weddings through photography, cinematic film and aerial capture.</p></article>
               <article><span>02</span><h2>Who we work with</h2><p>Couples, families, event teams, developers, architects, resorts and brands seeking a distinct visual point of view.</p></article>
-              <article><span>03</span><h2>How we work</h2><p>{settings.idea} Every commission begins with listening, a clear visual plan and space for real moments to happen.</p></article>
+              <article><span>03</span><h2>How we work</h2><p>Every commission begins with listening, a clear visual plan and space for real moments to happen.</p></article>
             </section>
-            <section className="story-vision"><img src="/mindrythm-logomark.png" alt="Mind Rhythm logomark" /><div><span>Our vision</span><h2>{settings.vision}</h2></div></section>
+            <section className="story-narrative story-vision-full"><header><span>01 / Our vision</span><h2>Ideas find their visual language.</h2></header><div>{visionParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div></section>
+            <section className="story-vision"><img src="/mindrythm-logomark.png" alt="Mind Rhythm logomark" /><div><span>Our vision</span><h2>{visionParagraphs[3]}</h2></div></section>
+            <section className="story-narrative story-mission"><header><span>02 / Our mission</span><h2>A conversation before a brief.</h2></header><div>{missionParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div></section>
+            <section className="story-narrative story-people"><header><span>03 / Our people</span><h2>Never about one person.</h2></header><div><p>{teamIntroduction}</p><a href="/team">Meet the team ↗</a></div></section>
           </div>
         )}
 
         {page === "contact" && (
           <div className="contact-page">
+            <section className="contact-page-intro">{enquiryTaglines.map((line, index) => <p key={line}><span>0{index + 1}</span>{line}</p>)}</section>
             <section className="contact-page-info">
               <div><span>Call</span><a href={`tel:${settings.phonePrimary}`}>{settings.phonePrimary}</a><a href={`tel:${settings.phoneSecondary}`}>{settings.phoneSecondary}</a></div>
               <div><span>Email</span><a href={`mailto:${settings.contactEmail}`}>{settings.contactEmail}</a></div>
               <div><span>Visit</span><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(settings.address)}`} target="_blank" rel="noreferrer">{settings.address} ↗</a></div>
-              <div><span>Social</span><a href={settings.instagram}>Instagram ↗</a><a href={settings.facebook}>Facebook ↗</a><a href={settings.youtube}>YouTube ↗</a></div>
+              <div><span>Social</span><a href={settings.instagram}>Instagram ↗</a><a href={settings.facebook}>Facebook ↗</a><a href={settings.youtube}>YouTube ↗</a><a href={settings.x}>X ↗</a></div>
             </section>
-            <form className="contact-page-form" onSubmit={sendEnquiry}>
+            <form className="contact-page-form" id="enquiry" onSubmit={sendEnquiry}>
               <div className="form-field"><label htmlFor="contact-name">Full name *</label><input id="contact-name" name="name" required /></div>
               <div className="form-field"><label htmlFor="contact-phone">Phone number *</label><input id="contact-phone" name="phone" type="tel" required /></div>
               <div className="form-field"><label htmlFor="contact-email">Email ID</label><input id="contact-email" name="email" type="email" /></div>
@@ -158,7 +170,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
         )}
       </main>
 
-      <footer className="inner-footer"><Link href="/"><img src="/mindrythm-logomark.png" alt="" />Mind Rhythm</Link><span>© {new Date().getFullYear()}</span><a href="/privacy">Privacy Policy</a><a href="/terms">Terms &amp; Conditions</a><a href="/studio">Admin studio ↗</a></footer>
+      <footer className="inner-footer"><Link href="/"><img src="/mindrythm-logomark.png" alt="" />Mind Rhythm</Link><span>© {new Date().getFullYear()}</span><a href={settings.instagram}>Instagram</a><a href={settings.youtube}>YouTube</a><a href={settings.facebook}>Facebook</a><a href={settings.x}>X</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/studio">Admin ↗</a></footer>
 
       {selected && (
         <div className="lightbox" role="dialog" aria-modal="true" aria-label={selected.title}>

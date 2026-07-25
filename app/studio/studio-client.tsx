@@ -210,6 +210,7 @@ export function StudioClient({
             <Field wide label="LinkedIn" value={settings.linkedin} onChange={(value) => updateSettings("linkedin", value)} />
             <Field label="Facebook" value={settings.facebook} onChange={(value) => updateSettings("facebook", value)} />
             <Field label="YouTube" value={settings.youtube} onChange={(value) => updateSettings("youtube", value)} />
+            <Field label="X" value={settings.x} onChange={(value) => updateSettings("x", value)} />
           </div>
 
           <div className="panel-heading item-heading">
