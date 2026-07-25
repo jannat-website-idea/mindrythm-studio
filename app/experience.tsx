@@ -124,13 +124,13 @@ export function Experience({ content }: { content: SiteContent }) {
   useEffect(() => {
     const startedAt = performance.now();
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const duration = reducedMotion ? 900 : 2800;
+    const duration = reducedMotion ? 900 : 3600;
     let frame = 0;
     const tick = (now: number) => {
       const next = Math.min(100, Math.round(((now - startedAt) / duration) * 100));
       setProgress(next);
       if (next < 100) frame = window.requestAnimationFrame(tick);
-      else window.setTimeout(() => setLoaded(true), reducedMotion ? 250 : 720);
+      else window.setTimeout(() => setLoaded(true), reducedMotion ? 250 : 520);
     };
     frame = window.requestAnimationFrame(tick);
     return () => window.cancelAnimationFrame(frame);
@@ -357,7 +357,7 @@ export function Experience({ content }: { content: SiteContent }) {
             <div className="services-layout">
               <div className="services-list" role="list">
                 {serviceItems.map((service, index) => (
-                  <button type="button" role="listitem" aria-pressed={activeService === index} className={activeService === index ? "active" : ""} key={service.title} onMouseEnter={() => setActiveService(index)} onFocus={() => setActiveService(index)} onClick={() => setActiveService(index)} data-reveal>
+                  <button type="button" role="listitem" aria-pressed={activeService === index} className={activeService === index ? "active" : ""} key={service.title} onMouseEnter={() => setActiveService(index)} onFocus={() => setActiveService(index)} onClick={() => setActiveService(index)}>
                     <b>0{index + 1}</b><strong>{service.title}</strong><span>{service.copy}</span><i>↗</i>
                   </button>
                 ))}
