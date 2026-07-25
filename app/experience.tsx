@@ -241,6 +241,8 @@ export function Experience({ content }: { content: SiteContent }) {
   const moments = galleryItems.filter((item) => item.category.toLowerCase() === "moments");
   const spacesItems = spaces.length ? spaces : galleryItems.filter((_, index) => index % 2 === 0);
   const momentsItems = moments.length ? moments : galleryItems.filter((_, index) => index % 2 === 1);
+  const spacesBentoItems = [...spacesItems, ...galleryItems.filter((item) => !spacesItems.some((space) => space.id === item.id))];
+  const momentsBentoItems = [...momentsItems, ...galleryItems.filter((item) => !momentsItems.some((moment) => moment.id === item.id))];
 
   return (
     <>
@@ -433,10 +435,10 @@ export function Experience({ content }: { content: SiteContent }) {
               </div>
             </div>
             <div className="gallery-scroll" aria-label="Spaces and celebrations galleries">
-              <GalleryCollection title="Spaces" index="01" items={spacesItems.length ? spacesItems : galleryItems} onOpen={setSelectedItem} />
-              <GalleryCollection title="Celebrations" index="02" items={momentsItems.length ? momentsItems : galleryItems} onOpen={setSelectedItem} />
+              <GalleryCollection title="Spaces" index="01" items={spacesBentoItems.length ? spacesBentoItems : galleryItems} socials={settings} onOpen={setSelectedItem} />
+              <GalleryCollection title="Celebrations" index="02" items={momentsBentoItems.length ? momentsBentoItems : galleryItems} socials={settings} onOpen={setSelectedItem} />
             </div>
-            <div className="gallery-scroll-note"><span>Scroll sideways</span><span>Spaces → Celebrations</span></div>
+            <div className="gallery-scroll-note"><span>Two visual stories</span><span>Spaces / Celebrations</span></div>
           </section>
 
           <aside className="story-whisper story-whisper-light" data-reveal><span>Our point of view</span><p>{brandTaglines[3]}</p></aside>
@@ -601,18 +603,22 @@ function ProjectCard({ project, index, onOpen }: { project: ContentItem; index: 
   );
 }
 
-function GalleryCollection({ title, index, items, onOpen }: { title: string; index: string; items: ContentItem[]; onOpen: (item: ContentItem) => void }) {
-  const shown = items.length ? items.slice(0, 4) : [];
+function GalleryCollection({ title, index, items, socials, onOpen }: { title: string; index: string; items: ContentItem[]; socials: SiteContent["settings"]; onOpen: (item: ContentItem) => void }) {
+  const shown = items.length ? items.slice(0, 7) : [];
+  const isCelebrations = title === "Celebrations";
   return (
     <article className="gallery-board" data-reveal>
       <header><span>{index}</span><h3>{title}</h3><p>Images / motion / fragments</p></header>
       <div className="gallery-board-grid">
         {shown.map((item, itemIndex) => (
-          <button type="button" className={`gallery-card gallery-slot-${itemIndex + 1}`} key={item.id} onClick={() => onOpen(item)}>
+          <button type="button" className={`gallery-card gallery-slot-${itemIndex + 1}`} key={`${item.id}-${itemIndex}`} onClick={() => onOpen(item)}>
             <Media item={item} /><span>{item.title}</span>
           </button>
         ))}
-        <a className="gallery-card gallery-note" href="/gallery"><span>Mind Rhythm archive</span><p>Looking closely is part of the work.</p><i>Open archive ↗</i></a>
+        <div className="gallery-card gallery-note gallery-note-social" aria-label="Mind Rhythm social channels">
+          <a href={socials.instagram}>Instagram ↗</a><a href={socials.facebook}>Facebook ↗</a><a href={socials.youtube}>YouTube ↗</a>
+        </div>
+        <a className="gallery-card gallery-note gallery-note-feature" href="/gallery"><span>Mind Rhythm archive</span><p>{isCelebrations ? "Wedding stories with feeling, movement and detail." : "Spaces shaped by light, material and a sense of arrival."}</p><i>Open the full gallery ↗</i></a>
       </div>
     </article>
   );
