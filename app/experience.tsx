@@ -328,6 +328,22 @@ export function Experience({ content }: { content: SiteContent }) {
               <span>Where every project contributes to a body of work that is intentional and beautiful.</span>
             </p>
             <div className="vision-note" data-reveal><span>Where we begin</span><p>{visionParagraphs[0]}</p></div>
+            <div className="vision-bridge" data-reveal>
+              <a href="/work" className="vision-bridge-frame">
+                <img src="/images/tropical-interior.jpg" alt="Refined resort interior photographed by Mind Rhythm" />
+                <span>Spaces / Hospitality</span>
+              </a>
+              <a href="/story" className="vision-bridge-centre">
+                <img src="/mindrythm-logomark.png" alt="" />
+                <span>One studio</span>
+                <strong>Many ways of seeing.</strong>
+                <i>Our story ↗</i>
+              </a>
+              <a href="/work" className="vision-bridge-frame vision-bridge-frame-last">
+                <img src="/images/wedding-palace-hero.png" alt="Elegant Indian wedding photographed by Mind Rhythm" />
+                <span>People / Celebrations</span>
+              </a>
+            </div>
           </section>
 
           <section className="services-experience" id="services" aria-label="Mind Rhythm services">
@@ -454,13 +470,13 @@ export function Experience({ content }: { content: SiteContent }) {
             </div>
             <div className="team-grid" aria-label="Meet the Mind Rhythm team">
               {team.map((member, index) => (
-                <article className={`team-card ${activeTeamCardId === member.id ? "active" : ""}`} key={`${member.id}-${index}`} onClick={() => setActiveTeamCardId((current) => current === member.id ? null : member.id)} data-reveal>
+                <article className={`team-card ${activeTeamCardId === member.id ? "active" : ""}`} key={`${member.id}-${index}`} onClick={() => setActiveTeamCardId((current) => current === member.id ? null : member.id)}>
                   <button type="button" className="team-card-trigger" aria-expanded={activeTeamCardId === member.id} aria-controls={`team-card-copy-${index}`}>
                     <Media item={member} />
                     <span className="sr-only">Show information about {member.title}</span>
                   </button>
                   <div className="team-card-copy" id={`team-card-copy-${index}`}>
-                    <span>{member.category || member.eyebrow}</span><h3>{member.title}</h3>
+                    <span>{member.category || member.eyebrow}</span><h3>{member.title}</h3><p>{member.body}</p>
                     <button type="button" onClick={(event) => { event.stopPropagation(); setActiveTeamCardId(null); setSelectedItem(member); }}>View profile ↗</button>
                   </div>
                 </article>
@@ -505,6 +521,21 @@ export function Experience({ content }: { content: SiteContent }) {
               <h2>Let’s capture<br />your next <em>story.</em></h2>
             </div>
             <div className="enquiry-reassurance" data-reveal>{enquiryTaglines.map((line, index) => <p key={line}><span>0{index + 1}</span>{line}</p>)}</div>
+            <div className="contact-discovery" data-reveal>
+              <div className="contact-map-card">
+                <iframe title="Mind Rhythm studio location" loading="lazy" src={`https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`} />
+                <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noreferrer"><span>Find us in Kolkata</span><strong>{address}</strong><i>Open map ↗</i></a>
+              </div>
+              <div className="contact-connect-card">
+                <span>Follow the living archive</span>
+                <h3>New places.<br />Real celebrations.<br />Behind the frame.</h3>
+                <div className="contact-network-links">
+                  <a href={settings.instagram} target="_blank" rel="noreferrer"><span>Instagram</span><strong>@mindrythm.studio</strong><i>Photography, films &amp; process ↗</i></a>
+                  <a href={settings.facebook} target="_blank" rel="noreferrer"><span>Facebook</span><strong>Mind Rhythm Studio</strong><i>Updates, galleries &amp; stories ↗</i></a>
+                </div>
+                <a className="contact-primary-cta" href="/contact#enquiry"><span>Have a story in mind?</span><strong>Start a project</strong><i>↗</i></a>
+              </div>
+            </div>
             <div className="contact-layout">
               <div className="contact-details" data-reveal>
                 <div><span>Call</span><a href={`tel:${phonePrimary.replace(/\s/g, "")}`}>{phonePrimary}</a><a href={`tel:${phoneSecondary.replace(/\s/g, "")}`}>{phoneSecondary}</a></div>
@@ -521,9 +552,6 @@ export function Experience({ content }: { content: SiteContent }) {
                 <button type="submit" disabled={enquiryState === "sending"}>{enquiryState === "sending" ? "Sending…" : "Send enquiry"} <span>↗</span></button>
                 <p className={`form-message ${enquiryState}`}>{enquiryState === "sent" ? "Thank you. Your enquiry has been received." : enquiryState === "error" ? `Please email us directly at ${contactEmail}.` : "Your message will be saved securely in the studio dashboard."}</p>
               </form>
-            </div>
-            <div className="map-frame" data-reveal>
-              <iframe title="Mind Rhythm studio location" loading="lazy" src={`https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`} />
             </div>
           </section>
         </main>

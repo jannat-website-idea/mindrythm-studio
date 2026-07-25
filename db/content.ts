@@ -107,6 +107,21 @@ async function ensureDatabase() {
     );
   }
 
+  await db
+    .prepare(
+      `UPDATE content_items
+       SET media_url = ?, media_alt = ?, updated_at = ?
+       WHERE id = ? AND media_url = ?`,
+    )
+    .bind(
+      "/images/wedding-palace-hero.png",
+      "Indian newlyweds walking through an elegant candlelit palace courtyard",
+      new Date().toISOString(),
+      "wedding-celebration",
+      "/images/wedding-celebration.jpg",
+    )
+    .run();
+
   const settings = await db
     .prepare("SELECT key FROM site_settings WHERE key = ?")
     .bind("site")
