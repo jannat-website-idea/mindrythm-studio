@@ -250,8 +250,12 @@ export function Experience({ content }: { content: SiteContent }) {
         <div className="loader-stage">
           <div className="loader-copy">
             <div className="loader-brand" aria-label="Mind Rhythm">
-              <span className="loader-brand-line"><i>M</i><i>I</i><i>N</i><i>D</i></span>
-              <span className="loader-brand-line"><i>R</i><i>H</i><i>Y</i><i>T</i><i>H</i><i>M</i></span>
+              <span className="loader-brand-line">
+                <span className="loader-brand-word"><i><span>M</span></i><i><span>I</span></i><i><span>N</span></i><i><span>D</span></i></span>
+              </span>
+              <span className="loader-brand-line">
+                <span className="loader-brand-word"><i><span>R</span></i><i><span>H</span></i><i><span>Y</span></i><i><span>T</span></i><i><span>H</span></i><i><span>M</span></i></span>
+              </span>
             </div>
           </div>
         </div>
@@ -353,9 +357,9 @@ export function Experience({ content }: { content: SiteContent }) {
             <div className="services-layout">
               <div className="services-list" role="list">
                 {serviceItems.map((service, index) => (
-                  <a href="/contact#enquiry" role="listitem" className={activeService === index ? "active" : ""} key={service.title} onMouseEnter={() => setActiveService(index)} onFocus={() => setActiveService(index)} onClick={() => setActiveService(index)} data-reveal>
+                  <button type="button" role="listitem" aria-pressed={activeService === index} className={activeService === index ? "active" : ""} key={service.title} onMouseEnter={() => setActiveService(index)} onFocus={() => setActiveService(index)} onClick={() => setActiveService(index)} data-reveal>
                     <b>0{index + 1}</b><strong>{service.title}</strong><span>{service.copy}</span><i>↗</i>
-                  </a>
+                  </button>
                 ))}
               </div>
               <a className="services-preview" href="/contact#enquiry" aria-label={`Enquire about ${serviceItems[activeService].title}`}>
@@ -400,7 +404,7 @@ export function Experience({ content }: { content: SiteContent }) {
               <p>{brandTaglines[2]}</p>
             </div>
             <div className="projects-bento">
-              {projects.map((project, index) => <ProjectCard key={project.id} project={project} index={index} onOpen={() => setSelectedItem(project)} />)}
+              {projects.slice(0, 6).map((project, index) => <ProjectCard key={project.id} project={project} index={index} onOpen={() => setSelectedItem(project)} />)}
               <a className="project-tile project-statement" href="/story" data-reveal>
                 <span>Our approach</span>
                 <blockquote>“Every place and every celebration begins with a feeling. Our work is to make it visible.”</blockquote>
@@ -408,7 +412,7 @@ export function Experience({ content }: { content: SiteContent }) {
               </a>
               <a className="project-tile project-process" href="#process" data-reveal>
                 <span>Method / People first</span>
-                <h3>Listen.<br /><em>Frame.</em><br />Remember.</h3>
+                <h3><span>Listen.</span><em>Frame.</em><span>Remember.</span></h3>
                 <p>Clear planning, deliberate composition and a calm production process.</p>
               </a>
               <a className="project-tile project-metric" href="/work" data-reveal>
