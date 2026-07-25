@@ -50,6 +50,16 @@ const serviceItems = [
   { title: "Wedding / Moments", copy: "Photography and films that preserve the emotion, rituals and unscripted moments that make a day your own.", mediaUrl: "/videos/wedding-film.mp4", mediaAlt: "A cinematic wedding moment" },
 ] as const;
 
+const navigationItems = [
+  { label: "Home", href: "#home", note: "Begin here" },
+  { label: "Services", href: "#services", note: "What we create" },
+  { label: "Our Work", href: "/work", note: "Selected commissions" },
+  { label: "Gallery", href: "/gallery", note: "Stories and moments" },
+  { label: "Our Team", href: "/team", note: "The people behind it" },
+  { label: "Our Story", href: "/story", note: "The studio rhythm" },
+  { label: "Enquire", href: "/contact", note: "Start a conversation" },
+] as const;
+
 export function Experience({ content }: { content: SiteContent }) {
   const { settings } = content;
   const projects = useMemo(
@@ -119,7 +129,7 @@ export function Experience({ content }: { content: SiteContent }) {
       const next = Math.min(100, Math.round(((now - startedAt) / duration) * 100));
       setProgress(next);
       if (next < 100) frame = window.requestAnimationFrame(tick);
-      else window.setTimeout(() => setLoaded(true), reducedMotion ? 80 : 560);
+      else window.setTimeout(() => setLoaded(true), reducedMotion ? 250 : 720);
     };
     frame = window.requestAnimationFrame(tick);
     return () => window.cancelAnimationFrame(frame);
@@ -235,22 +245,41 @@ export function Experience({ content }: { content: SiteContent }) {
       </div>
 
       <div className={`site-shell ${loaded ? "site-ready" : ""}`}>
-        <header className="site-header">
+        <header className={`site-header ${menuOpen ? "menu-active" : ""}`}>
           <a className="wordmark" href="#home" aria-label="Mind Rhythm home">
             <img src="/mindrythm-logomark.png" alt="" />
           </a>
           <button type="button" className="menu-toggle" aria-expanded={menuOpen} aria-label="Toggle navigation" onClick={() => setMenuOpen((open) => !open)}>
-            <span>{menuOpen ? "Close" : "Menu"}</span><i aria-hidden="true" />
+            <span className="menu-toggle-label">{menuOpen ? "Close" : "Menu"}</span>
+            <span className="menu-toggle-count">01—07</span>
+            <i aria-hidden="true" />
           </button>
         </header>
 
         <div className={`menu-overlay ${menuOpen ? "nav-open" : ""}`} aria-hidden={!menuOpen}>
-          <nav aria-label="Main navigation">
-            {[["Home", "#home"], ["Services", "#services"], ["Our Work", "/work"], ["Gallery", "/gallery"], ["Our Team", "/team"], ["Our Story", "/story"], ["Enquire", "/contact"]].map(([label, href], index) => (
-              <a href={href} key={label} onClick={() => setMenuOpen(false)}><span>0{index + 1}</span>{label}<i>↗</i></a>
-            ))}
-          </nav>
-          <div className="menu-overlay-meta"><span>Kolkata / Everywhere</span><a href={`mailto:${contactEmail}`}>{contactEmail}</a><div><a href={settings.instagram}>Instagram</a><a href={settings.youtube}>YouTube</a><a href={settings.x}>X</a></div></div>
+          <aside className="menu-overlay-brand" aria-hidden="true">
+            <span>Independent visual studio / Kolkata</span>
+            <p><strong>Mind</strong><em>Rhythm</em></p>
+            <small>Every image begins with a pulse.</small>
+          </aside>
+          <div className="menu-overlay-index">
+            <div className="menu-overlay-heading"><span>Navigation</span><span>Index / 01—07</span></div>
+            <nav aria-label="Main navigation">
+              {navigationItems.map((item, index) => (
+                <a href={item.href} key={item.label} onClick={() => setMenuOpen(false)}>
+                  <span>0{index + 1}</span>
+                  <strong>{item.label}</strong>
+                  <small>{item.note}</small>
+                  <i>↗</i>
+                </a>
+              ))}
+            </nav>
+            <div className="menu-overlay-meta">
+              <span>Kolkata / Everywhere</span>
+              <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+              <div><a href={settings.instagram}>Instagram</a><a href={settings.youtube}>YouTube</a><a href={settings.x}>X</a></div>
+            </div>
+          </div>
         </div>
 
         <main>
