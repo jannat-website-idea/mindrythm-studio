@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
-import { Manrope } from "next/font/google";
+import { Bodoni_Moda, Manrope } from "next/font/google";
 import { headers } from "next/headers";
 import "./globals.css";
 
 const avenirFallback = Manrope({
   variable: "--font-avenir",
   subsets: ["latin"],
+});
+
+const editorialAccent = Bodoni_Moda({
+  variable: "--font-accent",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
 });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -38,7 +44,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={avenirFallback.variable}>{children}</body>
+      <body className={`${avenirFallback.variable} ${editorialAccent.variable}`}>{children}</body>
     </html>
   );
 }

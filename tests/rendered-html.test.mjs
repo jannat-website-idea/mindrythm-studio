@@ -41,6 +41,7 @@ test("uses the revised loader, menu, social links and neutral design system", as
   assert.match(experience, /settings\.x/);
   assert.match(editorial, /settings\.x/);
   assert.match(layout, /Manrope/);
+  assert.match(layout, /Bodoni_Moda/);
   assert.match(css, /"Avenir Next"/);
   assert.match(css, /--paper: #ecebe6/);
   assert.match(css, /--ink: #0b0b0a/);

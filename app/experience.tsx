@@ -277,7 +277,11 @@ export function Experience({ content }: { content: SiteContent }) {
 
           <section className="vision-section" id="vision">
             <span className="section-index" data-reveal>01 / Our vision</span>
-            <p data-reveal>{visionParagraphs[3]}</p>
+            <p className="vision-statement" data-reveal>
+              <span>Our vision is to create a place where ideas find their visual language.</span>
+              <span>Where artists find one another.</span>
+              <span>Where every project contributes to a body of work that is intentional and beautiful.</span>
+            </p>
             <div className="vision-note" data-reveal><span>Where we begin</span><p>{visionParagraphs[0]}</p></div>
           </section>
 
