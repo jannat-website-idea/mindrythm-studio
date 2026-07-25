@@ -111,6 +111,7 @@ export function Experience({ content }: { content: SiteContent }) {
   const [heroIndex, setHeroIndex] = useState(0);
   const [selectedItem, setSelectedItem] = useState<ContentItem | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeTeamCardId, setActiveTeamCardId] = useState<string | null>(null);
   const [activeService, setActiveService] = useState(0);
   const [enquiryState, setEnquiryState] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const scrollCinemaRef = useRef<HTMLElement | null>(null);
@@ -152,6 +153,21 @@ export function Experience({ content }: { content: SiteContent }) {
       window.removeEventListener("keydown", close);
     };
   }, [menuOpen]);
+
+  useEffect(() => {
+    if (!activeTeamCardId) return;
+    const close = (event: PointerEvent) => {
+      if (event.target instanceof Element && event.target.closest(".team-card, .team-page-card")) return;
+      setActiveTeamCardId(null);
+    };
+    const closeWithKeyboard = (event: KeyboardEvent) => event.key === "Escape" && setActiveTeamCardId(null);
+    document.addEventListener("pointerdown", close);
+    window.addEventListener("keydown", closeWithKeyboard);
+    return () => {
+      document.removeEventListener("pointerdown", close);
+      window.removeEventListener("keydown", closeWithKeyboard);
+    };
+  }, [activeTeamCardId]);
 
   useEffect(() => {
     if (heroItems.length < 2) return;
@@ -438,10 +454,16 @@ export function Experience({ content }: { content: SiteContent }) {
             </div>
             <div className="team-grid" aria-label="Meet the Mind Rhythm team">
               {team.map((member, index) => (
-                <button type="button" className="team-card" key={`${member.id}-${index}`} onClick={() => setSelectedItem(member)} data-reveal>
-                  <Media item={member} />
-                  <div className="team-card-copy"><span>{member.category || member.eyebrow}</span><h3>{member.title}</h3><b>View profile ↗</b></div>
-                </button>
+                <article className={`team-card ${activeTeamCardId === member.id ? "active" : ""}`} key={`${member.id}-${index}`} onClick={() => setActiveTeamCardId((current) => current === member.id ? null : member.id)} data-reveal>
+                  <button type="button" className="team-card-trigger" aria-expanded={activeTeamCardId === member.id} aria-controls={`team-card-copy-${index}`}>
+                    <Media item={member} />
+                    <span className="sr-only">Show information about {member.title}</span>
+                  </button>
+                  <div className="team-card-copy" id={`team-card-copy-${index}`}>
+                    <span>{member.category || member.eyebrow}</span><h3>{member.title}</h3>
+                    <button type="button" onClick={(event) => { event.stopPropagation(); setActiveTeamCardId(null); setSelectedItem(member); }}>View profile ↗</button>
+                  </div>
+                </article>
               ))}
             </div>
             <a className="team-page-link" href="/team"><span>People behind the images</span><strong>Explore the full team</strong><i>↗</i></a>

@@ -8,7 +8,7 @@ import {
   type ContentItem,
   type SiteContent,
 } from "@/lib/content";
-import { type FormEvent, useMemo, useState } from "react";
+import { type FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
 export type EditorialPageKind = "work" | "gallery" | "team" | "story" | "contact";
@@ -30,7 +30,23 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   }));
   const team = [...savedTeam, ...teamFallbacks].slice(0, 3);
   const [selected, setSelected] = useState<ContentItem | null>(null);
+  const [activeTeamCardId, setActiveTeamCardId] = useState<string | null>(null);
   const [formState, setFormState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+
+  useEffect(() => {
+    if (!activeTeamCardId) return;
+    const close = (event: PointerEvent) => {
+      if (event.target instanceof Element && event.target.closest(".team-card, .team-page-card")) return;
+      setActiveTeamCardId(null);
+    };
+    const closeWithKeyboard = (event: KeyboardEvent) => event.key === "Escape" && setActiveTeamCardId(null);
+    document.addEventListener("pointerdown", close);
+    window.addEventListener("keydown", closeWithKeyboard);
+    return () => {
+      document.removeEventListener("pointerdown", close);
+      window.removeEventListener("keydown", closeWithKeyboard);
+    };
+  }, [activeTeamCardId]);
 
   const pageMeta = useMemo(() => ({
     work: ["Our Work", "Properties, events and weddings photographed and filmed to be remembered."],
@@ -123,9 +139,16 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
             <section className="team-introduction"><span>Built together</span><p>{teamIntroduction}</p></section>
             <section className="team-page-grid">
               {team.map((member, index) => (
-                <button type="button" className="team-page-card" key={`${member.id}-${index}`} onClick={() => setSelected(member)}>
-                  <div><Media item={member} /></div><span>0{index + 1} / {member.category}</span><h2>{member.title}</h2><p>{member.body}</p><b>Profile &amp; social links ↗</b>
-                </button>
+                <article className={`team-page-card ${activeTeamCardId === member.id ? "active" : ""}`} key={`${member.id}-${index}`} onClick={() => setActiveTeamCardId((current) => current === member.id ? null : member.id)}>
+                  <button type="button" className="team-page-card-trigger" aria-expanded={activeTeamCardId === member.id} aria-controls={`team-page-overlay-${index}`}>
+                    <Media item={member} />
+                    <span className="sr-only">Show information about {member.title}</span>
+                  </button>
+                  <div className="team-page-card-overlay" id={`team-page-overlay-${index}`}>
+                    <span>0{index + 1} / {member.category}</span><h2>{member.title}</h2><p>{member.body}</p>
+                    <button type="button" onClick={(event) => { event.stopPropagation(); setActiveTeamCardId(null); setSelected(member); }}>View profile ↗</button>
+                  </div>
+                </article>
               ))}
             </section>
             <section className="team-page-note"><span>Built around the story</span><h2>A focused core.<br /><em>The right specialists.</em></h2><p>Each commission brings together the precise mix of property, event or wedding photographers, filmmakers, aerial operators and editors it needs.</p><a href="/contact">Work with the team ↗</a></section>
