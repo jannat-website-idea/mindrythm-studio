@@ -258,9 +258,10 @@ export function Experience({ content }: { content: SiteContent }) {
     "--loader-scale": (0.44 + progress * 0.006).toFixed(3),
     "--loader-opacity": Math.min(1, 0.08 + progress * 0.046).toFixed(3),
     "--loader-blur": `${Math.max(0, 11 - progress * 0.11).toFixed(2)}px`,
-    "--loader-mind-x": `${(-12 + progress * 0.12).toFixed(2)}vw`,
-    "--loader-studio-x": `${(12 - progress * 0.12).toFixed(2)}vw`,
-    "--loader-studio-y": `${(4 - progress * 0.04).toFixed(2)}vh`,
+    "--loader-mind-y": `${(-3 + progress * 0.03).toFixed(2)}vh`,
+    "--loader-studio-y": `${(5 - progress * 0.05).toFixed(2)}vh`,
+    "--loader-mind-stretch": (0.94 + progress * 0.0006).toFixed(3),
+    "--loader-studio-stretch": (0.88 + progress * 0.0012).toFixed(3),
     "--loader-letter": `${(0.025 - progress * 0.0008).toFixed(4)}em`,
   } as CSSProperties;
 
