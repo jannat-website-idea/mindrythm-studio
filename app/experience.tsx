@@ -255,7 +255,8 @@ export function Experience({ content }: { content: SiteContent }) {
   const spacesBentoItems = [...spacesItems, ...galleryItems.filter((item) => !spacesItems.some((space) => space.id === item.id))];
   const momentsBentoItems = [...momentsItems, ...galleryItems.filter((item) => !momentsItems.some((moment) => moment.id === item.id))];
   const loaderStyle = {
-    "--loader-scale": (0.44 + progress * 0.006).toFixed(3),
+    "--loader-scale": (0.22 + progress * 0.0086).toFixed(3),
+    "--loader-rotate": `${(-10 + progress * 0.1).toFixed(2)}deg`,
     "--loader-opacity": Math.min(1, 0.08 + progress * 0.046).toFixed(3),
     "--loader-blur": `${Math.max(0, 11 - progress * 0.11).toFixed(2)}px`,
     "--loader-mind-y": `${(-3 + progress * 0.03).toFixed(2)}vh`,

@@ -1429,8 +1429,11 @@ html[data-mindrythm-intro="seen"] .site-shell { opacity: 1; filter: none; transf
 .loader-brand {
   position: relative;
   z-index: 2;
-  width: min(1500px, 92vw);
+  display: grid;
+  width: max-content;
+  max-width: 92vw;
   gap: .02em;
+  justify-items: start;
   font-family: "Avenir Next", Avenir, var(--font-avenir), "Helvetica Neue", Arial, sans-serif;
   font-size: clamp(4.4rem, 12vw, 12.5rem);
   font-weight: 300;
@@ -1438,7 +1441,8 @@ html[data-mindrythm-intro="seen"] .site-shell { opacity: 1; filter: none; transf
   line-height: .72;
   opacity: var(--loader-opacity, 1);
   filter: blur(var(--loader-blur, 0));
-  transform: scale(var(--loader-scale, 1));
+  transform: rotate(var(--loader-rotate, 0deg)) scale(var(--loader-scale, 1));
+  transform-origin: center;
   animation: none;
   transition: opacity .09s linear, filter .09s linear, transform .09s linear, letter-spacing .09s linear;
   will-change: opacity, filter, transform;
@@ -1511,7 +1515,7 @@ html[data-mindrythm-intro="seen"] .site-shell { opacity: 1; filter: none; transf
 .legal-page h1 { font-size: clamp(3rem, 7vw, 8rem); line-height: .9; }
 
 @media (max-width: 680px) {
-  .loader-brand { width: 92vw; gap: .1em; font-size: clamp(3rem, 14.5vw, 4.8rem); line-height: .8; }
+  .loader-brand { width: max-content; max-width: 92vw; gap: .1em; font-size: clamp(3rem, 14.5vw, 4.8rem); line-height: .8; }
   .loader-brand-line:last-child { padding-left: .04em; font-size: .5em; }
   .menu-overlay nav a > strong { font-size: clamp(1.85rem, 9.7vw, 3.05rem); }
   .hero-title-row { width: min(82vw, 420px); }
