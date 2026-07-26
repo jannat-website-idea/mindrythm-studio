@@ -59,6 +59,29 @@ const navigationItems = [
   { label: "Enquire", href: "/contact", note: "Start a conversation" },
 ] as const;
 
+function getLoaderMotionStyle(progress: number): CSSProperties {
+  const loaderT = progress / 100;
+  const loaderEase = loaderT * loaderT * (3 - 2 * loaderT);
+  const loaderRotation = -7 * (1 - loaderEase) + Math.sin(loaderT * Math.PI * 3) * 1.4 * (1 - loaderEase);
+
+  return {
+    "--loader-scale": (0.24 + loaderEase * 0.84).toFixed(3),
+    "--loader-rotate": `${loaderRotation.toFixed(2)}deg`,
+    "--loader-opacity": Math.min(1, 0.1 + loaderT * 2.8).toFixed(3),
+    "--loader-blur": `${(12 * (1 - loaderEase)).toFixed(2)}px`,
+    "--loader-mind-y": `${(-4 * (1 - loaderEase)).toFixed(2)}vh`,
+    "--loader-studio-y": `${(5 * (1 - loaderEase)).toFixed(2)}vh`,
+    "--loader-mind-stretch": (0.9 + loaderEase * 0.1).toFixed(3),
+    "--loader-studio-stretch": (0.84 + loaderEase * 0.16).toFixed(3),
+    "--loader-letter": `${(0.04 - loaderEase * 0.095).toFixed(4)}em`,
+    "--loader-mind-mask": `${Math.min(100, loaderT * 250).toFixed(1)}%`,
+    "--loader-studio-mask": `${Math.min(100, Math.max(0, (loaderT - 0.08) * 200)).toFixed(1)}%`,
+    "--loader-sheen": `${(180 - loaderT * 280).toFixed(1)}%`,
+    "--loader-halo-scale": (0.65 + loaderEase * 0.85).toFixed(3),
+    "--loader-halo-opacity": (0.035 + Math.sin(loaderT * Math.PI) * 0.075).toFixed(3),
+  } as CSSProperties;
+}
+
 export function Experience({ content }: { content: SiteContent }) {
   const { settings } = content;
   const projects = useMemo(
@@ -113,6 +136,7 @@ export function Experience({ content }: { content: SiteContent }) {
   const [activeTeamCardId, setActiveTeamCardId] = useState<string | null>(null);
   const [activeService, setActiveService] = useState(0);
   const [enquiryState, setEnquiryState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const loaderStageRef = useRef<HTMLDivElement | null>(null);
   const heroRef = useRef<HTMLElement | null>(null);
   const scrollCinemaRef = useRef<HTMLElement | null>(null);
 
@@ -137,9 +161,15 @@ export function Experience({ content }: { content: SiteContent }) {
     const duration = reducedMotion ? 900 : 3800;
     let frame = 0;
     const tick = (now: number) => {
-      const next = Math.min(100, Math.round(((now - startedAt) / duration) * 100));
-      setProgress(next);
-      if (next < 100) frame = window.requestAnimationFrame(tick);
+      const exactProgress = Math.min(100, ((now - startedAt) / duration) * 100);
+      const stage = loaderStageRef.current;
+      if (stage) {
+        Object.entries(getLoaderMotionStyle(exactProgress)).forEach(([property, value]) => {
+          stage.style.setProperty(property, String(value));
+        });
+      }
+      setProgress(Math.round(exactProgress));
+      if (exactProgress < 100) frame = window.requestAnimationFrame(tick);
       else window.setTimeout(() => {
         setLoaded(true);
       }, reducedMotion ? 250 : 420);
@@ -301,30 +331,12 @@ export function Experience({ content }: { content: SiteContent }) {
   const momentsItems = moments.length ? moments : galleryItems.filter((_, index) => index % 2 === 1);
   const spacesBentoItems = [...spacesItems, ...galleryItems.filter((item) => !spacesItems.some((space) => space.id === item.id))];
   const momentsBentoItems = [...momentsItems, ...galleryItems.filter((item) => !momentsItems.some((moment) => moment.id === item.id))];
-  const loaderT = progress / 100;
-  const loaderEase = loaderT * loaderT * (3 - 2 * loaderT);
-  const loaderRotation = -7 * (1 - loaderEase) + Math.sin(loaderT * Math.PI * 3) * 1.4 * (1 - loaderEase);
-  const loaderStyle = {
-    "--loader-scale": (0.24 + loaderEase * 0.84).toFixed(3),
-    "--loader-rotate": `${loaderRotation.toFixed(2)}deg`,
-    "--loader-opacity": Math.min(1, 0.1 + loaderT * 2.8).toFixed(3),
-    "--loader-blur": `${(12 * (1 - loaderEase)).toFixed(2)}px`,
-    "--loader-mind-y": `${(-4 * (1 - loaderEase)).toFixed(2)}vh`,
-    "--loader-studio-y": `${(5 * (1 - loaderEase)).toFixed(2)}vh`,
-    "--loader-mind-stretch": (0.9 + loaderEase * 0.1).toFixed(3),
-    "--loader-studio-stretch": (0.84 + loaderEase * 0.16).toFixed(3),
-    "--loader-letter": `${(0.04 - loaderEase * 0.095).toFixed(4)}em`,
-    "--loader-mind-mask": `${Math.min(100, loaderT * 145).toFixed(1)}%`,
-    "--loader-studio-mask": `${Math.min(100, Math.max(0, (loaderT - 0.12) * 125)).toFixed(1)}%`,
-    "--loader-sheen": `${(180 - loaderT * 280).toFixed(1)}%`,
-    "--loader-halo-scale": (0.65 + loaderEase * 0.85).toFixed(3),
-    "--loader-halo-opacity": (0.035 + Math.sin(loaderT * Math.PI) * 0.075).toFixed(3),
-  } as CSSProperties;
+  const loaderStyle = getLoaderMotionStyle(progress);
 
   return (
     <>
       <div className={`preloader ${loaded ? "preloader-done" : ""}`} aria-hidden={loaded}>
-        <div className="loader-stage" style={loaderStyle}>
+        <div className="loader-stage" style={loaderStyle} ref={loaderStageRef}>
           <div className="loader-copy">
             <div className="loader-brand" aria-label="Mind Rythm Studio">
               <span className="loader-brand-line">

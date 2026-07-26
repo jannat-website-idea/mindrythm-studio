@@ -1588,6 +1588,7 @@ html[data-mindrythm-intro="seen"] .site-shell { opacity: 1; filter: none; transf
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  word-spacing: .12em;
   transition: background-position .12s linear;
 }
 .preloader-done .loader-brand {
