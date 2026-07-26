@@ -33,6 +33,11 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   const [activeTeamCardId, setActiveTeamCardId] = useState<string | null>(null);
   const [formState, setFormState] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
+  function returnToHero() {
+    window.sessionStorage.setItem("mindrythm-intro-seen", "1");
+    document.documentElement.dataset.mindrythmIntro = "seen";
+  }
+
   useEffect(() => {
     if (!activeTeamCardId) return;
     const close = (event: PointerEvent) => {
@@ -78,16 +83,16 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   return (
     <div className="inner-shell">
       <header className="inner-header">
-        <Link className="wordmark" href="/" aria-label="Mindrythm studio home"><img src="/mindrythm-logomark.png" alt="" /><span>Mindrythm <em>studio</em></span></Link>
+        <Link className="wordmark" href="/#home" aria-label="Mindrythm studio home" onClick={returnToHero}><img src="/mindrythm-logomark.png" alt="" /><span>Mindrythm <em>studio</em></span></Link>
         <nav aria-label="Site navigation">
-          <Link href="/">Home</Link>
+          <Link href="/#home" onClick={returnToHero}>Home</Link>
           <Link href="/#services">Services</Link>
           <a className={page === "work" ? "active" : ""} href="/work">Our Work</a>
           <a className={page === "gallery" ? "active" : ""} href="/gallery">Gallery</a>
           <a className={page === "team" ? "active" : ""} href="/team">Our Team</a>
           <a className={page === "contact" ? "active" : ""} href="/contact">Enquire</a>
         </nav>
-        <Link className="inner-home" href="/" aria-label="Return to homepage">← Home</Link>
+        <Link className="inner-home" href="/#home" aria-label="Return to homepage" onClick={returnToHero}>← Home</Link>
       </header>
 
       <main>
@@ -193,7 +198,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
         )}
       </main>
 
-      <footer className="inner-footer"><Link href="/"><img src="/mindrythm-logomark.png" alt="" />Mindrythm studio</Link><span>© {new Date().getFullYear()}</span><a href={settings.instagram}>Instagram</a><a href={settings.youtube}>YouTube</a><a href={settings.facebook}>Facebook</a><a href={settings.x}>X</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/studio">Admin ↗</a></footer>
+      <footer className="inner-footer"><Link href="/#home" onClick={returnToHero}><img src="/mindrythm-logomark.png" alt="" />Mindrythm studio</Link><span>© {new Date().getFullYear()}</span><a href={settings.instagram}>Instagram</a><a href={settings.youtube}>YouTube</a><a href={settings.facebook}>Facebook</a><a href={settings.x}>X</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/studio">Admin ↗</a></footer>
 
       {selected && (
         <div className="lightbox" role="dialog" aria-modal="true" aria-label={selected.title}>

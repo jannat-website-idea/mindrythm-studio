@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function TermsPage() {
   return (
     <main className="legal-page">
-      <Link className="legal-back" href="/">← Mindrythm studio</Link>
+      <Link className="legal-back" href="/#home">← Mindrythm studio</Link>
       <span>Legal / Terms &amp; Conditions</span>
       <h1>Terms &amp;<br />Conditions</h1>
       <section>

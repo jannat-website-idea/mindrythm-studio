@@ -9,7 +9,6 @@ import {
   type ContentItem,
   type SiteContent,
 } from "@/lib/content";
-import Link from "next/link";
 import { type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 
 const fallbackTestimonials: ContentItem[] = [
@@ -59,6 +58,8 @@ const navigationItems = [
   { label: "Our Story", href: "/story", note: "The studio rhythm" },
   { label: "Enquire", href: "/contact", note: "Start a conversation" },
 ] as const;
+
+const INTRO_SEEN_KEY = "mindrythm-intro-seen";
 
 export function Experience({ content }: { content: SiteContent }) {
   const { settings } = content;
@@ -122,6 +123,16 @@ export function Experience({ content }: { content: SiteContent }) {
   const address = settings.address || "250, Bansdroni, Rifle Club Playground, Kolkata - 700070";
 
   useEffect(() => {
+    const shouldSkipIntro = window.location.hash === "#home" || window.sessionStorage.getItem(INTRO_SEEN_KEY) === "1";
+    if (shouldSkipIntro) {
+      document.documentElement.dataset.mindrythmIntro = "seen";
+      const skipFrame = window.requestAnimationFrame(() => {
+        setProgress(100);
+        setLoaded(true);
+      });
+      return () => window.cancelAnimationFrame(skipFrame);
+    }
+
     const startedAt = performance.now();
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const duration = reducedMotion ? 900 : 3800;
@@ -130,7 +141,11 @@ export function Experience({ content }: { content: SiteContent }) {
       const next = Math.min(100, Math.round(((now - startedAt) / duration) * 100));
       setProgress(next);
       if (next < 100) frame = window.requestAnimationFrame(tick);
-      else window.setTimeout(() => setLoaded(true), reducedMotion ? 250 : 420);
+      else window.setTimeout(() => {
+        window.sessionStorage.setItem(INTRO_SEEN_KEY, "1");
+        document.documentElement.dataset.mindrythmIntro = "seen";
+        setLoaded(true);
+      }, reducedMotion ? 250 : 420);
     };
     frame = window.requestAnimationFrame(tick);
     return () => window.cancelAnimationFrame(frame);
@@ -267,9 +282,9 @@ export function Experience({ content }: { content: SiteContent }) {
 
       <div className={`site-shell ${loaded ? "site-ready" : ""}`}>
         <header className={`site-header ${menuOpen ? "menu-active" : ""}`}>
-          <Link className="wordmark" href="/" aria-label="Mindrythm studio home">
+          <a className="wordmark" href="#home" aria-label="Mindrythm studio home">
             <img src="/mindrythm-logomark.png" alt="" />
-          </Link>
+          </a>
           <button type="button" className="menu-toggle" aria-expanded={menuOpen} aria-label="Toggle navigation" onClick={() => setMenuOpen((open) => !open)}>
             <span className="menu-toggle-label">{menuOpen ? "Close" : "Menu"}</span>
             <span className="menu-toggle-count">01—07</span>

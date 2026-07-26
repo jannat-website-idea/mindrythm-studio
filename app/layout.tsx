@@ -43,7 +43,14 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(location.hash==="#home"||sessionStorage.getItem("mindrythm-intro-seen")==="1"){document.documentElement.dataset.mindrythmIntro="seen"}}catch(e){}`,
+          }}
+        />
+      </head>
       <body className={`${avenirFallback.variable} ${editorialAccent.variable}`}>{children}</body>
     </html>
   );
