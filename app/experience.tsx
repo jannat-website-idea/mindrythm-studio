@@ -9,7 +9,7 @@ import {
   type ContentItem,
   type SiteContent,
 } from "@/lib/content";
-import { type FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { type CSSProperties, type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 
 const fallbackTestimonials: ContentItem[] = [
   {
@@ -254,11 +254,22 @@ export function Experience({ content }: { content: SiteContent }) {
   const momentsItems = moments.length ? moments : galleryItems.filter((_, index) => index % 2 === 1);
   const spacesBentoItems = [...spacesItems, ...galleryItems.filter((item) => !spacesItems.some((space) => space.id === item.id))];
   const momentsBentoItems = [...momentsItems, ...galleryItems.filter((item) => !momentsItems.some((moment) => moment.id === item.id))];
+  const loaderStyle = {
+    "--loader-scale": (0.44 + progress * 0.006).toFixed(3),
+    "--loader-opacity": Math.min(1, 0.08 + progress * 0.046).toFixed(3),
+    "--loader-blur": `${Math.max(0, 11 - progress * 0.11).toFixed(2)}px`,
+    "--loader-mind-x": `${(-12 + progress * 0.12).toFixed(2)}vw`,
+    "--loader-studio-x": `${(12 - progress * 0.12).toFixed(2)}vw`,
+    "--loader-letter": `${(0.025 - progress * 0.0008).toFixed(4)}em`,
+    "--loader-mark-turn": `${(-18 + progress * 0.32).toFixed(2)}deg`,
+    "--loader-mark-scale": (0.72 + progress * 0.0056).toFixed(3),
+    "--loader-mark-opacity": Math.min(0.085, 0.025 + progress * 0.0006).toFixed(3),
+  } as CSSProperties;
 
   return (
     <>
       <div className={`preloader ${loaded ? "preloader-done" : ""}`} aria-hidden={loaded}>
-        <div className="loader-stage">
+        <div className="loader-stage" style={loaderStyle}>
           <div className="loader-copy">
             <div className="loader-brand" aria-label="Mind Rythm Studio">
               <span className="loader-brand-line">

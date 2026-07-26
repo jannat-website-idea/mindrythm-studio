@@ -1427,36 +1427,62 @@ html[data-mindrythm-intro="seen"] .preloader { display: none; }
 html[data-mindrythm-intro="seen"] .site-shell { opacity: 1; filter: none; transform: none; }
 
 .loader-brand {
-  width: min(940px, 88vw);
-  gap: .12em;
-  font-size: clamp(3.1rem, 7vw, 7.9rem);
+  position: relative;
+  z-index: 2;
+  width: min(1500px, 92vw);
+  gap: .02em;
+  font-size: clamp(4.4rem, 13vw, 13.5rem);
   font-weight: 300;
-  letter-spacing: -.065em;
-  line-height: .86;
-  animation: mind-rhythm-zoom 3.8s cubic-bezier(.22,1,.36,1) both;
+  letter-spacing: var(--loader-letter, -.055em);
+  line-height: .72;
+  opacity: var(--loader-opacity, 1);
+  filter: blur(var(--loader-blur, 0));
+  transform: scale(var(--loader-scale, 1));
+  animation: none;
+  transition: opacity .09s linear, filter .09s linear, transform .09s linear, letter-spacing .09s linear;
   will-change: opacity, filter, transform;
 }
+.loader-stage {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.loader-stage::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(74vw, 1040px);
+  aspect-ratio: 1;
+  background: url("/mindrythm-logomark.png") center / contain no-repeat;
+  content: "";
+  opacity: var(--loader-mark-opacity, .04);
+  filter: blur(.2px);
+  transform: translate(-50%, -50%) rotate(var(--loader-mark-turn, 0deg)) scale(var(--loader-mark-scale, 1));
+  transition: opacity .09s linear, transform .09s linear;
+  will-change: opacity, transform;
+}
+.loader-copy { position: relative; z-index: 1; }
 .loader-brand-line,
 .loader-brand-line:first-child {
-  justify-self: center;
+  justify-self: start;
   overflow: visible;
+  transform: translateX(var(--loader-mind-x, 0));
   animation: none;
+  transition: transform .09s linear;
+  will-change: transform;
 }
 .loader-brand-line:last-child {
-  justify-self: center;
+  justify-self: end;
   padding-right: 0;
-  font-size: .42em;
+  font-size: .46em;
   font-style: italic;
   font-weight: 400;
-  letter-spacing: -.025em;
+  letter-spacing: -.035em;
   text-transform: none;
+  transform: translateX(var(--loader-studio-x, 0));
   animation: none;
-}
-@keyframes mind-rhythm-zoom {
-  0% { opacity: 0; filter: blur(12px); transform: scale(.68); }
-  22% { opacity: 1; filter: blur(2px); transform: scale(.78); }
-  72% { opacity: 1; filter: none; transform: scale(.96); }
-  100% { opacity: 1; filter: none; transform: scale(1); }
+  transition: transform .09s linear;
+  will-change: transform;
 }
 
 .menu-overlay-brand p { font-size: clamp(3.6rem, 6.4vw, 7.4rem); }
@@ -1499,8 +1525,9 @@ html[data-mindrythm-intro="seen"] .site-shell { opacity: 1; filter: none; transf
 .legal-page h1 { font-size: clamp(3rem, 7vw, 8rem); line-height: .9; }
 
 @media (max-width: 680px) {
-  .loader-brand { width: min(430px, 88vw); gap: .2em; font-size: clamp(2.35rem, 12vw, 3.9rem); }
-  .loader-brand-line:last-child { font-size: .5em; }
+  .loader-brand { width: 92vw; gap: .08em; font-size: clamp(3.1rem, 15vw, 5rem); line-height: .8; }
+  .loader-brand-line:last-child { font-size: .52em; }
+  .loader-stage::before { width: min(96vw, 580px); }
   .menu-overlay nav a > strong { font-size: clamp(1.85rem, 9.7vw, 3.05rem); }
   .hero-title-row { width: min(82vw, 420px); }
   .hero h1 { font-size: clamp(2.15rem, 9.6vw, 3.35rem); }
