@@ -1447,42 +1447,30 @@ html[data-mindrythm-intro="seen"] .site-shell { opacity: 1; filter: none; transf
   isolation: isolate;
   overflow: hidden;
 }
-.loader-stage::before {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: min(74vw, 1040px);
-  aspect-ratio: 1;
-  background: url("/mindrythm-logomark.png") center / contain no-repeat;
-  content: "";
-  opacity: var(--loader-mark-opacity, .04);
-  filter: blur(.2px);
-  transform: translate(-50%, -50%) rotate(var(--loader-mark-turn, 0deg)) scale(var(--loader-mark-scale, 1));
-  transition: opacity .09s linear, transform .09s linear;
-  will-change: opacity, transform;
-}
 .loader-copy { position: relative; z-index: 1; }
-.loader-brand-line,
-.loader-brand-line:first-child {
-  justify-self: start;
+.loader-brand-line {
   overflow: visible;
-  transform: translateX(var(--loader-mind-x, 0));
   animation: none;
   transition: transform .09s linear;
   will-change: transform;
+}
+.loader-brand-line:first-child {
+  justify-self: start;
+  transform: translateX(var(--loader-mind-x, 0));
+}
+.loader-brand-line:nth-child(2) {
+  justify-self: end;
+  transform: translateX(var(--loader-rythm-x, 0));
 }
 .loader-brand-line:last-child {
   justify-self: end;
-  padding-right: 0;
-  font-size: .46em;
+  padding-right: .7em;
+  font-size: .2em;
   font-style: italic;
   font-weight: 400;
-  letter-spacing: -.035em;
+  letter-spacing: .2em;
   text-transform: none;
-  transform: translateX(var(--loader-studio-x, 0));
-  animation: none;
-  transition: transform .09s linear;
-  will-change: transform;
+  transform: translateY(var(--loader-studio-y, 0));
 }
 
 .menu-overlay-brand p { font-size: clamp(3.6rem, 6.4vw, 7.4rem); }
@@ -1525,9 +1513,8 @@ html[data-mindrythm-intro="seen"] .site-shell { opacity: 1; filter: none; transf
 .legal-page h1 { font-size: clamp(3rem, 7vw, 8rem); line-height: .9; }
 
 @media (max-width: 680px) {
-  .loader-brand { width: 92vw; gap: .08em; font-size: clamp(3.1rem, 15vw, 5rem); line-height: .8; }
-  .loader-brand-line:last-child { font-size: .52em; }
-  .loader-stage::before { width: min(96vw, 580px); }
+  .loader-brand { width: 92vw; gap: .06em; font-size: clamp(3.4rem, 17vw, 5.5rem); line-height: .76; }
+  .loader-brand-line:last-child { padding-right: .3em; font-size: .22em; }
   .menu-overlay nav a > strong { font-size: clamp(1.85rem, 9.7vw, 3.05rem); }
   .hero-title-row { width: min(82vw, 420px); }
   .hero h1 { font-size: clamp(2.15rem, 9.6vw, 3.35rem); }
