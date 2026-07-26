@@ -71,12 +71,7 @@ function getLoaderMotionStyle(progress: number): CSSProperties {
     "--loader-blur": `${(12 * (1 - loaderEase)).toFixed(2)}px`,
     "--loader-mind-y": `${(-4 * (1 - loaderEase)).toFixed(2)}vh`,
     "--loader-studio-y": `${(5 * (1 - loaderEase)).toFixed(2)}vh`,
-    "--loader-mind-stretch": (0.9 + loaderEase * 0.1).toFixed(3),
-    "--loader-studio-stretch": (0.84 + loaderEase * 0.16).toFixed(3),
-    "--loader-letter": `${(0.04 - loaderEase * 0.095).toFixed(4)}em`,
-    "--loader-mind-mask": `${Math.min(100, loaderT * 250).toFixed(1)}%`,
-    "--loader-studio-mask": `${Math.min(100, Math.max(0, (loaderT - 0.08) * 200)).toFixed(1)}%`,
-    "--loader-sheen": `${(180 - loaderT * 280).toFixed(1)}%`,
+    "--loader-letter": `${(0.025 - loaderEase * 0.07).toFixed(4)}em`,
     "--loader-halo-scale": (0.65 + loaderEase * 0.85).toFixed(3),
     "--loader-halo-opacity": (0.035 + Math.sin(loaderT * Math.PI) * 0.075).toFixed(3),
   } as CSSProperties;

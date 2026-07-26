@@ -1573,23 +1573,55 @@ html[data-mindrythm-intro="seen"] .site-shell { opacity: 1; filter: none; transf
   will-change: opacity, transform;
 }
 .loader-brand-line {
-  clip-path: inset(0 calc(100% - var(--loader-mind-mask, 100%)) 0 0);
-  overflow: hidden;
-  transition: clip-path .12s linear, transform .12s linear;
+  clip-path: none;
+  overflow: visible;
+  transition: transform .12s linear;
 }
 .loader-brand-line:last-child {
-  clip-path: inset(0 calc(100% - var(--loader-studio-mask, 100%)) 0 0);
+  clip-path: none;
 }
 .loader-brand-word {
   color: var(--ink);
-  background: linear-gradient(100deg, var(--ink) 0 42%, #75756f 49%, var(--ink) 56% 100%);
-  background-position: var(--loader-sheen, 50%) 50%;
-  background-size: 280% 100%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  word-spacing: .12em;
-  transition: background-position .12s linear;
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  word-spacing: .18em;
+}
+.loader-brand {
+  max-width: 88vw;
+  gap: .08em;
+  font-size: clamp(4rem, 10vw, 10.8rem);
+  font-kerning: normal;
+  font-synthesis: none;
+  letter-spacing: var(--loader-letter, -.045em);
+  line-height: .92;
+  text-rendering: geometricPrecision;
+}
+.loader-brand-line,
+.loader-brand-line:first-child,
+.loader-brand-line:last-child {
+  padding: .08em .14em .18em;
+}
+.loader-brand-line:first-child {
+  transform: translateY(var(--loader-mind-y, 0));
+}
+.loader-brand-line:last-child {
+  padding-left: .14em;
+  font-size: .44em;
+  letter-spacing: -.035em;
+  line-height: 1.1;
+  transform: translateY(var(--loader-studio-y, 0));
+}
+@media (max-width: 680px) {
+  .loader-brand {
+    max-width: 92vw;
+    gap: .12em;
+    font-size: clamp(2.8rem, 13.5vw, 4.5rem);
+    line-height: .96;
+  }
+  .loader-brand-line,
+  .loader-brand-line:first-child,
+  .loader-brand-line:last-child { padding: .1em .12em .2em; }
+  .loader-brand-line:last-child { font-size: .46em; line-height: 1.12; }
 }
 .preloader-done .loader-brand {
   opacity: 0;
