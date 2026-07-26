@@ -60,7 +60,7 @@ export type Enquiry = {
 
 function database(): D1Database {
   const db = env.DB as D1Database | undefined;
-  if (!db) throw new Error("The Mindrythm content database is unavailable.");
+  if (!db) throw new Error("The Mind Rythm Studio content database is unavailable.");
   return db;
 }
 
@@ -172,11 +172,33 @@ export async function getSiteContent(): Promise<SiteContent> {
     if (mergedSettings.contactEmail === "hello@mindrythm.studio") {
       mergedSettings.contactEmail = defaultSettings.contactEmail;
     }
-    if (["MINDRYTHM", "MIND RHYTHM", "Mind Rhythm"].includes(mergedSettings.siteName)) {
+    if (["MINDRYTHM", "MIND RHYTHM", "Mind Rhythm", "Mindrythm studio", "Mindrythm Studio"].includes(mergedSettings.siteName)) {
       mergedSettings.siteName = defaultSettings.siteName;
     }
 
-    const savedItems = (itemsResult.results as Record<string, unknown>[]).map(rowToItem);
+    const normalizeBrandName = (value: string) => value
+      .replace(/\bMindrythm\s+studio\b/gi, "Mind Rythm Studio")
+      .replace(/\bMindrythm\b/gi, "Mind Rythm Studio")
+      .replace(/\bMind Rhythm\b(?:\s+Studio)?/gi, "Mind Rythm Studio")
+      .replace(/\bMind Rythm\b(?!\s+Studio)/gi, "Mind Rythm Studio")
+      .replace(/\brhythm\b/gi, "rythm");
+    mergedSettings.siteName = normalizeBrandName(mergedSettings.siteName);
+    mergedSettings.tagline = normalizeBrandName(mergedSettings.tagline);
+    mergedSettings.description = normalizeBrandName(mergedSettings.description);
+    mergedSettings.vision = normalizeBrandName(mergedSettings.vision);
+    mergedSettings.idea = normalizeBrandName(mergedSettings.idea);
+
+    const savedItems = (itemsResult.results as Record<string, unknown>[]).map((row) => {
+      const item = rowToItem(row);
+      return {
+        ...item,
+        title: normalizeBrandName(item.title),
+        eyebrow: normalizeBrandName(item.eyebrow),
+        body: normalizeBrandName(item.body),
+        mediaAlt: normalizeBrandName(item.mediaAlt),
+        category: normalizeBrandName(item.category),
+      };
+    });
     const legacySeedIds = new Set(["quiet-frequency", "in-passing", "field-notes", "object-ritual"]);
     const hasLegacySeed = savedItems.some((item) => legacySeedIds.has(item.id) && ["Quiet Frequency", "In Passing", "Field Notes", "Object / Ritual"].includes(item.title));
     const defaultIds = new Set(defaultItems.map((item) => item.id));

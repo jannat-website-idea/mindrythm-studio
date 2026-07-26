@@ -19,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "localhost:3000";
   const protocol = requestHeaders.get("x-forwarded-proto") ?? (host.includes("localhost") ? "http" : "https");
   const origin = `${protocol}://${host}`;
-  const title = "Mindrythm studio — Property, Event & Wedding Photography";
+  const title = "Mind Rythm Studio — Property, Event & Wedding Photography";
   const description = "Professional photography and films for properties, resorts, events, weddings and brands.";
 
   return {
@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       type: "website",
-      images: [{ url: "/og-final.png", width: 1200, height: 630, alt: "Mindrythm studio — Photography and films with a pulse" }],
+      images: [{ url: "/og-final.png", width: 1200, height: 630, alt: "Mind Rythm Studio — Photography and films with a pulse" }],
     },
     twitter: {
       card: "summary_large_image",
@@ -47,7 +47,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{if(location.hash==="#home"||sessionStorage.getItem("mindrythm-intro-seen")==="1"){document.documentElement.dataset.mindrythmIntro="seen"}}catch(e){}`,
+            __html: `try{if(location.hash==="#home"){document.documentElement.dataset.mindrythmIntro="seen"}}catch(e){}`,
           }}
         />
       </head>

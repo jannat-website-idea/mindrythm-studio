@@ -1427,36 +1427,36 @@ html[data-mindrythm-intro="seen"] .preloader { display: none; }
 html[data-mindrythm-intro="seen"] .site-shell { opacity: 1; filter: none; transform: none; }
 
 .loader-brand {
-  width: min(900px, 86vw);
-  gap: .14em;
-  font-size: clamp(3.35rem, 7.25vw, 8.2rem);
+  width: min(940px, 88vw);
+  gap: .12em;
+  font-size: clamp(3.1rem, 7vw, 7.9rem);
   font-weight: 300;
-  letter-spacing: -.075em;
-  line-height: .82;
+  letter-spacing: -.065em;
+  line-height: .86;
+  animation: mind-rhythm-zoom 3.8s cubic-bezier(.22,1,.36,1) both;
+  will-change: opacity, filter, transform;
 }
+.loader-brand-line,
 .loader-brand-line:first-child {
-  justify-self: start;
-  animation: reference-loader-left 3.8s cubic-bezier(.16,1,.3,1) both;
+  justify-self: center;
+  overflow: visible;
+  animation: none;
 }
 .loader-brand-line:last-child {
-  justify-self: end;
-  padding-right: .12em;
-  font-size: .52em;
+  justify-self: center;
+  padding-right: 0;
+  font-size: .42em;
   font-style: italic;
   font-weight: 400;
-  letter-spacing: -.045em;
-  text-transform: lowercase;
-  animation: reference-loader-right 3.8s cubic-bezier(.16,1,.3,1) both;
+  letter-spacing: -.025em;
+  text-transform: none;
+  animation: none;
 }
-@keyframes reference-loader-left {
-  0%, 8% { opacity: 0; filter: blur(10px); transform: translate3d(-9vw, 18px, 0) scaleX(.86); }
-  38%, 76% { opacity: 1; filter: none; transform: none; }
-  100% { opacity: 1; filter: none; transform: translate3d(1.5vw, 0, 0); }
-}
-@keyframes reference-loader-right {
-  0%, 20% { opacity: 0; filter: blur(9px); transform: translate3d(10vw, -15px, 0) rotate(-4deg); }
-  48%, 76% { opacity: 1; filter: none; transform: none; }
-  100% { opacity: 1; filter: none; transform: translate3d(-1.5vw, 0, 0); }
+@keyframes mind-rhythm-zoom {
+  0% { opacity: 0; filter: blur(12px); transform: scale(.68); }
+  22% { opacity: 1; filter: blur(2px); transform: scale(.78); }
+  72% { opacity: 1; filter: none; transform: scale(.96); }
+  100% { opacity: 1; filter: none; transform: scale(1); }
 }
 
 .menu-overlay-brand p { font-size: clamp(3.6rem, 6.4vw, 7.4rem); }
@@ -1499,8 +1499,8 @@ html[data-mindrythm-intro="seen"] .site-shell { opacity: 1; filter: none; transf
 .legal-page h1 { font-size: clamp(3rem, 7vw, 8rem); line-height: .9; }
 
 @media (max-width: 680px) {
-  .loader-brand { width: min(420px, 86vw); gap: .25em; font-size: clamp(2.65rem, 13.2vw, 4.25rem); }
-  .loader-brand-line:last-child { font-size: .58em; }
+  .loader-brand { width: min(430px, 88vw); gap: .2em; font-size: clamp(2.35rem, 12vw, 3.9rem); }
+  .loader-brand-line:last-child { font-size: .5em; }
   .menu-overlay nav a > strong { font-size: clamp(1.85rem, 9.7vw, 3.05rem); }
   .hero-title-row { width: min(82vw, 420px); }
   .hero h1 { font-size: clamp(2.15rem, 9.6vw, 3.35rem); }

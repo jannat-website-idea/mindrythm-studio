@@ -34,7 +34,6 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   const [formState, setFormState] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   function returnToHero() {
-    window.sessionStorage.setItem("mindrythm-intro-seen", "1");
     document.documentElement.dataset.mindrythmIntro = "seen";
   }
 
@@ -57,7 +56,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
     work: ["Our Work", "Properties, events and weddings photographed and filmed to be remembered."],
     gallery: ["Gallery", "An immersive visual archive of spaces, people and celebrations."],
     team: ["Our Team", "A specialist collective assembled around the needs of every story."],
-    story: ["Our Story", "The thinking, people and process behind Mindrythm studio photography and films."],
+    story: ["Our Story", "The thinking, people and process behind Mind Rythm Studio photography and films."],
     contact: ["Enquire", "Tell us about your property, event, wedding or next visual story."],
   }[page]), [page]);
 
@@ -83,7 +82,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   return (
     <div className="inner-shell">
       <header className="inner-header">
-        <Link className="wordmark" href="/#home" aria-label="Mindrythm studio home" onClick={returnToHero}><img src="/mindrythm-logomark.png" alt="" /><span>Mindrythm <em>studio</em></span></Link>
+        <Link className="wordmark" href="/#home" aria-label="Mind Rythm Studio home" onClick={returnToHero}><img src="/mindrythm-logomark.png" alt="" /><span>Mind Rythm <em>Studio</em></span></Link>
         <nav aria-label="Site navigation">
           <Link href="/#home" onClick={returnToHero}>Home</Link>
           <Link href="/#services">Services</Link>
@@ -97,7 +96,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
 
       <main>
         <section className={`inner-hero inner-hero-${page}`}>
-          <span>Mindrythm studio / {pageMeta[0]}</span>
+          <span>Mind Rythm Studio / {pageMeta[0]}</span>
           <h1>{pageMeta[0]}</h1>
           <p>{pageMeta[1]}</p>
         </section>
@@ -114,7 +113,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                 <div className="work-page-detail">
                   <p>{project.body}</p>
                   <div>{galleryItems.slice(0, 3).map((item) => <Media key={item.id} item={item} />)}</div>
-                  <span>{project.year} / Mindrythm studio</span>
+                  <span>{project.year} / Mind Rythm Studio</span>
                 </div>
               </details>
             ))}
@@ -162,14 +161,14 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
 
         {page === "story" && (
           <div className="story-page">
-            <section className="story-manifesto"><span>What is Mindrythm studio?</span><p>{visionParagraphs[0]}</p></section>
+            <section className="story-manifesto"><span>What is Mind Rythm Studio?</span><p>{visionParagraphs[0]}</p></section>
             <section className="story-pillars">
               <article><span>01</span><h2>What we capture</h2><p>We work across properties, resorts, events and weddings through photography, cinematic film and aerial capture.</p></article>
               <article><span>02</span><h2>Who we work with</h2><p>Couples, families, event teams, developers, architects, resorts and brands seeking a distinct visual point of view.</p></article>
               <article><span>03</span><h2>How we work</h2><p>Every commission begins with listening, a clear visual plan and space for real moments to happen.</p></article>
             </section>
             <section className="story-narrative story-vision-full"><header><span>01 / Our vision</span><h2>Ideas find their visual language.</h2></header><div>{visionParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div></section>
-            <section className="story-vision"><img src="/mindrythm-logomark.png" alt="Mindrythm studio logomark" /><div><span>Our vision</span><h2>{visionParagraphs[3]}</h2></div></section>
+            <section className="story-vision"><img src="/mindrythm-logomark.png" alt="Mind Rythm Studio logomark" /><div><span>Our vision</span><h2>{visionParagraphs[3]}</h2></div></section>
             <section className="story-narrative story-mission"><header><span>02 / Our mission</span><h2>A conversation before a brief.</h2></header><div>{missionParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div></section>
             <section className="story-narrative story-people"><header><span>03 / Our people</span><h2>Never about one person.</h2></header><div><p>{teamIntroduction}</p><a href="/team">Meet the team ↗</a></div></section>
           </div>
@@ -193,12 +192,12 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
               <button type="submit" disabled={formState === "sending"}>{formState === "sending" ? "Sending…" : "Send enquiry ↗"}</button>
               <p className={`form-message ${formState}`}>{formState === "sent" ? "Thank you. Your enquiry has been sent to Admin@mindrythm.com." : formState === "error" ? "Your enquiry was saved, but the email could not be delivered. Please email Admin@mindrythm.com directly." : "Your message will be saved securely and emailed to Admin@mindrythm.com."}</p>
             </form>
-            <div className="contact-page-map"><iframe title="Mindrythm studio location" loading="lazy" src={`https://www.google.com/maps?q=${encodeURIComponent(settings.address)}&output=embed`} /></div>
+            <div className="contact-page-map"><iframe title="Mind Rythm Studio location" loading="lazy" src={`https://www.google.com/maps?q=${encodeURIComponent(settings.address)}&output=embed`} /></div>
           </div>
         )}
       </main>
 
-      <footer className="inner-footer"><Link href="/#home" onClick={returnToHero}><img src="/mindrythm-logomark.png" alt="" />Mindrythm studio</Link><span>© {new Date().getFullYear()}</span><a href={settings.instagram}>Instagram</a><a href={settings.youtube}>YouTube</a><a href={settings.facebook}>Facebook</a><a href={settings.x}>X</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/studio">Admin ↗</a></footer>
+      <footer className="inner-footer"><Link href="/#home" onClick={returnToHero}><img src="/mindrythm-logomark.png" alt="" />Mind Rythm Studio</Link><span>© {new Date().getFullYear()}</span><a href={settings.instagram}>Instagram</a><a href={settings.youtube}>YouTube</a><a href={settings.facebook}>Facebook</a><a href={settings.x}>X</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/studio">Admin ↗</a></footer>
 
       {selected && (
         <div className="lightbox" role="dialog" aria-modal="true" aria-label={selected.title}>
