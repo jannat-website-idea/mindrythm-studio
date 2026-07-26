@@ -1543,3 +1543,165 @@ html[data-mindrythm-intro="seen"] .site-shell { opacity: 1; filter: none; transf
   .story-manifesto > p { font-size: clamp(1.55rem, 7vw, 2.3rem); }
   .story-vision h2 { font-size: clamp(2.3rem, 10.5vw, 3.55rem); }
 }
+
+/* Premium motion layer: preserves the design while refining how it moves */
+.preloader {
+  transition:
+    opacity .8s cubic-bezier(.22,1,.36,1),
+    filter .8s cubic-bezier(.22,1,.36,1),
+    visibility 0s linear .8s;
+}
+.site-shell {
+  transition:
+    opacity .8s cubic-bezier(.22,1,.36,1),
+    filter .8s cubic-bezier(.22,1,.36,1);
+}
+.loader-stage::after {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  width: min(72vmin, 760px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,221,204,.62) 0%, rgba(212,221,204,.16) 38%, transparent 70%);
+  content: "";
+  opacity: var(--loader-halo-opacity, .04);
+  pointer-events: none;
+  transform: translate(-50%,-50%) scale(var(--loader-halo-scale, 1));
+  transition: opacity .12s linear, transform .12s linear;
+  will-change: opacity, transform;
+}
+.loader-brand-line {
+  clip-path: inset(0 calc(100% - var(--loader-mind-mask, 100%)) 0 0);
+  overflow: hidden;
+  transition: clip-path .12s linear, transform .12s linear;
+}
+.loader-brand-line:last-child {
+  clip-path: inset(0 calc(100% - var(--loader-studio-mask, 100%)) 0 0);
+}
+.loader-brand-word {
+  color: var(--ink);
+  background: linear-gradient(100deg, var(--ink) 0 42%, #75756f 49%, var(--ink) 56% 100%);
+  background-position: var(--loader-sheen, 50%) 50%;
+  background-size: 280% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: background-position .12s linear;
+}
+.preloader-done .loader-brand {
+  opacity: 0;
+  filter: blur(8px);
+  transform: rotate(0deg) scale(1.045);
+}
+
+.hero::after {
+  position: absolute;
+  z-index: 1;
+  inset: -18%;
+  background: radial-gradient(circle at 58% 42%, rgba(255,255,255,.12), transparent 38%);
+  content: "";
+  opacity: .42;
+  pointer-events: none;
+  animation: premium-hero-breathe 7s ease-in-out infinite alternate;
+}
+.hero-slides {
+  animation: none !important;
+  transform: translate3d(
+    var(--hero-pointer-x, 0px),
+    calc(var(--hero-pointer-y, 0px) + var(--hero-scroll-y, 0px)),
+    0
+  ) scale(1.035);
+  transform-origin: center;
+  transition: transform .65s cubic-bezier(.22,1,.36,1);
+  will-change: transform;
+}
+.hero-title-line > span {
+  opacity: 0;
+  filter: blur(10px);
+  transform: translateY(110%) scale(.985);
+  transform-origin: left bottom;
+}
+.site-ready .hero-title-line:first-child > span {
+  animation: premium-hero-title .8s cubic-bezier(.16,1,.3,1) .28s forwards;
+}
+.site-ready .hero-title-line:nth-child(2) > span {
+  animation: premium-hero-title .8s cubic-bezier(.16,1,.3,1) .42s forwards;
+}
+@keyframes premium-hero-title {
+  to { opacity: 1; filter: none; transform: none; }
+}
+@keyframes premium-hero-breathe {
+  from { opacity: .28; transform: translate3d(-1.5%,1%,0) scale(.98); }
+  to { opacity: .5; transform: translate3d(1.5%,-1%,0) scale(1.03); }
+}
+
+[data-reveal] {
+  opacity: 0;
+  filter: blur(10px);
+  transform: translateY(26px) scale(.992);
+  transform-origin: center top;
+  transition:
+    opacity .65s ease,
+    filter .7s ease,
+    transform .75s cubic-bezier(.16,1,.3,1);
+  will-change: opacity, filter, transform;
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  filter: none;
+  transform: none;
+}
+.menu-toggle,
+.site-header .wordmark,
+.menu-overlay nav a,
+.services-list > button,
+.project-card,
+.team-card,
+.footer-cta > a,
+.enquiry-form button,
+.contact-page-form button {
+  transition-timing-function: cubic-bezier(.22,1,.36,1);
+}
+.menu-overlay nav a > strong,
+.menu-overlay nav a > i,
+.services-list > button strong,
+.services-list > button i,
+.footer-cta > a > i {
+  transition: transform .45s cubic-bezier(.22,1,.36,1), opacity .35s ease;
+}
+.menu-overlay nav a:hover > strong,
+.services-list > button:hover strong,
+.services-list > button:focus-visible strong {
+  transform: translateX(8px);
+}
+.menu-overlay nav a:hover > i,
+.services-list > button:hover i,
+.footer-cta > a:hover > i {
+  transform: translate(5px,-5px);
+}
+.project-card,
+.team-card { transition: transform .6s cubic-bezier(.22,1,.36,1), box-shadow .6s ease; }
+.project-card:hover,
+.team-card:hover { box-shadow: 0 24px 60px rgba(11,11,10,.13); transform: translateY(-3px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .loader-stage::after,
+  .hero::after { display: none; }
+  .loader-brand,
+  .loader-brand-line,
+  .loader-brand-word,
+  .hero-slides,
+  .hero-title-line > span,
+  [data-reveal] {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  .loader-brand,
+  .hero-title-line > span,
+  [data-reveal] { opacity: 1 !important; }
+  .loader-brand-line { clip-path: none !important; }
+}

@@ -113,6 +113,7 @@ export function Experience({ content }: { content: SiteContent }) {
   const [activeTeamCardId, setActiveTeamCardId] = useState<string | null>(null);
   const [activeService, setActiveService] = useState(0);
   const [enquiryState, setEnquiryState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const heroRef = useRef<HTMLElement | null>(null);
   const scrollCinemaRef = useRef<HTMLElement | null>(null);
 
   const contactEmail = settings.contactEmail === "hello@mindrythm.studio" ? "Admin@mindrythm.com" : settings.contactEmail;
@@ -229,6 +230,52 @@ export function Experience({ content }: { content: SiteContent }) {
     };
   }, []);
 
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let frame = 0;
+    let pointerX = 0;
+    let pointerY = 0;
+    let scrollY = 0;
+    const paint = () => {
+      hero.style.setProperty("--hero-pointer-x", `${pointerX.toFixed(2)}px`);
+      hero.style.setProperty("--hero-pointer-y", `${pointerY.toFixed(2)}px`);
+      hero.style.setProperty("--hero-scroll-y", `${scrollY.toFixed(2)}px`);
+      frame = 0;
+    };
+    const queuePaint = () => {
+      if (!frame) frame = window.requestAnimationFrame(paint);
+    };
+    const move = (event: PointerEvent) => {
+      if (event.pointerType === "touch") return;
+      const bounds = hero.getBoundingClientRect();
+      pointerX = ((event.clientX - bounds.left) / bounds.width - 0.5) * 12;
+      pointerY = ((event.clientY - bounds.top) / bounds.height - 0.5) * 8;
+      queuePaint();
+    };
+    const leave = () => {
+      pointerX = 0;
+      pointerY = 0;
+      queuePaint();
+    };
+    const scroll = () => {
+      scrollY = Math.min(58, Math.max(0, window.scrollY * 0.065));
+      queuePaint();
+    };
+
+    hero.addEventListener("pointermove", move);
+    hero.addEventListener("pointerleave", leave);
+    window.addEventListener("scroll", scroll, { passive: true });
+    scroll();
+    return () => {
+      hero.removeEventListener("pointermove", move);
+      hero.removeEventListener("pointerleave", leave);
+      window.removeEventListener("scroll", scroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, []);
+
   async function submitEnquiry(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setEnquiryState("sending");
@@ -254,16 +301,24 @@ export function Experience({ content }: { content: SiteContent }) {
   const momentsItems = moments.length ? moments : galleryItems.filter((_, index) => index % 2 === 1);
   const spacesBentoItems = [...spacesItems, ...galleryItems.filter((item) => !spacesItems.some((space) => space.id === item.id))];
   const momentsBentoItems = [...momentsItems, ...galleryItems.filter((item) => !momentsItems.some((moment) => moment.id === item.id))];
+  const loaderT = progress / 100;
+  const loaderEase = loaderT * loaderT * (3 - 2 * loaderT);
+  const loaderRotation = -7 * (1 - loaderEase) + Math.sin(loaderT * Math.PI * 3) * 1.4 * (1 - loaderEase);
   const loaderStyle = {
-    "--loader-scale": (0.22 + progress * 0.0086).toFixed(3),
-    "--loader-rotate": `${(-10 + progress * 0.1).toFixed(2)}deg`,
-    "--loader-opacity": Math.min(1, 0.08 + progress * 0.046).toFixed(3),
-    "--loader-blur": `${Math.max(0, 11 - progress * 0.11).toFixed(2)}px`,
-    "--loader-mind-y": `${(-3 + progress * 0.03).toFixed(2)}vh`,
-    "--loader-studio-y": `${(5 - progress * 0.05).toFixed(2)}vh`,
-    "--loader-mind-stretch": (0.94 + progress * 0.0006).toFixed(3),
-    "--loader-studio-stretch": (0.88 + progress * 0.0012).toFixed(3),
-    "--loader-letter": `${(0.025 - progress * 0.0008).toFixed(4)}em`,
+    "--loader-scale": (0.24 + loaderEase * 0.84).toFixed(3),
+    "--loader-rotate": `${loaderRotation.toFixed(2)}deg`,
+    "--loader-opacity": Math.min(1, 0.1 + loaderT * 2.8).toFixed(3),
+    "--loader-blur": `${(12 * (1 - loaderEase)).toFixed(2)}px`,
+    "--loader-mind-y": `${(-4 * (1 - loaderEase)).toFixed(2)}vh`,
+    "--loader-studio-y": `${(5 * (1 - loaderEase)).toFixed(2)}vh`,
+    "--loader-mind-stretch": (0.9 + loaderEase * 0.1).toFixed(3),
+    "--loader-studio-stretch": (0.84 + loaderEase * 0.16).toFixed(3),
+    "--loader-letter": `${(0.04 - loaderEase * 0.095).toFixed(4)}em`,
+    "--loader-mind-mask": `${Math.min(100, loaderT * 145).toFixed(1)}%`,
+    "--loader-studio-mask": `${Math.min(100, Math.max(0, (loaderT - 0.12) * 125)).toFixed(1)}%`,
+    "--loader-sheen": `${(180 - loaderT * 280).toFixed(1)}%`,
+    "--loader-halo-scale": (0.65 + loaderEase * 0.85).toFixed(3),
+    "--loader-halo-opacity": (0.035 + Math.sin(loaderT * Math.PI) * 0.075).toFixed(3),
   } as CSSProperties;
 
   return (
@@ -326,7 +381,7 @@ export function Experience({ content }: { content: SiteContent }) {
         </div>
 
         <main>
-          <section className="hero" id="home" aria-labelledby="hero-title">
+          <section className="hero" id="home" aria-labelledby="hero-title" ref={heroRef}>
             <a className="hero-slides" href="/work" aria-label="Explore Mind Rythm Studio projects">
               {heroItems.map((item, index) => (
                 <div className={`hero-slide ${index === heroIndex ? "active" : ""}`} key={item.id}>
