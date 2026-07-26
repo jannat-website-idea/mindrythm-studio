@@ -259,7 +259,7 @@ export function Experience({ content }: { content: SiteContent }) {
     "--loader-opacity": Math.min(1, 0.08 + progress * 0.046).toFixed(3),
     "--loader-blur": `${Math.max(0, 11 - progress * 0.11).toFixed(2)}px`,
     "--loader-mind-x": `${(-12 + progress * 0.12).toFixed(2)}vw`,
-    "--loader-rythm-x": `${(12 - progress * 0.12).toFixed(2)}vw`,
+    "--loader-studio-x": `${(12 - progress * 0.12).toFixed(2)}vw`,
     "--loader-studio-y": `${(4 - progress * 0.04).toFixed(2)}vh`,
     "--loader-letter": `${(0.025 - progress * 0.0008).toFixed(4)}em`,
   } as CSSProperties;
@@ -271,10 +271,7 @@ export function Experience({ content }: { content: SiteContent }) {
           <div className="loader-copy">
             <div className="loader-brand" aria-label="Mind Rythm Studio">
               <span className="loader-brand-line">
-                <span className="loader-brand-word">Mind</span>
-              </span>
-              <span className="loader-brand-line">
-                <span className="loader-brand-word">Rythm</span>
+                <span className="loader-brand-word">Mind Rythm</span>
               </span>
               <span className="loader-brand-line">
                 <span className="loader-brand-word">Studio</span>
