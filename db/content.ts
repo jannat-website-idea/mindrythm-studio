@@ -172,6 +172,9 @@ export async function getSiteContent(): Promise<SiteContent> {
     if (mergedSettings.contactEmail === "hello@mindrythm.studio") {
       mergedSettings.contactEmail = defaultSettings.contactEmail;
     }
+    if (["MINDRYTHM", "MIND RHYTHM", "Mind Rhythm"].includes(mergedSettings.siteName)) {
+      mergedSettings.siteName = defaultSettings.siteName;
+    }
 
     const savedItems = (itemsResult.results as Record<string, unknown>[]).map(rowToItem);
     const legacySeedIds = new Set(["quiet-frequency", "in-passing", "field-notes", "object-ritual"]);

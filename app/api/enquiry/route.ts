@@ -40,7 +40,7 @@ export async function POST(request: Request) {
       "Idempotency-Key": `mindrythm-enquiry-${enquiry.id}`,
     },
     body: JSON.stringify({
-      from: process.env.RESEND_FROM_EMAIL || "Mind Rhythm Website <onboarding@resend.dev>",
+      from: process.env.RESEND_FROM_EMAIL || "Mindrythm studio Website <onboarding@resend.dev>",
       to: [enquiryRecipient],
       reply_to: email || undefined,
       subject: `Website enquiry from ${name}`,
