@@ -1,9 +1,10 @@
 import Link from "next/link";
+import { BackToTop } from "@/app/back-to-top";
 
 export default function TermsPage() {
   return (
     <main className="legal-page">
-      <Link className="legal-back" href="/#home">← Mind Rythm Studio</Link>
+      <Link className="legal-back" href="/#home">Mind Rythm Studio</Link>
       <span>Legal / Terms &amp; Conditions</span>
       <h1>Terms &amp;<br />Conditions</h1>
       <section>
@@ -16,6 +17,7 @@ export default function TermsPage() {
         <h2>Contact</h2>
         <p>Questions about these terms can be sent to Admin@mindrythm.com.</p>
       </section>
+      <BackToTop />
     </main>
   );
 }

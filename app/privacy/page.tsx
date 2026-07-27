@@ -1,9 +1,10 @@
 import Link from "next/link";
+import { BackToTop } from "@/app/back-to-top";
 
 export default function PrivacyPage() {
   return (
     <main className="legal-page">
-      <Link className="legal-back" href="/#home">← Mind Rythm Studio</Link>
+      <Link className="legal-back" href="/#home">Mind Rythm Studio</Link>
       <span>Legal / Privacy</span>
       <h1>Privacy policy</h1>
       <section>
@@ -16,6 +17,7 @@ export default function PrivacyPage() {
         <h2>External services</h2>
         <p>The website may link to social platforms and display Google Maps. Those services apply their own privacy practices.</p>
       </section>
+      <BackToTop />
     </main>
   );
 }

@@ -1,6 +1,6 @@
 # Demo media credits
 
-The following media is used for the Mind Rhythm demo and may be replaced from the Content Studio.
+The following media is used for the Mind Rythm Studio website and may be replaced from the Content Studio.
 
 ## Video
 

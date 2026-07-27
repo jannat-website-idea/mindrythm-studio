@@ -9,6 +9,8 @@ import {
   type ContentItem,
   type SiteContent,
 } from "@/lib/content";
+import { BackToTop } from "@/app/back-to-top";
+import { EmphasizedCopy } from "@/app/emphasized-copy";
 import { type CSSProperties, type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 
 const fallbackTestimonials: ContentItem[] = [
@@ -61,19 +63,18 @@ const navigationItems = [
 
 function getLoaderMotionStyle(progress: number): CSSProperties {
   const loaderT = progress / 100;
-  const loaderEase = loaderT * loaderT * (3 - 2 * loaderT);
-  const loaderRotation = -7 * (1 - loaderEase) + Math.sin(loaderT * Math.PI * 3) * 1.4 * (1 - loaderEase);
+  const loaderEase = 1 - Math.pow(1 - loaderT, 3);
+  const reveal = Math.max(0, 100 - loaderEase * 116);
 
   return {
-    "--loader-scale": (0.24 + loaderEase * 0.84).toFixed(3),
-    "--loader-rotate": `${loaderRotation.toFixed(2)}deg`,
-    "--loader-opacity": Math.min(1, 0.1 + loaderT * 2.8).toFixed(3),
-    "--loader-blur": `${(12 * (1 - loaderEase)).toFixed(2)}px`,
-    "--loader-mind-y": `${(-4 * (1 - loaderEase)).toFixed(2)}vh`,
-    "--loader-studio-y": `${(5 * (1 - loaderEase)).toFixed(2)}vh`,
-    "--loader-letter": `${(0.025 - loaderEase * 0.07).toFixed(4)}em`,
-    "--loader-halo-scale": (0.65 + loaderEase * 0.85).toFixed(3),
-    "--loader-halo-opacity": (0.035 + Math.sin(loaderT * Math.PI) * 0.075).toFixed(3),
+    "--loader-progress": loaderT.toFixed(4),
+    "--loader-scale": (0.86 + loaderEase * 0.14).toFixed(4),
+    "--loader-opacity": Math.min(1, 0.08 + loaderT * 3.2).toFixed(3),
+    "--loader-blur": `${(7 * Math.pow(1 - loaderEase, 1.35)).toFixed(2)}px`,
+    "--loader-shift": `${(30 * (1 - loaderEase)).toFixed(2)}px`,
+    "--loader-letter": `${(0.055 - loaderEase * 0.092).toFixed(4)}em`,
+    "--loader-reveal": `${reveal.toFixed(2)}%`,
+    "--loader-line": `${Math.max(0, loaderT * 100).toFixed(2)}%`,
   } as CSSProperties;
 }
 
@@ -153,7 +154,7 @@ export function Experience({ content }: { content: SiteContent }) {
 
     const startedAt = performance.now();
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const duration = reducedMotion ? 900 : 3800;
+    const duration = reducedMotion ? 700 : 4300;
     let frame = 0;
     const tick = (now: number) => {
       const exactProgress = Math.min(100, ((now - startedAt) / duration) * 100);
@@ -165,9 +166,7 @@ export function Experience({ content }: { content: SiteContent }) {
       }
       setProgress(Math.round(exactProgress));
       if (exactProgress < 100) frame = window.requestAnimationFrame(tick);
-      else window.setTimeout(() => {
-        setLoaded(true);
-      }, reducedMotion ? 250 : 420);
+      else window.setTimeout(() => setLoaded(true), reducedMotion ? 120 : 720);
     };
     frame = window.requestAnimationFrame(tick);
     return () => window.cancelAnimationFrame(frame);
@@ -332,6 +331,7 @@ export function Experience({ content }: { content: SiteContent }) {
     <>
       <div className={`preloader ${loaded ? "preloader-done" : ""}`} aria-hidden={loaded}>
         <div className="loader-stage" style={loaderStyle} ref={loaderStageRef}>
+          <div className="loader-ambient" aria-hidden="true"><span /><span /></div>
           <div className="loader-copy">
             <div className="loader-brand" aria-label="Mind Rythm Studio">
               <span className="loader-brand-line">
@@ -364,7 +364,7 @@ export function Experience({ content }: { content: SiteContent }) {
         <div className={`menu-overlay ${menuOpen ? "nav-open" : ""}`} aria-hidden={!menuOpen}>
           <aside className="menu-overlay-brand" aria-hidden="true">
             <span>Independent visual studio / Kolkata</span>
-            <p><strong>Mind Rythm</strong><em>Studio</em></p>
+            <img className="menu-watermark" src="/mindrythm-logomark.png" alt="" />
             <small>Every image begins with a pulse.</small>
           </aside>
           <div className="menu-overlay-index">
@@ -375,14 +375,13 @@ export function Experience({ content }: { content: SiteContent }) {
                   <span>0{index + 1}</span>
                   <strong>{item.label}</strong>
                   <small>{item.note}</small>
-                  <i>↗</i>
                 </a>
               ))}
             </nav>
             <div className="menu-overlay-meta">
               <span>Kolkata / Everywhere</span>
               <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
-              <div><a href={settings.instagram}>Instagram</a><a href={settings.youtube}>YouTube</a><a href={settings.x}>X</a></div>
+              <div><a href={settings.instagram}>Instagram Studio</a><a href="https://www.instagram.com/mindrythm.films/">Instagram Films</a><a href={settings.youtube}>YouTube</a><a href={settings.x}>X</a></div>
             </div>
           </div>
         </div>
@@ -418,7 +417,7 @@ export function Experience({ content }: { content: SiteContent }) {
             </p>
             <details className="vision-note" data-reveal>
               <summary><span>Where we begin</span><i>Read the thought +</i></summary>
-              <p>{visionParagraphs[0]}</p>
+              <p><EmphasizedCopy text={visionParagraphs[0]} /></p>
             </details>
             <div className="vision-bridge" data-reveal>
               <a href="/work" className="vision-bridge-frame">
@@ -429,7 +428,7 @@ export function Experience({ content }: { content: SiteContent }) {
                 <img src="/mindrythm-logomark.png" alt="" />
                 <span>One studio</span>
                 <strong>Many ways of seeing.</strong>
-                <i>Our story ↗</i>
+                <i>Our story</i>
               </a>
               <a href="/work" className="vision-bridge-frame vision-bridge-frame-last">
                 <img src="/images/wedding-palace-hero.png" alt="Elegant Indian wedding photographed by Mind Rythm Studio" />
@@ -444,7 +443,7 @@ export function Experience({ content }: { content: SiteContent }) {
               <div className="services-list">
                 {serviceItems.map((service, index) => (
                   <button type="button" aria-pressed={activeService === index} className={activeService === index ? "active" : ""} key={service.title} onMouseEnter={() => setActiveService(index)} onFocus={() => setActiveService(index)} onClick={() => setActiveService(index)}>
-                    <b>0{index + 1}</b><strong>{service.title}</strong><span>{service.copy}</span><i>↗</i>
+                    <b>0{index + 1}</b><strong>{service.title}</strong><span>{service.copy}</span>
                   </button>
                 ))}
               </div>
@@ -453,7 +452,7 @@ export function Experience({ content }: { content: SiteContent }) {
                   const item: ContentItem = { id: `service-${index}`, kind: "project", sortOrder: index, title: service.title, eyebrow: "Service", body: service.copy, mediaUrl: service.mediaUrl, mediaAlt: service.mediaAlt, category: service.title, year: "", href: "/contact", accent: "ink" };
                   return <div className={activeService === index ? "active" : ""} key={service.title}><Media item={item} /></div>;
                 })}
-                <span>{serviceItems[activeService].title}<i>Explore service ↗</i></span>
+                <span>{serviceItems[activeService].title}<i>Explore service</i></span>
               </a>
             </div>
           </section>
@@ -475,11 +474,11 @@ export function Experience({ content }: { content: SiteContent }) {
                     <span>Mind Rythm Studio / Places &amp; people</span>
                     <h2>Stories that make time feel different.</h2>
                     <p>{brandTaglines[2]}</p>
-                    <a href="/work">Explore all work ↗</a>
+                    <a href="/work">Explore all work</a>
                   </article>
                 </div>
               </div>
-              <div className="scroll-cinema-progress"><span /><i>Keep scrolling →</i></div>
+              <div className="scroll-cinema-progress"><span /><i>Keep scrolling</i></div>
             </div>
           </section>
 
@@ -517,10 +516,11 @@ export function Experience({ content }: { content: SiteContent }) {
               <div className="gallery-heading-copy">
                 <p>An immersive archive of properties, portraits, celebrations and moving moments from every side of the studio.</p>
                 <div className="gallery-socials">
-                  <a href={settings.instagram} target="_blank" rel="noreferrer">Instagram ↗</a>
-                  <a href={settings.facebook} target="_blank" rel="noreferrer">Facebook ↗</a>
-                  <a href={settings.youtube} target="_blank" rel="noreferrer">YouTube ↗</a>
-                  <a href={settings.x} target="_blank" rel="noreferrer">X ↗</a>
+                  <a href={settings.instagram} target="_blank" rel="noreferrer">Instagram</a>
+                  <a href="https://www.instagram.com/mindrythm.films/" target="_blank" rel="noreferrer">Instagram Films</a>
+                  <a href={settings.facebook} target="_blank" rel="noreferrer">Facebook</a>
+                  <a href={settings.youtube} target="_blank" rel="noreferrer">YouTube</a>
+                  <a href={settings.x} target="_blank" rel="noreferrer">X</a>
                 </div>
               </div>
             </div>
@@ -537,15 +537,14 @@ export function Experience({ content }: { content: SiteContent }) {
             <div className="testimonials-heading" data-reveal>
               <span>05 / Testimonials</span>
               <h2>Words from<br /><em>our collaborators.</em></h2>
-              <div className="testimonial-source"><span>Curated Google reviews</span><a href="https://www.google.com/search?q=Mind+Rythm+Kolkata+reviews" target="_blank" rel="noreferrer">Read on Google ↗</a></div>
+              <div className="testimonial-source"><span>Curated Google reviews</span><a href="https://www.google.com/search?q=Mind+Rythm+Kolkata+reviews" target="_blank" rel="noreferrer">Read on Google</a></div>
             </div>
             <div className="testimonials-grid">
-              {testimonials.map((item, index) => (
+              {testimonials.map((item) => (
                 <a className="testimonial-card" href="https://www.google.com/search?q=Mind+Rythm+Kolkata+reviews" target="_blank" rel="noreferrer" data-reveal key={item.id}>
                   <div className="review-stars" aria-label={`${item.year || "5.0"} out of 5 stars`}>★★★★★</div>
                   <blockquote>“{item.body}”</blockquote>
                   <div><strong>{item.title}</strong><span>{item.eyebrow || item.category}</span></div>
-                  <span className="testimonial-number">0{index + 1}</span>
                 </a>
               ))}
             </div>
@@ -558,7 +557,7 @@ export function Experience({ content }: { content: SiteContent }) {
             <div className="team-heading" data-reveal>
               <span>06 / Meet the team</span>
               <h2>The right eye<br />for <em>every story.</em></h2>
-              <div className="team-heading-action"><p>{teamIntroduction}</p><a href="/team">Meet our team ↗</a></div>
+              <div className="team-heading-action"><p>{teamIntroduction}</p><a href="/team">Meet our team</a></div>
             </div>
             <div className="team-grid" aria-label="Meet the Mind Rythm Studio team">
               {team.map((member, index) => (
@@ -569,12 +568,12 @@ export function Experience({ content }: { content: SiteContent }) {
                   </button>
                   <div className="team-card-copy" id={`team-card-copy-${index}`}>
                     <span>{member.category || member.eyebrow}</span><h3>{member.title}</h3><p>{member.body}</p>
-                    <button type="button" onClick={(event) => { event.stopPropagation(); setActiveTeamCardId(null); setSelectedItem(member); }}>View profile ↗</button>
+                    <button type="button" onClick={(event) => { event.stopPropagation(); setActiveTeamCardId(null); setSelectedItem(member); }}>View profile</button>
                   </div>
                 </article>
               ))}
             </div>
-            <a className="team-page-link" href="/team"><span>People behind the images</span><strong>Explore the full team</strong><i>↗</i></a>
+            <a className="team-page-link" href="/team"><span>People behind the images</span><strong>Explore the full team</strong></a>
           </section>
 
           <section className="about-section" id="about">
@@ -583,10 +582,10 @@ export function Experience({ content }: { content: SiteContent }) {
               <h2>Mind Rythm Studio is where<br />ideas find a visual language.</h2>
             </div>
             <div className="about-grid">
-              <a href="/story" data-reveal><span>01</span><h3>What is Mind Rythm Studio?</h3><p>{visionParagraphs[1]}</p><i>Read our story ↗</i></a>
-              <a href="/work" data-reveal><span>02</span><h3>What we capture</h3><p>Properties, resorts, corporate events and weddings—through photography, cinematic film, aerial footage and social edits.</p><i>Explore our work ↗</i></a>
-              <a href="/contact" data-reveal><span>03</span><h3>Who we work with</h3><p>Couples, families, event teams, developers, architects, resorts and brands looking for imagery with feeling and precision.</p><i>Work with us ↗</i></a>
-              <a href="#process" data-reveal><span>04</span><h3>How we work</h3><p>We plan timing, light, shot lists and delivery around each brief, keeping the experience calm from first conversation to final files.</p><i>See the process ↓</i></a>
+              <a href="/story" data-reveal><span>01</span><h3>What is Mind Rythm Studio?</h3><p><EmphasizedCopy text={visionParagraphs[1]} /></p><i>Read our story</i></a>
+              <a href="/work" data-reveal><span>02</span><h3>What we capture</h3><p>Properties, resorts, corporate events and weddings—through photography, cinematic film, aerial footage and social edits.</p><i>Explore our work</i></a>
+              <a href="/contact" data-reveal><span>03</span><h3>Who we work with</h3><p>Couples, families, event teams, developers, architects, resorts and brands looking for imagery with feeling and precision.</p><i>Work with us</i></a>
+              <a href="#process" data-reveal><span>04</span><h3>How we work</h3><p>We plan timing, light, shot lists and delivery around each brief, keeping the experience calm from first conversation to final files.</p><i>See the process</i></a>
             </div>
           </section>
 
@@ -596,12 +595,12 @@ export function Experience({ content }: { content: SiteContent }) {
               <h2>From first conversation<br />to <em>final frame.</em></h2>
               <p>A clear process gives every place and milestone the time, light and attention it deserves.</p>
             </div>
-            {heroItems[1] && <a className="process-film" href="/work" data-reveal><Media item={heroItems[1]} /><div><span>Brief / Plan / Capture</span><p>A calm production gives spaces, people and real emotion room to lead. <b>View our work ↗</b></p></div></a>}
+            {heroItems[1] && <a className="process-film" href="/work" data-reveal><Media item={heroItems[1]} /><div><span>Brief / Plan / Capture</span><p>A calm production gives spaces, people and real emotion room to lead. <b>View our work</b></p></div></a>}
             <div className="process-steps">
-              <a href="/contact" data-reveal><span>01</span><h3>Discover</h3><p>We understand the place, people, audience and feeling the imagery needs to create.</p><i>Begin a brief ↗</i></a>
-              <a href="/contact" data-reveal><span>02</span><h3>Plan</h3><p>We shape the schedule, locations, light, shot list and practical details before the day.</p><i>Begin a brief ↗</i></a>
-              <a href="/contact" data-reveal><span>03</span><h3>Capture</h3><p>Photography, film and aerial sequences are composed as one coherent visual story.</p><i>Begin a brief ↗</i></a>
-              <a href="/contact" data-reveal><span>04</span><h3>Deliver</h3><p>Every frame is edited and supplied for galleries, websites, campaigns, archives and social media.</p><i>Begin a brief ↗</i></a>
+              <a href="/contact" data-reveal><span>01</span><h3>Discover</h3><p>We understand the place, people, audience and feeling the imagery needs to create.</p><i>Begin a brief</i></a>
+              <a href="/contact" data-reveal><span>02</span><h3>Plan</h3><p>We shape the schedule, locations, light, shot list and practical details before the day.</p><i>Begin a brief</i></a>
+              <a href="/contact" data-reveal><span>03</span><h3>Capture</h3><p>Photography, film and aerial sequences are composed as one coherent visual story.</p><i>Begin a brief</i></a>
+              <a href="/contact" data-reveal><span>04</span><h3>Deliver</h3><p>Every frame is edited and supplied for galleries, websites, campaigns, archives and social media.</p><i>Begin a brief</i></a>
             </div>
           </section>
 
@@ -612,28 +611,29 @@ export function Experience({ content }: { content: SiteContent }) {
               <span>09 / Reach out</span>
               <h2>Let’s capture<br />your next <em>story.</em></h2>
             </div>
-            <div className="enquiry-reassurance" data-reveal>{enquiryTaglines.map((line, index) => <p key={line}><span>0{index + 1}</span>{line}</p>)}</div>
+            <div className="enquiry-reassurance" data-reveal>{enquiryTaglines.map((line) => <blockquote key={line}>“{line}”</blockquote>)}</div>
             <div className="contact-discovery" data-reveal>
               <div className="contact-map-card">
                 <iframe title="Mind Rythm Studio location" loading="lazy" src={`https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`} />
-                <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noreferrer"><span>Find us in Kolkata</span><strong>{address}</strong><i>Open map ↗</i></a>
+                <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noreferrer"><span>Find us in Kolkata</span><strong>{address}</strong><i>Open map</i></a>
               </div>
               <div className="contact-connect-card">
                 <span>Follow the living archive</span>
                 <h3>New places.<br />Real celebrations.<br />Behind the frame.</h3>
                 <div className="contact-network-links">
-                  <a href={settings.instagram} target="_blank" rel="noreferrer"><span>Instagram</span><strong>@mindrythm.studio</strong><i>Photography, films &amp; process ↗</i></a>
-                  <a href={settings.facebook} target="_blank" rel="noreferrer"><span>Facebook</span><strong>Mind Rythm Studio</strong><i>Updates, galleries &amp; stories ↗</i></a>
+                  <a href={settings.instagram} target="_blank" rel="noreferrer"><span>Instagram</span><strong>@mindrythm.studio</strong><i>Photography, films &amp; process</i></a>
+                  <a href="https://www.instagram.com/mindrythm.films/" target="_blank" rel="noreferrer"><span>Instagram Films</span><strong>@mindrythm.films</strong><i>Motion, edits &amp; behind the frame</i></a>
+                  <a href={settings.facebook} target="_blank" rel="noreferrer"><span>Facebook</span><strong>Mind Rythm Studio</strong><i>Updates, galleries &amp; stories</i></a>
                 </div>
-                <a className="contact-primary-cta" href="/contact#enquiry"><span>Have a story in mind?</span><strong>Start a project</strong><i>↗</i></a>
+                <a className="contact-primary-cta" href="/contact#enquiry"><span>Have a story in mind?</span><strong>Start a project</strong></a>
               </div>
             </div>
             <div className="contact-layout">
               <div className="contact-details" data-reveal>
                 <div><span>Call</span><a href={`tel:${phonePrimary.replace(/\s/g, "")}`}>{phonePrimary}</a><a href={`tel:${phoneSecondary.replace(/\s/g, "")}`}>{phoneSecondary}</a></div>
                 <div><span>Email</span><a href={`mailto:${contactEmail}`}>{contactEmail}</a></div>
-                <div><span>Visit</span><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noreferrer">{address} ↗</a></div>
-                <div className="contact-socials"><a href={settings.instagram}>Instagram ↗</a><a href={settings.facebook}>Facebook ↗</a><a href={settings.youtube}>YouTube ↗</a><a href={settings.x}>X ↗</a></div>
+                <div><span>Visit</span><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noreferrer">{address}</a></div>
+                <div className="contact-socials"><a href={settings.instagram}>Instagram</a><a href="https://www.instagram.com/mindrythm.films/">Instagram Films</a><a href={settings.facebook}>Facebook</a><a href={settings.youtube}>YouTube</a><a href={settings.x}>X</a></div>
               </div>
               <form className="enquiry-form" onSubmit={submitEnquiry} data-reveal>
                 <div className="form-field"><label htmlFor="name">Full name *</label><input id="name" name="name" required autoComplete="name" /></div>
@@ -641,7 +641,7 @@ export function Experience({ content }: { content: SiteContent }) {
                 <div className="form-field"><label htmlFor="email">Email ID</label><input id="email" name="email" type="email" autoComplete="email" /></div>
                 <div className="form-field"><label htmlFor="service">Service *</label><select id="service" name="service" required defaultValue=""><option value="" disabled>Select a service</option><option>Property photography</option><option>Resort &amp; hospitality</option><option>Event photography</option><option>Event film</option><option>Wedding photography</option><option>Wedding or pre-wedding film</option><option>Other</option></select></div>
                 <div className="form-field form-field-wide"><label htmlFor="query">Your query *</label><textarea id="query" name="query" required maxLength={1000} rows={6} /></div>
-                <button type="submit" disabled={enquiryState === "sending"}>{enquiryState === "sending" ? "Sending…" : "Send enquiry"} <span>↗</span></button>
+                <button type="submit" disabled={enquiryState === "sending"}>{enquiryState === "sending" ? "Sending…" : "Send enquiry"}</button>
                 <p className={`form-message ${enquiryState}`}>{enquiryState === "sent" ? "Thank you. Your enquiry has been sent to Admin@mindrythm.com." : enquiryState === "error" ? "Your enquiry was saved, but the email could not be delivered. Please email Admin@mindrythm.com directly." : "Your message will be saved securely and emailed to Admin@mindrythm.com."}</p>
               </form>
             </div>
@@ -649,15 +649,16 @@ export function Experience({ content }: { content: SiteContent }) {
         </main>
 
         <footer className="site-footer">
-          <div className="footer-cta"><span>{footerTaglines[1]}</span><a href="/contact">{footerTaglines[0]} <i>↗</i></a></div>
+          <div className="footer-cta"><span>{footerTaglines[1]}</span><a href="/contact">{footerTaglines[0]}</a></div>
           <div className="footer-grid">
             <div className="footer-brand"><img src="/mindrythm-logomark.png" alt="Mind Rythm Studio logomark" /><span>Mind Rythm <em>Studio</em></span></div>
             <div className="footer-column"><span>Explore</span><a href="#services">Services</a><a href="/work">Our Work</a><a href="/gallery">Gallery</a><a href="/team">Our Team</a></div>
-            <div className="footer-column"><span>Follow</span><a href={settings.instagram}>Instagram ↗</a><a href={settings.facebook}>Facebook ↗</a><a href={settings.youtube}>YouTube ↗</a><a href={settings.x}>X ↗</a></div>
-            <div className="footer-column"><span>Legal</span><a href="/privacy">Privacy Policy</a><a href="/terms">Terms &amp; Conditions</a><a href="/studio">Content Studio ↗</a></div>
+            <div className="footer-column"><span>Follow</span><a href={settings.instagram}>Instagram</a><a href="https://www.instagram.com/mindrythm.films/">Instagram Films</a><a href={settings.facebook}>Facebook</a><a href={settings.youtube}>YouTube</a><a href={settings.x}>X</a></div>
+            <div className="footer-column"><span>Legal</span><a href="/privacy">Privacy Policy</a><a href="/terms">Terms &amp; Conditions</a><a href="/studio">Content Studio</a></div>
           </div>
-          <div className="footer-meta"><span>© {new Date().getFullYear()} Mind Rythm Studio</span><span>Kolkata / Everywhere</span><a href="#home">Back to top ↑</a></div>
+          <div className="footer-meta"><span>© {new Date().getFullYear()} Mind Rythm Studio</span><span>Kolkata / Everywhere</span></div>
         </footer>
+        <BackToTop />
       </div>
 
       {selectedItem && (
@@ -668,7 +669,7 @@ export function Experience({ content }: { content: SiteContent }) {
             <span>{selectedItem.eyebrow} {selectedItem.year && `/ ${selectedItem.year}`}</span>
             <h2>{selectedItem.title}</h2>
             <p>{selectedItem.body}</p>
-            {selectedItem.kind === "team" && <div className="modal-socials"><a href={selectedItem.href || settings.instagram}>Instagram ↗</a><a href={settings.linkedin}>LinkedIn ↗</a></div>}
+            {selectedItem.kind === "team" && <div className="modal-socials"><a href={selectedItem.href || settings.instagram}>Instagram</a><a href={settings.linkedin}>LinkedIn</a></div>}
             {selectedItem.kind === "project" && (
               <div className="modal-related">
                 {galleryItems.slice(0, 3).map((item) => <div key={item.id}><Media item={item} /></div>)}
@@ -688,7 +689,6 @@ function ProjectCard({ project, index, onOpen }: { project: ContentItem; index: 
       <Media item={project} /><div className="media-shade" />
       <span className="card-number">{String(index + 1).padStart(2, "0")} / {project.category}</span>
       <div className="project-title"><span>{project.eyebrow}</span><h3>{project.title}</h3><p>{project.body}</p></div>
-      <span className="project-arrow">↗</span>
     </button>
   );
 }
@@ -706,9 +706,9 @@ function GalleryCollection({ title, index, items, socials, onOpen }: { title: st
           </button>
         ))}
         <div className="gallery-card gallery-note gallery-note-social" aria-label="Mind Rythm Studio social channels">
-          <a href={socials.instagram}>Instagram ↗</a><a href={socials.facebook}>Facebook ↗</a><a href={socials.youtube}>YouTube ↗</a>
+          <a href={socials.instagram}>Instagram</a><a href="https://www.instagram.com/mindrythm.films/">Instagram Films</a><a href={socials.facebook}>Facebook</a><a href={socials.youtube}>YouTube</a>
         </div>
-        <a className="gallery-card gallery-note gallery-note-feature" href="/gallery"><span>Mind Rythm Studio archive</span><p>{isCelebrations ? "Wedding stories with feeling, movement and detail." : "Spaces shaped by light, material and a sense of arrival."}</p><i>Open the full gallery ↗</i></a>
+        <a className="gallery-card gallery-note gallery-note-feature" href="/gallery"><span>Mind Rythm Studio archive</span><p>{isCelebrations ? "Wedding stories with feeling, movement and detail." : "Spaces shaped by light, material and a sense of arrival."}</p><i>Open the full gallery</i></a>
       </div>
     </article>
   );

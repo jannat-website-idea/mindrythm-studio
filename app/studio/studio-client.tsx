@@ -154,7 +154,7 @@ export function StudioClient({
         <div className="studio-header-actions">
           <span className="editor-pill">{editorName}</span>
           <Link href="/" target="_blank" className="button secondary">
-            View website ↗
+            View website
           </Link>
         </div>
       </header>

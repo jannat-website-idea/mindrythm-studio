@@ -8,6 +8,8 @@ import {
   type ContentItem,
   type SiteContent,
 } from "@/lib/content";
+import { BackToTop } from "@/app/back-to-top";
+import { EmphasizedCopy } from "@/app/emphasized-copy";
 import { type FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
@@ -91,7 +93,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
           <a className={page === "team" ? "active" : ""} href="/team">Our Team</a>
           <a className={page === "contact" ? "active" : ""} href="/contact">Enquire</a>
         </nav>
-        <Link className="inner-home" href="/#home" aria-label="Return to homepage" onClick={returnToHero}>← Home</Link>
+        <Link className="inner-home" href="/#home" aria-label="Return to homepage" onClick={returnToHero}>Home</Link>
       </header>
 
       <main>
@@ -129,12 +131,12 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                 <section className="gallery-page-section" key={category}>
                   <header><span>0{categoryIndex + 1}</span><h2>{category}</h2><p>{category === "Spaces" ? "Property, architecture, landscape and the first impression of arrival." : "Weddings, events, people and the energy of moments shared."}</p></header>
                   <div className="gallery-page-grid">
-                    {items.map((item, index) => <button type="button" className={`gallery-page-card gallery-page-card-${(index % 4) + 1}`} key={item.id} onClick={() => setSelected(item)}><Media item={item} /><span>{item.title} ↗</span></button>)}
+                    {items.map((item, index) => <button type="button" className={`gallery-page-card gallery-page-card-${(index % 4) + 1}`} key={item.id} onClick={() => setSelected(item)}><Media item={item} /><span>{item.title}</span></button>)}
                   </div>
                 </section>
               );
             })}
-            <section className="social-gallery-cta"><span>Follow the living archive</span><div><a href={settings.instagram}>Instagram ↗</a><a href={settings.facebook}>Facebook ↗</a><a href={settings.youtube}>YouTube ↗</a></div></section>
+            <section className="social-gallery-cta"><span>Follow the living archive</span><div><a href={settings.instagram}>Instagram</a><a href="https://www.instagram.com/mindrythm.films/">Instagram Films</a><a href={settings.facebook}>Facebook</a><a href={settings.youtube}>YouTube</a></div></section>
           </div>
         )}
 
@@ -150,38 +152,38 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                   </button>
                   <div className="team-page-card-overlay" id={`team-page-overlay-${index}`}>
                     <span>0{index + 1} / {member.category}</span><h2>{member.title}</h2><p>{member.body}</p>
-                    <button type="button" onClick={(event) => { event.stopPropagation(); setActiveTeamCardId(null); setSelected(member); }}>View profile ↗</button>
+                    <button type="button" onClick={(event) => { event.stopPropagation(); setActiveTeamCardId(null); setSelected(member); }}>View profile</button>
                   </div>
                 </article>
               ))}
             </section>
-            <section className="team-page-note"><span>Built around the story</span><h2>A focused core.<br /><em>The right specialists.</em></h2><p>Each commission brings together the precise mix of property, event or wedding photographers, filmmakers, aerial operators and editors it needs.</p><a href="/contact">Work with the team ↗</a></section>
+            <section className="team-page-note"><span>Built around the story</span><h2>A focused core.<br /><em>The right specialists.</em></h2><p>Each commission brings together the precise mix of property, event or wedding photographers, filmmakers, aerial operators and editors it needs.</p><a href="/contact">Work with the team</a></section>
           </>
         )}
 
         {page === "story" && (
           <div className="story-page">
-            <section className="story-manifesto"><span>What is Mind Rythm Studio?</span><p>{visionParagraphs[0]}</p></section>
+            <section className="story-manifesto"><span>What is Mind Rythm Studio?</span><p><EmphasizedCopy text={visionParagraphs[0]} /></p></section>
             <section className="story-pillars">
               <article><span>01</span><h2>What we capture</h2><p>We work across properties, resorts, events and weddings through photography, cinematic film and aerial capture.</p></article>
               <article><span>02</span><h2>Who we work with</h2><p>Couples, families, event teams, developers, architects, resorts and brands seeking a distinct visual point of view.</p></article>
               <article><span>03</span><h2>How we work</h2><p>Every commission begins with listening, a clear visual plan and space for real moments to happen.</p></article>
             </section>
-            <section className="story-narrative story-vision-full"><header><span>01 / Our vision</span><h2>Ideas find their visual language.</h2></header><div>{visionParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div></section>
+            <section className="story-narrative story-vision-full"><header><span>01 / Our vision</span><h2>Ideas find their visual language.</h2></header><div>{visionParagraphs.map((paragraph) => <p key={paragraph}><EmphasizedCopy text={paragraph} /></p>)}</div></section>
             <section className="story-vision"><img src="/mindrythm-logomark.png" alt="Mind Rythm Studio logomark" /><div><span>Our vision</span><h2>{visionParagraphs[3]}</h2></div></section>
             <section className="story-narrative story-mission"><header><span>02 / Our mission</span><h2>A conversation before a brief.</h2></header><div>{missionParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div></section>
-            <section className="story-narrative story-people"><header><span>03 / Our people</span><h2>Never about one person.</h2></header><div><p>{teamIntroduction}</p><a href="/team">Meet the team ↗</a></div></section>
+            <section className="story-narrative story-people"><header><span>03 / Our people</span><h2>Never about one person.</h2></header><div><p>{teamIntroduction}</p><a href="/team">Meet the team</a></div></section>
           </div>
         )}
 
         {page === "contact" && (
           <div className="contact-page">
-            <section className="contact-page-intro">{enquiryTaglines.map((line, index) => <p key={line}><span>0{index + 1}</span>{line}</p>)}</section>
+            <section className="contact-page-intro">{enquiryTaglines.map((line) => <blockquote key={line}>“{line}”</blockquote>)}</section>
             <section className="contact-page-info">
               <div><span>Call</span><a href={`tel:${settings.phonePrimary}`}>{settings.phonePrimary}</a><a href={`tel:${settings.phoneSecondary}`}>{settings.phoneSecondary}</a></div>
               <div><span>Email</span><a href={`mailto:${settings.contactEmail}`}>{settings.contactEmail}</a></div>
-              <div><span>Visit</span><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(settings.address)}`} target="_blank" rel="noreferrer">{settings.address} ↗</a></div>
-              <div><span>Social</span><a href={settings.instagram}>Instagram ↗</a><a href={settings.facebook}>Facebook ↗</a><a href={settings.youtube}>YouTube ↗</a><a href={settings.x}>X ↗</a></div>
+              <div><span>Visit</span><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(settings.address)}`} target="_blank" rel="noreferrer">{settings.address}</a></div>
+              <div><span>Social</span><a href={settings.instagram}>Instagram</a><a href="https://www.instagram.com/mindrythm.films/">Instagram Films</a><a href={settings.facebook}>Facebook</a><a href={settings.youtube}>YouTube</a><a href={settings.x}>X</a></div>
             </section>
             <form className="contact-page-form" id="enquiry" onSubmit={sendEnquiry}>
               <div className="form-field"><label htmlFor="contact-name">Full name *</label><input id="contact-name" name="name" required /></div>
@@ -189,7 +191,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
               <div className="form-field"><label htmlFor="contact-email">Email ID</label><input id="contact-email" name="email" type="email" /></div>
               <div className="form-field"><label htmlFor="contact-service">Service *</label><select id="contact-service" name="service" required defaultValue=""><option value="" disabled>Select a service</option><option>Property photography</option><option>Resort &amp; hospitality</option><option>Event photography</option><option>Event film</option><option>Wedding photography</option><option>Wedding or pre-wedding film</option><option>Other</option></select></div>
               <div className="form-field form-field-wide"><label htmlFor="contact-query">Your query *</label><textarea id="contact-query" name="query" rows={7} maxLength={1000} required /></div>
-              <button type="submit" disabled={formState === "sending"}>{formState === "sending" ? "Sending…" : "Send enquiry ↗"}</button>
+              <button type="submit" disabled={formState === "sending"}>{formState === "sending" ? "Sending…" : "Send enquiry"}</button>
               <p className={`form-message ${formState}`}>{formState === "sent" ? "Thank you. Your enquiry has been sent to Admin@mindrythm.com." : formState === "error" ? "Your enquiry was saved, but the email could not be delivered. Please email Admin@mindrythm.com directly." : "Your message will be saved securely and emailed to Admin@mindrythm.com."}</p>
             </form>
             <div className="contact-page-map"><iframe title="Mind Rythm Studio location" loading="lazy" src={`https://www.google.com/maps?q=${encodeURIComponent(settings.address)}&output=embed`} /></div>
@@ -197,13 +199,14 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
         )}
       </main>
 
-      <footer className="inner-footer"><Link href="/#home" onClick={returnToHero}><img src="/mindrythm-logomark.png" alt="" />Mind Rythm Studio</Link><span>© {new Date().getFullYear()}</span><a href={settings.instagram}>Instagram</a><a href={settings.youtube}>YouTube</a><a href={settings.facebook}>Facebook</a><a href={settings.x}>X</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/studio">Admin ↗</a></footer>
+      <footer className="inner-footer"><Link href="/#home" onClick={returnToHero}><img src="/mindrythm-logomark.png" alt="" />Mind Rythm Studio</Link><span>© {new Date().getFullYear()}</span><a href={settings.instagram}>Instagram</a><a href="https://www.instagram.com/mindrythm.films/">Instagram Films</a><a href={settings.youtube}>YouTube</a><a href={settings.facebook}>Facebook</a><a href={settings.x}>X</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/studio">Admin</a></footer>
+      <BackToTop />
 
       {selected && (
         <div className="lightbox" role="dialog" aria-modal="true" aria-label={selected.title}>
           <button type="button" onClick={() => setSelected(null)}>Close ×</button>
           <div className="lightbox-image"><Media item={selected} /></div>
-          <div className="lightbox-copy"><span>{selected.category}</span><h2>{selected.title}</h2><p>{selected.body}</p>{selected.kind === "team" && <div><a href={selected.href || settings.instagram}>Instagram ↗</a><a href={settings.linkedin}>LinkedIn ↗</a></div>}</div>
+          <div className="lightbox-copy"><span>{selected.category}</span><h2>{selected.title}</h2><p>{selected.body}</p>{selected.kind === "team" && <div><a href={selected.href || settings.instagram}>Instagram</a><a href={settings.linkedin}>LinkedIn</a></div>}</div>
         </div>
       )}
     </div>
