@@ -1767,32 +1767,26 @@ html[data-mindrythm-intro="seen"] .site-shell { opacity: 1; filter: none; transf
 .site-header.menu-active .wordmark img { filter: none; }
 .menu-toggle { grid-template-columns: auto 30px; min-width: 108px; }
 
-.menu-brand-lockup {
+.menu-brand-context {
   position: relative;
   z-index: 2;
-  display: flex;
-  gap: 1rem;
-  align-items: center;
+  display: grid;
+  gap: .42rem;
   width: max-content;
   color: var(--ivory);
+  text-transform: uppercase;
 }
-.menu-brand-lockup > img { width: 48px; height: 48px; object-fit: contain; filter: invert(1); }
-.menu-brand-lockup > span {
-  display: inline-flex;
-  gap: .28em;
-  align-items: baseline;
-  font-size: clamp(1.3rem, 1.75vw, 1.85rem);
-  font-weight: 550;
-  letter-spacing: -.035em;
+.menu-brand-context > span {
+  font-size: clamp(.62rem, .72vw, .78rem);
+  font-weight: 500;
+  letter-spacing: .14em;
+  line-height: 1.25;
   white-space: nowrap;
 }
-.menu-brand-lockup em { font-family: var(--font-accent); font-weight: 500; }
-.menu-brand-kicker {
-  position: relative;
-  z-index: 2;
-  margin-top: .9rem;
-  color: rgba(247,246,241,.48);
-  opacity: 1;
+.menu-brand-context > small {
+  color: rgba(247,246,241,.42);
+  font-size: clamp(.5rem, .56vw, .6rem);
+  letter-spacing: .12em;
 }
 .menu-overlay nav a { grid-template-columns: minmax(0,1fr) minmax(130px,.4fr); }
 .menu-overlay nav a > strong { line-height: .96; }
@@ -2006,6 +2000,8 @@ p { text-wrap: pretty; }
 }
 .menu-overlay-brand { position: relative; justify-content: flex-start; overflow: hidden; }
 .menu-overlay-brand > small { margin-top: auto; }
+.menu-overlay-index { position: relative; z-index: 2; }
+.menu-overlay-heading { padding-left: clamp(3rem, 5vw, 6rem); }
 .menu-brand-feature {
   position: absolute;
   z-index: 1;
@@ -2206,6 +2202,10 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
 .social-gallery-cta a:hover::after,
 .testimonial-source a:hover::after { transform: scaleX(1); transform-origin: left; }
 
+@media (max-width: 900px) {
+  .menu-overlay-heading { padding-left: clamp(1.25rem, 3vw, 2.5rem); }
+}
+
 @media (max-width: 680px) {
   .loader-copy { padding: 1.2rem; }
   .loader-brand { width: 91vw; gap: .12em; font-size: clamp(2.65rem, 12.6vw, 4.35rem); line-height: .9; }
@@ -2215,6 +2215,7 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   .loader-brand-line:last-child { padding-top: 0; font-size: .64em; }
   .loader-footer > span:first-child { max-width: 180px; line-height: 1.35; }
   .menu-overlay { display: block; background: var(--ivory); }
+  .menu-overlay-heading { padding-left: 0; }
   .menu-overlay nav a { grid-template-columns: minmax(0,1fr); }
   .menu-overlay nav a > small { display: none; }
   .enquiry-reassurance,

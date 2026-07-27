@@ -65,13 +65,19 @@ const navigationItems = [
 
 function getLoaderMotionStyle(progress: number): CSSProperties {
   const loaderT = progress / 100;
-  const loaderEase = 1 - Math.pow(1 - loaderT, 3);
-  const reveal = Math.max(0, 100 - loaderEase * 116);
+  // Let the motion resolve with the counter instead of visually finishing
+  // halfway through the sequence. The reveal completes at 90%, then settles
+  // gently while the final ten percent finishes.
+  const motionT = Math.min(1, Math.max(0, (loaderT - 0.04) / 0.86));
+  const loaderEase = motionT * motionT * (3 - 2 * motionT);
+  const settleT = Math.min(1, Math.max(0, (loaderT - 0.9) / 0.1));
+  const settleEase = settleT * settleT * (3 - 2 * settleT);
+  const reveal = Math.max(0, 100 - loaderEase * 100);
 
   return {
     "--loader-progress": loaderT.toFixed(4),
-    "--loader-scale": (0.86 + loaderEase * 0.14).toFixed(4),
-    "--loader-opacity": Math.min(1, 0.08 + loaderT * 3.2).toFixed(3),
+    "--loader-scale": (0.86 + loaderEase * 0.14 + settleEase * 0.012).toFixed(4),
+    "--loader-opacity": Math.min(1, 0.1 + loaderEase * 0.9).toFixed(3),
     "--loader-blur": `${(7 * Math.pow(1 - loaderEase, 1.35)).toFixed(2)}px`,
     "--loader-shift": `${(30 * (1 - loaderEase)).toFixed(2)}px`,
     "--loader-letter": `${(0.055 - loaderEase * 0.092).toFixed(4)}em`,
@@ -365,11 +371,10 @@ export function Experience({ content }: { content: SiteContent }) {
 
         <div className={`menu-overlay ${menuOpen ? "nav-open" : ""}`} aria-hidden={!menuOpen}>
           <aside className="menu-overlay-brand" aria-hidden="true">
-            <div className="menu-brand-lockup">
-              <img src="/mindrythm-logomark.png" alt="" />
-              <span>Mind Rythm <em>Studio</em></span>
+            <div className="menu-brand-context">
+              <span>Creative professional studio</span>
+              <small>Independent visual practice / Kolkata</small>
             </div>
-            <span className="menu-brand-kicker">Independent visual studio / Kolkata</span>
             <div className="menu-brand-feature">
               <img src="/mindrythm-logomark.png" alt="" />
               <p><span>Mind Rhythm</span><em>Studio</em></p>
