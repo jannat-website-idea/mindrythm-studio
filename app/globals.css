@@ -2006,19 +2006,69 @@ p { text-wrap: pretty; }
 }
 .menu-overlay-brand { position: relative; justify-content: flex-start; overflow: hidden; }
 .menu-overlay-brand > small { margin-top: auto; }
-.menu-watermark {
+.menu-brand-feature {
   position: absolute;
-  top: 57%;
-  left: 50%;
-  width: min(28vw, 420px);
-  max-height: 58vh;
-  object-fit: contain;
-  opacity: .25;
-  filter: invert(1);
-  transform: translate(-50%,-50%) scale(.92);
-  transition: opacity .9s ease .2s, transform 1.3s var(--motion-ease) .12s;
+  z-index: 1;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 8rem 2.5vw 6rem;
+  isolation: isolate;
+  pointer-events: none;
 }
-.menu-overlay:not(.nav-open) .menu-watermark { opacity: 0; transform: translate(-50%,-40%) scale(.86); }
+.menu-brand-feature > img {
+  position: absolute;
+  z-index: -1;
+  width: min(32vw, 500px);
+  max-height: 62vh;
+  object-fit: contain;
+  opacity: .13;
+  filter: invert(1);
+  transform: scale(.94) rotate(-2deg);
+  transition: opacity 1s ease .18s, transform 1.35s var(--motion-ease) .12s;
+}
+.menu-brand-feature > p {
+  display: flex;
+  margin: 0;
+  flex-direction: column;
+  align-items: center;
+  color: var(--ivory);
+  line-height: .82;
+  text-align: center;
+  text-transform: none;
+  transform: translateY(.35rem);
+}
+.menu-brand-feature > p span {
+  font-family: "Avenir Next", Avenir, var(--font-avenir), "Helvetica Neue", Arial, sans-serif;
+  font-size: clamp(2.65rem, 4.45vw, 5.4rem);
+  font-weight: 300;
+  letter-spacing: -.07em;
+  white-space: nowrap;
+}
+.menu-brand-feature > p em {
+  margin-top: .08em;
+  padding: 0;
+  font-family: var(--font-accent), "Times New Roman", serif;
+  font-size: clamp(2.05rem, 3.35vw, 4.15rem);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -.055em;
+  line-height: .9;
+}
+.menu-overlay:not(.nav-open) .menu-brand-feature > img {
+  opacity: 0;
+  transform: scale(.86) rotate(-5deg);
+}
+.menu-overlay:not(.nav-open) .menu-brand-feature > p {
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(1.25rem) scale(.97);
+}
+.menu-brand-feature > p {
+  opacity: 1;
+  filter: none;
+  transition: opacity .75s ease .28s, filter .9s ease .28s, transform 1s var(--motion-ease) .24s;
+}
 .menu-overlay nav a {
   opacity: 0;
   transform: translateY(-20px);

@@ -370,7 +370,10 @@ export function Experience({ content }: { content: SiteContent }) {
               <span>Mind Rythm <em>Studio</em></span>
             </div>
             <span className="menu-brand-kicker">Independent visual studio / Kolkata</span>
-            <img className="menu-watermark" src="/mindrythm-logomark.png" alt="" />
+            <div className="menu-brand-feature">
+              <img src="/mindrythm-logomark.png" alt="" />
+              <p><span>Mind Rhythm</span><em>Studio</em></p>
+            </div>
             <small>Every image begins with a pulse.</small>
           </aside>
           <div className="menu-overlay-index">
