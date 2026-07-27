@@ -3,6 +3,8 @@ import {
   defaultContent,
   defaultItems,
   defaultSettings,
+  filmsInstagramUrl,
+  mainInstagramUrl,
   type ContentItem,
   type SiteContent,
   type SiteSettings,
@@ -171,6 +173,16 @@ export async function getSiteContent(): Promise<SiteContent> {
       : defaultSettings;
     if (mergedSettings.contactEmail === "hello@mindrythm.studio") {
       mergedSettings.contactEmail = defaultSettings.contactEmail;
+    }
+    const savedInstagram = mergedSettings.instagram.trim().replace(/\/+$/, "").toLowerCase();
+    const legacyInstagramLinks = new Set([
+      "https://instagram.com",
+      "https://www.instagram.com",
+      filmsInstagramUrl.replace(/\/+$/, "").toLowerCase(),
+      "https://instagram.com/mindrythm.films",
+    ]);
+    if (!savedInstagram || legacyInstagramLinks.has(savedInstagram)) {
+      mergedSettings.instagram = mainInstagramUrl;
     }
     if (["MINDRYTHM", "MIND RHYTHM", "Mind Rhythm", "Mindrythm studio", "Mindrythm Studio"].includes(mergedSettings.siteName)) {
       mergedSettings.siteName = defaultSettings.siteName;

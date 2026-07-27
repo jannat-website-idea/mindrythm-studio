@@ -45,6 +45,9 @@ export type SiteContent = {
   items: ContentItem[];
 };
 
+export const mainInstagramUrl = "https://www.instagram.com/mindrythm_studios/";
+export const filmsInstagramUrl = "https://www.instagram.com/mindrythm.films/";
+
 export const defaultSettings: SiteSettings = {
   siteName: "Mind Rythm Studio",
   tagline: "Every story has a rhythm.",
@@ -58,7 +61,7 @@ export const defaultSettings: SiteSettings = {
   phonePrimary: "+91 90735 73878",
   phoneSecondary: "+91 62923 33492",
   address: "250, Bansdroni, Rifle Club Playground, Kolkata - 700070",
-  instagram: "https://instagram.com/",
+  instagram: mainInstagramUrl,
   vimeo: "https://vimeo.com/",
   linkedin: "https://linkedin.com/",
   facebook: "https://facebook.com/",
@@ -297,7 +300,7 @@ export const defaultItems: ContentItem[] = [
     mediaAlt: "",
     category: "Social",
     year: "",
-    href: "https://instagram.com/",
+    href: mainInstagramUrl,
     accent: "lime",
   },
 ];

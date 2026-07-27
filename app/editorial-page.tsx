@@ -2,6 +2,8 @@
 
 import {
   enquiryTaglines,
+  filmsInstagramUrl,
+  mainInstagramUrl,
   missionParagraphs,
   teamIntroduction,
   visionParagraphs,
@@ -28,7 +30,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
     title: ["Property & commercial", "Events & celebrations", "Film & post"][index] || "Studio specialist",
     body: ["Resort, real-estate, architectural and brand photography.", "Candid event coverage, wedding portraits, rituals and live moments.", "Wedding films, event aftermovies, drone capture, edit and colour."][index] || item.body,
     category: ["Lead Photographer", "Event Photographer", "Film & Post"][index] || "Specialist",
-    href: index === 1 ? settings.linkedin : settings.instagram,
+    href: index === 1 ? settings.linkedin : mainInstagramUrl,
   }));
   const team = [...savedTeam, ...teamFallbacks].slice(0, 3);
   const [selected, setSelected] = useState<ContentItem | null>(null);
@@ -136,7 +138,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                 </section>
               );
             })}
-            <section className="social-gallery-cta"><span>Follow the living archive</span><div><a href={settings.instagram}>Instagram</a><a href="https://www.instagram.com/mindrythm.films/">Instagram Films</a><a href={settings.facebook}>Facebook</a><a href={settings.youtube}>YouTube</a></div></section>
+            <section className="social-gallery-cta"><span>Follow the living archive</span><div><a href={mainInstagramUrl}>Instagram</a><a href={filmsInstagramUrl}>Instagram Films</a><a href={settings.facebook}>Facebook</a><a href={settings.youtube}>YouTube</a></div></section>
           </div>
         )}
 
@@ -183,7 +185,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
               <div><span>Call</span><a href={`tel:${settings.phonePrimary}`}>{settings.phonePrimary}</a><a href={`tel:${settings.phoneSecondary}`}>{settings.phoneSecondary}</a></div>
               <div><span>Email</span><a href={`mailto:${settings.contactEmail}`}>{settings.contactEmail}</a></div>
               <div><span>Visit</span><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(settings.address)}`} target="_blank" rel="noreferrer">{settings.address}</a></div>
-              <div><span>Social</span><a href={settings.instagram}>Instagram</a><a href="https://www.instagram.com/mindrythm.films/">Instagram Films</a><a href={settings.facebook}>Facebook</a><a href={settings.youtube}>YouTube</a><a href={settings.x}>X</a></div>
+              <div><span>Social</span><a href={mainInstagramUrl}>Instagram</a><a href={filmsInstagramUrl}>Instagram Films</a><a href={settings.facebook}>Facebook</a><a href={settings.youtube}>YouTube</a><a href={settings.x}>X</a></div>
             </section>
             <form className="contact-page-form" id="enquiry" onSubmit={sendEnquiry}>
               <div className="form-field"><label htmlFor="contact-name">Full name *</label><input id="contact-name" name="name" required /></div>
@@ -199,14 +201,14 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
         )}
       </main>
 
-      <footer className="inner-footer"><Link href="/#home" onClick={returnToHero}><img src="/mindrythm-logomark.png" alt="" />Mind Rythm Studio</Link><span>© {new Date().getFullYear()}</span><a href={settings.instagram}>Instagram</a><a href="https://www.instagram.com/mindrythm.films/">Instagram Films</a><a href={settings.youtube}>YouTube</a><a href={settings.facebook}>Facebook</a><a href={settings.x}>X</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/studio">Admin</a></footer>
+      <footer className="inner-footer"><Link href="/#home" onClick={returnToHero}><img src="/mindrythm-logomark.png" alt="" />Mind Rythm Studio</Link><span>© {new Date().getFullYear()}</span><a href={mainInstagramUrl}>Instagram</a><a href={filmsInstagramUrl}>Instagram Films</a><a href={settings.youtube}>YouTube</a><a href={settings.facebook}>Facebook</a><a href={settings.x}>X</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/studio">Admin</a></footer>
       <BackToTop />
 
       {selected && (
         <div className="lightbox" role="dialog" aria-modal="true" aria-label={selected.title}>
           <button type="button" onClick={() => setSelected(null)}>Close ×</button>
           <div className="lightbox-image"><Media item={selected} /></div>
-          <div className="lightbox-copy"><span>{selected.category}</span><h2>{selected.title}</h2><p>{selected.body}</p>{selected.kind === "team" && <div><a href={selected.href || settings.instagram}>Instagram</a><a href={settings.linkedin}>LinkedIn</a></div>}</div>
+          <div className="lightbox-copy"><span>{selected.category}</span><h2>{selected.title}</h2><p>{selected.body}</p>{selected.kind === "team" && <div><a href={selected.href || mainInstagramUrl}>Instagram</a><a href={settings.linkedin}>LinkedIn</a></div>}</div>
         </div>
       )}
     </div>

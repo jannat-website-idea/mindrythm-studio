@@ -3,7 +3,9 @@
 import {
   brandTaglines,
   enquiryTaglines,
+  filmsInstagramUrl,
   footerTaglines,
+  mainInstagramUrl,
   teamIntroduction,
   visionParagraphs,
   type ContentItem,
@@ -108,7 +110,7 @@ export function Experience({ content }: { content: SiteContent }) {
       {
         id: "team-direction", kind: "team", sortOrder: 80, title: "Property & commercial", eyebrow: "Core team",
         body: "Architecture, resort, real-estate and brand photography.", mediaUrl: "/images/filmmaker.jpg",
-        mediaAlt: "Mind Rythm Studio lead photographer", category: "Lead Photographer", year: "", href: settings.instagram, accent: "forest",
+        mediaAlt: "Mind Rythm Studio lead photographer", category: "Lead Photographer", year: "", href: mainInstagramUrl, accent: "forest",
       },
       {
         id: "team-image", kind: "team", sortOrder: 90, title: "Events & celebrations", eyebrow: "Core team",
@@ -118,11 +120,11 @@ export function Experience({ content }: { content: SiteContent }) {
       {
         id: "team-post", kind: "team", sortOrder: 100, title: "Aerial film & post", eyebrow: "Core team",
         body: "Wedding films, event aftermovies, drone capture, edit and colour.", mediaUrl: projects[2]?.mediaUrl || "/videos/event-film.mp4",
-        mediaAlt: "Mind Rythm Studio aerial film specialist", category: "Film & Post", year: "", href: settings.instagram, accent: "forest",
+        mediaAlt: "Mind Rythm Studio aerial film specialist", category: "Film & Post", year: "", href: mainInstagramUrl, accent: "forest",
       },
     ];
     return [...savedTeam, ...placeholders].slice(0, 3);
-  }, [projects, savedTeam, settings.instagram, settings.linkedin]);
+  }, [projects, savedTeam, settings.linkedin]);
 
   const [progress, setProgress] = useState(0);
   const [loaded, setLoaded] = useState(false);
@@ -384,7 +386,7 @@ export function Experience({ content }: { content: SiteContent }) {
             <div className="menu-overlay-meta">
               <span>Kolkata / Everywhere</span>
               <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
-              <div><a href={settings.instagram}>Instagram Studio</a><a href="https://www.instagram.com/mindrythm.films/">Instagram Films</a><a href={settings.youtube}>YouTube</a><a href={settings.x}>X</a></div>
+              <div><a href={mainInstagramUrl}>Instagram Studio</a><a href={filmsInstagramUrl}>Instagram Films</a><a href={settings.youtube}>YouTube</a><a href={settings.x}>X</a></div>
             </div>
           </div>
         </div>
@@ -519,8 +521,8 @@ export function Experience({ content }: { content: SiteContent }) {
               <div className="gallery-heading-copy">
                 <p>An immersive archive of properties, portraits, celebrations and moving moments from every side of the studio.</p>
                 <div className="gallery-socials">
-                  <a href={settings.instagram} target="_blank" rel="noreferrer">Instagram</a>
-                  <a href="https://www.instagram.com/mindrythm.films/" target="_blank" rel="noreferrer">Instagram Films</a>
+                  <a href={mainInstagramUrl} target="_blank" rel="noreferrer">Instagram</a>
+                  <a href={filmsInstagramUrl} target="_blank" rel="noreferrer">Instagram Films</a>
                   <a href={settings.facebook} target="_blank" rel="noreferrer">Facebook</a>
                   <a href={settings.youtube} target="_blank" rel="noreferrer">YouTube</a>
                   <a href={settings.x} target="_blank" rel="noreferrer">X</a>
@@ -624,8 +626,8 @@ export function Experience({ content }: { content: SiteContent }) {
                 <span>Follow the living archive</span>
                 <h3>New places.<br />Real celebrations.<br />Behind the frame.</h3>
                 <div className="contact-network-links">
-                  <a href={settings.instagram} target="_blank" rel="noreferrer"><span>Instagram</span><strong>@mindrythm.studio</strong><i>Photography, films &amp; process</i></a>
-                  <a href="https://www.instagram.com/mindrythm.films/" target="_blank" rel="noreferrer"><span>Instagram Films</span><strong>@mindrythm.films</strong><i>Motion, edits &amp; behind the frame</i></a>
+                  <a href={mainInstagramUrl} target="_blank" rel="noreferrer"><span>Instagram</span><strong>@mindrythm_studios</strong><i>Photography, films &amp; process</i></a>
+                  <a href={filmsInstagramUrl} target="_blank" rel="noreferrer"><span>Instagram Films</span><strong>@mindrythm.films</strong><i>Motion, edits &amp; behind the frame</i></a>
                   <a href={settings.facebook} target="_blank" rel="noreferrer"><span>Facebook</span><strong>Mind Rythm Studio</strong><i>Updates, galleries &amp; stories</i></a>
                 </div>
                 <a className="contact-primary-cta" href="/contact#enquiry"><span>Have a story in mind?</span><strong>Start a project</strong></a>
@@ -636,7 +638,7 @@ export function Experience({ content }: { content: SiteContent }) {
                 <div><span>Call</span><a href={`tel:${phonePrimary.replace(/\s/g, "")}`}>{phonePrimary}</a><a href={`tel:${phoneSecondary.replace(/\s/g, "")}`}>{phoneSecondary}</a></div>
                 <div><span>Email</span><a href={`mailto:${contactEmail}`}>{contactEmail}</a></div>
                 <div><span>Visit</span><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noreferrer">{address}</a></div>
-                <div className="contact-socials"><a href={settings.instagram}>Instagram</a><a href="https://www.instagram.com/mindrythm.films/">Instagram Films</a><a href={settings.facebook}>Facebook</a><a href={settings.youtube}>YouTube</a><a href={settings.x}>X</a></div>
+                <div className="contact-socials"><a href={mainInstagramUrl}>Instagram</a><a href={filmsInstagramUrl}>Instagram Films</a><a href={settings.facebook}>Facebook</a><a href={settings.youtube}>YouTube</a><a href={settings.x}>X</a></div>
               </div>
               <form className="enquiry-form" onSubmit={submitEnquiry} data-reveal>
                 <div className="form-field"><label htmlFor="name">Full name *</label><input id="name" name="name" required autoComplete="name" /></div>
@@ -656,7 +658,7 @@ export function Experience({ content }: { content: SiteContent }) {
           <div className="footer-grid">
             <div className="footer-brand"><img src="/mindrythm-logomark.png" alt="Mind Rythm Studio logomark" /><span>Mind Rythm <em>Studio</em></span></div>
             <div className="footer-column"><span>Explore</span><a href="#services">Services</a><a href="/work">Our Work</a><a href="/gallery">Gallery</a><a href="/team">Our Team</a></div>
-            <div className="footer-column"><span>Follow</span><a href={settings.instagram}>Instagram</a><a href="https://www.instagram.com/mindrythm.films/">Instagram Films</a><a href={settings.facebook}>Facebook</a><a href={settings.youtube}>YouTube</a><a href={settings.x}>X</a></div>
+            <div className="footer-column"><span>Follow</span><a href={mainInstagramUrl}>Instagram</a><a href={filmsInstagramUrl}>Instagram Films</a><a href={settings.facebook}>Facebook</a><a href={settings.youtube}>YouTube</a><a href={settings.x}>X</a></div>
             <div className="footer-column"><span>Legal</span><a href="/privacy">Privacy Policy</a><a href="/terms">Terms &amp; Conditions</a><a href="/studio">Content Studio</a></div>
           </div>
           <div className="footer-meta"><span>© {new Date().getFullYear()} Mind Rythm Studio</span><span>Kolkata / Everywhere</span></div>
@@ -672,7 +674,7 @@ export function Experience({ content }: { content: SiteContent }) {
             <span>{selectedItem.eyebrow} {selectedItem.year && `/ ${selectedItem.year}`}</span>
             <h2>{selectedItem.title}</h2>
             <p>{selectedItem.body}</p>
-            {selectedItem.kind === "team" && <div className="modal-socials"><a href={selectedItem.href || settings.instagram}>Instagram</a><a href={settings.linkedin}>LinkedIn</a></div>}
+            {selectedItem.kind === "team" && <div className="modal-socials"><a href={selectedItem.href || mainInstagramUrl}>Instagram</a><a href={settings.linkedin}>LinkedIn</a></div>}
             {selectedItem.kind === "project" && (
               <div className="modal-related">
                 {galleryItems.slice(0, 3).map((item) => <div key={item.id}><Media item={item} /></div>)}
@@ -709,7 +711,7 @@ function GalleryCollection({ title, items, socials, onOpen }: { title: string; i
           </button>
         ))}
         <div className="gallery-card gallery-note gallery-note-social" aria-label="Mind Rythm Studio social channels">
-          <a href={socials.instagram}>Instagram</a><a href="https://www.instagram.com/mindrythm.films/">Instagram Films</a><a href={socials.facebook}>Facebook</a><a href={socials.youtube}>YouTube</a>
+          <a href={mainInstagramUrl}>Instagram</a><a href={filmsInstagramUrl}>Instagram Films</a><a href={socials.facebook}>Facebook</a><a href={socials.youtube}>YouTube</a>
         </div>
         <a className="gallery-card gallery-note gallery-note-feature" href="/gallery"><span>Mind Rythm Studio archive</span><p>{isCelebrations ? "Wedding stories with feeling, movement and detail." : "Spaces shaped by light, material and a sense of arrival."}</p><i>Open the full gallery</i></a>
       </div>

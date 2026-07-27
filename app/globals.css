@@ -1771,23 +1771,29 @@ html[data-mindrythm-intro="seen"] .site-shell { opacity: 1; filter: none; transf
   position: relative;
   z-index: 2;
   display: flex;
-  gap: .75rem;
+  gap: 1rem;
   align-items: center;
   width: max-content;
   color: var(--ivory);
 }
-.menu-brand-lockup > img { width: 36px; height: 36px; object-fit: contain; filter: invert(1); }
+.menu-brand-lockup > img { width: 48px; height: 48px; object-fit: contain; filter: invert(1); }
 .menu-brand-lockup > span {
   display: inline-flex;
   gap: .28em;
   align-items: baseline;
-  font-size: 1rem;
+  font-size: clamp(1.3rem, 1.75vw, 1.85rem);
   font-weight: 550;
   letter-spacing: -.035em;
   white-space: nowrap;
 }
 .menu-brand-lockup em { font-family: var(--font-accent); font-weight: 500; }
-.menu-brand-kicker { position: relative; z-index: 2; }
+.menu-brand-kicker {
+  position: relative;
+  z-index: 2;
+  margin-top: .9rem;
+  color: rgba(247,246,241,.48);
+  opacity: 1;
+}
 .menu-overlay nav a { grid-template-columns: minmax(0,1fr) minmax(130px,.4fr); }
 .menu-overlay nav a > strong { line-height: .96; }
 
@@ -1963,7 +1969,7 @@ p { text-wrap: pretty; }
   padding-top: .03em;
   padding-left: .09em;
   font-family: inherit;
-  font-size: .49em;
+  font-size: .58em;
   font-style: normal;
   font-weight: 300;
   letter-spacing: -.028em;
@@ -1998,17 +2004,18 @@ p { text-wrap: pretty; }
   transform: none;
   transition-delay: 0s;
 }
-.menu-overlay-brand { position: relative; overflow: hidden; }
+.menu-overlay-brand { position: relative; justify-content: flex-start; overflow: hidden; }
+.menu-overlay-brand > small { margin-top: auto; }
 .menu-watermark {
   position: absolute;
-  top: 50%;
+  top: 57%;
   left: 50%;
-  width: min(31vw, 480px);
+  width: min(28vw, 420px);
   max-height: 58vh;
   object-fit: contain;
-  opacity: .38;
+  opacity: .25;
   filter: invert(1);
-  transform: translate(-50%,-46%) scale(.92);
+  transform: translate(-50%,-50%) scale(.92);
   transition: opacity .9s ease .2s, transform 1.3s var(--motion-ease) .12s;
 }
 .menu-overlay:not(.nav-open) .menu-watermark { opacity: 0; transform: translate(-50%,-40%) scale(.86); }
@@ -2155,7 +2162,7 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   .loader-brand-line,
   .loader-brand-line:first-child,
   .loader-brand-line:last-child { padding: .12em .09em .2em; }
-  .loader-brand-line:last-child { padding-top: 0; font-size: .56em; }
+  .loader-brand-line:last-child { padding-top: 0; font-size: .64em; }
   .loader-footer > span:first-child { max-width: 180px; line-height: 1.35; }
   .menu-overlay { display: block; background: var(--ivory); }
   .menu-overlay nav a { grid-template-columns: minmax(0,1fr); }
