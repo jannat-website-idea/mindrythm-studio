@@ -57,7 +57,7 @@ const navigationItems = [
   { label: "Our Work", href: "/work", note: "Selected commissions" },
   { label: "Gallery", href: "/gallery", note: "Stories and moments" },
   { label: "Our Team", href: "/team", note: "The people behind it" },
-  { label: "Our Story", href: "/story", note: "The studio rythm" },
+  { label: "Our Story", href: "/story", note: "The studio rhythm" },
   { label: "Enquire", href: "/contact", note: "Start a conversation" },
 ] as const;
 
@@ -353,26 +353,29 @@ export function Experience({ content }: { content: SiteContent }) {
         <header className={`site-header ${menuOpen ? "menu-active" : ""}`}>
           <a className="wordmark" href="#home" aria-label="Mind Rythm Studio home">
             <img src="/mindrythm-logomark.png" alt="" />
+            <span>Mind Rythm <em>Studio</em></span>
           </a>
           <button type="button" className="menu-toggle" aria-expanded={menuOpen} aria-label="Toggle navigation" onClick={() => setMenuOpen((open) => !open)}>
             <span className="menu-toggle-label">{menuOpen ? "Close" : "Menu"}</span>
-            <span className="menu-toggle-count">01—07</span>
             <i aria-hidden="true" />
           </button>
         </header>
 
         <div className={`menu-overlay ${menuOpen ? "nav-open" : ""}`} aria-hidden={!menuOpen}>
           <aside className="menu-overlay-brand" aria-hidden="true">
-            <span>Independent visual studio / Kolkata</span>
+            <div className="menu-brand-lockup">
+              <img src="/mindrythm-logomark.png" alt="" />
+              <span>Mind Rythm <em>Studio</em></span>
+            </div>
+            <span className="menu-brand-kicker">Independent visual studio / Kolkata</span>
             <img className="menu-watermark" src="/mindrythm-logomark.png" alt="" />
             <small>Every image begins with a pulse.</small>
           </aside>
           <div className="menu-overlay-index">
-            <div className="menu-overlay-heading"><span>Navigation</span><span>Index / 01—07</span></div>
+            <div className="menu-overlay-heading"><span>Navigation</span><span>Studio directory</span></div>
             <nav aria-label="Main navigation">
-              {navigationItems.map((item, index) => (
+              {navigationItems.map((item) => (
                 <a href={item.href} key={item.label} onClick={() => setMenuOpen(false)}>
-                  <span>0{index + 1}</span>
                   <strong>{item.label}</strong>
                   <small>{item.note}</small>
                 </a>
@@ -401,7 +404,7 @@ export function Experience({ content }: { content: SiteContent }) {
                 <h1 id="hero-title">
                   <a href="/work" aria-label="Explore our work">
                     <span className="hero-title-line"><span>Every story</span></span>
-                    <span className="hero-title-line"><span>has a rythm.</span></span>
+                    <span className="hero-title-line"><span>has a rhythm.</span></span>
                   </a>
                 </h1>
               </div>
@@ -409,7 +412,7 @@ export function Experience({ content }: { content: SiteContent }) {
           </section>
 
           <section className="vision-section" id="vision">
-            <span className="section-index" data-reveal>01 / Our vision</span>
+            <span className="section-index" data-reveal>Our vision</span>
             <p className="vision-statement" data-reveal>
               <span>Our vision is to create a place where ideas find their visual language.</span>
               <span>Where artists find one another.</span>
@@ -438,12 +441,12 @@ export function Experience({ content }: { content: SiteContent }) {
           </section>
 
           <section className="services-experience" id="services" aria-label="Mind Rythm Studio services">
-            <header data-reveal><span>02 / Our services</span><h2>One studio.<br />Many visual languages.</h2><p>{brandTaglines[0]}</p></header>
+            <header data-reveal><span>Our services</span><h2>One studio.<br />Many visual languages.</h2><p>{brandTaglines[0]}</p></header>
             <div className="services-layout">
               <div className="services-list">
                 {serviceItems.map((service, index) => (
                   <button type="button" aria-pressed={activeService === index} className={activeService === index ? "active" : ""} key={service.title} onMouseEnter={() => setActiveService(index)} onFocus={() => setActiveService(index)} onClick={() => setActiveService(index)}>
-                    <b>0{index + 1}</b><strong>{service.title}</strong><span>{service.copy}</span>
+                    <strong>{service.title}</strong><span>{service.copy}</span>
                   </button>
                 ))}
               </div>
@@ -464,10 +467,10 @@ export function Experience({ content }: { content: SiteContent }) {
               <div className="scroll-cinema-top"><span>Scroll through the visual portfolio</span><span>Selected stories / 2026</span></div>
               <div className="scroll-cinema-window">
                 <div className="scroll-cinema-track">
-                  {heroItems.slice(0, 3).map((item, index) => (
+                  {heroItems.slice(0, 3).map((item) => (
                     <button type="button" className="scroll-cinema-panel" key={`scroll-${item.id}`} onClick={() => setSelectedItem(item)} aria-label={`Open ${item.title}`}>
                       <Media item={item} />
-                      <div><span>0{index + 1} / {item.category || "Selected frame"}</span><h2>{item.title}</h2><p>{item.eyebrow}</p></div>
+                      <div><span>{item.category || "Selected frame"}</span><h2>{item.title}</h2><p>{item.eyebrow}</p></div>
                     </button>
                   ))}
                   <article className="scroll-cinema-panel scroll-cinema-statement">
@@ -484,7 +487,7 @@ export function Experience({ content }: { content: SiteContent }) {
 
           <section className="work-section" id="projects">
             <div className="section-intro" data-reveal>
-              <span className="section-index">03 / Our work</span>
+              <span className="section-index">Our work</span>
               <h2>Selected stories,<br /><em>across every service.</em></h2>
               <p>{brandTaglines[2]}</p>
             </div>
@@ -511,7 +514,7 @@ export function Experience({ content }: { content: SiteContent }) {
           <section className="gallery-section" id="gallery">
             <img className="section-watermark section-watermark-one" src="/mindrythm-logomark.png" alt="" aria-hidden="true" />
             <div className="gallery-heading" data-reveal>
-              <span>04 / Gallery</span>
+              <span>Gallery</span>
               <h2>Spaces, people &amp;<br /><em>celebrations.</em></h2>
               <div className="gallery-heading-copy">
                 <p>An immersive archive of properties, portraits, celebrations and moving moments from every side of the studio.</p>
@@ -525,8 +528,8 @@ export function Experience({ content }: { content: SiteContent }) {
               </div>
             </div>
             <div className="gallery-scroll" aria-label="Spaces and celebrations galleries">
-              <GalleryCollection title="Spaces" index="01" items={spacesBentoItems.length ? spacesBentoItems : galleryItems} socials={settings} onOpen={setSelectedItem} />
-              <GalleryCollection title="Celebrations" index="02" items={momentsBentoItems.length ? momentsBentoItems : galleryItems} socials={settings} onOpen={setSelectedItem} />
+              <GalleryCollection title="Spaces" items={spacesBentoItems.length ? spacesBentoItems : galleryItems} socials={settings} onOpen={setSelectedItem} />
+              <GalleryCollection title="Celebrations" items={momentsBentoItems.length ? momentsBentoItems : galleryItems} socials={settings} onOpen={setSelectedItem} />
             </div>
             <div className="gallery-scroll-note"><span>Two visual stories</span><span>Spaces / Celebrations</span></div>
           </section>
@@ -535,7 +538,7 @@ export function Experience({ content }: { content: SiteContent }) {
 
           <section className="testimonials-section" id="testimonials">
             <div className="testimonials-heading" data-reveal>
-              <span>05 / Testimonials</span>
+              <span>Testimonials</span>
               <h2>Words from<br /><em>our collaborators.</em></h2>
               <div className="testimonial-source"><span>Curated Google reviews</span><a href="https://www.google.com/search?q=Mind+Rythm+Kolkata+reviews" target="_blank" rel="noreferrer">Read on Google</a></div>
             </div>
@@ -555,7 +558,7 @@ export function Experience({ content }: { content: SiteContent }) {
           <section className="team-section" id="team">
             <img className="section-watermark section-watermark-two" src="/mindrythm-logomark.png" alt="" aria-hidden="true" />
             <div className="team-heading" data-reveal>
-              <span>06 / Meet the team</span>
+              <span>Meet the team</span>
               <h2>The right eye<br />for <em>every story.</em></h2>
               <div className="team-heading-action"><p>{teamIntroduction}</p><a href="/team">Meet our team</a></div>
             </div>
@@ -578,29 +581,29 @@ export function Experience({ content }: { content: SiteContent }) {
 
           <section className="about-section" id="about">
             <div className="about-heading" data-reveal>
-              <span>07 / About us</span>
+              <span>About us</span>
               <h2>Mind Rythm Studio is where<br />ideas find a visual language.</h2>
             </div>
             <div className="about-grid">
-              <a href="/story" data-reveal><span>01</span><h3>What is Mind Rythm Studio?</h3><p><EmphasizedCopy text={visionParagraphs[1]} /></p><i>Read our story</i></a>
-              <a href="/work" data-reveal><span>02</span><h3>What we capture</h3><p>Properties, resorts, corporate events and weddings—through photography, cinematic film, aerial footage and social edits.</p><i>Explore our work</i></a>
-              <a href="/contact" data-reveal><span>03</span><h3>Who we work with</h3><p>Couples, families, event teams, developers, architects, resorts and brands looking for imagery with feeling and precision.</p><i>Work with us</i></a>
-              <a href="#process" data-reveal><span>04</span><h3>How we work</h3><p>We plan timing, light, shot lists and delivery around each brief, keeping the experience calm from first conversation to final files.</p><i>See the process</i></a>
+              <a href="/story" data-reveal><h3>What is Mind Rythm Studio?</h3><p><EmphasizedCopy text={visionParagraphs[1]} /></p><i>Read our story</i></a>
+              <a href="/work" data-reveal><h3>What we capture</h3><p>Properties, resorts, corporate events and weddings—through photography, cinematic film, aerial footage and social edits.</p><i>Explore our work</i></a>
+              <a href="/contact" data-reveal><h3>Who we work with</h3><p>Couples, families, event teams, developers, architects, resorts and brands looking for imagery with feeling and precision.</p><i>Work with us</i></a>
+              <a href="#process" data-reveal><h3>How we work</h3><p>We plan timing, light, shot lists and delivery around each brief, keeping the experience calm from first conversation to final files.</p><i>See the process</i></a>
             </div>
           </section>
 
           <section className="process-section" id="process">
             <div className="process-heading" data-reveal>
-              <span>08 / Our rythm</span>
+              <span>Our rhythm</span>
               <h2>From first conversation<br />to <em>final frame.</em></h2>
               <p>A clear process gives every place and milestone the time, light and attention it deserves.</p>
             </div>
             {heroItems[1] && <a className="process-film" href="/work" data-reveal><Media item={heroItems[1]} /><div><span>Brief / Plan / Capture</span><p>A calm production gives spaces, people and real emotion room to lead. <b>View our work</b></p></div></a>}
             <div className="process-steps">
-              <a href="/contact" data-reveal><span>01</span><h3>Discover</h3><p>We understand the place, people, audience and feeling the imagery needs to create.</p><i>Begin a brief</i></a>
-              <a href="/contact" data-reveal><span>02</span><h3>Plan</h3><p>We shape the schedule, locations, light, shot list and practical details before the day.</p><i>Begin a brief</i></a>
-              <a href="/contact" data-reveal><span>03</span><h3>Capture</h3><p>Photography, film and aerial sequences are composed as one coherent visual story.</p><i>Begin a brief</i></a>
-              <a href="/contact" data-reveal><span>04</span><h3>Deliver</h3><p>Every frame is edited and supplied for galleries, websites, campaigns, archives and social media.</p><i>Begin a brief</i></a>
+              <a href="/contact" data-reveal><h3>Discover</h3><p>We understand the place, people, audience and feeling the imagery needs to create.</p><i>Begin a brief</i></a>
+              <a href="/contact" data-reveal><h3>Plan</h3><p>We shape the schedule, locations, light, shot list and practical details before the day.</p><i>Begin a brief</i></a>
+              <a href="/contact" data-reveal><h3>Capture</h3><p>Photography, film and aerial sequences are composed as one coherent visual story.</p><i>Begin a brief</i></a>
+              <a href="/contact" data-reveal><h3>Deliver</h3><p>Every frame is edited and supplied for galleries, websites, campaigns, archives and social media.</p><i>Begin a brief</i></a>
             </div>
           </section>
 
@@ -608,7 +611,7 @@ export function Experience({ content }: { content: SiteContent }) {
 
           <section className="contact-section" id="contact">
             <div className="contact-heading" data-reveal>
-              <span>09 / Reach out</span>
+              <span>Reach out</span>
               <h2>Let’s capture<br />your next <em>story.</em></h2>
             </div>
             <div className="enquiry-reassurance" data-reveal>{enquiryTaglines.map((line) => <blockquote key={line}>“{line}”</blockquote>)}</div>
@@ -687,18 +690,18 @@ function ProjectCard({ project, index, onOpen }: { project: ContentItem; index: 
   return (
     <button type="button" className={`project-tile project-card project-${(index % 6) + 1}`} onClick={onOpen} data-reveal>
       <Media item={project} /><div className="media-shade" />
-      <span className="card-number">{String(index + 1).padStart(2, "0")} / {project.category}</span>
+      <span className="card-category">{project.category}</span>
       <div className="project-title"><span>{project.eyebrow}</span><h3>{project.title}</h3><p>{project.body}</p></div>
     </button>
   );
 }
 
-function GalleryCollection({ title, index, items, socials, onOpen }: { title: string; index: string; items: ContentItem[]; socials: SiteContent["settings"]; onOpen: (item: ContentItem) => void }) {
+function GalleryCollection({ title, items, socials, onOpen }: { title: string; items: ContentItem[]; socials: SiteContent["settings"]; onOpen: (item: ContentItem) => void }) {
   const shown = items.length ? items.slice(0, 7) : [];
   const isCelebrations = title === "Celebrations";
   return (
     <article className="gallery-board" data-reveal>
-      <header><span>{index}</span><h3>{title}</h3><p>Images / motion / fragments</p></header>
+      <header><h3>{title}</h3><p>Images / motion / fragments</p></header>
       <div className="gallery-board-grid">
         {shown.map((item, itemIndex) => (
           <button type="button" className={`gallery-card gallery-slot-${itemIndex + 1}`} key={`${item.id}-${itemIndex}`} onClick={() => onOpen(item)}>

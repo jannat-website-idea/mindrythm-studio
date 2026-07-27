@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 
-const emphasisPattern = /(Mind Rythm Studio|Mind Rythm|rythm|stories|story|emotions|emotion|ideas|idea|brands|brand|spaces|space)/gi;
-const exactEmphasisPattern = /^(Mind Rythm Studio|Mind Rythm|rythm|stories|story|emotions|emotion|ideas|idea|brands|brand|spaces|space)$/i;
+const emphasisPattern = /(Mind Rythm Studio|Mind Rythm|rhythm|stories|story|emotions|emotion|ideas|idea|brands|brand|spaces|space)/gi;
+const exactEmphasisPattern = /^(Mind Rythm Studio|Mind Rythm|rhythm|stories|story|emotions|emotion|ideas|idea|brands|brand|spaces|space)$/i;
 
 export function EmphasizedCopy({ text }: { text: string }) {
   return (

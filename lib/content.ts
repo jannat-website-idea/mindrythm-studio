@@ -47,7 +47,7 @@ export type SiteContent = {
 
 export const defaultSettings: SiteSettings = {
   siteName: "Mind Rythm Studio",
-  tagline: "Every story has a rythm.",
+  tagline: "Every story has a rhythm.",
   description:
     "Mind Rythm Studio is an independent film and photography studio translating the unseen character of people, places and brands into honest, cinematic visual stories.",
   vision:
@@ -67,7 +67,7 @@ export const defaultSettings: SiteSettings = {
 };
 
 export const visionParagraphs = [
-  "At Mind Rythm Studio, we believe every person, every space, and every brand carries a rythm of its own, a story that often exists beyond words. Our work begins long before the camera rolls. It begins by understanding the ideas, emotions, and intentions that are difficult to describe, yet deeply felt.",
+  "At Mind Rythm Studio, we believe every person, every space, and every brand carries a rhythm of its own, a story that often exists beyond words. Our work begins long before the camera rolls. It begins by understanding the ideas, emotions, and intentions that are difficult to describe, yet deeply felt.",
   "We exist to translate those unseen narratives into cinematic films and imagery that feel honest, timeless, and deeply human. Whether we are creating for luxury real estate, wellness, hospitality, retreats, fashion, or documentary storytelling, our goal remains the same: to reveal the essence that already exists, rather than simply document what is seen.",
   "Mind Rythm Studio is built on the belief that meaningful work is never created in isolation. We aspire to cultivate a community of filmmakers, photographers, designers, musicians, writers, and artists who believe that the most compelling visual narratives emerge through shared perspectives, thoughtful collaboration, and a genuine respect for the creative process.",
   "Our vision is to create a place where ideas find their visual language, where artists find one another, and where every project contributes to a body of work that is as intentional as it is beautiful.",
@@ -110,7 +110,7 @@ export const defaultItems: ContentItem[] = [
     sortOrder: 10,
     title: "Azure Retreat",
     eyebrow: "Resort film / Poolside",
-    body: "A sunlit hospitality story designed to communicate calm, scale and the effortless rythm of a destination stay.",
+    body: "A sunlit hospitality story designed to communicate calm, scale and the effortless rhythm of a destination stay.",
     mediaUrl: "/videos/resort-pool.mp4",
     mediaAlt: "Luxury resort swimming pool in warm daylight",
     category: "Resort Film",

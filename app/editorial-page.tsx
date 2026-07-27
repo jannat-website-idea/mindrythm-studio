@@ -105,11 +105,11 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
 
         {page === "work" && (
           <section className="work-page-grid">
-            {projects.map((project, index) => (
+            {projects.map((project) => (
               <details className="work-page-card" key={project.id}>
                 <summary>
                   <Media item={project} />
-                  <div><span>0{index + 1} / {project.category}</span><h2>{project.title}</h2><p>{project.eyebrow}</p></div>
+                  <div><span>{project.category}</span><h2>{project.title}</h2><p>{project.eyebrow}</p></div>
                   <b>View project +</b>
                 </summary>
                 <div className="work-page-detail">
@@ -129,7 +129,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
               const items = matching.length ? matching : galleryItems.filter((_, index) => index % 2 === categoryIndex);
               return (
                 <section className="gallery-page-section" key={category}>
-                  <header><span>0{categoryIndex + 1}</span><h2>{category}</h2><p>{category === "Spaces" ? "Property, architecture, landscape and the first impression of arrival." : "Weddings, events, people and the energy of moments shared."}</p></header>
+                  <header><h2>{category}</h2><p>{category === "Spaces" ? "Property, architecture, landscape and the first impression of arrival." : "Weddings, events, people and the energy of moments shared."}</p></header>
                   <div className="gallery-page-grid">
                     {items.map((item, index) => <button type="button" className={`gallery-page-card gallery-page-card-${(index % 4) + 1}`} key={item.id} onClick={() => setSelected(item)}><Media item={item} /><span>{item.title}</span></button>)}
                   </div>
@@ -151,7 +151,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                     <span className="sr-only">Show information about {member.title}</span>
                   </button>
                   <div className="team-page-card-overlay" id={`team-page-overlay-${index}`}>
-                    <span>0{index + 1} / {member.category}</span><h2>{member.title}</h2><p>{member.body}</p>
+                    <span>{member.category}</span><h2>{member.title}</h2><p>{member.body}</p>
                     <button type="button" onClick={(event) => { event.stopPropagation(); setActiveTeamCardId(null); setSelected(member); }}>View profile</button>
                   </div>
                 </article>
@@ -165,14 +165,14 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
           <div className="story-page">
             <section className="story-manifesto"><span>What is Mind Rythm Studio?</span><p><EmphasizedCopy text={visionParagraphs[0]} /></p></section>
             <section className="story-pillars">
-              <article><span>01</span><h2>What we capture</h2><p>We work across properties, resorts, events and weddings through photography, cinematic film and aerial capture.</p></article>
-              <article><span>02</span><h2>Who we work with</h2><p>Couples, families, event teams, developers, architects, resorts and brands seeking a distinct visual point of view.</p></article>
-              <article><span>03</span><h2>How we work</h2><p>Every commission begins with listening, a clear visual plan and space for real moments to happen.</p></article>
+              <article><h2>What we capture</h2><p>We work across properties, resorts, events and weddings through photography, cinematic film and aerial capture.</p></article>
+              <article><h2>Who we work with</h2><p>Couples, families, event teams, developers, architects, resorts and brands seeking a distinct visual point of view.</p></article>
+              <article><h2>How we work</h2><p>Every commission begins with listening, a clear visual plan and space for real moments to happen.</p></article>
             </section>
-            <section className="story-narrative story-vision-full"><header><span>01 / Our vision</span><h2>Ideas find their visual language.</h2></header><div>{visionParagraphs.map((paragraph) => <p key={paragraph}><EmphasizedCopy text={paragraph} /></p>)}</div></section>
+            <section className="story-narrative story-vision-full"><header><span>Our vision</span><h2>Ideas find their visual language.</h2></header><div>{visionParagraphs.map((paragraph) => <p key={paragraph}><EmphasizedCopy text={paragraph} /></p>)}</div></section>
             <section className="story-vision"><img src="/mindrythm-logomark.png" alt="Mind Rythm Studio logomark" /><div><span>Our vision</span><h2>{visionParagraphs[3]}</h2></div></section>
-            <section className="story-narrative story-mission"><header><span>02 / Our mission</span><h2>A conversation before a brief.</h2></header><div>{missionParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div></section>
-            <section className="story-narrative story-people"><header><span>03 / Our people</span><h2>Never about one person.</h2></header><div><p>{teamIntroduction}</p><a href="/team">Meet the team</a></div></section>
+            <section className="story-narrative story-mission"><header><span>Our mission</span><h2>A conversation before a brief.</h2></header><div>{missionParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div></section>
+            <section className="story-narrative story-people"><header><span>Our people</span><h2>Never about one person.</h2></header><div><p>{teamIntroduction}</p><a href="/team">Meet the team</a></div></section>
           </div>
         )}
 
