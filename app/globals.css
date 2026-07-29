@@ -1739,6 +1739,183 @@ html[data-mindrythm-intro="seen"] .site-shell { opacity: 1; filter: none; transf
   .loader-brand-line { clip-path: none !important; }
 }
 
+/* Reference-led loader: an original, measured interpretation of the motion language. */
+.preloader.reference-loader {
+  z-index: 2000;
+  display: block;
+  background: #f8f7f2;
+  color: #080807;
+  opacity: 1;
+  filter: none;
+  clip-path: inset(0);
+  transition:
+    opacity .92s cubic-bezier(.22,1,.36,1),
+    filter .92s cubic-bezier(.22,1,.36,1),
+    clip-path .92s cubic-bezier(.22,1,.36,1),
+    visibility 0s linear .92s;
+}
+.preloader.reference-loader.preloader-done {
+  opacity: 0;
+  filter: blur(7px);
+  clip-path: inset(0 0 0 0 round 8vmax);
+  visibility: hidden;
+}
+.reference-loader .loader-stage {
+  display: grid;
+  min-height: 100svh;
+  height: 100svh;
+  padding: 0;
+  place-items: center;
+  overflow: hidden;
+  isolation: isolate;
+}
+.reference-loader .loader-stage::before {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(14,14,12,.035), transparent 49%),
+    linear-gradient(115deg, transparent 43%, rgba(255,255,255,.78) 50%, transparent 57%);
+  content: "";
+  opacity: calc(.12 + var(--loader-progress, 0) * .16);
+  transform: translateX(calc((var(--loader-progress, 0) - .5) * 10%));
+  pointer-events: none;
+}
+.reference-loader .loader-stage::after,
+.reference-loader .loader-ambient { display: none; }
+.reference-loader .loader-copy {
+  z-index: 2;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  padding: clamp(2rem, 5vw, 5.5rem);
+  place-items: center;
+}
+.reference-loader .loader-brand {
+  display: grid;
+  width: max-content;
+  max-width: calc(100vw - 2rem);
+  gap: clamp(.25rem, .6vw, .8rem);
+  place-items: center;
+  color: #080807;
+  font-family: "Avenir Next", Avenir, var(--font-avenir), "Helvetica Neue", Arial, sans-serif;
+  font-size: clamp(3.2rem, 9.2vw, 10.5rem);
+  font-weight: 500;
+  font-style: normal;
+  font-kerning: normal;
+  font-synthesis: none;
+  letter-spacing: var(--loader-letter, -.02em);
+  line-height: .88;
+  opacity: var(--loader-opacity, 1);
+  filter: blur(var(--loader-blur, 0));
+  transform: scale(var(--loader-scale, 1));
+  transform-origin: center;
+  transition: none;
+  will-change: transform, filter, opacity;
+}
+.reference-loader .loader-brand-line,
+.reference-loader .loader-brand-line:first-child,
+.reference-loader .loader-brand-line:last-child {
+  position: static;
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  margin: 0;
+  padding: .12em .08em .18em;
+  overflow: hidden;
+  font: inherit;
+  font-style: normal;
+  line-height: .88;
+  white-space: nowrap;
+  transform-origin: center bottom;
+  transition: none;
+  will-change: transform, clip-path;
+}
+.reference-loader .loader-brand-main {
+  clip-path: inset(var(--loader-main-reveal, 0) 0 0 0);
+  transform: translateY(var(--loader-main-y, 0)) rotate(var(--loader-main-rotate, 0deg));
+}
+.reference-loader .loader-brand-studio {
+  padding-top: 0;
+  padding-bottom: .22em;
+  font-size: .54em;
+  font-weight: 500;
+  letter-spacing: -.025em;
+  line-height: 1;
+  clip-path: inset(var(--loader-studio-reveal, 0) 0 0 0);
+  transform: translateY(var(--loader-studio-y, 0)) rotate(var(--loader-studio-rotate, 0deg));
+}
+.reference-loader .loader-brand-word {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  color: inherit;
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  word-spacing: normal;
+}
+.reference-loader.preloader-done .loader-brand {
+  opacity: 0;
+  filter: blur(10px);
+  transform: scale(1.026);
+}
+.reference-loader .loader-footer {
+  z-index: 3;
+  right: clamp(1.25rem, 2.4vw, 2.5rem);
+  bottom: clamp(1.25rem, 2.4vw, 2.5rem);
+  left: clamp(1.25rem, 2.4vw, 2.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #171715;
+  font-family: "Avenir Next", Avenir, var(--font-avenir), "Helvetica Neue", Arial, sans-serif;
+  font-size: clamp(.56rem, .72vw, .72rem);
+  font-weight: 500;
+  letter-spacing: .085em;
+  line-height: 1;
+  opacity: clamp(.45, calc(.35 + var(--loader-progress, 0) * .65), 1);
+  text-transform: uppercase;
+  transition: opacity .35s ease, transform .55s cubic-bezier(.22,1,.36,1);
+}
+.reference-loader .loader-footer > span:first-child { display: inline-flex; gap: .55rem; align-items: center; }
+.reference-loader .loader-footer > span:first-child::before {
+  width: 4px;
+  height: 4px;
+  border-radius: 99px;
+  background: currentColor;
+  box-shadow: 0 0 0 0 rgba(23,23,21,.18);
+  content: "";
+  animation: loader-reference-pulse 1.8s cubic-bezier(.33,1,.68,1) infinite;
+}
+.reference-loader .preloader-progress {
+  font-size: clamp(.78rem, 1.02vw, 1rem);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .08em;
+}
+.reference-loader.preloader-done .loader-footer { opacity: 0; transform: translateY(7px); }
+@keyframes loader-reference-pulse {
+  50% { box-shadow: 0 0 0 7px rgba(23,23,21,0); opacity: .48; }
+}
+
+@media (max-width: 680px) {
+  .reference-loader .loader-copy { padding: 1.3rem; }
+  .reference-loader .loader-brand { max-width: calc(100vw - 2rem); font-size: clamp(2.65rem, 12.8vw, 4.45rem); }
+  .reference-loader .loader-brand-line,
+  .reference-loader .loader-brand-line:first-child,
+  .reference-loader .loader-brand-line:last-child { padding: .13em .08em .2em; }
+  .reference-loader .loader-brand-studio { font-size: .58em; }
+  .reference-loader .loader-footer > span:first-child { max-width: 180px; line-height: 1.35; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reference-loader,
+  .reference-loader .loader-brand,
+  .reference-loader .loader-brand-line,
+  .reference-loader .loader-footer { transition-duration: .01ms !important; animation: none !important; }
+  .reference-loader .loader-brand { opacity: 1 !important; filter: none !important; transform: none !important; }
+  .reference-loader .loader-brand-line { clip-path: none !important; transform: none !important; }
+}
+
 /* Final editorial system: number-free navigation, complete brand lock-up and calmer type rhythm. */
 .site-header .wordmark {
   display: flex;

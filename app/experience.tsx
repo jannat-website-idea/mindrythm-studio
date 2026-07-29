@@ -64,25 +64,27 @@ const navigationItems = [
 ] as const;
 
 function getLoaderMotionStyle(progress: number): CSSProperties {
+  const clamp = (value: number) => Math.min(1, Math.max(0, value));
+  const ease = (value: number) => value * value * (3 - 2 * value);
   const loaderT = progress / 100;
-  // Let the motion resolve with the counter instead of visually finishing
-  // halfway through the sequence. The reveal completes at 90%, then settles
-  // gently while the final ten percent finishes.
-  const motionT = Math.min(1, Math.max(0, (loaderT - 0.04) / 0.86));
-  const loaderEase = motionT * motionT * (3 - 2 * motionT);
-  const settleT = Math.min(1, Math.max(0, (loaderT - 0.9) / 0.1));
-  const settleEase = settleT * settleT * (3 - 2 * settleT);
-  const reveal = Math.max(0, 100 - loaderEase * 100);
+  // The brand remains in motion until the counter reaches the final ten per
+  // cent, rather than completing its animation before the loading sequence.
+  const mindT = ease(clamp((loaderT - 0.06) / 0.76));
+  const studioT = ease(clamp((loaderT - 0.24) / 0.66));
+  const settleT = ease(clamp((loaderT - 0.82) / 0.18));
 
   return {
     "--loader-progress": loaderT.toFixed(4),
-    "--loader-scale": (0.86 + loaderEase * 0.14 + settleEase * 0.012).toFixed(4),
-    "--loader-opacity": Math.min(1, 0.1 + loaderEase * 0.9).toFixed(3),
-    "--loader-blur": `${(7 * Math.pow(1 - loaderEase, 1.35)).toFixed(2)}px`,
-    "--loader-shift": `${(30 * (1 - loaderEase)).toFixed(2)}px`,
-    "--loader-letter": `${(0.055 - loaderEase * 0.092).toFixed(4)}em`,
-    "--loader-reveal": `${reveal.toFixed(2)}%`,
-    "--loader-line": `${Math.max(0, loaderT * 100).toFixed(2)}%`,
+    "--loader-main-reveal": `${(100 - mindT * 100).toFixed(2)}%`,
+    "--loader-studio-reveal": `${(100 - studioT * 100).toFixed(2)}%`,
+    "--loader-main-y": `${(34 * (1 - mindT)).toFixed(2)}px`,
+    "--loader-studio-y": `${(26 * (1 - studioT)).toFixed(2)}px`,
+    "--loader-main-rotate": `${(-5 * (1 - mindT)).toFixed(2)}deg`,
+    "--loader-studio-rotate": `${(4 * (1 - studioT)).toFixed(2)}deg`,
+    "--loader-scale": (0.78 + mindT * 0.22 + settleT * 0.012).toFixed(4),
+    "--loader-opacity": Math.min(1, 0.12 + Math.max(mindT, studioT) * 0.88).toFixed(3),
+    "--loader-blur": `${(9 * Math.pow(1 - Math.max(mindT, studioT), 1.5)).toFixed(2)}px`,
+    "--loader-letter": `${(0.018 - mindT * 0.038).toFixed(4)}em`,
   } as CSSProperties;
 }
 
@@ -134,6 +136,8 @@ export function Experience({ content }: { content: SiteContent }) {
 
   const [progress, setProgress] = useState(0);
   const [loaded, setLoaded] = useState(false);
+  const [loaderExiting, setLoaderExiting] = useState(false);
+  const [showLoader, setShowLoader] = useState(true);
   const [heroIndex, setHeroIndex] = useState(0);
   const [selectedItem, setSelectedItem] = useState<ContentItem | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -156,14 +160,17 @@ export function Experience({ content }: { content: SiteContent }) {
       const skipFrame = window.requestAnimationFrame(() => {
         setProgress(100);
         setLoaded(true);
+        setShowLoader(false);
       });
       return () => window.cancelAnimationFrame(skipFrame);
     }
 
     const startedAt = performance.now();
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const duration = reducedMotion ? 700 : 4300;
+    const duration = reducedMotion ? 500 : 5100;
     let frame = 0;
+    let exitTimer = 0;
+    let cleanupTimer = 0;
     const tick = (now: number) => {
       const exactProgress = Math.min(100, ((now - startedAt) / duration) * 100);
       const stage = loaderStageRef.current;
@@ -173,11 +180,22 @@ export function Experience({ content }: { content: SiteContent }) {
         });
       }
       setProgress(Math.round(exactProgress));
-      if (exactProgress < 100) frame = window.requestAnimationFrame(tick);
-      else window.setTimeout(() => setLoaded(true), reducedMotion ? 120 : 720);
+      if (exactProgress < 100) {
+        frame = window.requestAnimationFrame(tick);
+      } else {
+        exitTimer = window.setTimeout(() => {
+          setLoaded(true);
+          setLoaderExiting(true);
+          cleanupTimer = window.setTimeout(() => setShowLoader(false), reducedMotion ? 40 : 930);
+        }, reducedMotion ? 50 : 170);
+      }
     };
     frame = window.requestAnimationFrame(tick);
-    return () => window.cancelAnimationFrame(frame);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(exitTimer);
+      window.clearTimeout(cleanupTimer);
+    };
   }, []);
 
   useEffect(() => {
@@ -337,15 +355,14 @@ export function Experience({ content }: { content: SiteContent }) {
 
   return (
     <>
-      <div className={`preloader ${loaded ? "preloader-done" : ""}`} aria-hidden={loaded}>
+      {showLoader && <div className={`preloader reference-loader ${loaderExiting ? "preloader-done" : ""}`} aria-hidden={loaderExiting}>
         <div className="loader-stage" style={loaderStyle} ref={loaderStageRef}>
-          <div className="loader-ambient" aria-hidden="true"><span /><span /></div>
           <div className="loader-copy">
-            <div className="loader-brand" aria-label="Mind Rythm Studio">
-              <span className="loader-brand-line">
-                <span className="loader-brand-word">Mind Rythm</span>
+            <div className="loader-brand" aria-label="Mindrythm Studio">
+              <span className="loader-brand-line loader-brand-main">
+                <span className="loader-brand-word">Mindrythm</span>
               </span>
-              <span className="loader-brand-line">
+              <span className="loader-brand-line loader-brand-studio">
                 <span className="loader-brand-word">Studio</span>
               </span>
             </div>
@@ -355,7 +372,7 @@ export function Experience({ content }: { content: SiteContent }) {
           <span>Composing the visual world</span>
           <span className="preloader-progress">{String(progress).padStart(3, "0")}%</span>
         </div>
-      </div>
+      </div>}
 
       <div className={`site-shell ${loaded ? "site-ready" : ""}`}>
         <header className={`site-header ${menuOpen ? "menu-active" : ""}`}>
