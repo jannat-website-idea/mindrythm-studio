@@ -2,7 +2,6 @@
 
 import {
   enquiryTaglines,
-  filmsInstagramUrl,
   mainInstagramUrl,
   missionParagraphs,
   teamIntroduction,
@@ -12,6 +11,7 @@ import {
 } from "@/lib/content";
 import { BackToTop } from "@/app/back-to-top";
 import { EmphasizedCopy } from "@/app/emphasized-copy";
+import { SocialIcon } from "@/app/social-icon";
 import { type FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
@@ -60,7 +60,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
     work: ["Our Work", "Properties, events and weddings photographed and filmed to be remembered."],
     gallery: ["Gallery", "An immersive visual archive of spaces, people and celebrations."],
     team: ["Our Team", "A specialist collective assembled around the needs of every story."],
-    story: ["Our Story", "The thinking, people and process behind Mind Rythm Studio photography and films."],
+    story: ["Our Story", "The thinking, people and process behind Mindrythm photography and films."],
     contact: ["Enquire", "Tell us about your property, event, wedding or next visual story."],
   }[page]), [page]);
 
@@ -86,7 +86,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   return (
     <div className="inner-shell">
       <header className="inner-header">
-        <Link className="wordmark" href="/#home" aria-label="Mind Rythm Studio home" onClick={returnToHero}><img src="/mindrythm-logomark.png" alt="" /><span>Mind Rythm <em>Studio</em></span></Link>
+        <Link className="wordmark" href="/#home" aria-label="Mindrythm home" onClick={returnToHero}><img src="/mindrythm-logomark.png" alt="" /><span>Mindrythm</span></Link>
         <nav aria-label="Site navigation">
           <Link href="/#home" onClick={returnToHero}>Home</Link>
           <Link href="/#services">Services</Link>
@@ -100,7 +100,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
 
       <main>
         <section className={`inner-hero inner-hero-${page}`}>
-          <span>Mind Rythm Studio / {pageMeta[0]}</span>
+          <span>Mindrythm / {pageMeta[0]}</span>
           <h1>{pageMeta[0]}</h1>
           <p>{pageMeta[1]}</p>
         </section>
@@ -117,7 +117,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                 <div className="work-page-detail">
                   <p>{project.body}</p>
                   <div>{galleryItems.slice(0, 3).map((item) => <Media key={item.id} item={item} />)}</div>
-                  <span>{project.year} / Mind Rythm Studio</span>
+                  <span>{project.year} / Mindrythm</span>
                 </div>
               </details>
             ))}
@@ -138,7 +138,11 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                 </section>
               );
             })}
-            <section className="social-gallery-cta"><span>Follow the living archive</span><div><a href={mainInstagramUrl}>Instagram</a><a href={filmsInstagramUrl}>Instagram Films</a><a href={settings.facebook}>Facebook</a><a href={settings.youtube}>YouTube</a></div></section>
+            <section className="social-gallery-cta"><span>Follow the living archive</span><div className="editorial-social-icons" aria-label="Mindrythm social links">
+              <a href={mainInstagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram"><SocialIcon name="instagram" /></a>
+              <a href={settings.facebook} target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook"><SocialIcon name="facebook" /></a>
+              <a href={settings.youtube} target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube"><SocialIcon name="youtube" /></a>
+            </div></section>
           </div>
         )}
 
@@ -165,14 +169,14 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
 
         {page === "story" && (
           <div className="story-page">
-            <section className="story-manifesto"><span>What is Mind Rythm Studio?</span><p><EmphasizedCopy text={visionParagraphs[0]} /></p></section>
+            <section className="story-manifesto"><span>What is Mindrythm?</span><p><EmphasizedCopy text={visionParagraphs[0]} /></p></section>
             <section className="story-pillars">
               <article><h2>What we capture</h2><p>We work across properties, resorts, events and weddings through photography, cinematic film and aerial capture.</p></article>
               <article><h2>Who we work with</h2><p>Couples, families, event teams, developers, architects, resorts and brands seeking a distinct visual point of view.</p></article>
               <article><h2>How we work</h2><p>Every commission begins with listening, a clear visual plan and space for real moments to happen.</p></article>
             </section>
             <section className="story-narrative story-vision-full"><header><span>Our vision</span><h2>Ideas find their visual language.</h2></header><div>{visionParagraphs.map((paragraph) => <p key={paragraph}><EmphasizedCopy text={paragraph} /></p>)}</div></section>
-            <section className="story-vision"><img src="/mindrythm-logomark.png" alt="Mind Rythm Studio logomark" /><div><span>Our vision</span><h2>{visionParagraphs[3]}</h2></div></section>
+            <section className="story-vision"><img src="/mindrythm-logomark.png" alt="Mindrythm logomark" /><div><span>Our vision</span><h2>{visionParagraphs[3]}</h2></div></section>
             <section className="story-narrative story-mission"><header><span>Our mission</span><h2>A conversation before a brief.</h2></header><div>{missionParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div></section>
             <section className="story-narrative story-people"><header><span>Our people</span><h2>Never about one person.</h2></header><div><p>{teamIntroduction}</p><a href="/team">Meet the team</a></div></section>
           </div>
@@ -185,7 +189,11 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
               <div><span>Call</span><a href={`tel:${settings.phonePrimary}`}>{settings.phonePrimary}</a><a href={`tel:${settings.phoneSecondary}`}>{settings.phoneSecondary}</a></div>
               <div><span>Email</span><a href={`mailto:${settings.contactEmail}`}>{settings.contactEmail}</a></div>
               <div><span>Visit</span><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(settings.address)}`} target="_blank" rel="noreferrer">{settings.address}</a></div>
-              <div><span>Social</span><a href={mainInstagramUrl}>Instagram</a><a href={filmsInstagramUrl}>Instagram Films</a><a href={settings.facebook}>Facebook</a><a href={settings.youtube}>YouTube</a><a href={settings.x}>X</a></div>
+              <div><span>Social</span><div className="contact-page-socials" aria-label="Mindrythm social links">
+                <a href={mainInstagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram"><SocialIcon name="instagram" /></a>
+                <a href={settings.facebook} target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook"><SocialIcon name="facebook" /></a>
+                <a href={settings.youtube} target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube"><SocialIcon name="youtube" /></a>
+              </div></div>
             </section>
             <form className="contact-page-form" id="enquiry" onSubmit={sendEnquiry}>
               <div className="form-field"><label htmlFor="contact-name">Full name *</label><input id="contact-name" name="name" required /></div>
@@ -196,12 +204,21 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
               <button type="submit" disabled={formState === "sending"}>{formState === "sending" ? "Sending…" : "Send enquiry"}</button>
               <p className={`form-message ${formState}`}>{formState === "sent" ? "Thank you. Your enquiry has been sent to Admin@mindrythm.com." : formState === "error" ? "Your enquiry was saved, but the email could not be delivered. Please email Admin@mindrythm.com directly." : "Your message will be saved securely and emailed to Admin@mindrythm.com."}</p>
             </form>
-            <div className="contact-page-map"><iframe title="Mind Rythm Studio location" loading="lazy" src={`https://www.google.com/maps?q=${encodeURIComponent(settings.address)}&output=embed`} /></div>
+            <div className="contact-page-map"><iframe title="Mindrythm location" loading="lazy" src={`https://www.google.com/maps?q=${encodeURIComponent(settings.address)}&output=embed`} /></div>
           </div>
         )}
       </main>
 
-      <footer className="inner-footer"><Link href="/#home" onClick={returnToHero}><img src="/mindrythm-logomark.png" alt="" />Mind Rythm Studio</Link><span>© {new Date().getFullYear()}</span><a href={mainInstagramUrl}>Instagram</a><a href={filmsInstagramUrl}>Instagram Films</a><a href={settings.youtube}>YouTube</a><a href={settings.facebook}>Facebook</a><a href={settings.x}>X</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/studio">Admin</a></footer>
+      <footer className="inner-footer">
+        <Link href="/#home" onClick={returnToHero}><img src="/mindrythm-logomark.png" alt="" />Mindrythm</Link>
+        <span>© {new Date().getFullYear()}</span>
+        <div className="inner-footer-socials" aria-label="Mindrythm social links">
+          <a href={mainInstagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram"><SocialIcon name="instagram" /></a>
+          <a href={settings.facebook} target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook"><SocialIcon name="facebook" /></a>
+          <a href={settings.youtube} target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube"><SocialIcon name="youtube" /></a>
+        </div>
+        <a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/studio">Admin</a>
+      </footer>
       <BackToTop />
 
       {selected && (

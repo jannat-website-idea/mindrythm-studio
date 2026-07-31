@@ -49,10 +49,10 @@ export const mainInstagramUrl = "https://www.instagram.com/mindrythm_studios/";
 export const filmsInstagramUrl = "https://www.instagram.com/mindrythm.films/";
 
 export const defaultSettings: SiteSettings = {
-  siteName: "Mind Rythm Studio",
+  siteName: "Mindrythm",
   tagline: "Every story has a rhythm.",
   description:
-    "Mind Rythm Studio is an independent film and photography studio translating the unseen character of people, places and brands into honest, cinematic visual stories.",
+    "Mindrythm is an independent film and photography studio translating the unseen character of people, places and brands into honest, cinematic visual stories.",
   vision:
     "Our vision is to create a place where ideas find their visual language, where artists find one another, and where every project contributes to a body of work that is as intentional as it is beautiful.",
   idea:
@@ -70,17 +70,17 @@ export const defaultSettings: SiteSettings = {
 };
 
 export const visionParagraphs = [
-  "At Mind Rythm Studio, we believe every person, every space, and every brand carries a rhythm of its own, a story that often exists beyond words. Our work begins long before the camera rolls. It begins by understanding the ideas, emotions, and intentions that are difficult to describe, yet deeply felt.",
+  "At Mindrythm, we believe every person, every space, and every brand carries a rhythm of its own, a story that often exists beyond words. Our work begins long before the camera rolls. It begins by understanding the ideas, emotions, and intentions that are difficult to describe, yet deeply felt.",
   "We exist to translate those unseen narratives into cinematic films and imagery that feel honest, timeless, and deeply human. Whether we are creating for luxury real estate, wellness, hospitality, retreats, fashion, or documentary storytelling, our goal remains the same: to reveal the essence that already exists, rather than simply document what is seen.",
-  "Mind Rythm Studio is built on the belief that meaningful work is never created in isolation. We aspire to cultivate a community of filmmakers, photographers, designers, musicians, writers, and artists who believe that the most compelling visual narratives emerge through shared perspectives, thoughtful collaboration, and a genuine respect for the creative process.",
+  "Mindrythm is built on the belief that meaningful work is never created in isolation. We aspire to cultivate a community of filmmakers, photographers, designers, musicians, writers, and artists who believe that the most compelling visual narratives emerge through shared perspectives, thoughtful collaboration, and a genuine respect for the creative process.",
   "Our vision is to create a place where ideas find their visual language, where artists find one another, and where every project contributes to a body of work that is as intentional as it is beautiful.",
 ] as const;
 
 export const missionParagraphs = [
-  "At Mind Rythm Studio, we believe every meaningful project begins with a conversation, not a perfect brief.",
+  "At Mindrythm, we believe every meaningful project begins with a conversation, not a perfect brief.",
   "Our mission is to create a space where ideas can be explored openly, without the pressure of having every detail figured out from the start. We understand that the strongest creative visions often begin as instincts, emotions, or scattered thoughts that are difficult to explain. Our role is to listen with care, ask thoughtful questions, and help those ideas find the visual language they deserve.",
   "Whether we are creating for luxury real estate, wellness, hospitality, retreats, architecture, fashion, or documentary storytelling, we approach every project with curiosity, clarity, and respect for its individuality. Rather than imposing a signature style, we allow each story to shape its own visual identity, creating films and imagery that feel honest, intentional, and true to the people behind them.",
-  "We also believe that meaningful creative work is built through collaboration. Mind Rythm Studio is more than a production house; it is a growing community of filmmakers, photographers, designers, musicians, writers, artists, and visionaries who share a passion for thoughtful storytelling and purposeful craftsmanship. By bringing together diverse creative perspectives, we continue to learn, evolve, and create work that carries depth, authenticity, and lasting value.",
+  "We also believe that meaningful creative work is built through collaboration. Mindrythm is more than a production house; it is a growing community of filmmakers, photographers, designers, musicians, writers, artists, and visionaries who share a passion for thoughtful storytelling and purposeful craftsmanship. By bringing together diverse creative perspectives, we continue to learn, evolve, and create work that carries depth, authenticity, and lasting value.",
   "Our mission is simple: to help people find the visual language their ideas deserve, and to create work that remains meaningful long after the final frame.",
 ] as const;
 
@@ -104,7 +104,7 @@ export const footerTaglines = [
   "Some stories simply need the right people to tell them.",
 ] as const;
 
-export const teamIntroduction = "Mind Rythm Studio has never been about one person—it has always been about the people who choose to build it together. Every member of our team brings their own way of seeing the world, their own craft, and their own quiet dedication to creating work that feels honest and intentional. We learn from one another, challenge one another, and grow together with every project we take on. When you work with us, you're not simply working with individuals behind the camera or the screen; you're working with a team that genuinely cares about the people, places, and stories we are trusted to represent.";
+export const teamIntroduction = "Mindrythm has never been about one person—it has always been about the people who choose to build it together. Every member of our team brings their own way of seeing the world, their own craft, and their own quiet dedication to creating work that feels honest and intentional. We learn from one another, challenge one another, and grow together with every project we take on. When you work with us, you're not simply working with individuals behind the camera or the screen; you're working with a team that genuinely cares about the people, places, and stories we are trusted to represent.";
 
 export const defaultItems: ContentItem[] = [
   {

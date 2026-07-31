@@ -27,14 +27,14 @@ ON CONFLICT(`id`) DO UPDATE SET
 INSERT INTO `site_settings` (`key`, `value`, `updated_at`)
 VALUES (
   'site',
-  '{"siteName":"MINDRYTHM","tagline":"Architecture, hospitality and places—photographed with feeling.","description":"Mind Rhythm is a professional photography and film studio specialising in resorts, real estate, architecture and interiors. We create polished visual stories that help exceptional places feel desirable, memorable and ready to be discovered.","vision":"To reveal the character of every property through considered light, precise composition and imagery that invites people to imagine themselves there.","idea":"Photography, aerial film, interiors and hospitality storytelling—planned as one coherent visual system for every property.","contactEmail":"Admin@mindrythm.com","phonePrimary":"+91 90735 73878","phoneSecondary":"+91 62923 33492","address":"250, Bansdroni, Rifle Club Playground, Kolkata - 700070","instagram":"https://instagram.com/","vimeo":"https://vimeo.com/","linkedin":"https://linkedin.com/","facebook":"https://facebook.com/","youtube":"https://youtube.com/"}',
+  '{"siteName":"MINDRYTHM","tagline":"Architecture, hospitality and places—photographed with feeling.","description":"Mindrythm is a professional photography and film studio specialising in resorts, real estate, architecture and interiors. We create polished visual stories that help exceptional places feel desirable, memorable and ready to be discovered.","vision":"To reveal the character of every property through considered light, precise composition and imagery that invites people to imagine themselves there.","idea":"Photography, aerial film, interiors and hospitality storytelling—planned as one coherent visual system for every property.","contactEmail":"Admin@mindrythm.com","phonePrimary":"+91 90735 73878","phoneSecondary":"+91 62923 33492","address":"250, Bansdroni, Rifle Club Playground, Kolkata - 700070","instagram":"https://instagram.com/","vimeo":"https://vimeo.com/","linkedin":"https://linkedin.com/","facebook":"https://facebook.com/","youtube":"https://youtube.com/"}',
   datetime('now')
 )
 ON CONFLICT(`key`) DO UPDATE SET
   `value` = json_set(
     `site_settings`.`value`,
     '$.tagline', 'Architecture, hospitality and places—photographed with feeling.',
-    '$.description', 'Mind Rhythm is a professional photography and film studio specialising in resorts, real estate, architecture and interiors. We create polished visual stories that help exceptional places feel desirable, memorable and ready to be discovered.',
+    '$.description', 'Mindrythm is a professional photography and film studio specialising in resorts, real estate, architecture and interiors. We create polished visual stories that help exceptional places feel desirable, memorable and ready to be discovered.',
     '$.vision', 'To reveal the character of every property through considered light, precise composition and imagery that invites people to imagine themselves there.',
     '$.idea', 'Photography, aerial film, interiors and hospitality storytelling—planned as one coherent visual system for every property.'
   ),

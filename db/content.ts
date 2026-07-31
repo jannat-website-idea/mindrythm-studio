@@ -62,7 +62,7 @@ export type Enquiry = {
 
 function database(): D1Database {
   const db = env.DB as D1Database | undefined;
-  if (!db) throw new Error("The Mind Rythm Studio content database is unavailable.");
+  if (!db) throw new Error("The Mindrythm content database is unavailable.");
   return db;
 }
 
@@ -184,16 +184,15 @@ export async function getSiteContent(): Promise<SiteContent> {
     if (!savedInstagram || legacyInstagramLinks.has(savedInstagram)) {
       mergedSettings.instagram = mainInstagramUrl;
     }
-    if (["MINDRYTHM", "MIND RHYTHM", "Mind Rhythm", "Mindrythm studio", "Mindrythm Studio"].includes(mergedSettings.siteName)) {
+    if (["MINDRYTHM", "MIND RHYTHM", "Mind Rhythm", "Mindrythm studio", "Mindrythm Studio", "Mind Rythm Studio", "MindRythm", "MindRythm Studio"].includes(mergedSettings.siteName)) {
       mergedSettings.siteName = defaultSettings.siteName;
     }
 
     const normalizeBrandName = (value: string) => value
-      .replace(/\bMindrythm\s+studio\b/gi, "Mind Rythm Studio")
-      .replace(/\bMindrythm\b/gi, "Mind Rythm Studio")
-      .replace(/\bMind Rhythm\b(?:\s+Studio)?/gi, "Mind Rythm Studio")
-      .replace(/\bMind Rythm\b(?!\s+Studio)/gi, "Mind Rythm Studio")
-      .replace(/\brhythm\b/gi, "rythm");
+      .replace(/\bMind\s*Rythm(?:\s+Studio)?\b/gi, "Mindrythm")
+      .replace(/\bMind\s*Rhythm(?:\s+Studio)?\b/gi, "Mindrythm")
+      .replace(/\bMindrythm\s+Studio\b/gi, "Mindrythm")
+      .replace(/\bMindrythm\b/gi, "Mindrythm");
     mergedSettings.siteName = normalizeBrandName(mergedSettings.siteName);
     mergedSettings.tagline = normalizeBrandName(mergedSettings.tagline);
     mergedSettings.description = normalizeBrandName(mergedSettings.description);

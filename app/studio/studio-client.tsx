@@ -148,7 +148,7 @@ export function StudioClient({
     <main className="studio-shell">
       <header className="studio-header">
         <div>
-          <span className="studio-kicker">Mind Rythm Studio — Content manager</span>
+          <span className="studio-kicker">Mindrythm — Content manager</span>
           <h1>Shape the site.</h1>
         </div>
         <div className="studio-header-actions">

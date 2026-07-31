@@ -25,7 +25,7 @@ SET
   `value` = json_set(
     `value`,
     '$.tagline', 'Properties, events and weddings—photographed with feeling.',
-    '$.description', 'Mind Rhythm is a professional photography and film studio for properties, resorts, events, weddings and brands. We create polished visual stories that make spaces desirable, celebrations unforgettable and every important moment worth returning to.',
+    '$.description', 'Mindrythm is a professional photography and film studio for properties, resorts, events, weddings and brands. We create polished visual stories that make spaces desirable, celebrations unforgettable and every important moment worth returning to.',
     '$.vision', 'To give every space, celebration and milestone its own visual memory through considered light, honest emotion and precise composition.',
     '$.idea', 'Property photography, resort films, event coverage, wedding photography and cinematic films—planned as one coherent visual story for every brief.'
   ),
