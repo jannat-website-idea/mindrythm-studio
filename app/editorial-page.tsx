@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  brandTaglines,
   enquiryTaglines,
   mainInstagramUrl,
   missionParagraphs,
@@ -16,7 +17,14 @@ import { SocialIcon } from "@/app/social-icon";
 import { type FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
-export type EditorialPageKind = "work" | "gallery" | "team" | "story" | "contact";
+export type EditorialPageKind = "services" | "work" | "gallery" | "team" | "story" | "contact";
+
+const serviceItems = [
+  { title: "Real-estate", copy: "Architecture, interiors and property campaigns shaped around light, proportion and a true sense of place.", mediaUrl: "/images/villa-pool.jpg", mediaAlt: "Modern villa and pool" },
+  { title: "Hospitality", copy: "Cinematic films and photography that let future guests feel the atmosphere before they arrive.", mediaUrl: "/videos/resort-pool.mp4", mediaAlt: "Resort pool in warm daylight" },
+  { title: "Wellness", copy: "Quiet, human imagery for retreats, rituals and brands built around restoration and care.", mediaUrl: "/images/green-object.jpg", mediaAlt: "Wellness still life" },
+  { title: "Wedding / Moments", copy: "Photography and films that preserve the emotion, rituals and unscripted moments that make a day your own.", mediaUrl: "/videos/wedding-film.mp4", mediaAlt: "A cinematic wedding moment" },
+] as const;
 
 export function EditorialPage({ content, page }: { content: SiteContent; page: EditorialPageKind }) {
   const { settings } = content;
@@ -36,6 +44,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   const team = [...savedTeam, ...teamFallbacks].slice(0, 3);
   const [selected, setSelected] = useState<ContentItem | null>(null);
   const [activeTeamCardId, setActiveTeamCardId] = useState<string | null>(null);
+  const [activeService, setActiveService] = useState(0);
   const [formState, setFormState] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   function returnToHero() {
@@ -58,6 +67,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   }, [activeTeamCardId]);
 
   const pageMeta = useMemo(() => ({
+    services: ["Services", "One studio. Many visual languages."],
     work: ["Our Work", "Properties, events and weddings photographed and filmed to be remembered."],
     gallery: ["Gallery", "An immersive visual archive of spaces, people and celebrations."],
     team: ["Our Team", "A specialist collective assembled around the needs of every story."],
@@ -90,7 +100,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
         <Link className="wordmark" href="/#home" aria-label="Mindrythm home" onClick={returnToHero}><img src="/mindrythm-logomark.png" alt="" /><span>Mindrythm</span></Link>
         <nav aria-label="Site navigation">
           <Link href="/#home" onClick={returnToHero}>Home</Link>
-          <Link href="/#services">Services</Link>
+          <Link className={page === "services" ? "active" : ""} href="/services">Services</Link>
           <a className={page === "work" ? "active" : ""} href="/work">Our Work</a>
           <a className={page === "gallery" ? "active" : ""} href="/gallery">Gallery</a>
           <a className={page === "team" ? "active" : ""} href="/team">Our Team</a>
@@ -100,11 +110,35 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
       </header>
 
       <main>
-        <section className={`inner-hero inner-hero-${page}`}>
-          <span>Mindrythm / {pageMeta[0]}</span>
-          <h1>{pageMeta[0]}</h1>
-          <p>{pageMeta[1]}</p>
-        </section>
+        {page !== "services" && (
+          <section className={`inner-hero inner-hero-${page}`}>
+            <span>Mindrythm / {pageMeta[0]}</span>
+            <h1>{pageMeta[0]}</h1>
+            <p>{pageMeta[1]}</p>
+          </section>
+        )}
+
+        {page === "services" && (
+          <section className="services-experience services-page-direct" id="services" aria-label="Mindrythm services">
+            <header data-reveal><span>Our services</span><h1>One studio.<br />Many visual languages.</h1><p>“{brandTaglines[0]}”</p></header>
+            <div className="services-layout">
+              <div className="services-list">
+                {serviceItems.map((service, index) => (
+                  <button type="button" aria-pressed={activeService === index} className={activeService === index ? "active" : ""} key={service.title} onMouseEnter={() => setActiveService(index)} onFocus={() => setActiveService(index)} onClick={() => setActiveService(index)}>
+                    <strong>{service.title}</strong><span>{service.copy}</span><i>+</i>
+                  </button>
+                ))}
+              </div>
+              <a className="services-preview" href="/contact#enquiry" aria-label={`Enquire about ${serviceItems[activeService].title}`}>
+                {serviceItems.map((service, index) => {
+                  const item: ContentItem = { id: `direct-service-${index}`, kind: "project", sortOrder: index, title: service.title, eyebrow: "Service", body: service.copy, mediaUrl: service.mediaUrl, mediaAlt: service.mediaAlt, category: service.title, year: "", href: "/contact", accent: "ink" };
+                  return <div className={activeService === index ? "active" : ""} key={service.title}><Media item={item} /></div>;
+                })}
+                <span>{serviceItems[activeService].title}<i>Explore service</i></span>
+              </a>
+            </div>
+          </section>
+        )}
 
         {page === "work" && (
           <section className="work-page-grid">

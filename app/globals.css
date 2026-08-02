@@ -4581,3 +4581,42 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
     margin-left: 0 !important;
   }
 }
+
+.inner-header,
+.home-header.section-nav-visible {
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+.services-page-direct {
+  min-height: calc(100svh - 72px);
+  padding-top: clamp(3.5rem, 7vw, 7rem) !important;
+}
+
+.services-page-direct > header h1 {
+  margin: 0;
+  font-size: clamp(3.5rem, 6.5vw, 7.5rem);
+  font-weight: 300;
+  letter-spacing: -.06em;
+  line-height: .9;
+  text-transform: uppercase;
+}
+
+@media (min-width: 681px) {
+  .services-page-direct .services-layout {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 680px) {
+  .services-page-direct {
+    min-height: 0;
+    padding-top: 4rem !important;
+  }
+
+  .services-page-direct > header h1 {
+    font-size: clamp(3rem, 14vw, 5rem);
+  }
+}

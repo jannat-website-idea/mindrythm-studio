@@ -56,7 +56,7 @@ const serviceItems = [
 
 const navigationItems = [
   { label: "Home", href: "#home", note: "Begin here" },
-  { label: "Services", href: "#services", note: "What we create" },
+  { label: "Services", href: "/services", note: "What we create" },
   { label: "Our Work", href: "/work", note: "Selected commissions" },
   { label: "Gallery", href: "/gallery", note: "Stories and moments" },
   { label: "Our Team", href: "/team", note: "The people behind it" },
@@ -717,7 +717,7 @@ export function Experience({ content }: { content: SiteContent }) {
           <div className="footer-cta"><span>{footerTaglines[1]}</span><a href="/contact">{footerTaglines[0]}</a></div>
           <div className="footer-grid">
             <div className="footer-brand"><img src="/mindrythm-logomark.png" alt="Mindrythm logomark" /><span>Mindrythm</span></div>
-            <div className="footer-column"><span>Explore</span><a href="#services">Services</a><a href="/work">Our Work</a><a href="/gallery">Gallery</a><a href="/team">Our Team</a></div>
+            <div className="footer-column"><span>Explore</span><a href="/services">Services</a><a href="/work">Our Work</a><a href="/gallery">Gallery</a><a href="/team">Our Team</a></div>
             <div className="footer-column"><span>Follow</span><div className="footer-social-links" aria-label="Mindrythm social links">
               <a href={mainInstagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram"><SocialIcon name="instagram" /></a>
               <a href={settings.facebook} target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook"><SocialIcon name="facebook" /></a>
