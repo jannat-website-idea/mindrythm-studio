@@ -4550,13 +4550,14 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
 
   .menu-brand-context {
     align-self: start !important;
+    transform: translateX(20%) !important;
   }
 
   .menu-brand-feature > img {
     left: 70% !important;
-    width: min(63.75vw, 900px) !important;
-    max-width: 150% !important;
-    max-height: 90vh !important;
+    width: min(73.3vw, 1035px) !important;
+    max-width: 172.5% !important;
+    max-height: 100vh !important;
   }
 
   .menu-brand-feature > p {
