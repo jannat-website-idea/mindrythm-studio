@@ -4589,6 +4589,18 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   backdrop-filter: none !important;
 }
 
+.site-header nav,
+.site-header .header-section-nav,
+.site-header .header-section-nav.is-visible,
+.inner-header nav {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
 .services-page-direct {
   min-height: calc(100svh - 72px);
   padding-top: clamp(3.5rem, 7vw, 7rem) !important;
