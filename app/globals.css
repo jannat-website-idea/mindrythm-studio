@@ -3714,9 +3714,9 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   }
   .menu-overlay nav {
     display: grid !important;
-    align-content: center !important;
+    align-content: start !important;
     min-height: 0 !important;
-    padding: 0 !important;
+    padding: 3rem 0 0 !important;
   }
   .menu-overlay nav a,
   .menu-overlay.nav-open nav a {
