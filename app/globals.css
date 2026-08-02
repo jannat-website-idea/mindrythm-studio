@@ -3587,10 +3587,19 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   }
   .menu-overlay-heading,
   .menu-overlay nav,
-  .menu-overlay-meta { position: relative; z-index: 1; }
+  .menu-overlay-meta { position: relative; z-index: 3; }
+  .menu-overlay nav { padding-left: clamp(3rem, 8vw, 8rem); }
+  .menu-overlay nav a,
+  .menu-overlay.nav-open nav a {
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: var(--ink) !important;
+  }
   .menu-overlay.nav-open .menu-brand-feature > img,
   .menu-overlay.nav-open .menu-brand-feature > p {
+    visibility: visible;
     opacity: 1;
-    filter: none;
   }
+  .menu-overlay.nav-open .menu-brand-feature > img { filter: invert(1); }
+  .menu-overlay.nav-open .menu-brand-feature > p { filter: none; }
 }
