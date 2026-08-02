@@ -4163,3 +4163,255 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   .gallery-page-section-celebrations .gallery-page-card:nth-child(6) { grid-column: 1 / -1; }
   .gallery-page-feature > p { font-size: clamp(1.4rem, 6vw, 2.15rem); }
 }
+
+/* Final menu restoration: keep navigation above the animated page shell. */
+.home-header {
+  position: fixed !important;
+  inset: 0 0 auto 0 !important;
+  height: 82px !important;
+  min-height: 82px !important;
+  z-index: 70 !important;
+  transition: opacity .45s var(--motion-ease), transform .65s var(--motion-ease), color .3s ease !important;
+}
+.home-header.site-loading {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateY(-100%) !important;
+}
+.home-header.site-ready {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transform: none !important;
+  animation: none !important;
+}
+.menu-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 80 !important;
+  display: grid !important;
+  grid-template-columns: 50% 50% !important;
+  min-height: 100svh !important;
+  overflow: hidden !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  clip-path: none !important;
+  transform: none !important;
+  color: var(--ink) !important;
+  background: var(--ivory) !important;
+  transition: visibility 0s linear .55s, opacity .55s var(--motion-ease) !important;
+}
+.menu-overlay.nav-open {
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transition-delay: 0s !important;
+}
+.menu-overlay-close {
+  position: absolute !important;
+  top: 1.5rem !important;
+  right: 2rem !important;
+  z-index: 10 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: .8rem !important;
+  padding: .2rem !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 999px !important;
+  color: var(--ink) !important;
+  background: rgba(251,250,245,.82) !important;
+  font: inherit !important;
+  font-size: .62rem !important;
+  letter-spacing: .08em !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;
+}
+.menu-overlay-close span { padding-left: .7rem; }
+.menu-overlay-close i {
+  display: grid;
+  width: 2.2rem;
+  height: 2.2rem;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--ivory);
+  background: var(--ink);
+  font-size: 1.35rem;
+  font-style: normal;
+  line-height: 1;
+  transition: transform .3s var(--motion-ease);
+}
+.menu-overlay-close:hover i { transform: rotate(90deg); }
+.menu-overlay-brand {
+  position: relative !important;
+  display: grid !important;
+  grid-template-rows: auto minmax(0,1fr) auto !important;
+  min-width: 0 !important;
+  height: 100svh !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  padding: 9.8rem 3.6vw 2.8rem !important;
+  color: var(--ivory) !important;
+  background: var(--ink) !important;
+  clip-path: polygon(0 0, 100% 0, 64% 100%, 0 100%) !important;
+}
+.menu-brand-context,
+.menu-overlay-brand > small { position: relative !important; z-index: 3 !important; }
+.menu-brand-context { display: grid; gap: .65rem; }
+.menu-brand-context > span,
+.menu-brand-context > small,
+.menu-overlay-brand > small {
+  max-width: 300px;
+  color: rgba(251,250,245,.78);
+  font-size: .58rem;
+  letter-spacing: .1em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+.menu-brand-context > small { color: rgba(251,250,245,.38); }
+.menu-overlay-brand > small { align-self: end; color: rgba(251,250,245,.7); }
+.menu-brand-feature {
+  position: relative !important;
+  display: grid !important;
+  min-height: 0 !important;
+  place-items: center !important;
+  pointer-events: none !important;
+}
+.menu-brand-feature > img {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  z-index: 0 !important;
+  display: block !important;
+  width: min(34vw, 480px) !important;
+  max-width: 80% !important;
+  max-height: 66vh !important;
+  object-fit: contain !important;
+  opacity: .22 !important;
+  filter: invert(1) !important;
+  visibility: visible !important;
+  transform: translate(-50%, -50%) !important;
+}
+.menu-brand-feature > p {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  z-index: 1 !important;
+  display: block !important;
+  margin: 0 !important;
+  color: var(--ivory) !important;
+  font-family: "Avenir Next", Avenir, var(--font-avenir), "Helvetica Neue", Arial, sans-serif !important;
+  font-size: clamp(2.35rem, 3.5vw, 4.3rem) !important;
+  font-weight: 400 !important;
+  letter-spacing: -.075em !important;
+  line-height: .9 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  white-space: nowrap !important;
+  transform: translate(-50%, -50%) !important;
+}
+.menu-overlay-index {
+  position: relative !important;
+  z-index: 2 !important;
+  display: grid !important;
+  grid-template-rows: auto minmax(0,1fr) auto !important;
+  min-width: 0 !important;
+  height: 100svh !important;
+  min-height: 0 !important;
+  padding: 10.2rem 3.8rem 2.7rem 1.35rem !important;
+  overflow: hidden !important;
+  color: var(--ink) !important;
+  background: var(--ivory) !important;
+}
+.menu-overlay-heading {
+  display: flex !important;
+  justify-content: space-between !important;
+  padding-bottom: .9rem !important;
+  border-bottom: 1px solid var(--line) !important;
+  color: var(--ink) !important;
+  font-size: .58rem !important;
+  letter-spacing: .1em !important;
+  text-transform: uppercase !important;
+}
+.menu-overlay nav {
+  display: grid !important;
+  grid-template-rows: repeat(7, minmax(0,1fr)) !important;
+  align-content: stretch !important;
+  min-height: 0 !important;
+  padding: 2.25rem 0 1.7rem !important;
+}
+.menu-overlay nav a,
+.menu-overlay.nav-open nav a {
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) auto !important;
+  gap: 1rem !important;
+  align-items: center !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  border-bottom: 1px solid var(--line) !important;
+  color: var(--ink) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  transition: padding .3s ease, background .3s ease !important;
+}
+.menu-overlay nav a:hover { padding: 0 .55rem !important; background: #dfded8 !important; }
+.menu-overlay nav a > strong {
+  display: block !important;
+  min-width: 0 !important;
+  color: var(--ink) !important;
+  font-size: clamp(1.9rem, 3.05vw, 3.8rem) !important;
+  font-weight: 300 !important;
+  letter-spacing: -.065em !important;
+  line-height: .86 !important;
+  white-space: nowrap !important;
+}
+.menu-overlay nav a > small {
+  display: block !important;
+  color: var(--muted) !important;
+  font-size: .56rem !important;
+  letter-spacing: .07em !important;
+  text-align: right !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+}
+.menu-overlay-meta {
+  display: grid !important;
+  grid-template-columns: 1fr auto !important;
+  gap: .7rem 1rem !important;
+  align-items: end !important;
+  padding-top: 1.05rem !important;
+  border-top: 1px solid var(--line) !important;
+  color: var(--muted) !important;
+  font-size: .56rem !important;
+  letter-spacing: .07em !important;
+  text-transform: uppercase !important;
+}
+.menu-overlay-meta > a { grid-column: 2; justify-self: end; color: var(--muted) !important; }
+.menu-overlay-socials {
+  grid-column: 1 / -1 !important;
+  display: flex !important;
+  gap: .7rem !important;
+  align-items: center !important;
+}
+.menu-overlay-socials a {
+  display: grid !important;
+  width: 2.15rem !important;
+  height: 2.15rem !important;
+  place-items: center !important;
+}
+.menu-overlay-socials .social-icon-image { width: 1.8rem !important; height: 1.8rem !important; object-fit: contain !important; }
+
+@media (max-width: 680px) {
+  .home-header { height: 68px !important; min-height: 68px !important; }
+  .menu-overlay { display: block !important; overflow-y: auto !important; background: var(--ivory) !important; }
+  .menu-overlay-brand { display: none !important; }
+  .menu-overlay-index { height: auto !important; min-height: 100svh !important; padding: 6rem 1rem 1.5rem !important; overflow: visible !important; }
+  .menu-overlay-heading { display: none !important; }
+  .menu-overlay nav { display: grid !important; grid-template-rows: none !important; padding: 0 !important; }
+  .menu-overlay nav a,
+  .menu-overlay.nav-open nav a { display: block !important; padding: .8rem 0 !important; }
+  .menu-overlay nav a > strong { font-size: clamp(1.85rem, 10vw, 3.2rem) !important; }
+  .menu-overlay nav a > small { display: none !important; }
+  .menu-overlay-meta { display: none !important; }
+  .menu-overlay-close { top: 1rem !important; right: 1rem !important; }
+}

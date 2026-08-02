@@ -396,8 +396,7 @@ export function Experience({ content }: { content: SiteContent }) {
         </div>
       </div>}
 
-      <div className={`site-shell ${loaded ? "site-ready" : ""}`}>
-        <header className={`site-header home-header ${sectionNavVisible ? "section-nav-visible" : ""} ${menuOpen ? "menu-active" : ""}`}>
+      <header className={`site-header home-header ${loaded ? "site-ready" : "site-loading"} ${sectionNavVisible ? "section-nav-visible" : ""} ${menuOpen ? "menu-active" : ""}`}>
           <a className="wordmark home-wordmark" href="#home" aria-label="Mindrythm home">
             <img src="/mindrythm-logomark.png" alt="" />
             <span>Mindrythm</span>
@@ -409,9 +408,13 @@ export function Experience({ content }: { content: SiteContent }) {
             <span className="menu-toggle-label">{menuOpen ? "Close" : "Menu"}</span>
             <i aria-hidden="true" />
           </button>
-        </header>
+      </header>
 
-        <div className={`menu-overlay ${menuOpen ? "nav-open" : ""}`} aria-hidden={!menuOpen}>
+      <div className={`menu-overlay ${menuOpen ? "nav-open" : ""}`} aria-hidden={!menuOpen}>
+        <button type="button" className="menu-overlay-close" aria-label="Close navigation" onClick={() => setMenuOpen(false)}>
+          <span>Close</span>
+          <i aria-hidden="true">×</i>
+        </button>
           <aside className="menu-overlay-brand" aria-hidden="true">
             <div className="menu-brand-context">
               <span>Creative professional studio</span>
@@ -443,8 +446,9 @@ export function Experience({ content }: { content: SiteContent }) {
               </div>
             </div>
           </div>
-        </div>
+      </div>
 
+      <div className={`site-shell ${loaded ? "site-ready" : ""}`}>
         <main>
           <section className="hero" id="home" aria-labelledby="hero-title" ref={heroRef}>
             <a className="hero-slides" href="/work" aria-label="Explore Mindrythm projects">
