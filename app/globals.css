@@ -4942,6 +4942,50 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   line-height: 1.65;
 }
 
+.story-manifesto blockquote,
+.story-vision h2,
+.story-vision p,
+.contact-page-intro blockquote,
+.enquiry-reassurance blockquote,
+.project-statement blockquote,
+.vision-section > p,
+.vision-statement,
+.story-narrative h2 {
+  letter-spacing: -.012em !important;
+  word-spacing: .07em;
+}
+
+.story-manifesto blockquote,
+.story-vision h2,
+.contact-page-intro blockquote,
+.enquiry-reassurance blockquote,
+.project-statement blockquote,
+.vision-section > p,
+.vision-statement {
+  line-height: 1.08;
+}
+
+.vision-statement span:nth-child(2) {
+  letter-spacing: 0 !important;
+  word-spacing: .05em;
+}
+
+@media (max-width: 680px) {
+  .story-manifesto blockquote,
+  .story-vision h2,
+  .story-vision p,
+  .contact-page-intro blockquote,
+  .enquiry-reassurance blockquote,
+  .project-statement blockquote,
+  .vision-section > p,
+  .vision-statement,
+  .story-narrative h2 {
+    letter-spacing: -.008em !important;
+    word-spacing: .045em;
+    line-height: 1.1;
+  }
+}
+
 .story-vision p .editorial-emphasis {
   font-style: italic;
 }
