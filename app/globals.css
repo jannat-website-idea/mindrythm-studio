@@ -3603,3 +3603,184 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   .menu-overlay.nav-open .menu-brand-feature > img { filter: invert(1); }
   .menu-overlay.nav-open .menu-brand-feature > p { filter: none; }
 }
+
+/* Explicit menu panels: never allow the brand or navigation to disappear behind a gradient. */
+@media (min-width: 681px) {
+  .menu-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 65 !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 58%) minmax(0, 42%) !important;
+    min-height: 100svh !important;
+    overflow-y: auto !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    clip-path: none !important;
+    transform: none !important;
+    background: var(--ivory) !important;
+    transition: visibility 0s linear .55s, opacity .55s var(--motion-ease) !important;
+  }
+  .menu-overlay.nav-open {
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transition-delay: 0s !important;
+  }
+  .menu-overlay-brand {
+    position: relative !important;
+    z-index: 1 !important;
+    display: flex !important;
+    min-height: 100svh !important;
+    padding: 8rem 4vw 2.5rem !important;
+    color: var(--ivory) !important;
+    background: var(--ink) !important;
+    clip-path: polygon(0 0, 100% 0, 78% 100%, 0 100%) !important;
+  }
+  .menu-brand-feature {
+    position: absolute !important;
+    z-index: 2 !important;
+    inset: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    pointer-events: none !important;
+  }
+  .menu-brand-feature > img {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    z-index: 0 !important;
+    display: block !important;
+    width: min(36vw, 520px) !important;
+    max-height: 64vh !important;
+    object-fit: contain !important;
+    opacity: .16 !important;
+    filter: invert(1) !important;
+    visibility: visible !important;
+    transform: translate(-50%, -50%) !important;
+  }
+  .menu-brand-feature > p {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    z-index: 1 !important;
+    display: block !important;
+    margin: 0 !important;
+    color: var(--ivory) !important;
+    font-family: "Avenir Next", Avenir, var(--font-avenir), "Helvetica Neue", Arial, sans-serif !important;
+    font-size: clamp(2.6rem, 4.8vw, 5.8rem) !important;
+    font-weight: 400 !important;
+    letter-spacing: -.075em !important;
+    line-height: .9 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    white-space: nowrap !important;
+    transform: translate(-50%, -50%) !important;
+  }
+  .menu-brand-feature > p span { font: inherit !important; }
+  .menu-brand-feature > p em { display: none !important; }
+  .menu-overlay-index {
+    position: relative !important;
+    z-index: 3 !important;
+    display: grid !important;
+    min-height: 100svh !important;
+    grid-template-rows: auto 1fr auto !important;
+    padding: 7.3rem 2.5rem 2.5rem 3.5rem !important;
+    color: var(--ink) !important;
+    background: var(--ivory) !important;
+    overflow: visible !important;
+  }
+  .menu-overlay-index::before { display: none !important; }
+  .menu-overlay-heading,
+  .menu-overlay nav,
+  .menu-overlay-meta { position: relative !important; z-index: 4 !important; }
+  .menu-overlay-heading {
+    display: flex !important;
+    justify-content: space-between !important;
+    padding-bottom: .8rem !important;
+    border-bottom: 1px solid var(--line) !important;
+    color: var(--ink) !important;
+  }
+  .menu-overlay nav {
+    display: grid !important;
+    align-content: center !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+  }
+  .menu-overlay nav a,
+  .menu-overlay.nav-open nav a {
+    display: block !important;
+    padding: .58rem 0 !important;
+    border-bottom: 1px solid var(--line) !important;
+    color: var(--ink) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
+  .menu-overlay nav a > strong {
+    display: block !important;
+    color: var(--ink) !important;
+    font-size: clamp(2rem, 4vw, 5rem) !important;
+    font-weight: 300 !important;
+    letter-spacing: -.06em !important;
+    line-height: .88 !important;
+    white-space: nowrap !important;
+  }
+  .menu-overlay nav a > small { display: none !important; }
+  .menu-overlay-meta { display: grid !important; color: var(--ink) !important; }
+}
+
+@media (max-width: 680px) {
+  .menu-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 65 !important;
+    display: block !important;
+    min-height: 100svh !important;
+    padding: 5.5rem 1rem 1.25rem !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    clip-path: none !important;
+    transform: none !important;
+    background: var(--ivory) !important;
+    transition: visibility 0s linear .35s, opacity .35s ease !important;
+  }
+  .menu-overlay.nav-open {
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transition-delay: 0s !important;
+  }
+  .menu-overlay-brand { display: none !important; }
+  .menu-overlay-index {
+    display: block !important;
+    min-height: calc(100svh - 6.75rem) !important;
+    padding: 0 !important;
+    background: var(--ivory) !important;
+  }
+  .menu-overlay-heading,
+  .menu-overlay-meta { display: none !important; }
+  .menu-overlay nav { display: grid !important; gap: 0 !important; padding: 0 !important; }
+  .menu-overlay nav a,
+  .menu-overlay.nav-open nav a {
+    display: block !important;
+    padding: .82rem 0 !important;
+    border-bottom: 1px solid var(--line) !important;
+    color: var(--ink) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
+  .menu-overlay nav a > strong {
+    display: block !important;
+    color: var(--ink) !important;
+    font-size: clamp(1.9rem, 10vw, 3.2rem) !important;
+    font-weight: 300 !important;
+    letter-spacing: -.06em !important;
+    line-height: .9 !important;
+  }
+  .menu-overlay nav a > small { display: none !important; }
+}
