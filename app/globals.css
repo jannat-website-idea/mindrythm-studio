@@ -3950,6 +3950,29 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   transform: translateY(-3px);
 }
 
+.vision-section > .section-index,
+.services-experience header > span {
+  font-size: .75rem !important;
+  font-weight: 600 !important;
+}
+.vision-section > p {
+  font-size: clamp(1.68rem, 2.64vw, 3.24rem) !important;
+  font-weight: 400 !important;
+}
+.services-experience h2 {
+  font-size: clamp(3.36rem, 5.46vw, 6.36rem) !important;
+  font-weight: 400 !important;
+}
+
+@media (max-width: 680px) {
+  .vision-section > p {
+    font-size: clamp(1.58rem, 8.2vw, 3rem) !important;
+  }
+  .services-experience h2 {
+    font-size: clamp(3.2rem, 16.8vw, 5.9rem) !important;
+  }
+}
+
 @media (min-width: 681px) {
   .menu-overlay {
     height: 100svh !important;
