@@ -117,6 +117,7 @@ export function Experience({ content }: { content: SiteContent }) {
   const [selectedItem, setSelectedItem] = useState<ContentItem | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [sectionNavVisible, setSectionNavVisible] = useState(false);
+  const [activeHash, setActiveHash] = useState("#home");
   const [activeTeamCardId, setActiveTeamCardId] = useState<string | null>(null);
   const [activeService, setActiveService] = useState(0);
   const [enquiryState, setEnquiryState] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -205,9 +206,21 @@ export function Experience({ content }: { content: SiteContent }) {
   useEffect(() => {
     const hero = heroRef.current;
     if (!hero) return;
-    const observer = new IntersectionObserver(([entry]) => setSectionNavVisible(!entry.isIntersecting), { threshold: 0.08 });
+    const syncLocation = () => {
+      const hash = window.location.hash || "#home";
+      setActiveHash(hash);
+      if (hash !== "#home") setSectionNavVisible(true);
+    };
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!window.location.hash || window.location.hash === "#home") setSectionNavVisible(!entry.isIntersecting);
+    }, { threshold: 0.08 });
     observer.observe(hero);
-    return () => observer.disconnect();
+    syncLocation();
+    window.addEventListener("hashchange", syncLocation);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("hashchange", syncLocation);
+    };
   }, []);
 
   useEffect(() => {
@@ -390,7 +403,7 @@ export function Experience({ content }: { content: SiteContent }) {
             <span>Mindrythm</span>
           </a>
           <nav className={`header-section-nav ${sectionNavVisible ? "is-visible" : ""}`} aria-label="Section navigation">
-            {navigationItems.filter((item) => item.label !== "Our Story").map((item) => <a href={item.href} key={item.label}>{item.label}</a>)}
+            {navigationItems.filter((item) => item.label !== "Our Story").map((item) => <a className={activeHash === item.href ? "active" : ""} href={item.href} key={item.label} onClick={() => { setActiveHash(item.href); if (item.href === "#home") setSectionNavVisible(false); }}>{item.label}</a>)}
           </nav>
           <button type="button" className="menu-toggle" aria-expanded={menuOpen} aria-label="Toggle navigation" onClick={() => setMenuOpen((open) => !open)}>
             <span className="menu-toggle-label">{menuOpen ? "Close" : "Menu"}</span>
