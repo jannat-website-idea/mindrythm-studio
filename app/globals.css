@@ -3818,7 +3818,30 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   overflow: hidden;
 }
 
+@media (min-width: 681px) {
+  .vision-bridge {
+    grid-column: 1 / -1;
+    width: min(100%, 1600px);
+    margin-right: auto;
+    margin-left: auto;
+  }
+  .services-layout { align-items: stretch; }
+  .services-list {
+    align-self: stretch;
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+  }
+  .services-list > button { min-height: 0; }
+  .services-preview {
+    align-self: stretch;
+    min-height: 0;
+  }
+}
+
 @media (max-width: 680px) {
+  .vision-bridge {
+    grid-column: 1;
+    width: 100%;
+  }
   .vision-bridge-centre img {
     width: 34px;
     height: 34px;
