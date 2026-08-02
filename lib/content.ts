@@ -90,7 +90,7 @@ export const brandTaglines = [
   "Sometimes the hardest ideas to explain become the easiest stories to see.",
   "We listen to ideas that haven't found the right words yet.",
   "Your vision already exists. We simply help the world see it.",
-  "The best stories usually begin with, ‘I don't know how to explain this…’",
+  "The best stories usually begin with, I don't know how to explain this…",
 ] as const;
 
 export const enquiryTaglines = [
