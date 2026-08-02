@@ -3309,3 +3309,80 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   .site-shell { transition-duration: .24s; }
   .preloader.reference-loader.preloader-done { transition-delay: 0s, 0s, 0s, .24s; }
 }
+
+/* Menu button opens the full navigation as a clean horizontal studio bar. */
+.menu-overlay {
+  inset: 0 0 auto;
+  display: block;
+  min-height: 150px;
+  overflow: visible;
+  color: var(--ink);
+  background: var(--ivory);
+  clip-path: inset(0 0 100% 0);
+  transform: translateY(-18px);
+  transition: visibility 0s linear .7s, opacity .35s ease, clip-path .7s var(--motion-ease), transform .7s var(--motion-ease);
+}
+.menu-overlay.nav-open {
+  clip-path: inset(0);
+  transform: none;
+  transition-delay: 0s;
+}
+.menu-overlay-brand { display: none; }
+.menu-overlay-index {
+  display: block;
+  min-height: 0;
+  padding: 0;
+}
+.menu-overlay-heading,
+.menu-overlay-meta { display: none; }
+.menu-overlay nav {
+  display: flex;
+  min-height: 150px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(1.2rem, 3vw, 3.25rem);
+  align-items: center;
+  padding: 2rem clamp(4.5rem, 8vw, 9rem) 1.7rem;
+}
+.menu-overlay nav a,
+.menu-overlay.nav-open nav a {
+  display: block;
+  padding: 0;
+  border: 0;
+  opacity: 1;
+  color: var(--muted);
+  transform: none;
+  transition: color .3s ease, opacity .3s ease, transform .3s var(--motion-ease);
+}
+.menu-overlay nav a:hover { color: var(--ink); opacity: 1; transform: translateY(-2px); }
+.menu-overlay nav a > strong {
+  display: block;
+  font-size: clamp(.75rem, 1.25vw, 1.1rem);
+  font-weight: 600;
+  letter-spacing: .06em;
+  line-height: 1;
+  white-space: nowrap;
+}
+.menu-overlay nav a > small { display: none; }
+.menu-overlay nav a:nth-child(n) { transition-delay: 0s; }
+.site-header.menu-active .home-wordmark { opacity: 0; pointer-events: none; }
+
+@media (max-width: 680px) {
+  .menu-overlay {
+    inset: 0;
+    min-height: 100svh;
+    overflow-y: auto;
+    padding: 5.5rem 1rem 1.25rem;
+  }
+  .menu-overlay nav {
+    display: grid;
+    min-height: 0;
+    gap: 0;
+    align-content: start;
+    align-items: stretch;
+    padding: 0;
+  }
+  .menu-overlay nav a,
+  .menu-overlay.nav-open nav a { padding: .82rem 0; border-bottom: 1px solid var(--line); }
+  .menu-overlay nav a > strong { font-size: clamp(1.9rem, 10vw, 3.2rem); font-weight: 300; letter-spacing: -.06em; }
+}
