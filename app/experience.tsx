@@ -14,7 +14,7 @@ import { BackToTop } from "@/app/back-to-top";
 import { EmphasizedCopy } from "@/app/emphasized-copy";
 import { Media } from "@/app/media";
 import { SocialIcon } from "@/app/social-icon";
-import { type CSSProperties, type FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 
 const fallbackTestimonials: ContentItem[] = [
   {
@@ -64,12 +64,6 @@ const navigationItems = [
   { label: "Enquire", href: "/contact", note: "Start a conversation" },
 ] as const;
 
-function getLoaderMotionStyle(progress: number): CSSProperties {
-  return {
-    "--loader-progress": (progress / 100).toFixed(3),
-  } as CSSProperties;
-}
-
 export function Experience({ content }: { content: SiteContent }) {
   const { settings } = content;
   const projects = useMemo(
@@ -116,7 +110,6 @@ export function Experience({ content }: { content: SiteContent }) {
     return [...savedTeam, ...placeholders].slice(0, 3);
   }, [projects, savedTeam, settings.linkedin]);
 
-  const [progress, setProgress] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [loaderExiting, setLoaderExiting] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
@@ -139,7 +132,6 @@ export function Experience({ content }: { content: SiteContent }) {
     if (shouldSkipIntro) {
       document.documentElement.dataset.mindrythmIntro = "seen";
       const skipFrame = window.requestAnimationFrame(() => {
-        setProgress(100);
         setLoaded(true);
         setShowLoader(false);
       });
@@ -148,33 +140,23 @@ export function Experience({ content }: { content: SiteContent }) {
 
     const startedAt = performance.now();
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const duration = reducedMotion ? 80 : 3000;
-    const finishPause = reducedMotion ? 0 : 320;
-    const exitDuration = reducedMotion ? 40 : 1050;
+    const minimumDuration = reducedMotion ? 220 : 3000;
+    const exitDuration = reducedMotion ? 240 : 900;
     let frame = 0;
     let exitTimer = 0;
     let cleanupTimer = 0;
     let pageReady = document.readyState === "complete";
     let finished = false;
-    let renderedProgress = 0;
-    const images = Array.from(document.images);
-
-    const getAssetProgress = () => {
-      if (!images.length) return 100;
-      const complete = images.filter((image) => image.complete).length;
-      return Math.round((complete / images.length) * 100);
-    };
 
     const finish = () => {
       if (finished) return;
       finished = true;
       window.cancelAnimationFrame(frame);
-      setProgress(100);
       exitTimer = window.setTimeout(() => {
         setLoaded(true);
         setLoaderExiting(true);
         cleanupTimer = window.setTimeout(() => setShowLoader(false), exitDuration);
-      }, finishPause);
+      }, reducedMotion ? 0 : 120);
     };
 
     const markPageReady = () => {
@@ -184,13 +166,7 @@ export function Experience({ content }: { content: SiteContent }) {
 
     const tick = (now: number) => {
       const elapsed = now - startedAt;
-      const timelineProgress = Math.min(96, Math.floor((elapsed / duration) * 96));
-      const nextProgress = Math.min(96, Math.max(timelineProgress, Math.min(96, getAssetProgress())));
-      if (nextProgress !== renderedProgress) {
-        renderedProgress = nextProgress;
-        setProgress(nextProgress);
-      }
-      if (elapsed >= duration && pageReady) return finish();
+      if (elapsed >= minimumDuration && pageReady) return finish();
       frame = window.requestAnimationFrame(tick);
     };
 
@@ -205,9 +181,12 @@ export function Experience({ content }: { content: SiteContent }) {
   }, []);
 
   useEffect(() => {
-    document.documentElement.style.overflow = loaded ? "" : "hidden";
+    const overflow = loaded ? "" : "hidden";
+    document.documentElement.style.overflow = overflow;
+    document.body.style.overflow = overflow;
     return () => {
       document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
     };
   }, [loaded]);
 
@@ -384,26 +363,15 @@ export function Experience({ content }: { content: SiteContent }) {
   const momentsItems = moments.length ? moments : galleryItems.filter((_, index) => index % 2 === 1);
   const spacesBentoItems = [...spacesItems, ...galleryItems.filter((item) => !spacesItems.some((space) => space.id === item.id))];
   const momentsBentoItems = [...momentsItems, ...galleryItems.filter((item) => !momentsItems.some((moment) => moment.id === item.id))];
-  const loaderStyle = getLoaderMotionStyle(progress);
-
   return (
     <>
-      {showLoader && <div className={`preloader reference-loader ${loaderExiting ? "preloader-done" : ""}`} aria-hidden={loaderExiting}>
-        <div className="loader-stage" style={loaderStyle}>
-          <div className="loader-reference-lockup" aria-label="Mindrythm studio">
-            <span className="loader-reference-name" aria-hidden="true">
-              {Array.from("Mindrythm").map((letter, index) => <i key={`${letter}-${index}`}>{letter}</i>)}
-            </span>
-            <span className="loader-reference-studio" aria-hidden="true">
-              {Array.from("studio").map((letter, index) => <i key={`${letter}-${index}`}>{letter}</i>)}
-            </span>
-          </div>
+      {showLoader && <div className={`preloader reference-loader ${loaderExiting ? "preloader-done" : ""}`} role="img" aria-label="Mindrythm studio">
+        <div className="loader-reference-lockup">
+          <span className="loader-reference-name" aria-hidden="true">
+            {Array.from("MINDRYTHM").map((letter, index) => <i key={`${letter}-${index}`}><b>{letter}</b></i>)}
+          </span>
+          <span className="loader-reference-studio" aria-hidden="true">studio</span>
         </div>
-        <div className="loader-reference-footer">
-          <span>Mindrythm studio</span>
-          <span className="preloader-progress">{String(progress).padStart(3, "0")}%</span>
-        </div>
-        <div className="loader-reference-progress" aria-hidden="true"><span style={{ width: `${progress}%` }} /></div>
       </div>}
 
       <div className={`site-shell ${loaded ? "site-ready" : ""}`}>

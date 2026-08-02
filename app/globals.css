@@ -3224,3 +3224,118 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   .gallery-board,
   .projects-bento { width: 100%; max-width: 100%; }
 }
+
+/* Mindrythm loading lockup: the homepage stays mounted beneath this layer. */
+.preloader.reference-loader {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--ivory);
+  color: var(--ink);
+  clip-path: none;
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
+  transition: opacity .9s cubic-bezier(.22,1,.36,1), filter .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1), visibility 0s linear 0s;
+}
+.preloader.reference-loader.preloader-done {
+  visibility: hidden;
+  opacity: 0;
+  filter: blur(5px);
+  transform: scale(1.02);
+  clip-path: none;
+  pointer-events: none;
+  transition-delay: 0s, 0s, 0s, .9s;
+}
+.reference-loader .loader-reference-lockup {
+  display: flex;
+  width: max-content;
+  max-width: calc(100vw - 2rem);
+  flex-direction: column;
+  align-items: stretch;
+  font-family: "Avenir Next", Avenir, var(--font-avenir), "Helvetica Neue", Arial, sans-serif;
+  font-size: clamp(3.75rem, 12vw, 10rem);
+  font-weight: 500;
+  letter-spacing: -.075em;
+  line-height: .78;
+}
+.reference-loader .loader-reference-name {
+  display: flex;
+  max-width: 100%;
+  overflow: visible;
+  white-space: nowrap;
+}
+.reference-loader .loader-reference-name i {
+  display: block;
+  overflow: hidden;
+  font-style: normal;
+}
+.reference-loader .loader-reference-name i b {
+  display: block;
+  font: inherit;
+  font-weight: inherit;
+  transform: translateY(110%);
+  opacity: 0;
+  filter: blur(7px);
+  animation: mindrythm-lockup-letter .62s cubic-bezier(.22,1,.36,1) both;
+}
+.reference-loader .loader-reference-name i:nth-child(1) b { animation-delay: .18s; }
+.reference-loader .loader-reference-name i:nth-child(2) b { animation-delay: .25s; }
+.reference-loader .loader-reference-name i:nth-child(3) b { animation-delay: .32s; }
+.reference-loader .loader-reference-name i:nth-child(4) b { animation-delay: .39s; }
+.reference-loader .loader-reference-name i:nth-child(5) b { animation-delay: .46s; }
+.reference-loader .loader-reference-name i:nth-child(6) b { animation-delay: .53s; }
+.reference-loader .loader-reference-name i:nth-child(7) b { animation-delay: .60s; }
+.reference-loader .loader-reference-name i:nth-child(8) b { animation-delay: .67s; }
+.reference-loader .loader-reference-name i:nth-child(9) b { animation-delay: .74s; }
+.reference-loader .loader-reference-studio {
+  align-self: flex-end;
+  margin: .13em .04em 0 0;
+  font-family: var(--font-accent), "Bodoni Moda", Georgia, serif;
+  font-size: .36em;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -.045em;
+  line-height: .8;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: mindrythm-lockup-studio .68s cubic-bezier(.22,1,.36,1) 1.22s both;
+}
+.reference-loader .loader-stage,
+.reference-loader .loader-reference-footer,
+.reference-loader .loader-reference-progress { display: none; }
+.site-shell {
+  opacity: 0;
+  filter: blur(8px);
+  transform: scale(1.015);
+  transition: opacity .9s cubic-bezier(.22,1,.36,1), filter .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1);
+}
+.site-shell.site-ready { opacity: 1; filter: blur(0); transform: scale(1); }
+@keyframes mindrythm-lockup-letter {
+  to { transform: translateY(0); opacity: 1; filter: blur(0); }
+}
+@keyframes mindrythm-lockup-studio {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 680px) {
+  .reference-loader .loader-reference-lockup {
+    max-width: calc(100vw - 1.5rem);
+    font-size: clamp(2.85rem, 12.5vw, 4.8rem);
+    letter-spacing: -.07em;
+  }
+  .reference-loader .loader-reference-studio { font-size: .42em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reference-loader .loader-reference-name i b,
+  .reference-loader .loader-reference-studio {
+    animation: none;
+    filter: none;
+    opacity: 1;
+    transform: none;
+  }
+  .preloader.reference-loader,
+  .site-shell { transition-duration: .24s; }
+  .preloader.reference-loader.preloader-done { transition-delay: 0s, 0s, 0s, .24s; }
+}
