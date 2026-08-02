@@ -3813,6 +3813,52 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   max-height: 70% !important;
   object-fit: contain !important;
 }
+
+@media (min-width: 681px) {
+  .menu-overlay-brand {
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+    height: 100svh !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    padding: 8rem 4vw 2.5rem !important;
+  }
+  .menu-brand-context {
+    position: relative !important;
+    z-index: 4 !important;
+  }
+  .menu-brand-feature {
+    position: relative !important;
+    inset: auto !important;
+    z-index: 2 !important;
+    display: grid !important;
+    min-height: 0 !important;
+    height: auto !important;
+    place-items: center !important;
+    pointer-events: none !important;
+  }
+  .menu-brand-feature > img {
+    top: 50% !important;
+    left: 50% !important;
+    width: min(31vw, 420px) !important;
+    max-width: 80% !important;
+    max-height: 56vh !important;
+    transform: translate(-50%, -50%) !important;
+  }
+  .menu-brand-feature > p {
+    top: 50% !important;
+    left: 50% !important;
+    max-width: 92% !important;
+    font-size: clamp(2.5rem, 4.2vw, 5.2rem) !important;
+    transform: translate(-50%, -50%) !important;
+  }
+  .menu-overlay-brand > small {
+    position: relative !important;
+    z-index: 4 !important;
+    align-self: end !important;
+    margin-top: 0 !important;
+  }
+}
 .gallery-note-social a {
   aspect-ratio: 1;
   overflow: hidden;
