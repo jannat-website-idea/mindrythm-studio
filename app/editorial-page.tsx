@@ -120,7 +120,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
 
         {page === "services" && (
           <section className="services-experience services-page-direct" id="services" aria-label="Mindrythm services">
-            <header data-reveal><span>Our services</span><h1>One studio.<br />Many visual languages.</h1><p>“{brandTaglines[0]}”</p></header>
+            <header><span>Mindrythm / Services</span><h1>Services</h1><p>One studio. Many visual languages.</p></header>
             <div className="services-layout">
               <div className="services-list">
                 {serviceItems.map((service, index) => (
