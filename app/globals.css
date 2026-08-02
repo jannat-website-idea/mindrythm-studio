@@ -4709,3 +4709,94 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
     font-size: clamp(3rem, 14vw, 5rem);
   }
 }
+
+.inner-hero-story {
+  min-height: clamp(260px, 38vh, 410px) !important;
+  padding-top: clamp(2.5rem, 5vw, 5rem) !important;
+  padding-bottom: clamp(2rem, 4vw, 4rem) !important;
+}
+
+.story-manifesto {
+  padding: clamp(3.5rem, 5.5vw, 6rem) 2rem !important;
+}
+
+.story-pillars {
+  gap: .7rem;
+  padding: 1.25rem !important;
+}
+
+.story-pillars article {
+  min-height: clamp(300px, 26vw, 380px) !important;
+  padding: 1.1rem !important;
+}
+
+.story-pillars h2 {
+  margin-bottom: .75rem;
+}
+
+.story-pillars p {
+  max-width: 34ch;
+  line-height: 1.5;
+}
+
+.story-vision {
+  gap: 5vw;
+  padding: clamp(3.5rem, 6vw, 6rem) 6vw !important;
+}
+
+.story-vision h2 {
+  margin-top: 1rem;
+}
+
+.story-narrative {
+  gap: clamp(2rem, 5vw, 5rem);
+  padding: clamp(3.5rem, 5.5vw, 6rem) 2rem !important;
+}
+
+.story-narrative h2 {
+  margin-top: .9rem;
+}
+
+.story-narrative p {
+  margin-bottom: 1.25rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 680px) {
+  .inner-hero-story {
+    min-height: 250px !important;
+    padding: 2.5rem 1rem 2rem !important;
+  }
+
+  .story-manifesto {
+    padding: 3rem 1rem !important;
+  }
+
+  .story-pillars {
+    gap: .5rem;
+    padding: .75rem !important;
+  }
+
+  .story-pillars article {
+    min-height: 250px !important;
+    padding: 1rem !important;
+  }
+
+  .story-pillars h2 {
+    margin-top: 3rem;
+  }
+
+  .story-vision {
+    gap: 2rem;
+    padding: 3.5rem 1rem !important;
+  }
+
+  .story-vision img {
+    width: min(150px, 42vw);
+  }
+
+  .story-narrative {
+    gap: 1.75rem;
+    padding: 3.5rem 1rem !important;
+  }
+}
