@@ -3566,3 +3566,31 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
     line-height: .9;
   }
 }
+
+/* Keep the open menu readable even when the gradient boundary falls outside the viewport. */
+@media (min-width: 681px) {
+  .menu-overlay {
+    background: var(--ink);
+  }
+  .menu-overlay-index {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+  .menu-overlay-index::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background: var(--ivory);
+    clip-path: polygon(74% 0, 100% 0, 100% 100%, 30% 100%);
+    content: "";
+  }
+  .menu-overlay-heading,
+  .menu-overlay nav,
+  .menu-overlay-meta { position: relative; z-index: 1; }
+  .menu-overlay.nav-open .menu-brand-feature > img,
+  .menu-overlay.nav-open .menu-brand-feature > p {
+    opacity: 1;
+    filter: none;
+  }
+}
