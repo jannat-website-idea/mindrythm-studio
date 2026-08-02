@@ -3641,7 +3641,8 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   .menu-brand-feature {
     position: absolute !important;
     z-index: 2 !important;
-    inset: 0 !important;
+    inset: 0 0 auto !important;
+    height: 46svh !important;
     display: grid !important;
     place-items: center !important;
     pointer-events: none !important;
@@ -3731,7 +3732,7 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   .menu-overlay nav a > strong {
     display: block !important;
     color: var(--ink) !important;
-    font-size: clamp(2rem, 4vw, 5rem) !important;
+    font-size: clamp(1.7rem, 3.4vw, 4.25rem) !important;
     font-weight: 300 !important;
     letter-spacing: -.06em !important;
     line-height: .88 !important;
@@ -3786,7 +3787,7 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   .menu-overlay nav a > strong {
     display: block !important;
     color: var(--ink) !important;
-    font-size: clamp(1.9rem, 10vw, 3.2rem) !important;
+    font-size: clamp(1.62rem, 8.5vw, 2.72rem) !important;
     font-weight: 300 !important;
     letter-spacing: -.06em !important;
     line-height: .9 !important;
