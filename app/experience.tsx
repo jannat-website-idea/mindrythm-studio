@@ -380,11 +380,6 @@ export function Experience({ content }: { content: SiteContent }) {
             <img src="/mindrythm-logomark.png" alt="" />
             <span>Mindrythm</span>
           </a>
-          <nav className="home-header-nav" aria-label="Quick navigation">
-            {navigationItems.filter((item) => item.label !== "Our Story").map((item) => (
-              <a href={item.href} key={item.label} onClick={() => setMenuOpen(false)}>{item.label}</a>
-            ))}
-          </nav>
           <button type="button" className="menu-toggle" aria-expanded={menuOpen} aria-label="Toggle navigation" onClick={() => setMenuOpen((open) => !open)}>
             <span className="menu-toggle-label">{menuOpen ? "Close" : "Menu"}</span>
             <i aria-hidden="true" />
