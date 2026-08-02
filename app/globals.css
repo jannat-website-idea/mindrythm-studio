@@ -4542,3 +4542,35 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   .menu-overlay-meta { display: none !important; }
   .menu-overlay-close { top: 1rem !important; right: 1rem !important; }
 }
+
+@media (min-width: 681px) {
+  .menu-overlay-brand {
+    padding-top: clamp(5rem, 6vw, 6.5rem) !important;
+  }
+
+  .menu-brand-context {
+    align-self: start !important;
+  }
+
+  .menu-brand-feature > img {
+    width: min(51vw, 720px) !important;
+    max-width: 120% !important;
+    max-height: 78vh !important;
+  }
+
+  .menu-overlay-index {
+    padding-left: 0 !important;
+  }
+
+  .menu-overlay nav {
+    width: calc(100% + 3.5rem) !important;
+    margin-left: -3.5rem !important;
+  }
+}
+
+@media (max-width: 680px) {
+  .menu-overlay nav {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+}
