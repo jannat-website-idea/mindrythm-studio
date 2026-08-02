@@ -3579,7 +3579,7 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   }
   .menu-overlay-index::before {
     position: absolute;
-    z-index: -1;
+    z-index: 0;
     inset: 0;
     background: var(--ivory);
     clip-path: polygon(74% 0, 100% 0, 100% 100%, 30% 100%);
