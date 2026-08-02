@@ -209,14 +209,14 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
 
         {page === "story" && (
           <div className="story-page">
-            <section className="story-manifesto"><span>What is Mindrythm?</span><p><EmphasizedCopy text={visionParagraphs[0]} /></p></section>
+            <section className="story-manifesto"><span>What is Mindrythm?</span><blockquote>“<EmphasizedCopy text={visionParagraphs[0]} />”</blockquote></section>
             <section className="story-pillars">
-              <article><h2>What we capture</h2><p>We work across properties, resorts, events and weddings through photography, cinematic film and aerial capture.</p></article>
-              <article><h2>Who we work with</h2><p>Couples, families, event teams, developers, architects, resorts and brands seeking a distinct visual point of view.</p></article>
-              <article><h2>How we work</h2><p>Every commission begins with listening, a clear visual plan and space for real moments to happen.</p></article>
+              <article><img className="story-pillar-media" src="/images/filmmaker.jpg" alt="Mindrythm filmmaker working on a story" /><div className="story-pillar-copy"><h2>What we capture</h2><p>We work across properties, resorts, events and weddings through photography, cinematic film and aerial capture.</p></div></article>
+              <article><img className="story-pillar-media" src="/images/event-stage.jpg" alt="Live event captured by Mindrythm" /><div className="story-pillar-copy"><h2>Who we work with</h2><p>Couples, families, event teams, developers, architects, resorts and brands seeking a distinct visual point of view.</p></div></article>
+              <article><img className="story-pillar-media" src="/images/modern-house.jpg" alt="Modern property photographed by Mindrythm" /><div className="story-pillar-copy"><h2>How we work</h2><p>Every commission begins with listening, a clear visual plan and space for real moments to happen.</p></div></article>
             </section>
             <section className="story-narrative story-vision-full"><header><span>Our vision</span><h2>Ideas find their visual language.</h2></header><div>{visionParagraphs.map((paragraph) => <p key={paragraph}><EmphasizedCopy text={paragraph} /></p>)}</div></section>
-            <section className="story-vision"><img src="/mindrythm-logomark.png" alt="Mindrythm logomark" /><div><span>Our vision</span><h2>{visionParagraphs[3]}</h2></div></section>
+            <section className="story-vision"><img src="/mindrythm-logomark.png" alt="Mindrythm logomark" /><div><span>Our vision</span><h2>Ideas find their visual language.</h2><p>“<EmphasizedCopy text={visionParagraphs[3]} />”</p></div></section>
             <section className="story-narrative story-mission"><header><span>Our mission</span><h2>A conversation before a brief.</h2></header><div>{missionParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div></section>
             <section className="story-narrative story-people"><header><span>Our people</span><h2>Never about one person.</h2></header><div><p>{teamIntroduction}</p><a href="/team">Meet the team</a></div></section>
           </div>
