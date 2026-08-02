@@ -474,9 +474,9 @@ export function Experience({ content }: { content: SiteContent }) {
           <section className="vision-section" id="vision">
             <span className="section-index" data-reveal>Our vision</span>
             <p className="vision-statement" data-reveal>
-              <span>Our vision is to create a place where ideas find their visual language.</span>
-              <span>Where artists find one another.</span>
-              <span>Where every project contributes to a body of work that is intentional and beautiful.</span>
+              <span>“Our vision is to create a place where ideas find their visual language.”</span>
+              <span>“Where artists find one another.”</span>
+              <span>“Where every project contributes to a body of work that is intentional and beautiful.”</span>
             </p>
             <details className="vision-note" data-reveal>
               <summary><span>Where we begin</span><i>Read the thought +</i></summary>
@@ -501,7 +501,7 @@ export function Experience({ content }: { content: SiteContent }) {
           </section>
 
           <section className="services-experience" id="services" aria-label="Mindrythm services">
-            <header data-reveal><span>Our services</span><h2>One studio.<br />Many visual languages.</h2><p>{brandTaglines[0]}</p></header>
+            <header data-reveal><span>Our services</span><h2>One studio.<br />Many visual languages.</h2><p>“{brandTaglines[0]}”</p></header>
             <div className="services-layout">
               <div className="services-list">
                 {serviceItems.map((service, index) => (
@@ -520,7 +520,7 @@ export function Experience({ content }: { content: SiteContent }) {
             </div>
           </section>
 
-          <aside className="story-whisper" data-reveal><span>Our point of view</span><p>{brandTaglines[1]}</p></aside>
+          <aside className="story-whisper" data-reveal><span>Our point of view</span><p>“{brandTaglines[1]}”</p></aside>
 
           <section className="scroll-cinema" ref={scrollCinemaRef} aria-label="A scroll-led view of Mindrythm">
             <div className="scroll-cinema-sticky">
@@ -536,7 +536,7 @@ export function Experience({ content }: { content: SiteContent }) {
                   <article className="scroll-cinema-panel scroll-cinema-statement">
                     <span>Mindrythm / Places &amp; people</span>
                     <h2>Stories that make time feel different.</h2>
-                    <p>{brandTaglines[2]}</p>
+                    <p>“{brandTaglines[2]}”</p>
                     <a href="/work">Explore all work</a>
                   </article>
                 </div>
@@ -549,7 +549,7 @@ export function Experience({ content }: { content: SiteContent }) {
             <div className="section-intro" data-reveal>
               <span className="section-index">Our work</span>
               <h2>Selected stories,<br /><em>across every service.</em></h2>
-              <p>{brandTaglines[2]}</p>
+              <p>“{brandTaglines[2]}”</p>
             </div>
             <div className="projects-bento">
               {projects.slice(0, 6).map((project, index) => <ProjectCard key={project.id} project={project} index={index} onOpen={() => setSelectedItem(project)} />)}
@@ -592,7 +592,7 @@ export function Experience({ content }: { content: SiteContent }) {
             <div className="gallery-scroll-note"><span>Two visual stories</span><span>Spaces / Celebrations</span></div>
           </section>
 
-          <aside className="story-whisper story-whisper-light" data-reveal><span>Our point of view</span><p>{brandTaglines[3]}</p></aside>
+          <aside className="story-whisper story-whisper-light" data-reveal><span>Our point of view</span><p>“{brandTaglines[3]}”</p></aside>
 
           <section className="testimonials-section" id="testimonials">
             <div className="testimonials-heading" data-reveal>
@@ -611,7 +611,7 @@ export function Experience({ content }: { content: SiteContent }) {
             </div>
           </section>
 
-          <aside className="story-whisper" data-reveal><span>On collaboration</span><p>{brandTaglines[4]}</p></aside>
+          <aside className="story-whisper" data-reveal><span>On collaboration</span><p>“{brandTaglines[4]}”</p></aside>
 
           <section className="team-section" id="team">
             <img className="section-watermark section-watermark-two" src="/mindrythm-logomark.png" alt="" aria-hidden="true" />
@@ -640,7 +640,7 @@ export function Experience({ content }: { content: SiteContent }) {
           <section className="about-section" id="about">
             <div className="about-heading" data-reveal>
               <span>About us</span>
-              <h2>Mindrythm is where<br />ideas find a visual language.</h2>
+              <h2>“Mindrythm is where<br />ideas find a visual language.”</h2>
             </div>
             <div className="about-grid">
               <a href="/story" data-reveal><h3>What is Mindrythm?</h3><p><EmphasizedCopy text={visionParagraphs[1]} /></p><i>Read our story</i></a>
@@ -665,7 +665,7 @@ export function Experience({ content }: { content: SiteContent }) {
             </div>
           </section>
 
-          <aside className="story-whisper story-whisper-light" data-reveal><span>Every beginning</span><p>{brandTaglines[5]}</p></aside>
+          <aside className="story-whisper story-whisper-light" data-reveal><span>Every beginning</span><p>“{brandTaglines[5]}”</p></aside>
 
           <section className="contact-section" id="contact">
             <div className="contact-heading" data-reveal>

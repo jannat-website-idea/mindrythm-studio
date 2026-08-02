@@ -3964,12 +3964,35 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   font-weight: 400 !important;
 }
 
+.story-whisper > span,
+.gallery-heading > span,
+.testimonials-heading > span,
+.team-heading > span,
+.team-page-link > span,
+.about-heading > span,
+.process-heading > span,
+.contact-heading > span {
+  font-size: .75rem !important;
+  font-weight: 600 !important;
+  letter-spacing: .12em !important;
+}
+
 @media (max-width: 680px) {
   .vision-section > p {
     font-size: clamp(1.58rem, 8.2vw, 3rem) !important;
   }
   .services-experience h2 {
     font-size: clamp(3.2rem, 16.8vw, 5.9rem) !important;
+  }
+  .story-whisper > span,
+  .gallery-heading > span,
+  .testimonials-heading > span,
+  .team-heading > span,
+  .team-page-link > span,
+  .about-heading > span,
+  .process-heading > span,
+  .contact-heading > span {
+    font-size: .75rem !important;
   }
 }
 
