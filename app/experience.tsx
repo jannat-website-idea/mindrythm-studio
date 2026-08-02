@@ -161,7 +161,7 @@ export function Experience({ content }: { content: SiteContent }) {
 
     const markPageReady = () => {
       pageReady = true;
-      if (performance.now() - startedAt >= duration) finish();
+      if (performance.now() - startedAt >= minimumDuration) finish();
     };
 
     const tick = (now: number) => {
