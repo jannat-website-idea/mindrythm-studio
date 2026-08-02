@@ -3172,9 +3172,24 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   display: grid;
   justify-self: end;
   color: var(--ink);
-  background: rgba(23,23,20,.06);
+  background: rgba(11,11,10,.28);
 }
-.home-header .menu-toggle i { color: var(--ivory); background: var(--ink); }
+.home-header,
+.home-header.home-header {
+  border-bottom: 0;
+  color: var(--ivory);
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+.home-header .wordmark,
+.home-header .wordmark.home-wordmark { color: var(--ivory); }
+.home-header .wordmark img,
+.home-header .wordmark.home-wordmark img { filter: invert(1) drop-shadow(0 2px 12px rgba(0,0,0,.2)); }
+.home-header .menu-toggle { color: var(--ivory); }
+.home-header .menu-toggle i { color: var(--ink); background: var(--ivory); }
+.home-header.menu-active .menu-toggle { color: var(--ink); background: rgba(247,246,241,.92); }
+.home-header.menu-active .menu-toggle i { color: var(--ivory); background: var(--ink); }
 
 @media (max-width: 680px) {
   .home-header {
@@ -3323,6 +3338,7 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   transition: visibility 0s linear .7s, opacity .35s ease, clip-path .7s var(--motion-ease), transform .7s var(--motion-ease);
 }
 .menu-overlay.nav-open {
+  z-index: 65;
   clip-path: inset(0);
   transform: none;
   transition-delay: 0s;
