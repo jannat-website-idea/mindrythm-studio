@@ -3682,15 +3682,14 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   }
   .menu-brand-feature > p span { font: inherit !important; }
   .menu-brand-feature > p em { display: none !important; }
-  .menu-brand-feature > p span { display: none !important; }
-  .menu-brand-feature > p::before {
-    display: block;
-    color: var(--ivory);
-    content: "Mindrythm";
-    font: inherit;
-    letter-spacing: inherit;
-    white-space: nowrap;
+  .menu-brand-feature > p span {
+    display: block !important;
+    color: var(--ivory) !important;
+    font: inherit !important;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
+  .menu-brand-feature > p::before { display: none !important; }
   .menu-overlay-index {
     position: relative !important;
     z-index: 3 !important;
