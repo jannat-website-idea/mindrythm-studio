@@ -3996,6 +3996,38 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   }
 }
 
+.about-section {
+  padding-top: clamp(5rem, 6.5vw, 7rem) !important;
+}
+
+.about-heading {
+  padding-bottom: clamp(2.5rem, 3.5vw, 4rem) !important;
+}
+
+.about-heading h2 {
+  letter-spacing: -.018em !important;
+  line-height: 1.02 !important;
+}
+
+.footer-cta > a {
+  letter-spacing: -.02em !important;
+  line-height: .9 !important;
+}
+
+@media (max-width: 680px) {
+  .about-section {
+    padding-top: 4rem !important;
+  }
+
+  .about-heading h2 {
+    letter-spacing: -.012em !important;
+  }
+
+  .footer-cta > a {
+    letter-spacing: -.012em !important;
+  }
+}
+
 @media (min-width: 681px) {
   .menu-overlay {
     height: 100svh !important;
