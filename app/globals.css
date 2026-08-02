@@ -4553,9 +4553,14 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   }
 
   .menu-brand-feature > img {
-    width: min(51vw, 720px) !important;
-    max-width: 120% !important;
-    max-height: 78vh !important;
+    left: 70% !important;
+    width: min(63.75vw, 900px) !important;
+    max-width: 150% !important;
+    max-height: 90vh !important;
+  }
+
+  .menu-brand-feature > p {
+    left: 70% !important;
   }
 
   .menu-overlay-index {
@@ -4563,8 +4568,9 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   }
 
   .menu-overlay nav {
-    width: calc(100% + 3.5rem) !important;
-    margin-left: -3.5rem !important;
+    width: 120% !important;
+    margin-left: -20% !important;
+    padding-top: .55rem !important;
   }
 }
 
