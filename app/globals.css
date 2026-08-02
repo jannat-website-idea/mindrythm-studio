@@ -3794,3 +3794,40 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   }
   .menu-overlay nav a > small { display: none !important; }
 }
+
+/* Final alignment polish for the vision card, services list, menu details, and social bento. */
+.vision-bridge-centre { align-items: center; }
+.vision-bridge-centre img {
+  align-self: center;
+  width: 42px;
+  height: 42px;
+  margin: 0 auto 1rem;
+}
+.services-layout { align-items: start; }
+.services-list { align-self: start; }
+.menu-overlay-brand > small { margin-top: 1.5rem !important; }
+.gallery-note-social .social-icon-image {
+  display: block !important;
+  width: 2.6rem !important;
+  height: 2.6rem !important;
+  max-width: 70% !important;
+  max-height: 70% !important;
+  object-fit: contain !important;
+}
+.gallery-note-social a {
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+@media (max-width: 680px) {
+  .vision-bridge-centre img {
+    width: 34px;
+    height: 34px;
+  }
+  .services-layout { align-items: stretch; }
+  .services-list { align-self: stretch; }
+  .gallery-note-social .social-icon-image {
+    width: 1.8rem !important;
+    height: 1.8rem !important;
+  }
+}
