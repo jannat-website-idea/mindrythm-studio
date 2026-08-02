@@ -4308,6 +4308,77 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   transform: none !important;
   animation: none !important;
 }
+
+.gallery-page-social {
+  grid-column: 1 / -1;
+  grid-row: 6;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+  align-items: center;
+  gap: clamp(.7rem, 1.2vw, 1.2rem);
+  min-width: 0;
+  min-height: 5rem;
+  padding: clamp(.7rem, 1.2vw, 1rem);
+  border: 1px solid rgba(23, 23, 20, .14);
+  border-radius: 12px;
+  background: rgba(251, 250, 245, .62);
+}
+.gallery-page-social > span {
+  color: var(--muted);
+  font-size: .56rem;
+  letter-spacing: .08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.gallery-page-social-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(.45rem, .8vw, .7rem);
+  min-width: 0;
+}
+.gallery-page-social-links a {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  aspect-ratio: 1.35;
+  overflow: hidden;
+  border: 1px solid rgba(23, 23, 20, .12);
+  border-radius: 10px;
+  background: rgba(247, 246, 241, .78);
+  transition: transform .3s ease, background-color .3s ease;
+}
+.gallery-page-social-links a:hover {
+  background: var(--ivory);
+  transform: translateY(-3px);
+}
+.gallery-page-social-links a::after { display: none; }
+.gallery-page-social-links .social-icon-image {
+  width: clamp(1.45rem, 2.4vw, 2.25rem);
+  height: clamp(1.45rem, 2.4vw, 2.25rem);
+  object-fit: contain;
+  border-radius: .35rem;
+}
+.footer-social-links a,
+.inner-footer-socials a {
+  padding: .3rem;
+  overflow: hidden;
+}
+.footer-social-links .social-icon-image,
+.inner-footer-socials .social-icon-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: .35rem;
+}
+@media (max-width: 680px) {
+  .gallery-page-social {
+    grid-column: 1 / -1;
+    grid-row: auto / span 2;
+    grid-template-columns: 1fr;
+    gap: .65rem;
+  }
+  .gallery-page-social-links a { aspect-ratio: 1.2; }
+}
 .menu-overlay {
   position: fixed !important;
   inset: 0 !important;

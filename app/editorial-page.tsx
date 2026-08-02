@@ -174,15 +174,18 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                       <p>{category === "Spaces" ? "Spaces shaped by light, material and a sense of arrival." : "Celebrations held in light, ritual and memory."}</p>
                       <i>Open the full gallery</i>
                     </article>
+                    <article className="gallery-page-social">
+                      <span>Follow the living archive</span>
+                      <div className="gallery-page-social-links" aria-label={`Mindrythm ${category.toLowerCase()} social links`}>
+                        <a href={mainInstagramUrl} target="_blank" rel="noreferrer" aria-label="Mindrythm on Instagram" title="Instagram"><SocialIcon name="instagram" /></a>
+                        <a href={settings.facebook} target="_blank" rel="noreferrer" aria-label="Mindrythm on Facebook" title="Facebook"><SocialIcon name="facebook" /></a>
+                        <a href={settings.youtube} target="_blank" rel="noreferrer" aria-label="Mindrythm on YouTube" title="YouTube"><SocialIcon name="youtube" /></a>
+                      </div>
+                    </article>
                   </div>
                 </section>
               );
             })}
-            <section className="social-gallery-cta"><span>Follow the living archive</span><div className="editorial-social-icons" aria-label="Mindrythm social links">
-              <a href={mainInstagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram"><SocialIcon name="instagram" /></a>
-              <a href={settings.facebook} target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook"><SocialIcon name="facebook" /></a>
-              <a href={settings.youtube} target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube"><SocialIcon name="youtube" /></a>
-            </div></section>
           </div>
         )}
 
