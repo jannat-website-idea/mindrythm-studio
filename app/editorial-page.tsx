@@ -11,6 +11,7 @@ import {
 } from "@/lib/content";
 import { BackToTop } from "@/app/back-to-top";
 import { EmphasizedCopy } from "@/app/emphasized-copy";
+import { Media } from "@/app/media";
 import { SocialIcon } from "@/app/social-icon";
 import { type FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
@@ -230,10 +231,4 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
       )}
     </div>
   );
-}
-
-function Media({ item }: { item: ContentItem }) {
-  const isVideo = /\.(mp4|webm|mov)(\?.*)?$/i.test(item.mediaUrl);
-  if (isVideo) return <video src={item.mediaUrl} muted loop autoPlay playsInline preload="metadata" aria-label={item.mediaAlt} />;
-  return <img src={item.mediaUrl || "/images/resort-exterior.jpg"} alt={item.mediaAlt || item.title} />;
 }

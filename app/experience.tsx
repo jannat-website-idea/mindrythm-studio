@@ -12,6 +12,7 @@ import {
 } from "@/lib/content";
 import { BackToTop } from "@/app/back-to-top";
 import { EmphasizedCopy } from "@/app/emphasized-copy";
+import { Media } from "@/app/media";
 import { SocialIcon } from "@/app/social-icon";
 import { type CSSProperties, type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 
@@ -268,20 +269,47 @@ export function Experience({ content }: { content: SiteContent }) {
   useEffect(() => {
     const section = scrollCinemaRef.current;
     if (!section) return;
-    const update = () => {
-      const track = section.querySelector<HTMLElement>(".scroll-cinema-track");
-      if (!track || window.innerWidth <= 680) return;
-      const distance = Math.max(1, section.offsetHeight - window.innerHeight);
-      const progress = Math.min(1, Math.max(0, (window.scrollY - section.offsetTop) / distance));
-      const travel = Math.max(0, track.scrollWidth - window.innerWidth);
+    const track = section.querySelector<HTMLElement>(".scroll-cinema-track");
+    if (!track) return;
+
+    let frame = 0;
+    let sectionTop = 0;
+    let distance = 0;
+    let travel = 0;
+
+    const updatePosition = () => {
+      if (distance <= 0) return;
+      const progress = Math.min(1, Math.max(0, (window.scrollY - sectionTop) / distance));
       section.style.setProperty("--scroll-x", `${-progress * travel}px`);
     };
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
+
+    const measure = () => {
+      if (window.innerWidth <= 680) {
+        distance = 0;
+        section.style.setProperty("--scroll-x", "0px");
+        return;
+      }
+      sectionTop = section.offsetTop;
+      distance = Math.max(1, section.offsetHeight - window.innerHeight);
+      travel = Math.max(0, track.scrollWidth - window.innerWidth);
+      updatePosition();
+    };
+
+    const scheduleUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        updatePosition();
+      });
+    };
+
+    measure();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", measure);
     return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", measure);
+      if (frame) window.cancelAnimationFrame(frame);
     };
   }, []);
 
@@ -381,6 +409,7 @@ export function Experience({ content }: { content: SiteContent }) {
       <div className={`site-shell ${loaded ? "site-ready" : ""}`}>
         <header className={`site-header home-header ${menuOpen ? "menu-active" : ""}`}>
           <a className="wordmark home-wordmark" href="#home" aria-label="Mindrythm home">
+            <img src="/mindrythm-logomark.png" alt="" />
             <span>Mindrythm</span>
           </a>
           <button type="button" className="menu-toggle" aria-expanded={menuOpen} aria-label="Toggle navigation" onClick={() => setMenuOpen((open) => !open)}>
@@ -397,6 +426,7 @@ export function Experience({ content }: { content: SiteContent }) {
             </div>
             <div className="menu-brand-feature">
               <img src="/mindrythm-logomark.png" alt="" />
+              <p><span>Mindrythm</span></p>
             </div>
             <small>Every image begins with a pulse.</small>
           </aside>
@@ -427,7 +457,7 @@ export function Experience({ content }: { content: SiteContent }) {
             <a className="hero-slides" href="/work" aria-label="Explore Mindrythm projects">
               {heroItems.map((item, index) => (
                 <div className={`hero-slide ${index === heroIndex ? "active" : ""}`} key={item.id}>
-                  <Media item={item} />
+                  <Media item={item} priority={index === heroIndex} active={index === heroIndex} />
                 </div>
               ))}
             </a>
@@ -756,10 +786,4 @@ function GalleryCollection({ title, items, socials, onOpen }: { title: string; i
       </div>
     </article>
   );
-}
-
-function Media({ item }: { item: ContentItem }) {
-  const isVideo = /\.(mp4|webm|mov)(\?.*)?$/i.test(item.mediaUrl);
-  if (isVideo) return <video src={item.mediaUrl} muted loop autoPlay playsInline preload="metadata" aria-label={item.mediaAlt} />;
-  return <img src={item.mediaUrl || "/images/resort-exterior.jpg"} alt={item.mediaAlt || item.title} />;
 }
