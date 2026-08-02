@@ -3938,6 +3938,18 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   aspect-ratio: 1.42 !important;
 }
 
+.gallery-note-social a {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.gallery-note-social a:hover {
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: translateY(-3px);
+}
+
 @media (min-width: 681px) {
   .menu-overlay {
     height: 100svh !important;
