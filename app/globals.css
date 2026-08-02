@@ -4600,6 +4600,36 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   backdrop-filter: none !important;
 }
 
+.home-header.section-nav-visible {
+  min-height: 82px;
+  border-bottom: 1px solid rgba(23,23,20,.15) !important;
+  color: var(--ink) !important;
+  background: rgba(247,246,241,.96) !important;
+  box-shadow: 0 12px 30px rgba(11,11,10,.06) !important;
+  backdrop-filter: blur(18px) !important;
+}
+
+.home-header.section-nav-visible .wordmark,
+.home-header.section-nav-visible .wordmark.home-wordmark {
+  color: var(--ink) !important;
+}
+
+.home-header.section-nav-visible .wordmark img,
+.home-header.section-nav-visible .wordmark.home-wordmark img {
+  filter: none !important;
+}
+
+.home-header.section-nav-visible .menu-toggle {
+  color: var(--ink) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.home-header.section-nav-visible .menu-toggle i {
+  color: var(--ivory) !important;
+  background: var(--ink) !important;
+}
+
 .services-page-direct {
   min-height: 0;
   padding: clamp(2.75rem, 5vw, 5rem) 2rem clamp(3rem, 6vw, 6rem) !important;

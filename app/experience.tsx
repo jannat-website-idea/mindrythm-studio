@@ -401,6 +401,21 @@ export function Experience({ content }: { content: SiteContent }) {
             <img src="/mindrythm-logomark.png" alt="" />
             <span>Mindrythm</span>
           </a>
+          <nav className={`header-section-nav ${sectionNavVisible ? "is-visible" : ""}`} aria-label="Section navigation">
+            {navigationItems.map((item) => (
+              <a
+                className={activeHash === item.href ? "active" : ""}
+                href={item.href}
+                key={item.label}
+                onClick={() => {
+                  setActiveHash(item.href);
+                  if (item.href === "#home") setSectionNavVisible(false);
+                }}
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
           <button type="button" className="menu-toggle" aria-expanded={menuOpen} aria-label="Toggle navigation" onClick={() => setMenuOpen((open) => !open)}>
             <span className="menu-toggle-label">{menuOpen ? "Close" : "Menu"}</span>
             <i aria-hidden="true" />
