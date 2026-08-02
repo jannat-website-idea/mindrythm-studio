@@ -2955,7 +2955,9 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
 }
 .site-header.menu-active .home-wordmark { opacity: 0; pointer-events: none; }
 .menu-brand-feature > p {
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
   z-index: 2;
   display: flex;
   margin: 0;
@@ -2968,16 +2970,24 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   letter-spacing: -.075em;
   line-height: .9;
   text-align: center;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
 }
 .menu-brand-feature > img {
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
   z-index: 0;
-  width: min(27vw, 420px);
+  width: min(31vw, 440px);
   max-height: 58vh;
   opacity: .13;
   filter: invert(1);
-  transform: none;
+  transform: translate(-50%, -50%);
 }
+.menu-overlay.nav-open .menu-brand-feature > img { transform: translate(-50%, -50%) scale(1); }
+.menu-overlay.nav-open .menu-brand-feature > p { transform: translate(-50%, -50%); }
+.menu-overlay:not(.nav-open) .menu-brand-feature > img { transform: translate(-50%, -50%) scale(.86) rotate(-5deg); }
+.menu-overlay:not(.nav-open) .menu-brand-feature > p { transform: translate(-50%, calc(-50% + 1.25rem)) scale(.97); }
 .menu-overlay-socials,
 .gallery-socials,
 .contact-socials,
@@ -3030,7 +3040,10 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   width: min(1500px, 100%);
   margin: 0 auto;
   gap: clamp(2rem, 4vw, 4rem);
+  justify-items: center;
 }
+.gallery-board { width: 100%; max-width: 1500px; margin-inline: auto; }
+.projects-bento { width: min(1500px, 100%); margin-inline: auto; }
 .gallery-board > header {
   min-height: 64px;
   padding: .7rem 1rem;
@@ -3130,4 +3143,84 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   .contact-page-socials a,
   .editorial-social-icons a { width: 2.1rem; height: 2.1rem; }
   .social-icon-image { width: 1.65rem; height: 1.65rem; }
+}
+
+/* Keep the primary navigation available while the single-page sections scroll. */
+.home-header {
+  position: fixed;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  min-height: 82px;
+  padding: 0 clamp(1rem, 2.4vw, 2.5rem);
+  border-bottom: 1px solid rgba(23,23,20,.15);
+  color: var(--ink);
+  background: rgba(247,246,241,.9);
+  box-shadow: 0 12px 30px rgba(11,11,10,.06);
+  backdrop-filter: blur(18px);
+}
+.home-header .wordmark,
+.home-header .wordmark.home-wordmark {
+  color: var(--ink);
+  font-size: clamp(1.5rem, 2.4vw, 2.45rem);
+  text-shadow: none;
+}
+.home-header .wordmark img,
+.home-header .wordmark.home-wordmark img { filter: none; }
+.home-header-nav {
+  display: flex;
+  justify-content: center;
+  gap: clamp(.75rem, 1.7vw, 2rem);
+  align-items: center;
+  min-width: 0;
+  padding: 0 1.2rem;
+  font-size: clamp(.58rem, .72vw, .78rem);
+  font-weight: 600;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.home-header-nav a {
+  position: relative;
+  white-space: nowrap;
+  transition: opacity .3s ease, transform .3s var(--motion-ease);
+}
+.home-header-nav a::after {
+  position: absolute;
+  right: 0;
+  bottom: -.35rem;
+  left: 0;
+  height: 1px;
+  background: currentColor;
+  content: "";
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform .35s var(--motion-ease);
+}
+.home-header-nav a:hover { opacity: .62; transform: translateY(-1px); }
+.home-header-nav a:hover::after { transform: scaleX(1); transform-origin: left; }
+.home-header .menu-toggle { display: grid; color: var(--ink); background: rgba(23,23,20,.06); }
+.home-header .menu-toggle i { color: var(--ivory); background: var(--ink); }
+.site-header.menu-active .home-header-nav { opacity: 0; pointer-events: none; }
+
+@media (max-width: 980px) {
+  .home-header-nav { gap: .75rem; padding: 0 .6rem; font-size: .55rem; letter-spacing: .06em; }
+}
+
+@media (max-width: 680px) {
+  .home-header {
+    position: fixed;
+    min-height: 68px;
+    grid-template-columns: auto 1fr auto;
+    padding: 0 1rem;
+  }
+  .home-header-nav { display: none; }
+  .home-header .wordmark,
+  .home-header .wordmark.home-wordmark { font-size: clamp(1.4rem, 6.8vw, 2.2rem); }
+  .home-header .wordmark img,
+  .home-header .wordmark.home-wordmark img { width: 1.85rem; height: 1.85rem; }
+  .menu-brand-feature { padding: 5rem 1rem 4rem; }
+  .menu-brand-feature > img { width: min(68vw, 300px); max-height: 42vh; }
+  .menu-brand-feature > p { font-size: clamp(2.5rem, 12vw, 4.2rem); }
+  .gallery-scroll,
+  .gallery-board,
+  .projects-bento { width: 100%; max-width: 100%; }
 }
