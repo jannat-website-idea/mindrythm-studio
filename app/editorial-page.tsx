@@ -131,10 +131,15 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
               const matching = galleryItems.filter((item) => item.category.toLowerCase() === category.toLowerCase());
               const items = matching.length ? matching : galleryItems.filter((_, index) => index % 2 === categoryIndex);
               return (
-                <section className="gallery-page-section" key={category}>
+                <section className={`gallery-page-section gallery-page-section-${category.toLowerCase()}`} key={category}>
                   <header><h2>{category}</h2><p>{category === "Spaces" ? "Property, architecture, landscape and the first impression of arrival." : "Weddings, events, people and the energy of moments shared."}</p></header>
                   <div className="gallery-page-grid">
                     {items.map((item, index) => <button type="button" className={`gallery-page-card gallery-page-card-${(index % 4) + 1}`} key={item.id} onClick={() => setSelected(item)}><Media item={item} /><span>{item.title}</span></button>)}
+                    <article className="gallery-page-feature">
+                      <span>Mindrythm archive</span>
+                      <p>{category === "Spaces" ? "Spaces shaped by light, material and a sense of arrival." : "Celebrations held in light, ritual and memory."}</p>
+                      <i>Open the full gallery</i>
+                    </article>
                   </div>
                 </section>
               );
