@@ -3641,8 +3641,8 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   .menu-brand-feature {
     position: absolute !important;
     z-index: 2 !important;
-    inset: 0 0 auto !important;
-    height: 46svh !important;
+    inset: 0 !important;
+    height: auto !important;
     display: grid !important;
     place-items: center !important;
     pointer-events: none !important;
@@ -3804,7 +3804,7 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
 }
 .services-layout { align-items: start; }
 .services-list { align-self: start; }
-.menu-overlay-brand > small { margin-top: 1.5rem !important; }
+.menu-overlay-brand > small { margin-top: auto !important; }
 .gallery-note-social .social-icon-image {
   display: block !important;
   width: 2.6rem !important;
