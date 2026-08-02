@@ -3937,3 +3937,46 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   height: auto !important;
   aspect-ratio: 1.42 !important;
 }
+
+@media (min-width: 681px) {
+  .menu-overlay {
+    height: 100svh !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+  .menu-brand-feature > img {
+    width: min(46.5vw, 630px) !important;
+    max-height: 72vh !important;
+  }
+  .menu-overlay-index {
+    height: 100svh !important;
+    min-height: 0 !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+    padding: clamp(5rem, 7.3vh, 7.3rem) 2.5rem 1.4rem 3.5rem !important;
+    overflow: hidden !important;
+  }
+  .menu-overlay nav {
+    grid-template-rows: repeat(7, minmax(0, 1fr)) !important;
+    align-content: stretch !important;
+    padding: 1.1rem 0 .7rem !important;
+  }
+  .menu-overlay nav a,
+  .menu-overlay.nav-open nav a {
+    display: flex !important;
+    min-height: 0 !important;
+    align-items: center !important;
+    padding: 0 !important;
+  }
+  .menu-overlay nav a > strong {
+    font-size: clamp(1.45rem, 3.05vw, 3.7rem) !important;
+    line-height: .82 !important;
+  }
+  .menu-overlay-meta {
+    gap: .35rem 1rem !important;
+    padding-top: .65rem !important;
+    font-size: .5rem !important;
+  }
+  .menu-overlay-socials { gap: .55rem !important; }
+  .menu-overlay-socials a { width: 2rem !important; height: 2rem !important; }
+  .menu-overlay-socials .social-icon-image { width: 1.55rem !important; height: 1.55rem !important; }
+}
