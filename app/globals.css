@@ -3402,3 +3402,167 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   .menu-overlay.nav-open nav a { padding: .82rem 0; border-bottom: 1px solid var(--line); }
   .menu-overlay nav a > strong { font-size: clamp(1.9rem, 10vw, 3.2rem); font-weight: 300; letter-spacing: -.06em; }
 }
+
+/* Restore the cinematic split-screen menu with the brand lockup behind the name. */
+@media (min-width: 681px) {
+  .menu-overlay {
+    inset: 0;
+    z-index: 65;
+    display: grid;
+    min-height: 100svh;
+    grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+    overflow-y: auto;
+    color: var(--ink);
+    background: linear-gradient(108deg, var(--ink) 0 41%, var(--ivory) 41% 100%);
+    clip-path: inset(0 0 0 100%);
+    transform: none;
+    transition: visibility 0s linear .85s, opacity .35s ease, clip-path .85s cubic-bezier(.76,0,.24,1);
+  }
+  .menu-overlay.nav-open {
+    visibility: visible;
+    opacity: 1;
+    clip-path: inset(0);
+    pointer-events: auto;
+    transition-delay: 0s;
+  }
+  .menu-overlay-brand {
+    display: flex;
+    min-height: 100svh;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 8rem 4vw 2.5rem;
+    color: var(--ivory);
+  }
+  .menu-overlay-brand > small { margin-top: auto; }
+  .menu-overlay-index {
+    display: grid;
+    min-height: 100svh;
+    grid-template-rows: auto 1fr auto;
+    padding: 7.3rem 2.5rem 2.5rem 5vw;
+  }
+  .menu-overlay-heading {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: .8rem;
+    border-bottom: 1px solid var(--line);
+    font-size: .56rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+  .menu-overlay nav {
+    display: grid;
+    min-height: 0;
+    align-content: center;
+    gap: 0;
+    padding: 0;
+  }
+  .menu-overlay nav a,
+  .menu-overlay.nav-open nav a {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: baseline;
+    padding: .58rem 0;
+    border-bottom: 1px solid var(--line);
+    opacity: 1;
+    color: var(--ink);
+    transform: none;
+  }
+  .menu-overlay nav a:hover { padding-right: .7rem; padding-left: .7rem; background: #dfded8; }
+  .menu-overlay nav a > strong {
+    display: block;
+    font-size: clamp(2rem, 4.3vw, 5rem);
+    font-weight: 300;
+    letter-spacing: -.06em;
+    line-height: .86;
+    white-space: nowrap;
+  }
+  .menu-overlay nav a > small { display: none; }
+  .menu-overlay-meta {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: .7rem 1rem;
+    align-items: end;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--line);
+    font-size: .58rem;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+  }
+  .menu-overlay-meta > a { justify-self: end; }
+  .menu-overlay-meta > div { grid-column: 1 / -1; }
+  .menu-overlay-meta div { display: flex; flex-wrap: wrap; gap: 1rem; }
+  .menu-brand-feature {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 8rem 2.5vw 6rem;
+    pointer-events: none;
+  }
+  .menu-brand-feature > img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 0;
+    width: min(32vw, 500px);
+    max-height: 62vh;
+    object-fit: contain;
+    opacity: .13;
+    filter: invert(1);
+    transform: translate(-50%, -50%);
+  }
+  .menu-brand-feature > p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 2;
+    display: flex;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+    color: var(--ivory);
+    font-family: "Avenir Next", Avenir, var(--font-avenir), "Helvetica Neue", Arial, sans-serif;
+    font-size: clamp(2.7rem, 4.8vw, 5.8rem);
+    font-weight: 500;
+    letter-spacing: -.075em;
+    line-height: .9;
+    text-align: center;
+    white-space: nowrap;
+    transform: translate(-50%, -50%);
+  }
+  .menu-brand-feature > p span { font: inherit; }
+  .menu-brand-feature > p em { display: none; }
+}
+
+@media (max-width: 680px) {
+  .menu-overlay {
+    z-index: 65;
+    background: var(--ivory);
+  }
+  .menu-overlay.nav-open {
+    visibility: visible;
+    opacity: 1;
+    clip-path: inset(0);
+    pointer-events: auto;
+    transition-delay: 0s;
+  }
+  .menu-overlay-brand { display: none; }
+  .menu-overlay-index { min-height: calc(100svh - 5.5rem); }
+  .menu-overlay nav a,
+  .menu-overlay.nav-open nav a {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    padding: .82rem 0;
+    border-bottom: 1px solid var(--line);
+    opacity: 1;
+    color: var(--ink);
+    transform: none;
+  }
+  .menu-overlay nav a > strong {
+    font-size: clamp(1.9rem, 10vw, 3.2rem);
+    font-weight: 300;
+    letter-spacing: -.06em;
+    line-height: .9;
+  }
+}
