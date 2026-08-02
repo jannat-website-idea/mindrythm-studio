@@ -4027,6 +4027,41 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   }
 }
 
+.contact-page {
+  padding-top: clamp(1.5rem, 3vw, 3rem) !important;
+}
+
+.contact-page-intro {
+  margin-top: 0 !important;
+  padding-top: .5rem !important;
+}
+
+.about-section {
+  padding-top: clamp(3rem, 4.5vw, 4.5rem) !important;
+}
+
+.about-heading {
+  padding-bottom: clamp(1.5rem, 2.5vw, 2.5rem) !important;
+}
+
+@media (max-width: 680px) {
+  .contact-page {
+    padding-top: 1.25rem !important;
+  }
+
+  .contact-page-intro {
+    padding-top: 0 !important;
+  }
+
+  .about-section {
+    padding-top: 2.5rem !important;
+  }
+
+  .about-heading {
+    padding-bottom: 1.5rem !important;
+  }
+}
+
 @media (min-width: 681px) {
   .menu-overlay {
     height: 100svh !important;
