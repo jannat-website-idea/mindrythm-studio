@@ -3979,4 +3979,24 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   .menu-overlay-socials { gap: .55rem !important; }
   .menu-overlay-socials a { width: 2rem !important; height: 2rem !important; }
   .menu-overlay-socials .social-icon-image { width: 1.55rem !important; height: 1.55rem !important; }
+  .menu-brand-feature > img {
+    width: min(58vw, 900px) !important;
+    max-width: 95% !important;
+    max-height: 82vh !important;
+  }
+  .menu-brand-feature > p {
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+  }
+  .menu-overlay nav {
+    justify-self: start !important;
+    width: calc(100% + 1.25rem) !important;
+    margin-left: -1.25rem !important;
+  }
+  .menu-overlay nav a,
+  .menu-overlay.nav-open nav a {
+    width: 100% !important;
+    justify-content: flex-start !important;
+  }
 }
