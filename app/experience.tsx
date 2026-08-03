@@ -14,7 +14,7 @@ import { BackToTop } from "@/app/back-to-top";
 import { EmphasizedCopy } from "@/app/emphasized-copy";
 import { Media } from "@/app/media";
 import { SocialIcon } from "@/app/social-icon";
-import { type FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { type CSSProperties, type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 
 const fallbackTestimonials: ContentItem[] = [
   {
@@ -112,6 +112,7 @@ export function Experience({ content }: { content: SiteContent }) {
 
   const [loaded, setLoaded] = useState(false);
   const [loaderExiting, setLoaderExiting] = useState(false);
+  const [loaderProgress, setLoaderProgress] = useState(0);
   const [showLoader, setShowLoader] = useState(true);
   const [heroIndex, setHeroIndex] = useState(0);
   const [selectedItem, setSelectedItem] = useState<ContentItem | null>(null);
@@ -130,20 +131,10 @@ export function Experience({ content }: { content: SiteContent }) {
   const address = settings.address || "250, Bansdroni, Rifle Club Playground, Kolkata - 700070";
 
   useEffect(() => {
-    const shouldSkipIntro = window.location.hash === "#home";
-    if (shouldSkipIntro) {
-      document.documentElement.dataset.mindrythmIntro = "seen";
-      const skipFrame = window.requestAnimationFrame(() => {
-        setLoaded(true);
-        setShowLoader(false);
-      });
-      return () => window.cancelAnimationFrame(skipFrame);
-    }
-
     const startedAt = performance.now();
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const minimumDuration = reducedMotion ? 220 : 3000;
-    const exitDuration = reducedMotion ? 240 : 900;
+    const minimumDuration = reducedMotion ? 480 : 3600;
+    const exitDuration = reducedMotion ? 260 : 1050;
     let frame = 0;
     let exitTimer = 0;
     let cleanupTimer = 0;
@@ -154,11 +145,12 @@ export function Experience({ content }: { content: SiteContent }) {
       if (finished) return;
       finished = true;
       window.cancelAnimationFrame(frame);
+      setLoaderProgress(100);
       exitTimer = window.setTimeout(() => {
         setLoaded(true);
         setLoaderExiting(true);
         cleanupTimer = window.setTimeout(() => setShowLoader(false), exitDuration);
-      }, reducedMotion ? 0 : 120);
+      }, reducedMotion ? 0 : 180);
     };
 
     const markPageReady = () => {
@@ -168,6 +160,9 @@ export function Experience({ content }: { content: SiteContent }) {
 
     const tick = (now: number) => {
       const elapsed = now - startedAt;
+      const timedProgress = Math.min(elapsed / minimumDuration, 1);
+      const visibleProgress = pageReady ? timedProgress * 100 : Math.min(timedProgress * 94, 94);
+      setLoaderProgress(Math.round(visibleProgress));
       if (elapsed >= minimumDuration && pageReady) return finish();
       frame = window.requestAnimationFrame(tick);
     };
@@ -390,10 +385,17 @@ export function Experience({ content }: { content: SiteContent }) {
       {showLoader && <div className={`preloader reference-loader ${loaderExiting ? "preloader-done" : ""}`} role="img" aria-label="Mindrythm studio">
         <div className="loader-reference-lockup">
           <span className="loader-reference-name" aria-hidden="true">
-            {Array.from("MINDRYTHM").map((letter, index) => <i key={`${letter}-${index}`}><b>{letter}</b></i>)}
+            {Array.from("MINDRYTHM").map((letter, index) => <i key={`${letter}-${index}`} style={{ "--loader-letter": index } as CSSProperties}><b>{letter}</b></i>)}
           </span>
-          <span className="loader-reference-studio" aria-hidden="true">studio</span>
+          <span className="loader-reference-studio" aria-hidden="true">
+            {Array.from("STUDIO").map((letter, index) => <i key={`${letter}-${index}`} style={{ "--loader-letter": index } as CSSProperties}><b>{letter}</b></i>)}
+          </span>
         </div>
+        <div className="loader-reference-footer" aria-hidden="true">
+          <span>Visual stories / Kolkata</span>
+          <span className="loader-reference-count">{loaderProgress}<sup>%</sup></span>
+        </div>
+        <div className="loader-reference-progress" aria-hidden="true"><span style={{ transform: `scaleX(${loaderProgress / 100})` }} /></div>
       </div>}
 
       <header className={`site-header home-header ${loaded ? "site-ready" : "site-loading"} ${sectionNavVisible ? "section-nav-visible" : ""} ${menuOpen ? "menu-active" : ""}`}>

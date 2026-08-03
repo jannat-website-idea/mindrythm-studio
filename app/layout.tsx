@@ -45,9 +45,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script
+        <meta name="color-scheme" content="light" />
+        <style
           dangerouslySetInnerHTML={{
-            __html: `try{if(location.hash==="#home"){document.documentElement.dataset.mindrythmIntro="seen"}}catch(e){}`,
+            __html: "html,body{background:#fbfaf5!important;color-scheme:light}",
           }}
         />
       </head>
