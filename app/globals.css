@@ -5099,6 +5099,51 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   }
 }
 
+/* Keep the full-gallery social icons inside their shared archive frame. */
+.gallery-page-social {
+  box-sizing: border-box;
+  align-self: stretch;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  max-height: 100%;
+  overflow: hidden;
+}
+.gallery-page-social-links {
+  align-self: stretch;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+}
+.gallery-page-social-links a {
+  align-self: stretch;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  max-height: 100%;
+  aspect-ratio: auto;
+  overflow: hidden;
+}
+.gallery-page-social-links .social-icon-image {
+  width: min(2.35rem, 48%);
+  height: min(2.35rem, 48%);
+  max-width: 100%;
+  max-height: 100%;
+}
+.gallery-page-social-links .social-icon-youtube {
+  width: min(2.8rem, 56%);
+  height: auto;
+}
+
+@media (max-width: 680px) {
+  .gallery-page-social {
+    max-height: none;
+    padding: .65rem;
+  }
+  .gallery-page-social-links { min-height: 4.5rem; }
+}
+
 /* Final luxury loader treatment: warm white first paint, kinetic type and a measured crossfade. */
 .preloader.reference-loader {
   isolation: isolate;
@@ -5302,4 +5347,79 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   .reference-loader .loader-reference-footer > span:first-child::before { animation: none !important; }
   .reference-loader .loader-reference-name i b,
   .reference-loader .loader-reference-studio i b { opacity: 1; filter: none; transform: none; }
+}
+
+/* Keep the shared Spaces/Celebrations social tile inside one bento row. */
+.gallery-note-social {
+  box-sizing: border-box !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  align-self: stretch !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  gap: clamp(.35rem, .7vw, .65rem) !important;
+  overflow: hidden !important;
+  padding: clamp(.4rem, .65vw, .6rem) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 16px !important;
+  color: var(--ink) !important;
+  background: var(--paper) !important;
+  contain: layout paint;
+}
+.gallery-note-social a {
+  align-self: stretch !important;
+  justify-self: stretch !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  aspect-ratio: auto !important;
+  padding: .25rem !important;
+  border: 1px solid rgba(23,23,20,.15) !important;
+  border-radius: 11px !important;
+  background: var(--ivory) !important;
+  box-shadow: none !important;
+}
+.gallery-note-social a:hover {
+  border-color: rgba(23,23,20,.32) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  transform: translateY(-2px);
+}
+.gallery-note-social .social-icon-image {
+  width: min(2.65rem, 64%) !important;
+  height: min(2.65rem, 64%) !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+}
+.gallery-note-social .social-icon-youtube {
+  width: min(3.1rem, 72%) !important;
+  height: auto !important;
+}
+
+@media (min-width: 681px) {
+  .gallery-note-social {
+    grid-column: 1 / span 3 !important;
+    grid-row: 4 / span 1 !important;
+  }
+}
+
+@media (max-width: 680px) {
+  .gallery-note-social {
+    grid-column: 1 / -1 !important;
+    grid-row: 12 / span 1 !important;
+    min-height: 0 !important;
+    padding: .4rem !important;
+    border-radius: 11px !important;
+  }
+  .gallery-note-social a { border-radius: 8px !important; }
+  .gallery-note-social .social-icon-image {
+    width: min(2.2rem, 58%) !important;
+    height: min(2.2rem, 58%) !important;
+  }
+  .gallery-note-social .social-icon-youtube {
+    width: min(2.65rem, 68%) !important;
+    height: auto !important;
+  }
 }
