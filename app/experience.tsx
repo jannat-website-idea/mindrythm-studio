@@ -133,9 +133,10 @@ export function Experience({ content }: { content: SiteContent }) {
   useEffect(() => {
     const startedAt = performance.now();
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const minimumDuration = reducedMotion ? 480 : 3600;
-    const exitDuration = reducedMotion ? 260 : 1050;
+    const minimumDuration = reducedMotion ? 520 : 5200;
+    const exitDuration = reducedMotion ? 280 : 1650;
     let frame = 0;
+    let revealTimer = 0;
     let exitTimer = 0;
     let cleanupTimer = 0;
     let pageReady = document.readyState === "complete";
@@ -146,11 +147,13 @@ export function Experience({ content }: { content: SiteContent }) {
       finished = true;
       window.cancelAnimationFrame(frame);
       setLoaderProgress(100);
-      exitTimer = window.setTimeout(() => {
+      revealTimer = window.setTimeout(() => {
         setLoaded(true);
+      }, reducedMotion ? 0 : 240);
+      exitTimer = window.setTimeout(() => {
         setLoaderExiting(true);
         cleanupTimer = window.setTimeout(() => setShowLoader(false), exitDuration);
-      }, reducedMotion ? 0 : 180);
+      }, reducedMotion ? 20 : 460);
     };
 
     const markPageReady = () => {
@@ -171,6 +174,7 @@ export function Experience({ content }: { content: SiteContent }) {
     frame = window.requestAnimationFrame(tick);
     return () => {
       window.cancelAnimationFrame(frame);
+      window.clearTimeout(revealTimer);
       window.clearTimeout(exitTimer);
       window.clearTimeout(cleanupTimer);
       window.removeEventListener("load", markPageReady);
