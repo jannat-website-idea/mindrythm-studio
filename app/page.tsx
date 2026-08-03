@@ -1,4 +1,4 @@
-import { getSiteContent } from "@/db/content";
+import { getSiteContent } from "@/lib/site-content";
 import { Experience } from "./experience";
 
 export const dynamic = "force-dynamic";

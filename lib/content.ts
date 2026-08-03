@@ -40,9 +40,62 @@ export type SiteSettings = {
   x: string;
 };
 
+export type HeroContent = {
+  titleLineOne: string;
+  titleLineTwo: string;
+  featuredProjectIds: string[];
+  visionHighlights: string[];
+};
+
+export type SiteCopy = {
+  visionParagraphs: string[];
+  missionParagraphs: string[];
+  brandTaglines: string[];
+  enquiryTaglines: string[];
+  teamIntroduction: string;
+};
+
+export type ServiceContent = {
+  key: "real-estate" | "hospitality" | "wellness" | "wedding";
+  title: string;
+  copy: string;
+  projectIds: string[];
+};
+
+export type FooterContent = {
+  callout: string;
+  actionLabel: string;
+  locationLabel: string;
+  studioUrl: string;
+};
+
+export type SeoSettings = {
+  title: string;
+  description: string;
+  shareImageUrl: string;
+};
+
+export type LegalSection = {
+  heading: string;
+  body: string;
+};
+
+export type LegalPageContent = {
+  eyebrow: string;
+  title: string;
+  sections: LegalSection[];
+};
+
 export type SiteContent = {
   settings: SiteSettings;
   items: ContentItem[];
+  hero: HeroContent;
+  copy: SiteCopy;
+  services: ServiceContent[];
+  footer: FooterContent;
+  seo: SeoSettings;
+  privacyPolicy: LegalPageContent;
+  termsConditions: LegalPageContent;
 };
 
 export const mainInstagramUrl = "https://www.instagram.com/mindrythm_studios/";
@@ -106,19 +159,100 @@ export const footerTaglines = [
 
 export const teamIntroduction = "Mindrythm has never been about one person—it has always been about the people who choose to build it together. Every member of our team brings their own way of seeing the world, their own craft, and their own quiet dedication to creating work that feels honest and intentional. We learn from one another, challenge one another, and grow together with every project we take on. When you work with us, you're not simply working with individuals behind the camera or the screen; you're working with a team that genuinely cares about the people, places, and stories we are trusted to represent.";
 
+export const defaultHero: HeroContent = {
+  titleLineOne: "Every story",
+  titleLineTwo: "has a rhythm.",
+  featuredProjectIds: ["event-photography", "quiet-frequency", "wedding-celebration"],
+  visionHighlights: [
+    "Our vision is to create a place where ideas find their visual language.",
+    "Where artists find one another.",
+    "Where every project contributes to a body of work that is intentional and beautiful.",
+  ],
+};
+
+export const defaultCopy: SiteCopy = {
+  visionParagraphs: [...visionParagraphs],
+  missionParagraphs: [...missionParagraphs],
+  brandTaglines: [...brandTaglines],
+  enquiryTaglines: [...enquiryTaglines],
+  teamIntroduction,
+};
+
+export const defaultServices: ServiceContent[] = [
+  {
+    key: "real-estate",
+    title: "Real-estate",
+    copy: "Architecture, interiors and property campaigns shaped around light, proportion and a true sense of place.",
+    projectIds: ["field-notes", "tropical-pavilion", "sanctuary-interiors"],
+  },
+  {
+    key: "hospitality",
+    title: "Hospitality",
+    copy: "Cinematic films and photography that let future guests feel the atmosphere before they arrive.",
+    projectIds: ["quiet-frequency", "resort-at-dusk", "tropical-pavilion"],
+  },
+  {
+    key: "wellness",
+    title: "Wellness",
+    copy: "Quiet, human imagery for retreats, rituals and brands built around restoration and care.",
+    projectIds: ["event-photography", "event-film", "in-passing"],
+  },
+  {
+    key: "wedding",
+    title: "Wedding / Moments",
+    copy: "Photography and films that preserve the emotion, rituals and unscripted moments that make a day your own.",
+    projectIds: ["wedding-celebration", "wedding-film"],
+  },
+];
+
+export const defaultFooter: FooterContent = {
+  callout: footerTaglines[1],
+  actionLabel: footerTaglines[0],
+  locationLabel: "Kolkata / Everywhere",
+  studioUrl: "/studio",
+};
+
+export const defaultSeo: SeoSettings = {
+  title: "Mindrythm — Property, Event & Wedding Photography",
+  description: "Professional photography and films for properties, resorts, events, weddings and brands.",
+  shareImageUrl: "/og-final.png",
+};
+
+export const defaultPrivacyPolicy: LegalPageContent = {
+  eyebrow: "Legal / Privacy",
+  title: "Privacy policy",
+  sections: [
+    { heading: "Information we receive", body: "When you contact Mindrythm, we receive the details you choose to provide, including your name, phone number, email address and enquiry." },
+    { heading: "How we use it", body: "We use this information only to respond to your enquiry, discuss potential work and maintain relevant business records. We do not sell personal information." },
+    { heading: "Storage and requests", body: "Enquiries may be stored securely for follow-up. You may request access, correction or deletion by emailing Admin@mindrythm.com." },
+    { heading: "External services", body: "The website may link to social platforms and display Google Maps. Those services apply their own privacy practices." },
+  ],
+};
+
+export const defaultTermsConditions: LegalPageContent = {
+  eyebrow: "Legal / Terms & Conditions",
+  title: "Terms & Conditions",
+  sections: [
+    { heading: "Website content", body: "This website presents the work, services and creative perspective of Mindrythm. Project information is provided for general reference and may change." },
+    { heading: "Creative ownership", body: "Unless stated otherwise, visual work, text and brand materials on this website belong to Mindrythm or the credited collaborators and may not be reused without permission." },
+    { heading: "Project enquiries", body: "Sending an enquiry does not create a service agreement. Scope, timing, fees and usage rights are confirmed separately in writing." },
+    { heading: "Contact", body: "Questions about these terms can be sent to Admin@mindrythm.com." },
+  ],
+};
+
 export const defaultItems: ContentItem[] = [
   {
     id: "quiet-frequency",
     kind: "project",
     sortOrder: 10,
-    title: "Azure Retreat",
-    eyebrow: "Resort film / Poolside",
-    body: "A sunlit hospitality story designed to communicate calm, scale and the effortless rhythm of a destination stay.",
+    title: "Svabodha Wellness",
+    eyebrow: "Wellness retreat / Film",
+    body: "A cinematic retreat story moving through shoreline, forest, ritual and the slower rhythm of a restorative stay.",
     mediaUrl: "/videos/resort-pool.mp4",
-    mediaAlt: "Luxury resort swimming pool in warm daylight",
-    category: "Resort Film",
+    mediaAlt: "Aerial view of a tropical shoreline featured in a wellness retreat film",
+    category: "Wellness Film",
     year: "2026",
-    href: "#azure-retreat",
+    href: "#svabodha-wellness",
     accent: "forest",
   },
   {
@@ -128,8 +262,8 @@ export const defaultItems: ContentItem[] = [
     title: "Vows in Bloom",
     eyebrow: "Wedding / Photography",
     body: "A warm, candid wedding story balancing traditional portraits, joyful details and the unscripted moments between them.",
-    mediaUrl: "/images/wedding-palace-hero.png",
-    mediaAlt: "Indian newlyweds walking through an elegant candlelit palace courtyard",
+    mediaUrl: "/images/wedding-celebration.jpg",
+    mediaAlt: "Indian newlyweds sharing a joyful portrait",
     category: "Wedding Photography",
     year: "2026",
     href: "#vows-in-bloom",
@@ -139,42 +273,42 @@ export const defaultItems: ContentItem[] = [
     id: "event-film",
     kind: "project",
     sortOrder: 17,
-    title: "The Evening Opens",
-    eyebrow: "Event / Film",
-    body: "A concise event film built from atmosphere, stage details and the energy of guests arriving for a memorable evening.",
+    title: "A Guided Pause",
+    eyebrow: "Wellness practice / Film",
+    body: "A quiet film study of guided movement, breath and the attentive human connection at the heart of a retreat.",
     mediaUrl: "/videos/event-film.mp4",
-    mediaAlt: "Microphone and blue lights inside an event venue",
-    category: "Event Film",
+    mediaAlt: "Guided wellness practice inside a shaded retreat pavilion",
+    category: "Wellness Film",
     year: "2026",
-    href: "#evening-opens",
+    href: "#guided-pause",
     accent: "ink",
   },
   {
     id: "in-passing",
     kind: "project",
     sortOrder: 20,
-    title: "The Courtyard Suite",
-    eyebrow: "Hospitality / Interior film",
-    body: "A measured walkthrough that turns material, light and room flow into a quiet invitation to stay.",
+    title: "Hands of Stillness",
+    eyebrow: "Therapeutic ritual / Film",
+    body: "An intimate moving portrait of restorative touch, attentive care and the calm created through a considered wellness ritual.",
     mediaUrl: "/videos/hotel-room.mp4",
-    mediaAlt: "Camera moving through a refined hotel room interior",
-    category: "Hospitality",
+    mediaAlt: "Hands-on wellness treatment inside a tropical retreat",
+    category: "Wellness Ritual",
     year: "2026",
-    href: "#courtyard-suite",
+    href: "#hands-of-stillness",
     accent: "sage",
   },
   {
     id: "event-photography",
     kind: "project",
     sortOrder: 25,
-    title: "Ideas Live",
-    eyebrow: "Corporate event / Photography",
-    body: "Professional event coverage shaped around speakers, audiences, branded details and the human energy that makes the room matter.",
-    mediaUrl: "/images/event-stage.jpg",
-    mediaAlt: "Speaker addressing a large audience at a professional event",
-    category: "Event Photography",
+    title: "Earth & Stillness",
+    eyebrow: "Wellness ritual / Photography",
+    body: "A tactile portrait of an elemental mud ritual, photographed with natural light, quiet detail and a strong sense of place.",
+    mediaUrl: "/images/wellness-mud-bath.jpg",
+    mediaAlt: "Wellness guest immersed in a traditional mud bath at a forest retreat",
+    category: "Wellness Photography",
     year: "2026",
-    href: "#ideas-live",
+    href: "#earth-and-stillness",
     accent: "forest",
   },
   {
@@ -195,84 +329,84 @@ export const defaultItems: ContentItem[] = [
     id: "field-notes",
     kind: "project",
     sortOrder: 30,
-    title: "Casa Verde",
-    eyebrow: "Real estate / Exterior",
-    body: "Clean architectural photography balancing strong geometry, tropical light and the openness of modern living.",
+    title: "Room to Breathe",
+    eyebrow: "Retreat space / Photography",
+    body: "An open-air practice hall photographed through its natural textures, soft daylight and connection to the surrounding forest.",
     mediaUrl: "/images/villa-pool.jpg",
-    mediaAlt: "Modern white villa with a private swimming pool",
-    category: "Real Estate",
+    mediaAlt: "Open-air yoga hall beneath a traditional thatched roof",
+    category: "Retreat Spaces",
     year: "2026",
-    href: "#casa-verde",
+    href: "#room-to-breathe",
     accent: "ink",
   },
   {
     id: "object-ritual",
     kind: "project",
     sortOrder: 40,
-    title: "Stillness Suite",
-    eyebrow: "Boutique resort / Room film",
-    body: "A concise moving portrait of a private suite, created for booking platforms, social campaigns and property launches.",
+    title: "Closing Ritual",
+    eyebrow: "Wellness retreat / Film",
+    body: "The final movement of a retreat story, shaped around gratitude, release and a return to the world with greater stillness.",
     mediaUrl: "/videos/boutique-room.mp4",
-    mediaAlt: "Bright boutique hotel suite opening toward a pool",
-    category: "Resort",
+    mediaAlt: "Closing moments from a cinematic wellness retreat film",
+    category: "Wellness Film",
     year: "2026",
-    href: "#stillness-suite",
+    href: "#closing-ritual",
     accent: "lime",
   },
   {
     id: "cliff-house",
     kind: "project",
     sortOrder: 45,
-    title: "Woodland House",
-    eyebrow: "Architecture / Twilight",
-    body: "An exterior series built around warm interior light, natural context and the clarity of contemporary architecture.",
+    title: "Forest Passage",
+    eyebrow: "Retreat landscape / Photography",
+    body: "A shaded woodland path and hand-painted cottages photographed as part of the retreat's quiet, immersive arrival experience.",
     mediaUrl: "/images/modern-house.jpg",
-    mediaAlt: "Contemporary residence photographed at blue hour",
-    category: "Architecture",
+    mediaAlt: "Woodland path winding through a tropical retreat",
+    category: "Retreat Landscape",
     year: "2026",
-    href: "#woodland-house",
+    href: "#forest-passage",
     accent: "forest",
   },
   {
     id: "resort-at-dusk",
     kind: "project",
     sortOrder: 46,
-    title: "Horizon Resort",
-    eyebrow: "Hospitality / Blue hour",
-    body: "A twilight hospitality series balancing illuminated architecture, reflective water and the calm transition into evening.",
+    title: "Arrival Under Trees",
+    eyebrow: "Retreat lifestyle / Photography",
+    body: "A human-led view of the retreat grounds, balancing everyday hospitality with the warmth and texture of the forest setting.",
     mediaUrl: "/images/resort-exterior.jpg",
-    mediaAlt: "Resort pool and hotel exterior photographed at blue hour",
+    mediaAlt: "Retreat host walking between cottages beneath the trees",
     category: "Hospitality",
     year: "2026",
-    href: "#horizon-resort",
+    href: "#arrival-under-trees",
     accent: "ink",
   },
   {
     id: "tropical-pavilion",
     kind: "project",
     sortOrder: 47,
-    title: "Tropical Pavilion",
-    eyebrow: "Real estate / Lifestyle",
-    body: "A lifestyle-led property story connecting contemporary architecture with the relaxed way the home is meant to be lived in.",
+    title: "The Welcome House",
+    eyebrow: "Retreat interior / Photography",
+    body: "A natural reception space photographed through handcrafted furniture, lived-in detail and the character of a wellness destination.",
     mediaUrl: "/images/tropical-interior.jpg",
-    mediaAlt: "Contemporary tropical residence with a warm timber facade",
-    category: "Real Estate",
+    mediaAlt: "Natural reception area at a tropical wellness retreat",
+    category: "Retreat Interiors",
     year: "2026",
-    href: "#tropical-pavilion",
+    href: "#welcome-house",
     accent: "forest",
   },
   {
     id: "sanctuary-interiors",
     kind: "project",
     sortOrder: 48,
-    title: "Sanctuary Interiors",
-    eyebrow: "Interiors / Editorial",
-    body: "Natural, spacious interior photography that communicates finish, proportion and an immediate sense of home.",
+    title: "Open Sanctuary",
+    eyebrow: "Wellness space / Editorial",
+    body: "An airy thatched pavilion photographed through filtered daylight, natural material and its seamless relationship with the landscape.",
     mediaUrl: "/images/luxury-interior.jpg",
-    mediaAlt: "Contemporary living room with warm timber details",
-    category: "Interiors",
+    mediaAlt: "Open-air retreat pavilion framed by forest greenery",
+    category: "Retreat Spaces",
     year: "2026",
-    href: "#sanctuary-interiors",
+    href: "#open-sanctuary",
     accent: "sage",
   },
   {
@@ -308,4 +442,11 @@ export const defaultItems: ContentItem[] = [
 export const defaultContent: SiteContent = {
   settings: defaultSettings,
   items: defaultItems,
+  hero: defaultHero,
+  copy: defaultCopy,
+  services: defaultServices,
+  footer: defaultFooter,
+  seo: defaultSeo,
+  privacyPolicy: defaultPrivacyPolicy,
+  termsConditions: defaultTermsConditions,
 };

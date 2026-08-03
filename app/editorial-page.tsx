@@ -1,11 +1,7 @@
 "use client";
 
 import {
-  enquiryTaglines,
-  mainInstagramUrl,
-  missionParagraphs,
-  teamIntroduction,
-  visionParagraphs,
+  mainInstagramUrl as defaultInstagramUrl,
   type ContentItem,
   type SiteContent,
 } from "@/lib/content";
@@ -13,23 +9,21 @@ import { BackToTop } from "@/app/back-to-top";
 import { EmphasizedCopy } from "@/app/emphasized-copy";
 import { Media } from "@/app/media";
 import { SocialIcon } from "@/app/social-icon";
-import { type FormEvent, useEffect, useMemo, useState } from "react";
+import { getProjectService, getServiceProjects, isServiceKey, type ServiceKey } from "@/lib/services";
+import { type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 
 export type EditorialPageKind = "services" | "work" | "gallery" | "team" | "story" | "contact";
 
-const serviceItems = [
-  { title: "Real-estate", copy: "Architecture, interiors and property campaigns shaped around light, proportion and a true sense of place.", mediaUrl: "/images/villa-pool.jpg", mediaAlt: "Modern villa and pool" },
-  { title: "Hospitality", copy: "Cinematic films and photography that let future guests feel the atmosphere before they arrive.", mediaUrl: "/videos/resort-pool.mp4", mediaAlt: "Resort pool in warm daylight" },
-  { title: "Wellness", copy: "Quiet, human imagery for retreats, rituals and brands built around restoration and care.", mediaUrl: "/images/green-object.jpg", mediaAlt: "Wellness still life" },
-  { title: "Wedding / Moments", copy: "Photography and films that preserve the emotion, rituals and unscripted moments that make a day your own.", mediaUrl: "/videos/wedding-film.mp4", mediaAlt: "A cinematic wedding moment" },
-] as const;
-
 export function EditorialPage({ content, page }: { content: SiteContent; page: EditorialPageKind }) {
   const { settings } = content;
+  const {enquiryTaglines, missionParagraphs, teamIntroduction, visionParagraphs} = content.copy;
+  const serviceItems = content.services;
+  const mainInstagramUrl = settings.instagram || defaultInstagramUrl;
   const projects = content.items.filter((item) => item.kind === "project").sort((a, b) => a.sortOrder - b.sortOrder);
   const gallery = content.items.filter((item) => item.kind === "gallery");
   const galleryItems = gallery.length ? gallery : projects;
+  const serviceCollections = serviceItems.map((service) => ({ ...service, media: getServiceProjects(projects, service.key, serviceItems) }));
   const savedTeam = content.items.filter((item) => item.kind === "team");
   const teamFallbacks = projects.slice(0, 3).map((item, index) => ({
     ...item,
@@ -44,8 +38,14 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   const [selected, setSelected] = useState<ContentItem | null>(null);
   const [activeTeamCardId, setActiveTeamCardId] = useState<string | null>(null);
   const [activeService, setActiveService] = useState(0);
+  const [workFilter, setWorkFilter] = useState<"all" | ServiceKey>("all");
   const [formState, setFormState] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [navigationOpen, setNavigationOpen] = useState(false);
+  const formStartedAtRef = useRef(0);
+
+  useEffect(() => {
+    formStartedAtRef.current = Date.now();
+  }, []);
 
   function returnToHero() {
     window.sessionStorage.setItem("mindrythmSkipIntro", "1");
@@ -74,6 +74,24 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
     };
   }, [activeTeamCardId]);
 
+  useEffect(() => {
+    if (page !== "work") return;
+    const requested = new URLSearchParams(window.location.search).get("service");
+    // This mirrors the service encoded in the URL into the existing filter control.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (isServiceKey(requested, serviceItems)) setWorkFilter(requested);
+  }, [page, serviceItems]);
+
+  const visibleProjects = workFilter === "all" ? projects : getServiceProjects(projects, workFilter, serviceItems);
+
+  function selectWorkFilter(filter: "all" | ServiceKey) {
+    setWorkFilter(filter);
+    const url = new URL(window.location.href);
+    if (filter === "all") url.searchParams.delete("service");
+    else url.searchParams.set("service", filter);
+    window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+  }
+
   const pageMeta = useMemo(() => ({
     services: ["Services", "One studio. Many visual languages."],
     work: ["Our Work", "Properties, events and weddings photographed and filmed to be remembered."],
@@ -86,18 +104,20 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   async function sendEnquiry(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setFormState("sending");
-    const form = new FormData(event.currentTarget);
-    const payload = Object.fromEntries(form.entries());
-    payload.query = `Service: ${String(payload.service || "General enquiry")}\n\n${String(payload.query || "")}`;
-    const response = await fetch("/api/enquiry", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    if (response.ok) {
+    const formElement = event.currentTarget;
+    try {
+      const form = new FormData(formElement);
+      const payload = {...Object.fromEntries(form.entries()), startedAt: formStartedAtRef.current};
+      const response = await fetch("/api/enquiry", {
+        method: "POST",
+        headers: {"content-type": "application/json"},
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) throw new Error("Enquiry delivery failed");
       setFormState("sent");
-      event.currentTarget.reset();
-    } else {
+      formElement.reset();
+      formStartedAtRef.current = Date.now();
+    } catch {
       setFormState("error");
     }
   }
@@ -139,34 +159,49 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                   </button>
                 ))}
               </div>
-              <a className="services-preview" href="/contact#enquiry" aria-label={`Enquire about ${serviceItems[activeService].title}`}>
-                {serviceItems.map((service, index) => {
-                  const item: ContentItem = { id: `direct-service-${index}`, kind: "project", sortOrder: index, title: service.title, eyebrow: "Service", body: service.copy, mediaUrl: service.mediaUrl, mediaAlt: service.mediaAlt, category: service.title, year: "", href: "/contact", accent: "ink" };
-                  return <div className={activeService === index ? "active" : ""} key={service.title}><Media item={item} /></div>;
-                })}
-                <span>{serviceItems[activeService].title}<i>Explore service</i></span>
-              </a>
+              <div className="services-preview" aria-live="polite">
+                {serviceCollections.map((service, index) => (
+                  <div className={`service-preview-group ${activeService === index ? "active" : ""}`} data-count={service.media.length} key={service.key}>
+                    {service.media.map((item) => <span className="service-preview-media" key={`${service.key}-${item.id}`}><Media item={item} active={activeService === index} /></span>)}
+                  </div>
+                ))}
+                <Link className="services-preview-link" href={`/work?service=${serviceItems[activeService].key}`}>
+                  <span>{serviceItems[activeService].title}</span><i>View service work</i>
+                </Link>
+              </div>
             </div>
           </section>
         )}
 
         {page === "work" && (
-          <section className="work-page-grid">
-            {projects.map((project) => (
-              <details className="work-page-card" key={project.id}>
-                <summary>
-                  <Media item={project} />
-                  <div><span>{project.category}</span><h2>{project.title}</h2><p>{project.eyebrow}</p></div>
-                  <b>View project +</b>
-                </summary>
-                <div className="work-page-detail">
-                  <p>{project.body}</p>
-                  <div>{galleryItems.slice(0, 3).map((item) => <Media key={item.id} item={item} />)}</div>
-                  <span>{project.year} / Mindrythm</span>
-                </div>
-              </details>
-            ))}
-          </section>
+          <>
+            <nav className="work-filter-bar" aria-label="Filter work by service">
+              <button type="button" className={workFilter === "all" ? "active" : ""} aria-pressed={workFilter === "all"} onClick={() => selectWorkFilter("all")}>All work</button>
+              {serviceItems.map((service) => (
+                <button type="button" className={workFilter === service.key ? "active" : ""} aria-pressed={workFilter === service.key} key={service.key} onClick={() => selectWorkFilter(service.key)}>{service.title}</button>
+              ))}
+            </nav>
+            <section className="work-page-grid">
+              {visibleProjects.map((project) => {
+                const projectService = workFilter === "all" ? getProjectService(project, serviceItems) : workFilter;
+                const relatedProjects = projectService ? getServiceProjects(projects, projectService, serviceItems) : [project];
+                return (
+                  <details className="work-page-card" key={project.id}>
+                    <summary>
+                      <Media item={project} />
+                      <div><span>{project.category}</span><h2>{project.title}</h2><p>{project.eyebrow}</p></div>
+                      <b>View project +</b>
+                    </summary>
+                    <div className="work-page-detail">
+                      <p>{project.body}</p>
+                      <div>{relatedProjects.slice(0, 3).map((item) => <Media key={`${project.id}-${item.id}`} item={item} />)}</div>
+                      <span>{project.year} / Mindrythm</span>
+                    </div>
+                  </details>
+                );
+              })}
+            </section>
+          </>
         )}
 
         {page === "gallery" && (
@@ -224,9 +259,9 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
           <div className="story-page">
             <section className="story-manifesto"><span>What is Mindrythm?</span><blockquote>“<EmphasizedCopy text={visionParagraphs[0]} />”</blockquote></section>
             <section className="story-pillars">
-              <article><img className="story-pillar-media" src="/images/filmmaker.jpg" alt="Mindrythm filmmaker working on a story" /><div className="story-pillar-copy"><h2>What we capture</h2><p>We work across properties, resorts, events and weddings through photography, cinematic film and aerial capture.</p></div></article>
-              <article><img className="story-pillar-media" src="/images/event-stage.jpg" alt="Live event captured by Mindrythm" /><div className="story-pillar-copy"><h2>Who we work with</h2><p>Couples, families, event teams, developers, architects, resorts and brands seeking a distinct visual point of view.</p></div></article>
-              <article><img className="story-pillar-media" src="/images/modern-house.jpg" alt="Modern property photographed by Mindrythm" /><div className="story-pillar-copy"><h2>How we work</h2><p>Every commission begins with listening, a clear visual plan and space for real moments to happen.</p></div></article>
+              <article><img className="story-pillar-media" src="/images/filmmaker.jpg" alt="Wellness guest reading in a tropical retreat" /><div className="story-pillar-copy"><h2>What we capture</h2><p>We work across properties, resorts, events and weddings through photography, cinematic film and aerial capture.</p></div></article>
+              <article><img className="story-pillar-media" src="/images/event-stage.jpg" alt="Guided wellness gathering captured by Mindrythm" /><div className="story-pillar-copy"><h2>Who we work with</h2><p>Couples, families, event teams, developers, architects, resorts and brands seeking a distinct visual point of view.</p></div></article>
+              <article><img className="story-pillar-media" src="/images/modern-house.jpg" alt="Woodland retreat setting photographed by Mindrythm" /><div className="story-pillar-copy"><h2>How we work</h2><p>Every commission begins with listening, a clear visual plan and space for real moments to happen.</p></div></article>
             </section>
             <section className="story-narrative story-vision-full"><header><span>Our vision</span><h2>Ideas find their visual language.</h2></header><div>{visionParagraphs.map((paragraph) => <p key={paragraph}><EmphasizedCopy text={paragraph} /></p>)}</div></section>
             <section className="story-vision"><img src="/mindrythm-logomark.png" alt="Mindrythm logomark" /><div><span>Our vision</span><h2>Ideas find their visual language.</h2><p>“<EmphasizedCopy text={visionParagraphs[3]} />”</p></div></section>
@@ -249,13 +284,14 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
               </div></div>
             </section>
             <form className="contact-page-form" id="enquiry" onSubmit={sendEnquiry}>
+              <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" hidden />
               <div className="form-field"><label htmlFor="contact-name">Full name *</label><input id="contact-name" name="name" required /></div>
               <div className="form-field"><label htmlFor="contact-phone">Phone number *</label><input id="contact-phone" name="phone" type="tel" required /></div>
               <div className="form-field"><label htmlFor="contact-email">Email ID</label><input id="contact-email" name="email" type="email" /></div>
               <div className="form-field"><label htmlFor="contact-service">Service *</label><select id="contact-service" name="service" required defaultValue=""><option value="" disabled>Select a service</option><option>Property photography</option><option>Resort &amp; hospitality</option><option>Event photography</option><option>Event film</option><option>Wedding photography</option><option>Wedding or pre-wedding film</option><option>Other</option></select></div>
               <div className="form-field form-field-wide"><label htmlFor="contact-query">Your query *</label><textarea id="contact-query" name="query" rows={7} maxLength={1000} required /></div>
               <button type="submit" disabled={formState === "sending"}>{formState === "sending" ? "Sending…" : "Send enquiry"}</button>
-              <p className={`form-message ${formState}`}>{formState === "sent" ? "Thank you. Your enquiry has been sent to Admin@mindrythm.com." : formState === "error" ? "Your enquiry was saved, but the email could not be delivered. Please email Admin@mindrythm.com directly." : "Your message will be saved securely and emailed to Admin@mindrythm.com."}</p>
+              <p className={`form-message ${formState}`} aria-live="polite">{formState === "sent" ? "Thank you. Your enquiry has been sent to admin@mindrythm.com." : formState === "error" ? "Your enquiry could not be delivered. Please email admin@mindrythm.com directly." : "Your message will be sent securely to admin@mindrythm.com."}</p>
             </form>
             <div className="contact-page-map"><iframe title="Mindrythm location" loading="lazy" src={`https://www.google.com/maps?q=${encodeURIComponent(settings.address)}&output=embed`} /></div>
           </div>

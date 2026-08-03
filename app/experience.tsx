@@ -1,12 +1,7 @@
 "use client";
 
 import {
-  brandTaglines,
-  enquiryTaglines,
-  footerTaglines,
-  mainInstagramUrl,
-  teamIntroduction,
-  visionParagraphs,
+  mainInstagramUrl as defaultInstagramUrl,
   type ContentItem,
   type SiteContent,
 } from "@/lib/content";
@@ -14,21 +9,24 @@ import { BackToTop } from "@/app/back-to-top";
 import { EmphasizedCopy } from "@/app/emphasized-copy";
 import { Media } from "@/app/media";
 import { SocialIcon } from "@/app/social-icon";
+import { getServiceProjects } from "@/lib/services";
 import { type CSSProperties, type FormEvent, type MouseEvent as ReactMouseEvent, useEffect, useMemo, useRef, useState } from "react";
+
+const googleBusinessUrl = "https://www.google.com/search?kgmid=/g/11njpxjhwk&q=Mindrythm+Studios";
 
 const fallbackTestimonials: ContentItem[] = [
   {
     id: "review-one",
     kind: "testimonial",
     sortOrder: 10,
-    title: "The celebration still feels alive in every frame.",
-    eyebrow: "Wedding client",
-    body: "Mindrythm captured the people, traditions and quiet emotions without making the day feel staged. The photographs and film feel completely like us.",
+    title: "From Mindrythm Studios",
+    eyebrow: "Official profile description",
+    body: "Mindrythm Weddings is a cinematic wedding photography and filmmaking studio specializing in editorial, emotional, and timeless wedding storytelling. We create luxury wedding visuals that capture genuine moments with an artistic and cinematic approach.",
     mediaUrl: "",
     mediaAlt: "",
-    category: "Google review",
-    year: "5.0",
-    href: "#testimonials",
+    category: "Google Business Profile",
+    year: "",
+    href: googleBusinessUrl,
     accent: "approved",
   },
   {
@@ -47,13 +45,6 @@ const fallbackTestimonials: ContentItem[] = [
   },
 ];
 
-const serviceItems = [
-  { title: "Real-estate", copy: "Architecture, interiors and property campaigns shaped around light, proportion and a true sense of place.", mediaUrl: "/images/villa-pool.jpg", mediaAlt: "Modern villa and pool" },
-  { title: "Hospitality", copy: "Cinematic films and photography that let future guests feel the atmosphere before they arrive.", mediaUrl: "/videos/resort-pool.mp4", mediaAlt: "Resort pool in warm daylight" },
-  { title: "Wellness", copy: "Quiet, human imagery for retreats, rituals and brands built around restoration and care.", mediaUrl: "/images/green-object.jpg", mediaAlt: "Wellness still life" },
-  { title: "Wedding / Moments", copy: "Photography and films that preserve the emotion, rituals and unscripted moments that make a day your own.", mediaUrl: "/videos/wedding-film.mp4", mediaAlt: "A cinematic wedding moment" },
-] as const;
-
 const navigationItems = [
   { label: "Home", href: "#home", note: "Begin here" },
   { label: "Services", href: "/services", note: "What we create" },
@@ -66,14 +57,24 @@ const navigationItems = [
 
 export function Experience({ content }: { content: SiteContent }) {
   const { settings } = content;
+  const {brandTaglines, enquiryTaglines, teamIntroduction, visionParagraphs} = content.copy;
+  const serviceItems = content.services;
+  const mainInstagramUrl = settings.instagram || defaultInstagramUrl;
   const projects = useMemo(
     () => content.items.filter((item) => item.kind === "project").sort((a, b) => a.sortOrder - b.sortOrder),
     [content.items],
   );
   const heroItems = useMemo(() => {
-    const saved = content.items.filter((item) => item.kind === "hero").sort((a, b) => a.sortOrder - b.sortOrder);
-    return saved.length ? saved : projects.slice(0, 3);
-  }, [content.items, projects]);
+    const featuredIds = content.hero.featuredProjectIds;
+    const featured = featuredIds
+      .map((id) => projects.find((project) => project.id === id))
+      .filter((project): project is ContentItem => Boolean(project));
+    return [...featured, ...projects.filter((project) => !featuredIds.includes(project.id))].slice(0, 3);
+  }, [content.hero.featuredProjectIds, projects]);
+  const serviceCollections = useMemo(
+    () => serviceItems.map((service) => ({ ...service, media: getServiceProjects(projects, service.key, serviceItems) })),
+    [projects, serviceItems],
+  );
   const galleryItems = useMemo(() => {
     const saved = content.items.filter((item) => item.kind === "gallery").sort((a, b) => a.sortOrder - b.sortOrder);
     return saved.length ? saved : projects;
@@ -93,8 +94,8 @@ export function Experience({ content }: { content: SiteContent }) {
     const placeholders: ContentItem[] = [
       {
         id: "team-direction", kind: "team", sortOrder: 80, title: "Property & commercial", eyebrow: "Core team",
-        body: "Architecture, resort, real-estate and brand photography.", mediaUrl: "/images/filmmaker.jpg",
-        mediaAlt: "Mindrythm lead photographer", category: "Lead Photographer", year: "", href: mainInstagramUrl, accent: "forest",
+        body: "Architecture, resort, real-estate and brand photography.", mediaUrl: "/images/dance-study.jpg",
+        mediaAlt: "Mindrythm wellness and lifestyle photography", category: "Lead Photographer", year: "", href: mainInstagramUrl, accent: "forest",
       },
       {
         id: "team-image", kind: "team", sortOrder: 90, title: "Events & celebrations", eyebrow: "Core team",
@@ -108,7 +109,7 @@ export function Experience({ content }: { content: SiteContent }) {
       },
     ];
     return [...savedTeam, ...placeholders].slice(0, 3);
-  }, [projects, savedTeam, settings.linkedin]);
+  }, [mainInstagramUrl, projects, savedTeam, settings.linkedin]);
 
   const [loaded, setLoaded] = useState(false);
   const [loaderExiting, setLoaderExiting] = useState(false);
@@ -124,6 +125,11 @@ export function Experience({ content }: { content: SiteContent }) {
   const [enquiryState, setEnquiryState] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const heroRef = useRef<HTMLElement | null>(null);
   const scrollCinemaRef = useRef<HTMLElement | null>(null);
+  const enquiryStartedAtRef = useRef(0);
+
+  useEffect(() => {
+    enquiryStartedAtRef.current = Date.now();
+  }, []);
 
   const contactEmail = settings.contactEmail === "hello@mindrythm.studio" ? "Admin@mindrythm.com" : settings.contactEmail;
   const phonePrimary = settings.phonePrimary || "+91 90735 73878";
@@ -382,18 +388,20 @@ export function Experience({ content }: { content: SiteContent }) {
   async function submitEnquiry(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setEnquiryState("sending");
-    const form = new FormData(event.currentTarget);
-    const payload = Object.fromEntries(form.entries());
-    payload.query = `Service: ${String(payload.service || "General enquiry")}\n\n${String(payload.query || "")}`;
-    const response = await fetch("/api/enquiry", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    if (response.ok) {
+    const formElement = event.currentTarget;
+    try {
+      const form = new FormData(formElement);
+      const payload = {...Object.fromEntries(form.entries()), startedAt: enquiryStartedAtRef.current};
+      const response = await fetch("/api/enquiry", {
+        method: "POST",
+        headers: {"content-type": "application/json"},
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) throw new Error("Enquiry delivery failed");
       setEnquiryState("sent");
-      event.currentTarget.reset();
-    } else {
+      formElement.reset();
+      enquiryStartedAtRef.current = Date.now();
+    } catch {
       setEnquiryState("error");
     }
   }
@@ -504,8 +512,8 @@ export function Experience({ content }: { content: SiteContent }) {
               <div className="hero-title-row">
                 <h1 id="hero-title">
                   <a href="/work" aria-label="Explore our work">
-                    <span className="hero-title-line"><span>Every story</span></span>
-                    <span className="hero-title-line"><span>has a rhythm.</span></span>
+                    <span className="hero-title-line"><span>{content.hero.titleLineOne}</span></span>
+                    <span className="hero-title-line"><span>{content.hero.titleLineTwo}</span></span>
                   </a>
                 </h1>
               </div>
@@ -515,9 +523,7 @@ export function Experience({ content }: { content: SiteContent }) {
           <section className="vision-section" id="vision">
             <span className="section-index" data-reveal>Our vision</span>
             <p className="vision-statement" data-reveal>
-              <span>“Our vision is to create a place where ideas find their visual language.”</span>
-              <span>“Where artists find one another.”</span>
-              <span>“Where every project contributes to a body of work that is intentional and beautiful.”</span>
+              {content.hero.visionHighlights.map((line) => <span key={line}>“{line}”</span>)}
             </p>
             <details className="vision-note" data-reveal>
               <summary><span>Where we begin</span><i>Read the thought +</i></summary>
@@ -525,7 +531,7 @@ export function Experience({ content }: { content: SiteContent }) {
             </details>
             <div className="vision-bridge" data-reveal>
               <a href="/work" className="vision-bridge-frame">
-                <img src="/images/tropical-interior.jpg" alt="Refined resort interior photographed by Mindrythm" />
+                <img src="/images/tropical-interior.jpg" alt="Natural reception area photographed by Mindrythm" />
                 <span>Spaces / Hospitality</span>
               </a>
               <a href="/story" className="vision-bridge-centre">
@@ -535,7 +541,7 @@ export function Experience({ content }: { content: SiteContent }) {
                 <i>Our story</i>
               </a>
               <a href="/work" className="vision-bridge-frame vision-bridge-frame-last">
-                <img src="/images/wedding-palace-hero.png" alt="Elegant Indian wedding photographed by Mindrythm" />
+                <img src="/images/wedding-celebration.jpg" alt="Bengali wedding couple photographed by Mindrythm" />
                 <span>People / Celebrations</span>
               </a>
             </div>
@@ -551,13 +557,16 @@ export function Experience({ content }: { content: SiteContent }) {
                   </button>
                 ))}
               </div>
-              <a className="services-preview" href="/contact#enquiry" aria-label={`Enquire about ${serviceItems[activeService].title}`}>
-                {serviceItems.map((service, index) => {
-                  const item: ContentItem = { id: `service-${index}`, kind: "project", sortOrder: index, title: service.title, eyebrow: "Service", body: service.copy, mediaUrl: service.mediaUrl, mediaAlt: service.mediaAlt, category: service.title, year: "", href: "/contact", accent: "ink" };
-                  return <div className={activeService === index ? "active" : ""} key={service.title}><Media item={item} /></div>;
-                })}
-                <span>{serviceItems[activeService].title}<i>Explore service</i></span>
-              </a>
+              <div className="services-preview" aria-live="polite">
+                {serviceCollections.map((service, index) => (
+                  <div className={`service-preview-group ${activeService === index ? "active" : ""}`} data-count={service.media.length} key={service.key}>
+                    {service.media.map((item) => <span className="service-preview-media" key={`${service.key}-${item.id}`}><Media item={item} active={activeService === index} /></span>)}
+                  </div>
+                ))}
+                <a className="services-preview-link" href={`/work?service=${serviceItems[activeService].key}`}>
+                  <span>{serviceItems[activeService].title}</span><i>View service work</i>
+                </a>
+              </div>
             </div>
           </section>
 
@@ -634,12 +643,16 @@ export function Experience({ content }: { content: SiteContent }) {
             <div className="testimonials-heading" data-reveal>
               <span>Testimonials</span>
               <h2>Words from<br /><em>our collaborators.</em></h2>
-              <div className="testimonial-source"><span>Curated Google reviews</span><a href="https://www.google.com/search?q=Mindrythm+Kolkata+reviews" target="_blank" rel="noreferrer">Read on Google</a></div>
+              <div className="testimonial-source"><span>Mindrythm on Google</span><a href={googleBusinessUrl} target="_blank" rel="noreferrer">Read on Google</a></div>
             </div>
             <div className="testimonials-grid">
               {testimonials.map((item) => (
-                <a className="testimonial-card" href="https://www.google.com/search?q=Mindrythm+Kolkata+reviews" target="_blank" rel="noreferrer" data-reveal key={item.id}>
-                  <div className="review-stars" aria-label={`${item.year || "5.0"} out of 5 stars`}>★★★★★</div>
+                <a className="testimonial-card" href={item.href || googleBusinessUrl} target="_blank" rel="noreferrer" data-reveal key={item.id}>
+                  {item.category === "Google Business Profile" ? (
+                    <div className="review-stars" aria-label="Google Business Profile">Google Business Profile</div>
+                  ) : (
+                    <div className="review-stars" aria-label={`${item.year || "5.0"} out of 5 stars`}>★★★★★</div>
+                  )}
                   <blockquote>“{item.body}”</blockquote>
                   <div><strong>{item.title}</strong><span>{item.eyebrow || item.category}</span></div>
                 </a>
@@ -737,20 +750,21 @@ export function Experience({ content }: { content: SiteContent }) {
                 </div>
               </div>
               <form className="enquiry-form" onSubmit={submitEnquiry} data-reveal>
+                <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" hidden />
                 <div className="form-field"><label htmlFor="name">Full name *</label><input id="name" name="name" required autoComplete="name" /></div>
                 <div className="form-field"><label htmlFor="phone">Phone number *</label><input id="phone" name="phone" required type="tel" autoComplete="tel" /></div>
                 <div className="form-field"><label htmlFor="email">Email ID</label><input id="email" name="email" type="email" autoComplete="email" /></div>
                 <div className="form-field"><label htmlFor="service">Service *</label><select id="service" name="service" required defaultValue=""><option value="" disabled>Select a service</option><option>Property photography</option><option>Resort &amp; hospitality</option><option>Event photography</option><option>Event film</option><option>Wedding photography</option><option>Wedding or pre-wedding film</option><option>Other</option></select></div>
                 <div className="form-field form-field-wide"><label htmlFor="query">Your query *</label><textarea id="query" name="query" required maxLength={1000} rows={6} /></div>
                 <button type="submit" disabled={enquiryState === "sending"}>{enquiryState === "sending" ? "Sending…" : "Send enquiry"}</button>
-                <p className={`form-message ${enquiryState}`}>{enquiryState === "sent" ? "Thank you. Your enquiry has been sent to Admin@mindrythm.com." : enquiryState === "error" ? "Your enquiry was saved, but the email could not be delivered. Please email Admin@mindrythm.com directly." : "Your message will be saved securely and emailed to Admin@mindrythm.com."}</p>
+                <p className={`form-message ${enquiryState}`} aria-live="polite">{enquiryState === "sent" ? "Thank you. Your enquiry has been sent to admin@mindrythm.com." : enquiryState === "error" ? "Your enquiry could not be delivered. Please email admin@mindrythm.com directly." : "Your message will be sent securely to admin@mindrythm.com."}</p>
               </form>
             </div>
           </section>
         </main>
 
         <footer className="site-footer">
-          <div className="footer-cta"><span>{footerTaglines[1]}</span><a href="/contact">{footerTaglines[0]}</a></div>
+          <div className="footer-cta"><span>{content.footer.callout}</span><a href="/contact">{content.footer.actionLabel}</a></div>
           <div className="footer-grid">
             <div className="footer-brand"><img src="/mindrythm-logomark.png" alt="Mindrythm logomark" /><span>Mindrythm</span></div>
             <div className="footer-column"><span>Explore</span><a href="/services">Services</a><a href="/work">Our Work</a><a href="/gallery">Gallery</a><a href="/team">Our Team</a></div>
@@ -759,9 +773,9 @@ export function Experience({ content }: { content: SiteContent }) {
               <a href={settings.facebook} target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook"><SocialIcon name="facebook" /></a>
               <a href={settings.youtube} target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube"><SocialIcon name="youtube" /></a>
             </div></div>
-            <div className="footer-column"><span>Legal</span><a href="/privacy">Privacy Policy</a><a href="/terms">Terms &amp; Conditions</a><a href="/studio">Content Studio</a></div>
+            <div className="footer-column"><span>Legal</span><a href="/privacy">Privacy Policy</a><a href="/terms">Terms &amp; Conditions</a><a href={content.footer.studioUrl}>Content Studio</a></div>
           </div>
-          <div className="footer-meta"><span>© {new Date().getFullYear()} Mindrythm</span><span>Kolkata / Everywhere</span></div>
+          <div className="footer-meta"><span>© {new Date().getFullYear()} Mindrythm</span><span>{content.footer.locationLabel}</span></div>
         </footer>
         <BackToTop />
       </div>
@@ -811,7 +825,7 @@ function GalleryCollection({ title, items, socials, onOpen }: { title: string; i
           </button>
         ))}
         <div className="gallery-card gallery-note gallery-note-social" aria-label="Mindrythm social channels">
-          <a href={mainInstagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram"><SocialIcon name="instagram" /></a>
+          <a href={socials.instagram || defaultInstagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram"><SocialIcon name="instagram" /></a>
           <a href={socials.facebook} target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook"><SocialIcon name="facebook" /></a>
           <a href={socials.youtube} target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube"><SocialIcon name="youtube" /></a>
         </div>

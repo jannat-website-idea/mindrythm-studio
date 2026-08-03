@@ -1,21 +1,20 @@
 import Link from "next/link";
 import { BackToTop } from "@/app/back-to-top";
+import {getSiteContent} from "@/lib/site-content";
+import {Fragment} from "react";
 
-export default function TermsPage() {
+export const dynamic = "force-dynamic";
+
+export default async function TermsPage() {
+  const {termsConditions} = await getSiteContent();
+  const titleParts = termsConditions.title.split("&");
   return (
     <main className="legal-page">
       <Link className="legal-back" href="/">Mindrythm</Link>
-      <span>Legal / Terms &amp; Conditions</span>
-      <h1>Terms &amp;<br />Conditions</h1>
+      <span>{termsConditions.eyebrow}</span>
+      <h1>{titleParts.length > 1 ? <>{titleParts[0].trim()} &amp;<br />{titleParts.slice(1).join("&").trim()}</> : termsConditions.title}</h1>
       <section>
-        <h2>Website content</h2>
-        <p>This website presents the work, services and creative perspective of Mindrythm. Project information is provided for general reference and may change.</p>
-        <h2>Creative ownership</h2>
-        <p>Unless stated otherwise, visual work, text and brand materials on this website belong to Mindrythm or the credited collaborators and may not be reused without permission.</p>
-        <h2>Project enquiries</h2>
-        <p>Sending an enquiry does not create a service agreement. Scope, timing, fees and usage rights are confirmed separately in writing.</p>
-        <h2>Contact</h2>
-        <p>Questions about these terms can be sent to Admin@mindrythm.com.</p>
+        {termsConditions.sections.map((section) => <Fragment key={section.heading}><h2>{section.heading}</h2><p>{section.body}</p></Fragment>)}
       </section>
       <BackToTop />
     </main>

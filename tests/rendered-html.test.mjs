@@ -22,9 +22,10 @@ test("includes the complete client narratives and service scope", async () => {
   assert.match(content, /Mindrythm has never been about one person/);
 
   for (const service of ["Real-estate", "Hospitality", "Wellness", "Wedding / Moments"]) {
-    assert.match(experience, new RegExp(service.replace("/", "\\/")));
+    assert.match(content, new RegExp(service.replace("/", "\\/")));
   }
   assert.doesNotMatch(experience, /title: "Fashion"/);
+  assert.match(experience, /content\.services/);
   assert.match(editorial, /visionParagraphs\.map/);
   assert.match(editorial, /missionParagraphs\.map/);
 });
@@ -44,7 +45,7 @@ test("uses the revised loader, menu, social links and neutral design system", as
   assert.match(experience, /loader-reference-count/);
   assert.match(experience, /mindrythmSkipIntro/);
   assert.match(editorial, /mindrythmSkipIntro/);
-  assert.match(editorial, /href="\/#home"/);
+  assert.match(editorial, /href="\/"[^>]+onClick=\{returnToHero\}/);
   assert.match(experience, /menu-overlay/);
   assert.match(experience, /settings\.facebook/);
   assert.match(editorial, /settings\.youtube/);
@@ -57,4 +58,22 @@ test("uses the revised loader, menu, social links and neutral design system", as
   assert.match(css, /backdrop-filter: blur\(22px\)/);
   assert.match(css, /scroll-snap-type: x mandatory/);
   assert.match(css, /Luxury loader, measured typography and frictionless return navigation/);
+});
+
+test("keeps approved media available when CMS collections are incomplete", async () => {
+  const [sanityContent, seed] = await Promise.all([
+    source("lib/sanity/content.ts"),
+    source("sanity/seed/seed.ts"),
+  ]);
+
+  assert.match(sanityContent, /function collectionOrFallback/);
+  assert.match(sanityContent, /defaultContent\.items\.filter/);
+  for (const kind of ["project", "gallery", "team", "testimonial"]) {
+    assert.match(sanityContent, new RegExp(`collectionOrFallback\\([\\s\\S]*?"${kind}"`));
+  }
+  assert.match(seed, /createIfNotExists/);
+  assert.doesNotMatch(seed, /createOrReplace/);
+  assert.doesNotMatch(seed, /`project\.\$\{/);
+  assert.doesNotMatch(seed, /`service\.\$\{/);
+  assert.doesNotMatch(seed, /`teamMember\.\$\{/);
 });

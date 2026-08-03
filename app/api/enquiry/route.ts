@@ -1,59 +1,101 @@
-import { saveEnquiry, type Enquiry } from "@/db/content";
+import {isLikelySpam, takeEnquiryRateLimit, validateEnquiry} from "@/lib/enquiry";
+import {sendEnquiryEmail} from "@/lib/smtp";
 
 export const dynamic = "force-dynamic";
-const enquiryRecipient = process.env.ENQUIRY_TO_EMAIL?.trim() || "Admin@mindrythm.com";
+export const runtime = "nodejs";
+
+const jsonHeaders = {"cache-control": "no-store"};
 
 export async function POST(request: Request) {
-  const payload = (await request.json()) as Partial<Enquiry>;
-  const name = String(payload.name || "").trim().slice(0, 120);
-  const phone = String(payload.phone || "").trim().slice(0, 40);
-  const email = String(payload.email || "").trim().slice(0, 180);
-  const query = String(payload.query || "").trim().slice(0, 1000);
+  try {
+    if (!isAllowedOrigin(request)) {
+      return Response.json({error: "This request origin is not allowed."}, {status: 403, headers: jsonHeaders});
+    }
 
-  if (!name || !phone || !query) {
-    return Response.json({ error: "Name, phone and enquiry are required." }, { status: 400 });
-  }
+    const contentLength = Number(request.headers.get("content-length") || 0);
+    if (contentLength > 16 * 1024) {
+      return Response.json({error: "The enquiry is too large."}, {status: 413, headers: jsonHeaders});
+    }
+    if (!request.headers.get("content-type")?.toLowerCase().includes("application/json")) {
+      return Response.json({error: "The request must be JSON."}, {status: 415, headers: jsonHeaders});
+    }
 
-  const enquiry: Enquiry = {
-    id: crypto.randomUUID(),
-    name,
-    phone,
-    email,
-    query,
-    createdAt: new Date().toISOString(),
-  };
-  await saveEnquiry(enquiry);
+    let payload: unknown;
+    try {
+      payload = await request.json();
+    } catch {
+      return Response.json({error: "The enquiry could not be read."}, {status: 400, headers: jsonHeaders});
+    }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
+    const parsed = validateEnquiry(payload);
+    if (!parsed.success) {
+      return Response.json(
+        {error: "Please check the highlighted enquiry details.", fields: parsed.error.flatten().fieldErrors},
+        {status: 400, headers: jsonHeaders},
+      );
+    }
+
+    // Silently accept bot-filled honeypots and unrealistically fast submissions.
+    if (isLikelySpam(parsed.data)) {
+      return Response.json({ok: true}, {headers: jsonHeaders});
+    }
+
+    const rateLimit = takeEnquiryRateLimit(clientAddress(request));
+    if (!rateLimit.allowed) {
+      return Response.json(
+        {error: "Too many enquiries were submitted. Please wait and try again."},
+        {status: 429, headers: {...jsonHeaders, "retry-after": String(rateLimit.retryAfterSeconds)}},
+      );
+    }
+
+    await sendEnquiryEmail(parsed.data);
+    return Response.json({ok: true, emailSent: true}, {headers: jsonHeaders});
+  } catch (error) {
+    const details = error instanceof Error
+      ? {name: error.name, message: error.message, code: "code" in error ? String(error.code) : undefined}
+      : {name: "UnknownError", message: "Unknown SMTP error"};
+    console.error("Mindrythm enquiry delivery failed", details);
     return Response.json(
-      { ok: false, emailSent: false, saved: true, error: "Email delivery is not configured." },
-      { status: 503 },
+      {error: "The enquiry could not be delivered. Please email admin@mindrythm.com directly."},
+      {status: 503, headers: jsonHeaders},
     );
   }
+}
 
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      authorization: `Bearer ${apiKey}`,
-      "content-type": "application/json",
-      "Idempotency-Key": `mindrythm-enquiry-${enquiry.id}`,
-    },
-    body: JSON.stringify({
-      from: process.env.RESEND_FROM_EMAIL || "Mindrythm Website <onboarding@resend.dev>",
-      to: [enquiryRecipient],
-      reply_to: email || undefined,
-      subject: `Website enquiry from ${name}`,
-      text: `Name: ${name}\nPhone: ${phone}\nEmail: ${email || "Not provided"}\n\n${query}`,
-    }),
-  });
+function isAllowedOrigin(request: Request) {
+  const origin = request.headers.get("origin");
+  if (!origin) return process.env.NODE_ENV !== "production";
 
-  if (!response.ok) {
-    return Response.json(
-      { ok: false, emailSent: false, saved: true, error: "The enquiry was saved, but the notification email could not be delivered." },
-      { status: 502 },
-    );
+  const allowedOrigins = new Set(
+    [process.env.SITE_URL, ...(process.env.CONTACT_ALLOWED_ORIGINS || "").split(",")]
+      .map((value) => value?.trim())
+      .filter((value): value is string => Boolean(value))
+      .map((value) => {
+        try {
+          return new URL(value).origin;
+        } catch {
+          return "";
+        }
+      })
+      .filter(Boolean),
+  );
+
+  try {
+    allowedOrigins.add(new URL(request.url).origin);
+  } catch {
+    // The configured public origin remains authoritative behind a proxy.
   }
 
-  return Response.json({ ok: true, emailSent: true, saved: true });
+  if (process.env.NODE_ENV !== "production") {
+    allowedOrigins.add("http://localhost:3000");
+    allowedOrigins.add("http://127.0.0.1:3000");
+  }
+
+  return allowedOrigins.has(origin);
+}
+
+function clientAddress(request: Request) {
+  return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
+    || request.headers.get("x-real-ip")?.trim()
+    || "unknown";
 }

@@ -15,8 +15,8 @@
 
 # next.js
 /.next/
-/.vinext/
 /out/
+/.sanity/
 
 # misc
 .DS_Store
@@ -30,13 +30,17 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
-# vercel
+# legacy provider metadata (not part of Hostinger deployment)
 .vercel
+/.vinext/
+/.wrangler/
 
 # typescript
 next-env.d.ts
 /dist/
-/.wrangler/
 /outputs/
 /work/
+/opencode work/
+*.tsbuildinfo
