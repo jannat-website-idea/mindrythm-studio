@@ -5584,3 +5584,79 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
     min-height: 9rem;
   }
 }
+
+/* Compact both sides of the homepage enquiry into a premium composition. */
+.contact-section .contact-layout {
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+  align-items: start;
+  gap: clamp(2.5rem, 5vw, 6rem);
+  padding: clamp(3rem, 4vw, 4rem) 0;
+}
+
+.contact-section .contact-details {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  gap: clamp(1.25rem, 2vw, 2rem) clamp(1.5rem, 2.6vw, 2.75rem);
+}
+
+.contact-section .contact-details > div {
+  align-content: start;
+  min-width: 0;
+}
+
+.contact-section .contact-details .contact-socials {
+  display: flex !important;
+  flex-flow: row nowrap !important;
+  grid-template-columns: none !important;
+  align-items: center;
+  justify-content: flex-start;
+  gap: .7rem;
+}
+
+.contact-section .enquiry-form {
+  align-self: start;
+  align-content: start;
+  grid-auto-rows: max-content;
+  gap: 1rem 1.4rem;
+  padding: clamp(1.15rem, 1.6vw, 1.6rem);
+}
+
+.contact-section .enquiry-form .form-field,
+.contact-section .enquiry-form .form-field-wide,
+.contact-section .enquiry-form button,
+.contact-section .enquiry-form .form-message {
+  align-self: start;
+}
+
+.contact-section .enquiry-form .form-field textarea {
+  height: 6.75rem;
+  min-height: 6.75rem;
+}
+
+@media (max-width: 900px) {
+  .contact-section .contact-layout {
+    grid-template-columns: 1fr;
+    gap: 2.75rem;
+  }
+}
+
+@media (max-width: 680px) {
+  .contact-section .contact-layout {
+    gap: 2.5rem;
+    padding: 3rem 0;
+  }
+
+  .contact-section .contact-details {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .contact-section .enquiry-form {
+    gap: .9rem;
+  }
+
+  .contact-section .enquiry-form .form-field textarea {
+    height: 6.5rem;
+    min-height: 6.5rem;
+  }
+}
