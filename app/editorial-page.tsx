@@ -47,7 +47,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   const [formState, setFormState] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   function returnToHero() {
-    document.documentElement.dataset.mindrythmIntro = "seen";
+    window.sessionStorage.setItem("mindrythmSkipIntro", "1");
   }
 
   useEffect(() => {

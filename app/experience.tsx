@@ -131,6 +131,17 @@ export function Experience({ content }: { content: SiteContent }) {
   const address = settings.address || "250, Bansdroni, Rifle Club Playground, Kolkata - 700070";
 
   useEffect(() => {
+    const shouldSkipIntro = window.sessionStorage.getItem("mindrythmSkipIntro") === "1";
+    if (shouldSkipIntro) {
+      window.sessionStorage.removeItem("mindrythmSkipIntro");
+      const skipFrame = window.requestAnimationFrame(() => {
+        setLoaderProgress(100);
+        setLoaded(true);
+        setShowLoader(false);
+      });
+      return () => window.cancelAnimationFrame(skipFrame);
+    }
+
     const startedAt = performance.now();
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const minimumDuration = reducedMotion ? 520 : 5200;

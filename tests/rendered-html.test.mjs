@@ -42,6 +42,8 @@ test("uses the revised loader, menu, social links and neutral design system", as
   assert.match(experience, /details className="vision-note"/);
   assert.match(experience, /loaderProgress/);
   assert.match(experience, /loader-reference-count/);
+  assert.match(experience, /mindrythmSkipIntro/);
+  assert.match(editorial, /mindrythmSkipIntro/);
   assert.match(editorial, /href="\/#home"/);
   assert.match(experience, /menu-overlay/);
   assert.match(experience, /settings\.facebook/);
