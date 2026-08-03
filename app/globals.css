@@ -5099,6 +5099,98 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   }
 }
 
+/* Compact the full-gallery social links into the lower-right of their shared tile. */
+.gallery-page-social {
+  position: relative !important;
+  display: block !important;
+  min-height: clamp(7rem, 9vw, 9rem) !important;
+  padding: clamp(.9rem, 1.2vw, 1.2rem) !important;
+}
+
+.gallery-page-social > span {
+  position: absolute;
+  left: clamp(.9rem, 1.2vw, 1.2rem);
+  bottom: clamp(.9rem, 1.2vw, 1.2rem);
+}
+
+.gallery-page-social-links {
+  position: absolute;
+  right: clamp(.9rem, 1.2vw, 1.2rem);
+  bottom: clamp(.75rem, 1vw, 1rem);
+  display: flex !important;
+  align-items: center;
+  gap: .55rem;
+  width: auto !important;
+  height: auto !important;
+  min-width: 0;
+  min-height: 0;
+}
+
+.gallery-page-social-links a {
+  display: grid;
+  place-items: center;
+  width: 2.25rem !important;
+  height: 2.25rem !important;
+  min-width: 2.25rem !important;
+  min-height: 2.25rem !important;
+  max-width: 2.25rem !important;
+  max-height: 2.25rem !important;
+  aspect-ratio: 1 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transition: transform 400ms cubic-bezier(.2,.75,.25,1) !important;
+}
+
+.gallery-page-social-links a:hover {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: translateY(-4px) scale(1.06);
+}
+
+.gallery-page-social-links .social-icon-image {
+  width: 1.2rem !important;
+  height: 1.2rem !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  max-height: none !important;
+}
+
+.gallery-page-social-links .social-icon-youtube {
+  width: 1.45rem !important;
+  height: auto !important;
+}
+
+@media (max-width: 680px) {
+  .gallery-page-social {
+    min-height: 6.5rem !important;
+    padding: .8rem !important;
+  }
+
+  .gallery-page-social > span {
+    left: .8rem;
+    bottom: .8rem;
+  }
+
+  .gallery-page-social-links {
+    right: .8rem;
+    bottom: .7rem;
+    gap: .35rem;
+  }
+
+  .gallery-page-social-links a {
+    width: 2rem !important;
+    height: 2rem !important;
+    min-width: 2rem !important;
+    min-height: 2rem !important;
+    max-width: 2rem !important;
+    max-height: 2rem !important;
+  }
+}
+
 /* Keep the full-gallery social icons inside their shared archive frame. */
 .gallery-page-social {
   box-sizing: border-box;
