@@ -5519,3 +5519,73 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
     height: auto !important;
   }
 }
+
+/* Premium rounded-square social buttons, kept in one horizontal bento row. */
+.gallery-note-social {
+  grid-template-columns: repeat(3, clamp(3rem, 4vw, 3.7rem)) !important;
+  place-content: center !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: clamp(.55rem, .9vw, .85rem) !important;
+}
+
+.gallery-note-social a {
+  align-self: center !important;
+  justify-self: center !important;
+  width: clamp(3rem, 4vw, 3.7rem) !important;
+  height: clamp(3rem, 4vw, 3.7rem) !important;
+  min-width: clamp(3rem, 4vw, 3.7rem) !important;
+  min-height: clamp(3rem, 4vw, 3.7rem) !important;
+  aspect-ratio: 1 !important;
+  padding: clamp(.38rem, .55vw, .5rem) !important;
+  overflow: visible !important;
+  border: 1px solid rgba(23, 23, 20, .16) !important;
+  border-radius: clamp(.8rem, 1.05vw, 1rem) !important;
+  background: rgba(251, 250, 245, .94) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), 0 5px 14px rgba(23, 23, 20, .06) !important;
+  transition: transform .45s cubic-bezier(.22,1,.36,1), border-color .35s ease, box-shadow .45s ease !important;
+}
+
+.gallery-note-social a:hover {
+  border-color: rgba(23, 23, 20, .27) !important;
+  background: #fbfaf5 !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 12px 24px rgba(23, 23, 20, .12) !important;
+  transform: translateY(-5px) scale(1.035);
+}
+
+.gallery-note-social .social-icon-image {
+  width: min(2.15rem, 72%) !important;
+  height: min(2.15rem, 72%) !important;
+  border-radius: .48rem !important;
+}
+
+.gallery-note-social .social-icon-youtube {
+  width: min(2.45rem, 80%) !important;
+  height: auto !important;
+}
+
+@media (max-width: 680px) {
+  .gallery-note-social {
+    grid-template-columns: repeat(3, 2.75rem) !important;
+    gap: .45rem !important;
+  }
+
+  .gallery-note-social a {
+    width: 2.75rem !important;
+    height: 2.75rem !important;
+    min-width: 2.75rem !important;
+    min-height: 2.75rem !important;
+    padding: .35rem !important;
+    border-radius: .75rem !important;
+  }
+
+  .gallery-note-social .social-icon-image {
+    width: min(1.85rem, 72%) !important;
+    height: min(1.85rem, 72%) !important;
+  }
+
+  .gallery-note-social .social-icon-youtube {
+    width: min(2.15rem, 80%) !important;
+    height: auto !important;
+  }
+}
