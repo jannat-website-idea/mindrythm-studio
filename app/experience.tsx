@@ -607,11 +607,6 @@ export function Experience({ content }: { content: SiteContent }) {
               <h2>Spaces, people &amp;<br /><em>celebrations.</em></h2>
               <div className="gallery-heading-copy">
                 <p>An immersive archive of properties, portraits, celebrations and moving moments from every side of the studio.</p>
-                <div className="gallery-socials" aria-label="Mindrythm social links">
-                  <a href={mainInstagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram"><SocialIcon name="instagram" /></a>
-                  <a href={settings.facebook} target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook"><SocialIcon name="facebook" /></a>
-                  <a href={settings.youtube} target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube"><SocialIcon name="youtube" /></a>
-                </div>
               </div>
             </div>
             <div className="gallery-scroll" aria-label="Spaces and celebrations galleries">
