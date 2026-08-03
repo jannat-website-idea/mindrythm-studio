@@ -14,7 +14,7 @@ import { BackToTop } from "@/app/back-to-top";
 import { EmphasizedCopy } from "@/app/emphasized-copy";
 import { Media } from "@/app/media";
 import { SocialIcon } from "@/app/social-icon";
-import { type CSSProperties, type FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { type CSSProperties, type FormEvent, type MouseEvent as ReactMouseEvent, useEffect, useMemo, useRef, useState } from "react";
 
 const fallbackTestimonials: ContentItem[] = [
   {
@@ -129,6 +129,15 @@ export function Experience({ content }: { content: SiteContent }) {
   const phonePrimary = settings.phonePrimary || "+91 90735 73878";
   const phoneSecondary = settings.phoneSecondary || "+91 62923 33492";
   const address = settings.address || "250, Bansdroni, Rifle Club Playground, Kolkata - 700070";
+
+  function returnToHero(event: ReactMouseEvent<HTMLAnchorElement>) {
+    event.preventDefault();
+    setMenuOpen(false);
+    setActiveHash("#home");
+    setSectionNavVisible(false);
+    document.getElementById("home")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.history.replaceState(window.history.state, "", `${window.location.pathname}${window.location.search}`);
+  }
 
   useEffect(() => {
     const shouldSkipIntro = window.sessionStorage.getItem("mindrythmSkipIntro") === "1";
@@ -414,7 +423,7 @@ export function Experience({ content }: { content: SiteContent }) {
       </div>}
 
       <header className={`site-header home-header ${loaded ? "site-ready" : "site-loading"} ${sectionNavVisible ? "section-nav-visible" : ""} ${menuOpen ? "menu-active" : ""}`}>
-          <a className="wordmark home-wordmark" href="#home" aria-label="Mindrythm home">
+          <a className="wordmark home-wordmark" href="#home" aria-label="Mindrythm home" onClick={returnToHero}>
             <img src="/mindrythm-logomark.png" alt="" />
             <span>Mindrythm</span>
           </a>
@@ -424,9 +433,12 @@ export function Experience({ content }: { content: SiteContent }) {
                 className={activeHash === item.href ? "active" : ""}
                 href={item.href}
                 key={item.label}
-                onClick={() => {
+                onClick={(event) => {
+                  if (item.href === "#home") {
+                    returnToHero(event);
+                    return;
+                  }
                   setActiveHash(item.href);
-                  if (item.href === "#home") setSectionNavVisible(false);
                 }}
               >
                 {item.label}
@@ -459,7 +471,7 @@ export function Experience({ content }: { content: SiteContent }) {
             <div className="menu-overlay-heading"><span>Navigation</span><span>Studio directory</span></div>
             <nav aria-label="Main navigation">
               {navigationItems.map((item) => (
-                <a href={item.href} key={item.label} onClick={() => setMenuOpen(false)}>
+                <a href={item.href} key={item.label} onClick={(event) => item.href === "#home" ? returnToHero(event) : setMenuOpen(false)}>
                   <strong>{item.label}</strong>
                   <small>{item.note}</small>
                 </a>

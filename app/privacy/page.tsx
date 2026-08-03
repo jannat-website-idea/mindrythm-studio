@@ -4,7 +4,7 @@ import { BackToTop } from "@/app/back-to-top";
 export default function PrivacyPage() {
   return (
     <main className="legal-page">
-      <Link className="legal-back" href="/#home">Mindrythm</Link>
+      <Link className="legal-back" href="/">Mindrythm</Link>
       <span>Legal / Privacy</span>
       <h1>Privacy policy</h1>
       <section>

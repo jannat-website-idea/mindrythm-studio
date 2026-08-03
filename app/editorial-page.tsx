@@ -45,10 +45,19 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   const [activeTeamCardId, setActiveTeamCardId] = useState<string | null>(null);
   const [activeService, setActiveService] = useState(0);
   const [formState, setFormState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [navigationOpen, setNavigationOpen] = useState(false);
 
   function returnToHero() {
     window.sessionStorage.setItem("mindrythmSkipIntro", "1");
+    setNavigationOpen(false);
   }
+
+  useEffect(() => {
+    if (!navigationOpen) return;
+    const closeWithKeyboard = (event: KeyboardEvent) => event.key === "Escape" && setNavigationOpen(false);
+    window.addEventListener("keydown", closeWithKeyboard);
+    return () => window.removeEventListener("keydown", closeWithKeyboard);
+  }, [navigationOpen]);
 
   useEffect(() => {
     if (!activeTeamCardId) return;
@@ -96,16 +105,18 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   return (
     <div className="inner-shell">
       <header className="inner-header">
-        <Link className="wordmark" href="/#home" aria-label="Mindrythm home" onClick={returnToHero}><img src="/mindrythm-logomark.png" alt="" /><span>Mindrythm</span></Link>
-        <nav aria-label="Site navigation">
-          <Link href="/#home" onClick={returnToHero}>Home</Link>
-          <Link className={page === "services" ? "active" : ""} href="/services">Services</Link>
-          <a className={page === "work" ? "active" : ""} href="/work">Our Work</a>
-          <a className={page === "gallery" ? "active" : ""} href="/gallery">Gallery</a>
-          <a className={page === "team" ? "active" : ""} href="/team">Our Team</a>
-          <a className={page === "contact" ? "active" : ""} href="/contact">Enquire</a>
+        <Link className="wordmark" href="/" aria-label="Mindrythm home" onClick={returnToHero}><img src="/mindrythm-logomark.png" alt="" /><span>Mindrythm</span></Link>
+        <nav id="inner-navigation" className={navigationOpen ? "nav-open" : ""} aria-label="Site navigation">
+          <Link href="/" onClick={returnToHero}>Home</Link>
+          <Link className={page === "services" ? "active" : ""} href="/services" onClick={() => setNavigationOpen(false)}>Services</Link>
+          <Link className={page === "work" ? "active" : ""} href="/work" onClick={() => setNavigationOpen(false)}>Our Work</Link>
+          <Link className={page === "gallery" ? "active" : ""} href="/gallery" onClick={() => setNavigationOpen(false)}>Gallery</Link>
+          <Link className={page === "team" ? "active" : ""} href="/team" onClick={() => setNavigationOpen(false)}>Our Team</Link>
+          <Link className={page === "story" ? "active" : ""} href="/story" onClick={() => setNavigationOpen(false)}>Our Story</Link>
+          <Link className={page === "contact" ? "active" : ""} href="/contact" onClick={() => setNavigationOpen(false)}>Enquire</Link>
         </nav>
-        <Link className="inner-home" href="/#home" aria-label="Return to homepage" onClick={returnToHero}>Home</Link>
+        <Link className="inner-home" href="/" aria-label="Return to homepage" onClick={returnToHero}>Home</Link>
+        <button className="inner-menu-toggle" type="button" aria-controls="inner-navigation" aria-expanded={navigationOpen} onClick={() => setNavigationOpen((open) => !open)}>{navigationOpen ? "Close" : "Menu"}</button>
       </header>
 
       <main>
@@ -252,7 +263,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
       </main>
 
       <footer className="inner-footer">
-        <Link href="/#home" onClick={returnToHero}><img src="/mindrythm-logomark.png" alt="" />Mindrythm</Link>
+        <Link href="/" onClick={returnToHero}><img src="/mindrythm-logomark.png" alt="" />Mindrythm</Link>
         <span>© {new Date().getFullYear()}</span>
         <div className="inner-footer-socials" aria-label="Mindrythm social links">
           <a href={mainInstagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram"><SocialIcon name="instagram" /></a>

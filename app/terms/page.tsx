@@ -4,7 +4,7 @@ import { BackToTop } from "@/app/back-to-top";
 export default function TermsPage() {
   return (
     <main className="legal-page">
-      <Link className="legal-back" href="/#home">Mindrythm</Link>
+      <Link className="legal-back" href="/">Mindrythm</Link>
       <span>Legal / Terms &amp; Conditions</span>
       <h1>Terms &amp;<br />Conditions</h1>
       <section>
