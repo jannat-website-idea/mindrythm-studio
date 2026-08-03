@@ -4574,8 +4574,8 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
 .menu-overlay nav a,
 .menu-overlay.nav-open nav a {
   display: grid !important;
-  grid-template-columns: minmax(0,1fr) auto !important;
-  gap: 1rem !important;
+  grid-template-columns: minmax(0, 1fr) minmax(12.75rem, 33%) !important;
+  gap: 2rem !important;
   align-items: center !important;
   min-width: 0 !important;
   padding: 0 !important;
@@ -4602,7 +4602,7 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   color: var(--muted) !important;
   font-size: .56rem !important;
   letter-spacing: .07em !important;
-  text-align: right !important;
+  text-align: left !important;
   text-transform: uppercase !important;
   white-space: nowrap !important;
 }
@@ -4674,10 +4674,10 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   }
 
   .menu-overlay nav {
-    width: calc(120% + 2.25rem) !important;
+    width: calc(120% + 3.5rem) !important;
     margin-left: -20% !important;
     padding-top: .55rem !important;
-    transform: translateX(-2.25rem) !important;
+    transform: translateX(-3.5rem) !important;
   }
 }
 
