@@ -4726,12 +4726,12 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
 .menu-brand-feature > img {
   position: absolute !important;
   top: 50% !important;
-  left: 50% !important;
+  left: 45% !important;
   z-index: 0 !important;
   display: block !important;
-  width: min(34vw, 480px) !important;
+  width: min(32vw, 440px) !important;
   max-width: 80% !important;
-  max-height: 66vh !important;
+  max-height: 62vh !important;
   object-fit: contain !important;
   opacity: .22 !important;
   filter: invert(1) !important;
@@ -4741,7 +4741,7 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
 .menu-brand-feature > p {
   position: absolute !important;
   top: 50% !important;
-  left: 50% !important;
+  left: 45% !important;
   z-index: 1 !important;
   display: block !important;
   margin: 0 !important;
@@ -7211,104 +7211,6 @@ video {
   transform: rotate(-45deg) !important;
 }
 
-/* ==========================================================================
-   Menu Overlay Brand Partition Centering (Screenshot 2)
-   ========================================================================== */
-.menu-overlay-brand {
-  display: flex !important;
-  min-height: 100svh !important;
-  height: 100% !important;
-  flex-direction: column !important;
-  justify-content: space-between !important;
-  padding: clamp(3rem, 5vw, 4.5rem) clamp(2rem, 4vw, 4.5rem) clamp(2.5rem, 4vw, 3.5rem) !important;
-  color: var(--ivory) !important;
-  box-sizing: border-box !important;
-  position: relative !important;
-}
-
-.menu-brand-context {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0.25rem !important;
-  z-index: 5 !important;
-}
-
-.menu-brand-context > span {
-  font-size: 0.65rem !important;
-  font-weight: 500 !important;
-  letter-spacing: 0.12em !important;
-  text-transform: uppercase !important;
-  color: rgba(251, 250, 245, 0.85) !important;
-}
-
-.menu-brand-context > small {
-  font-size: 0.58rem !important;
-  letter-spacing: 0.1em !important;
-  text-transform: uppercase !important;
-  color: rgba(251, 250, 245, 0.45) !important;
-}
-
-.menu-brand-feature {
-  position: relative !important;
-  flex: 1 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 100% !important;
-  min-height: 0 !important;
-  margin: auto 0 !important;
-  pointer-events: none !important;
-}
-
-.menu-brand-feature > img,
-.menu-brand-logo-centered {
-  position: absolute !important;
-  top: 50% !important;
-  left: 50% !important;
-  z-index: 1 !important;
-  display: block !important;
-  width: min(32vw, 380px) !important;
-  max-width: 85% !important;
-  max-height: 52vh !important;
-  object-fit: contain !important;
-  opacity: 0.25 !important;
-  filter: invert(1) !important;
-  visibility: visible !important;
-  transform: translate(-50%, -50%) !important;
-  pointer-events: none !important;
-}
-
-.menu-brand-feature > p {
-  position: relative !important;
-  top: auto !important;
-  left: auto !important;
-  z-index: 2 !important;
-  display: block !important;
-  margin: 0 !important;
-  color: #ffffff !important;
-  font-family: inherit !important;
-  font-size: clamp(2.8rem, 4.5vw, 5.2rem) !important;
-  font-weight: 400 !important;
-  letter-spacing: -0.05em !important;
-  line-height: 1 !important;
-  text-align: center !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  white-space: nowrap !important;
-  transform: none !important;
-  pointer-events: none !important;
-}
-
-.menu-overlay-brand > small {
-  display: block !important;
-  font-size: 0.6rem !important;
-  font-weight: 500 !important;
-  letter-spacing: 0.12em !important;
-  text-transform: uppercase !important;
-  color: rgba(251, 250, 245, 0.65) !important;
-  z-index: 5 !important;
-}
 
 /* ==========================================================================
    Team Members Section — Clean, Independent, Responsive Layout
