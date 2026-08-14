@@ -4715,7 +4715,20 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   text-transform: uppercase;
 }
 .menu-brand-context > small { color: rgba(251,250,245,.38); }
-.menu-overlay-brand > small { align-self: end; color: rgba(251,250,245,.7); }
+.menu-overlay-brand > small {
+  position: relative !important;
+  z-index: 3 !important;
+  display: block !important;
+  align-self: flex-start !important;
+  margin-left: clamp(2rem, 7vw, 9rem) !important;
+  max-width: 280px !important;
+  color: rgba(251, 250, 245, 0.75) !important;
+  font-size: 0.58rem !important;
+  letter-spacing: 0.1em !important;
+  line-height: 1.5 !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+}
 .menu-brand-feature {
   position: relative !important;
   display: grid !important;
@@ -4726,12 +4739,12 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
 .menu-brand-feature > img {
   position: absolute !important;
   top: 50% !important;
-  left: 45% !important;
+  left: 30% !important;
   z-index: 0 !important;
   display: block !important;
-  width: min(32vw, 440px) !important;
-  max-width: 80% !important;
-  max-height: 62vh !important;
+  width: min(30vw, 400px) !important;
+  max-width: 78% !important;
+  max-height: 60vh !important;
   object-fit: contain !important;
   opacity: .22 !important;
   filter: invert(1) !important;
@@ -4741,7 +4754,7 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
 .menu-brand-feature > p {
   position: absolute !important;
   top: 50% !important;
-  left: 45% !important;
+  left: 30% !important;
   z-index: 1 !important;
   display: block !important;
   margin: 0 !important;
@@ -4764,8 +4777,8 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   min-width: 0 !important;
   height: 100svh !important;
   min-height: 0 !important;
-  padding: 10.2rem 3.8rem 2.7rem 1.35rem !important;
-  overflow: hidden !important;
+  padding: 10.2rem clamp(2.5rem, 4vw, 4rem) 2.7rem clamp(3.5rem, 5.5vw, 6rem) !important;
+  overflow: visible !important;
   color: var(--ink) !important;
   background: var(--ivory) !important;
 }
@@ -4789,8 +4802,8 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
 .menu-overlay nav a,
 .menu-overlay.nav-open nav a {
   display: grid !important;
-  grid-template-columns: minmax(0, 1fr) minmax(12.75rem, 33%) !important;
-  gap: 2rem !important;
+  grid-template-columns: minmax(0, 1fr) minmax(11rem, auto) !important;
+  gap: 1.5rem !important;
   align-items: center !important;
   min-width: 0 !important;
   padding: 0 !important;
@@ -4806,11 +4819,13 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   display: block !important;
   min-width: 0 !important;
   color: var(--ink) !important;
-  font-size: clamp(1.9rem, 3.05vw, 3.8rem) !important;
+  font-size: clamp(1.85rem, 2.9vw, 3.6rem) !important;
   font-weight: 300 !important;
-  letter-spacing: -.065em !important;
-  line-height: .86 !important;
+  letter-spacing: -.05em !important;
+  line-height: .88 !important;
   white-space: nowrap !important;
+  text-align: left !important;
+  overflow: visible !important;
 }
 .menu-overlay nav a > small {
   display: block !important;
