@@ -117,7 +117,7 @@ export async function getSanitySiteContent(options: {stega?: boolean} = {}): Pro
         enquiryTaglines: strings(raw.about?.enquiryTaglines, defaultContent.copy.enquiryTaglines),
         teamIntroduction: text(raw.about?.teamIntroduction, defaultContent.copy.teamIntroduction),
       },
-      services: services.length ? services : defaultContent.services,
+      services: services.length >= 10 ? services : defaultContent.services,
       footer: {
         callout: text(raw.footer?.callout, defaultContent.footer.callout),
         actionLabel: text(raw.footer?.actionLabel, defaultContent.footer.actionLabel),

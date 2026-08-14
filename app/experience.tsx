@@ -558,11 +558,24 @@ export function Experience({ content }: { content: SiteContent }) {
             <header data-reveal><span>Our services</span><h2>One studio.<br />Many visual languages.</h2><p>“{brandTaglines[0]}”</p></header>
             <div className="services-layout">
               <div className="services-list">
-                {serviceItems.map((service, index) => (
-                  <button type="button" aria-pressed={activeService === index} className={activeService === index ? "active" : ""} key={service.title} onMouseEnter={() => setActiveService(index)} onFocus={() => setActiveService(index)} onClick={() => setActiveService(index)}>
-                    <strong>{service.title}</strong><span>{service.copy}</span>
-                  </button>
-                ))}
+                {serviceItems.map((service, index) => {
+                  const num = String(index + 1).padStart(2, "0");
+                  return (
+                    <button
+                      type="button"
+                      aria-pressed={activeService === index}
+                      className={activeService === index ? "active" : ""}
+                      key={service.key || service.title}
+                      onMouseEnter={() => setActiveService(index)}
+                      onFocus={() => setActiveService(index)}
+                      onClick={() => setActiveService(index)}
+                    >
+                      <b>{num}</b>
+                      <strong>{service.title}</strong>
+                      <span>{service.copy}</span>
+                    </button>
+                  );
+                })}
               </div>
               <div className="services-preview" aria-live="polite">
                 {serviceCollections.map((service, index) => (
@@ -571,7 +584,7 @@ export function Experience({ content }: { content: SiteContent }) {
                   </div>
                 ))}
                 <a className="services-preview-link" href={`/work?service=${serviceItems[activeService]?.key || serviceItems[0]?.key}`}>
-                  <span>{serviceItems[activeService]?.title || serviceItems[0]?.title}</span><i>View service work</i>
+                  <span>{serviceItems[activeService]?.title || serviceItems[0]?.title}</span><i>View service work →</i>
                 </a>
               </div>
             </div>
