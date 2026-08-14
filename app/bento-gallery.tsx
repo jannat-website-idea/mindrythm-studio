@@ -1,6 +1,6 @@
 "use client";
 
-import { type ContentItem } from "@/lib/content";
+import { defaultItems, type ContentItem } from "@/lib/content";
 import { Media } from "@/app/media";
 
 export function BentoGalleryGrid({
@@ -13,15 +13,41 @@ export function BentoGalleryGrid({
   editorialEyebrow?: string;
   onOpen: (item: ContentItem) => void;
 }) {
-  const slot1 = items[0]; // Col 1 Top (Short - Minimal Elegance)
-  const slot2 = items[1]; // Col 2 Top (Tall - Soft Details)
-  const slot3 = items[2]; // Col 3 Top (Short - Hand-painted Murals)
-  const slot4 = items[3]; // Col 1 Bottom (Tall - Wellness Redefined)
-  const slot5 = items[4]; // Col 3 Bottom (Tall - Minimal Living)
-  const slot6 = items[5]; // Col 4 Bottom (Short - Warm Natural Interiors)
-  const slot7 = items[6]; // Col 2 Bottom (Short - Arambol)
+  const isCelebrations = editorialText.toUpperCase().includes("WEDDING") || editorialText.toUpperCase().includes("CELEBRATION");
+  
+  const fallbackSpaces = defaultItems.filter(
+    (i) => i.kind === "gallery" && i.category?.toLowerCase() === "spaces"
+  );
+  const fallbackCelebrations = defaultItems.filter(
+    (i) => i.kind === "gallery" && i.category?.toLowerCase() === "celebrations"
+  );
+  const fallbackPool = isCelebrations
+    ? (fallbackCelebrations.length ? fallbackCelebrations : defaultItems)
+    : (fallbackSpaces.length ? fallbackSpaces : defaultItems);
 
-  const extraMedia = items.slice(7);
+  // Guarantee at least 7 filled slots for the primary bento
+  const pool = items.length ? items : fallbackPool;
+  const displayItems = [...pool];
+  let fallbackIndex = 0;
+  while (displayItems.length < 7 && fallbackPool.length > 0) {
+    const candidate = fallbackPool[fallbackIndex % fallbackPool.length];
+    if (!displayItems.some((d) => d.id === candidate.id)) {
+      displayItems.push(candidate);
+    } else {
+      displayItems.push({ ...candidate, id: `${candidate.id}-fallback-${displayItems.length}` });
+    }
+    fallbackIndex++;
+  }
+
+  const slot1 = displayItems[0]; // Col 1 Top (Short - Minimal Elegance)
+  const slot2 = displayItems[1]; // Col 2 Top (Tall - Soft Details)
+  const slot3 = displayItems[2]; // Col 3 Top (Short - Hand-painted Murals)
+  const slot4 = displayItems[3]; // Col 1 Bottom (Tall - Wellness Redefined)
+  const slot5 = displayItems[4]; // Col 3 Bottom (Tall - Minimal Living)
+  const slot6 = displayItems[5]; // Col 4 Bottom (Short - Warm Natural Interiors)
+  const slot7 = displayItems[6]; // Col 2 Bottom (Short - Arambol)
+
+  const extraMedia = displayItems.slice(7);
   const additionalGroups: ContentItem[][] = [];
   for (let i = 0; i < extraMedia.length; i += 8) {
     additionalGroups.push(extraMedia.slice(i, i + 8));
@@ -30,7 +56,7 @@ export function BentoGalleryGrid({
   return (
     <div className="bento-stream">
       {/* Primary Bento Board (100% exact match to reference screenshot) */}
-      <div className="bento-board" data-reveal>
+      <div className="bento-board">
         {/* Column 1: Short Top (Minimal Elegance) + Tall Bottom (Wellness Redefined) */}
         <div className="bento-col bento-col-a">
           {slot1 && (
@@ -137,7 +163,7 @@ export function BentoGalleryGrid({
 
       {/* Subsequent Bento Boards for extra media beyond 7 */}
       {additionalGroups.map((group, groupIdx) => (
-        <div className="bento-board bento-board-subsequent" key={`extra-group-${groupIdx + 2}`} data-reveal>
+        <div className="bento-board bento-board-subsequent" key={`extra-group-${groupIdx + 2}`}>
           <div className="bento-col bento-col-a">
             {group[0] && (
               <button type="button" className="bento-card bento-card-short" onClick={() => onOpen(group[0])}>
