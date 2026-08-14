@@ -75,6 +75,17 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   }, [activeTeamCardId]);
 
   useEffect(() => {
+    if (!selected) return;
+    const closeWithKeyboard = (event: KeyboardEvent) => event.key === "Escape" && setSelected(null);
+    document.body.classList.add("modal-open");
+    window.addEventListener("keydown", closeWithKeyboard);
+    return () => {
+      document.body.classList.remove("modal-open");
+      window.removeEventListener("keydown", closeWithKeyboard);
+    };
+  }, [selected]);
+
+  useEffect(() => {
     if (page !== "work") return;
     const requested = new URLSearchParams(window.location.search).get("service");
     // This mirrors the service encoded in the URL into the existing filter control.
@@ -312,9 +323,21 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
 
       {selected && (
         <div className="lightbox" role="dialog" aria-modal="true" aria-label={selected.title}>
-          <button type="button" onClick={() => setSelected(null)}>Close ×</button>
-          <div className="lightbox-image"><Media item={selected} /></div>
-          <div className="lightbox-copy"><span>{selected.category}</span><h2>{selected.title}</h2><p>{selected.body}</p>{selected.kind === "team" && <div><a href={selected.href || mainInstagramUrl}>Instagram</a><a href={settings.linkedin}>LinkedIn</a></div>}</div>
+          <button type="button" className="lightbox-close" onClick={() => setSelected(null)} aria-label="Close modal">Close ×</button>
+          <div className="lightbox-copy">
+            <span>{selected.category || selected.eyebrow} {selected.year ? `/ ${selected.year}` : ""}</span>
+            <h2>{selected.title}</h2>
+            <p>{selected.body}</p>
+            {selected.kind === "team" && (
+              <div className="lightbox-socials">
+                <a href={selected.href || mainInstagramUrl} target="_blank" rel="noreferrer">Instagram</a>
+                <a href={settings.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
+              </div>
+            )}
+          </div>
+          <div className="lightbox-image">
+            <Media item={selected} priority />
+          </div>
         </div>
       )}
     </div>

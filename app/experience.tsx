@@ -782,19 +782,26 @@ export function Experience({ content }: { content: SiteContent }) {
 
       {selectedItem && (
         <div className="project-modal" role="dialog" aria-modal="true" aria-label={selectedItem.title}>
-          <button type="button" className="modal-close" onClick={() => setSelectedItem(null)}>Close ×</button>
-          <div className="modal-media"><Media item={selectedItem} /></div>
+          <button type="button" className="modal-close" onClick={() => setSelectedItem(null)} aria-label="Close modal">Close ×</button>
           <div className="modal-copy">
-            <span>{selectedItem.eyebrow} {selectedItem.year && `/ ${selectedItem.year}`}</span>
+            <span>{selectedItem.category || selectedItem.eyebrow} {selectedItem.year ? `/ ${selectedItem.year}` : ""}</span>
             <h2>{selectedItem.title}</h2>
             <p>{selectedItem.body}</p>
-            {selectedItem.kind === "team" && <div className="modal-socials"><a href={selectedItem.href || mainInstagramUrl}>Instagram</a><a href={settings.linkedin}>LinkedIn</a></div>}
+            {selectedItem.kind === "team" && (
+              <div className="modal-socials">
+                <a href={selectedItem.href || mainInstagramUrl} target="_blank" rel="noreferrer">Instagram</a>
+                <a href={settings.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
+              </div>
+            )}
             {selectedItem.kind === "project" && (
               <div className="modal-related">
                 {galleryItems.slice(0, 3).map((item) => <div key={item.id}><Media item={item} /></div>)}
               </div>
             )}
             <div className="modal-footer"><span>{selectedItem.category}</span><span>Mindrythm</span></div>
+          </div>
+          <div className="modal-media">
+            <Media item={selectedItem} priority />
           </div>
         </div>
       )}
