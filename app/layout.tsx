@@ -45,10 +45,14 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     icons: {
       icon: [
+        {url: "/favicon.ico"},
         {url: "/favicon.svg", type: "image/svg+xml"},
+        {url: "/favicon-32x32.png", sizes: "32x32", type: "image/png"},
+        {url: "/favicon-16x16.png", sizes: "16x16", type: "image/png"},
         {url: "/mindrythm-logomark.png", type: "image/png"},
       ],
-      apple: [{url: "/mindrythm-logomark.png"}],
+      shortcut: ["/favicon.ico"],
+      apple: [{url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png"}],
     },
   };
 }
@@ -59,6 +63,9 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="color-scheme" content="light" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <style
           dangerouslySetInnerHTML={{
             __html: "html,body{background:#fbfaf5!important;color-scheme:light}",
