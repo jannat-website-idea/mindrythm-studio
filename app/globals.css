@@ -415,7 +415,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  padding: clamp(3.5rem, 5vw, 5.5rem) clamp(2.5rem, 4vw, 5.5rem) clamp(5.5rem, 7vw, 8rem) !important;
+  padding: clamp(0.75rem, 1.5vw, 1.5rem) clamp(0.75rem, 1.5vw, 1.5rem) clamp(2rem, 3.5vw, 3.5rem) !important;
   box-sizing: border-box !important;
   cursor: pointer !important;
 }
@@ -424,8 +424,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .lightbox-media-wrapper video {
   width: auto !important;
   height: auto !important;
-  max-width: 100% !important;
-  max-height: 100% !important;
+  max-width: 96vw !important;
+  max-height: 92vh !important;
   object-fit: contain !important;
   object-position: center !important;
   display: block !important;
