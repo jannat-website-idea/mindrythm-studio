@@ -315,29 +315,78 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
             item.eyebrow?.toLowerCase().includes("event")
           );
 
-          const finalSpaces = spacesItems.length ? spacesItems : galleryItems;
-          const finalCelebrations = celebrationsItems.length ? celebrationsItems : galleryItems.slice(3);
+          const fallbackSpaces = defaultItems.filter((i: ContentItem) =>
+            i.category?.toLowerCase().includes("space") || i.category?.toLowerCase().includes("retreat") || i.category?.toLowerCase().includes("interior")
+          );
+          const fallbackCelebrations = defaultItems.filter((i: ContentItem) =>
+            i.category?.toLowerCase().includes("wedding") || i.category?.toLowerCase().includes("event")
+          );
+
+          const finalSpaces: ContentItem[] = [];
+          for (let i = 0; i < 7; i++) {
+            finalSpaces.push(spacesItems[i] || fallbackSpaces[i % fallbackSpaces.length] || defaultItems[i % defaultItems.length]);
+          }
+
+          const finalCelebrations: ContentItem[] = [];
+          for (let i = 0; i < 7; i++) {
+            finalCelebrations.push(celebrationsItems[i] || fallbackCelebrations[i % fallbackCelebrations.length] || defaultItems[i % defaultItems.length]);
+          }
 
           return (
             <div className="gallery-page">
-              <div className="gallery-scroll" aria-label="Gallery archive">
-                <GalleryBoardBento
-                  title="Spaces"
-                  subtitle="Architecture, interiors & quiet sanctuaries"
-                  items={finalSpaces}
-                  socials={settings}
-                  onOpen={(item) => setSelected(item)}
-                  isCelebrations={false}
-                />
-                <GalleryBoardBento
-                  title="Celebrations"
-                  subtitle="Weddings, music & live moments"
-                  items={finalCelebrations}
-                  socials={settings}
-                  onOpen={(item) => setSelected(item)}
-                  isCelebrations={true}
-                />
-              </div>
+              {/* Section 1: SPACES */}
+              <section className="gallery-page-section" id="spaces">
+                <header>
+                  <h2>Spaces</h2>
+                  <p>Properties, architecture, interior light and quiet sanctuary environments.</p>
+                </header>
+                <div className="gallery-page-grid">
+                  {finalSpaces.map((item, index) => (
+                    <button
+                      type="button"
+                      className="gallery-page-card"
+                      key={`${item.id}-spaces-${index}`}
+                      onClick={() => setSelected(item)}
+                      aria-label={`Open ${item.title}`}
+                    >
+                      <Media item={item} />
+                      <span>{item.title}</span>
+                    </button>
+                  ))}
+                  <article className="gallery-page-feature">
+                    <span>Spaces &amp; Architecture</span>
+                    <p>Spaces, light, material and stories captured with intention.</p>
+                    <i>Mindrythm Archive</i>
+                  </article>
+                </div>
+              </section>
+
+              {/* Section 2: CELEBRATIONS */}
+              <section className="gallery-page-section" id="celebrations">
+                <header>
+                  <h2>Celebrations</h2>
+                  <p>Weddings, music, human gatherings and candid live moments captured cinematically.</p>
+                </header>
+                <div className="gallery-page-grid">
+                  {finalCelebrations.map((item, index) => (
+                    <button
+                      type="button"
+                      className="gallery-page-card"
+                      key={`${item.id}-celebrations-${index}`}
+                      onClick={() => setSelected(item)}
+                      aria-label={`Open ${item.title}`}
+                    >
+                      <Media item={item} />
+                      <span>{item.title}</span>
+                    </button>
+                  ))}
+                  <article className="gallery-page-feature">
+                    <span>Celebrations &amp; Rituals</span>
+                    <p>Weddings, music, human gatherings and candid live moments.</p>
+                    <i>Mindrythm Archive</i>
+                  </article>
+                </div>
+              </section>
             </div>
           );
         })()}
