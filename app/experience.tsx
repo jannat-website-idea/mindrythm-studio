@@ -508,60 +508,116 @@ export function Experience({ content }: { content: SiteContent }) {
               ))}
             </a>
             <div className="hero-overlay" />
-            <div className="hero-copy">
-              <div className="hero-title-group">
-                <span className="hero-eyebrow">Mindrythm studio / Visual practice</span>
-                <h1 className="hero-title" id="hero-title">
-                  <span>{content.hero.titleLineOne}</span>
-                  <em>{content.hero.titleLineTwo}</em>
+            <div className="hero-content">
+              <div className="hero-title-row">
+                <h1 id="hero-title">
+                  <a href="/work" aria-label="Explore our work">
+                    <span className="hero-title-line"><span>{content.hero.titleLineOne}</span></span>
+                    <span className="hero-title-line"><span>{content.hero.titleLineTwo}</span></span>
+                  </a>
                 </h1>
               </div>
-              <div className="hero-body">
-                <p>{content.settings.description}</p>
-                <div className="hero-actions">
-                  <a className="button button-solid" href="#projects">Explore work</a>
-                  <a className="button button-outline" href="/contact">Begin a brief</a>
-                </div>
-              </div>
             </div>
           </section>
 
-          <section className="vision-strip" aria-label="Studio vision">
-            <div className="vision-strip-marquee">
-              <div className="vision-strip-track">
-                {content.hero.visionHighlights.map((highlight, index) => (
-                  <span key={`${highlight}-${index}`}>{highlight}</span>
+          <section className="vision-section" id="vision">
+            <span className="section-index" data-reveal>Our vision</span>
+            <p className="vision-statement" data-reveal>
+              {content.hero.visionHighlights.map((line) => <span key={line}>“{line}”</span>)}
+            </p>
+            <details className="vision-note" data-reveal>
+              <summary><span>Where we begin</span><i>Read the thought +</i></summary>
+              <p>{visionParagraphs[0]}</p>
+            </details>
+            <div className="vision-bridge" data-reveal>
+              <a href="/work" className="vision-bridge-frame">
+                <img src="/images/tropical-interior.jpg" alt="Natural reception area photographed by Mindrythm" />
+                <span>Spaces / Hospitality</span>
+              </a>
+              <a href="/story" className="vision-bridge-centre">
+                <img src="/mindrythm-logomark.png" alt="" />
+                <span>One studio</span>
+                <strong>Many ways of seeing.</strong>
+                <i>Our story</i>
+              </a>
+              <a href="/work" className="vision-bridge-frame vision-bridge-frame-last">
+                <img src="/images/wedding-celebration.jpg" alt="Bengali wedding couple photographed by Mindrythm" />
+                <span>People / Celebrations</span>
+              </a>
+            </div>
+          </section>
+
+          <section className="services-experience" id="services" aria-label="Mindrythm services">
+            <header data-reveal><span>Our services</span><h2>One studio.<br />Many visual languages.</h2><p>“{brandTaglines[0]}”</p></header>
+            <div className="services-layout">
+              <div className="services-list">
+                {serviceItems.map((service, index) => (
+                  <button type="button" aria-pressed={activeService === index} className={activeService === index ? "active" : ""} key={service.title} onMouseEnter={() => setActiveService(index)} onFocus={() => setActiveService(index)} onClick={() => setActiveService(index)}>
+                    <strong>{service.title}</strong><span>{service.copy}</span>
+                  </button>
                 ))}
               </div>
-            </div>
-          </section>
-
-          <section className="projects-bento" id="projects">
-            <header className="projects-heading" data-reveal>
-              <span>Selected commissions</span>
-              <h2>Built around space, people and light.</h2>
-            </header>
-            <div className="projects-grid">
-              {projects.slice(0, 6).map((project, index) => (
-                <ProjectCard key={project.id} project={project} index={index} onOpen={() => setSelectedItem(project)} />
-              ))}
-            </div>
-          </section>
-
-          <section className="services-section" id="services">
-            <div className="services-heading" data-reveal>
-              <span>Services</span>
-              <h2>Visual craft for spaces, hospitality &amp; brands.</h2>
-            </div>
-            <div className="services-grid">
-              {serviceItems.map((service, index) => (
-                <a className="service-card" href={`/services`} key={service.key || index} data-reveal>
-                  <span>0{index + 1}</span>
-                  <h3>{service.title}</h3>
-                  <p>{service.copy}</p>
-                  <i>Explore service</i>
+              <div className="services-preview" aria-live="polite">
+                {serviceCollections.map((service, index) => (
+                  <div className={`service-preview-group ${activeService === index ? "active" : ""}`} data-count={service.media.length} key={service.key}>
+                    {service.media.map((item) => <span className="service-preview-media" key={`${service.key}-${item.id}`}><Media item={item} active={activeService === index} /></span>)}
+                  </div>
+                ))}
+                <a className="services-preview-link" href={`/work?service=${serviceItems[activeService]?.key || serviceItems[0]?.key}`}>
+                  <span>{serviceItems[activeService]?.title || serviceItems[0]?.title}</span><i>View service work</i>
                 </a>
-              ))}
+              </div>
+            </div>
+          </section>
+
+          <aside className="story-whisper" data-reveal><span>Our point of view</span><p>“{brandTaglines[1]}”</p></aside>
+
+          <section className="scroll-cinema" ref={scrollCinemaRef} aria-label="A scroll-led view of Mindrythm">
+            <div className="scroll-cinema-sticky">
+              <div className="scroll-cinema-top"><span>Scroll through the visual portfolio</span><span>Selected stories / 2026</span></div>
+              <div className="scroll-cinema-window">
+                <div className="scroll-cinema-track">
+                  {heroItems.slice(0, 3).map((item) => (
+                    <button type="button" className="scroll-cinema-panel" key={`scroll-${item.id}`} onClick={() => setSelectedItem(item)} aria-label={`Open ${item.title}`}>
+                      <Media item={item} />
+                      <div><span>{item.category || "Selected frame"}</span><h2>{item.title}</h2><p>{item.eyebrow}</p></div>
+                    </button>
+                  ))}
+                  <article className="scroll-cinema-panel scroll-cinema-statement">
+                    <span>Mindrythm / Places &amp; people</span>
+                    <h2>Stories that make time feel different.</h2>
+                    <p>“{brandTaglines[2]}”</p>
+                    <a href="/work">Explore all work</a>
+                  </article>
+                </div>
+              </div>
+              <div className="scroll-cinema-progress"><span /><i>Keep scrolling</i></div>
+            </div>
+          </section>
+
+          <section className="work-section" id="projects">
+            <div className="section-intro" data-reveal>
+              <span className="section-index">Our work</span>
+              <h2>Selected stories,<br /><em>across every service.</em></h2>
+              <p>“{brandTaglines[2]}”</p>
+            </div>
+            <div className="projects-bento">
+              {projects.slice(0, 6).map((project, index) => <ProjectCard key={project.id} project={project} index={index} onOpen={() => setSelectedItem(project)} />)}
+              <a className="project-tile project-statement" href="/story" data-reveal>
+                <span>Our approach</span>
+                <blockquote>“Every place and every celebration begins with a feeling. Our work is to make it visible.”</blockquote>
+                <div className="pulse-glyph" aria-hidden="true"><i /><i /><i /></div>
+              </a>
+              <a className="project-tile project-process" href="#process" data-reveal>
+                <span>Method / People first</span>
+                <h3><span>Listen.</span><em>Frame.</em><span>Remember.</span></h3>
+                <p>Clear planning, deliberate composition and a calm production process.</p>
+              </a>
+              <a className="project-tile project-metric" href="/work" data-reveal>
+                <div className="metric-ring"><strong>∞</strong></div>
+                <h3>One studio.<br />Many stories.</h3>
+                <p>Property / Events / Weddings / Film</p>
+              </a>
             </div>
           </section>
 

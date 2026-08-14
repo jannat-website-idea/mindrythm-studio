@@ -169,48 +169,28 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
         </section>
 
         {page === "services" && (
-          <div className="services-page">
-            <section className="services-overview-grid">
-              {serviceItems.map((service, index) => (
-                <article className="services-card" key={service.key || index}>
-                  <span>0{index + 1}</span>
-                  <h2>{service.title}</h2>
-                  <p>{service.copy}</p>
-                </article>
-              ))}
-            </section>
-            <section className="services-detail-section">
-              <div className="services-tabs" role="tablist" aria-label="Services detail">
-                {serviceCollections.map((service, index) => (
-                  <button
-                    type="button"
-                    role="tab"
-                    aria-selected={activeService === index}
-                    className={`services-tab ${activeService === index ? "active" : ""}`}
-                    key={service.key}
-                    onClick={() => setActiveService(index)}
-                  >
-                    <span>0{index + 1}</span>
-                    <b>{service.title}</b>
+          <section className="services-experience services-page-direct" id="services" aria-label="Mindrythm services">
+            <header><span>Mindrythm / Services</span><h1>Services</h1><p>One studio. Many visual languages.</p></header>
+            <div className="services-layout">
+              <div className="services-list">
+                {serviceItems.map((service, index) => (
+                  <button type="button" aria-pressed={activeService === index} className={activeService === index ? "active" : ""} key={service.title} onMouseEnter={() => setActiveService(index)} onFocus={() => setActiveService(index)} onClick={() => setActiveService(index)}>
+                    <strong>{service.title}</strong><span>{service.copy}</span><i>+</i>
                   </button>
                 ))}
               </div>
-              <div className="services-tab-panel">
-                <header>
-                  <span>{activeServiceItem.title}</span>
-                  <p>{activeServiceItem.copy}</p>
-                </header>
-                <div className="services-tab-media">
-                  {activeServiceMedia.map((item) => (
-                    <div key={`${activeServiceItem.key}-${item.id}`}>
-                      <Media item={item} />
-                      <span>{item.title}</span>
-                    </div>
-                  ))}
-                </div>
+              <div className="services-preview" aria-live="polite">
+                {serviceCollections.map((service, index) => (
+                  <div className={`service-preview-group ${activeService === index ? "active" : ""}`} data-count={service.media.length} key={service.key}>
+                    {service.media.map((item) => <span className="service-preview-media" key={`${service.key}-${item.id}`}><Media item={item} active={activeService === index} /></span>)}
+                  </div>
+                ))}
+                <Link className="services-preview-link" href={`/work?service=${serviceItems[activeService]?.key || serviceItems[0]?.key}`}>
+                  <span>{serviceItems[activeService]?.title || serviceItems[0]?.title}</span><i>View service work</i>
+                </Link>
               </div>
-            </section>
-          </div>
+            </div>
+          </section>
         )}
 
         {page === "work" && (
