@@ -12,6 +12,7 @@ import { EmphasizedCopy } from "@/app/emphasized-copy";
 import { ImmersiveLightbox } from "@/app/immersive-lightbox";
 import { Media } from "@/app/media";
 import { SocialIcon } from "@/app/social-icon";
+import { TeamMemberCard } from "@/app/team-member-card";
 import { getServiceProjects } from "@/lib/services";
 import { type CSSProperties, type FormEvent, type MouseEvent as ReactMouseEvent, useEffect, useMemo, useRef, useState } from "react";
 
@@ -804,41 +805,16 @@ export function Experience({ content }: { content: SiteContent }) {
               <div className="team-heading-action"><p>{teamIntroduction}</p><a href="/team">Meet our team</a></div>
             </div>
             <div className="team-grid" aria-label="Meet the Mindrythm team">
-              {team.map((member, index) => {
-                const isActive = activeTeamCardId === member.id;
-                return (
-                  <article
-                    className={`team-card ${isActive ? "active" : ""}`}
-                    key={`${member.id}-${index}`}
-                    onClick={() => setActiveTeamCardId((current) => (current === member.id ? null : member.id))}
-                  >
-                    <button
-                      type="button"
-                      className="team-card-trigger"
-                      aria-expanded={isActive}
-                      aria-controls={`team-card-copy-${index}`}
-                      aria-label={`View description for ${member.title}`}
-                    >
-                      <Media item={member} />
-                    </button>
-                    <div
-                      className={`team-card-copy ${isActive ? "open" : ""}`}
-                      id={`team-card-copy-${index}`}
-                    >
-                      <span>{member.category || member.eyebrow}</span>
-                      <h3>{member.title}</h3>
-                      {member.body && <p>{member.body}</p>}
-                      <a
-                        href="/team"
-                        className="team-card-more-btn"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        Explore team profile →
-                      </a>
-                    </div>
-                  </article>
-                );
-              })}
+              {team.map((member) => (
+                <TeamMemberCard
+                  key={member.id}
+                  member={member}
+                  isActive={activeTeamCardId === member.id}
+                  onToggle={() => setActiveTeamCardId((current) => (current === member.id ? null : member.id))}
+                  onClose={() => setActiveTeamCardId(null)}
+                  showExploreLink={true}
+                />
+              ))}
             </div>
             <a className="team-page-link" href="/team"><span>People behind the images</span><strong>Explore the full team</strong></a>
           </section>

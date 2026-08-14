@@ -47,13 +47,13 @@ export const siteContentQuery = `{
     href
   },
   "team": *[_type == "teamMember"] | order(sortOrder asc){
-    "id": cmsId.current,
+    "id": coalesce(cmsId.current, _id),
     sortOrder,
     title,
     "eyebrow": role,
     "body": bio,
     "mediaUrl": coalesce(media.image.asset->url, media.video.asset->url, media.externalUrl),
-    "mediaAlt": media.alt,
+    "mediaAlt": coalesce(media.alt, title),
     "category": role,
     "href": profileUrl
   },

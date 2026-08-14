@@ -12,6 +12,7 @@ import { EmphasizedCopy } from "@/app/emphasized-copy";
 import { ImmersiveLightbox } from "@/app/immersive-lightbox";
 import { Media } from "@/app/media";
 import { SocialIcon } from "@/app/social-icon";
+import { TeamMemberCard } from "@/app/team-member-card";
 import { getProjectService, getServiceProjects, isServiceKey, type ServiceKey } from "@/lib/services";
 import { type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
@@ -33,8 +34,12 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
     const fallback = [...projects.slice(offset), ...projects.slice(0, offset)].slice(0, 3);
     return { ...service, media: fallback.length ? fallback : projects.slice(0, 3) };
   });
-  const savedTeam = content.items.filter((item) => item.kind === "team").sort((a, b) => a.sortOrder - b.sortOrder);
-  const team = savedTeam.length ? savedTeam : content.items.filter((item) => item.kind === "team");
+  const team = useMemo(() => {
+    const activeTeam = content.items
+      .filter((item) => item.kind === "team")
+      .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
+    return activeTeam.length ? activeTeam : defaultItems.filter((item) => item.kind === "team");
+  }, [content.items]);
   const [selected, setSelected] = useState<ContentItem | null>(null);
   const [activeTeamCardId, setActiveTeamCardId] = useState<string | null>(null);
   const [activeService, setActiveService] = useState(0);
@@ -364,18 +369,16 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
         {page === "team" && (
           <>
             <section className="team-introduction"><span>Built together</span><p>{teamIntroduction}</p></section>
-            <section className="team-page-grid">
-              {team.map((member, index) => (
-                <article className={`team-page-card ${activeTeamCardId === member.id ? "active" : ""}`} key={`${member.id}-${index}`} onClick={() => setActiveTeamCardId((current) => current === member.id ? null : member.id)}>
-                  <button type="button" className="team-page-card-trigger" aria-expanded={activeTeamCardId === member.id} aria-controls={`team-page-overlay-${index}`}>
-                    <Media item={member} />
-                    <span className="sr-only">Show information about {member.title}</span>
-                  </button>
-                  <div className="team-page-card-overlay" id={`team-page-overlay-${index}`}>
-                    <span>{member.category}</span><h2>{member.title}</h2><p>{member.body}</p>
-                    <button type="button" onClick={(event) => { event.stopPropagation(); setActiveTeamCardId(null); setSelected(member); }}>View profile</button>
-                  </div>
-                </article>
+            <section className="team-page-grid" aria-label="Mindrythm team members">
+              {team.map((member) => (
+                <TeamMemberCard
+                  key={member.id}
+                  member={member}
+                  isActive={activeTeamCardId === member.id}
+                  onToggle={() => setActiveTeamCardId((current) => (current === member.id ? null : member.id))}
+                  onClose={() => setActiveTeamCardId(null)}
+                  showExploreLink={false}
+                />
               ))}
             </section>
             <section className="team-page-note"><span>Built around the story</span><h2>A focused core.<br /><em>The right specialists.</em></h2><p>Each commission brings together the precise mix of property, event or wedding photographers, filmmakers, aerial operators and editors it needs.</p><a href="/contact">Work with the team</a></section>

@@ -7311,125 +7311,171 @@ video {
 }
 
 /* ==========================================================================
-   Curved Team Images & Multi-Member Responsive Layout
+   Team Members Section — Clean, Independent, Responsive Layout
    ========================================================================== */
 
-/* Homepage Team Section (Clean, Independent Cards with Click-to-Reveal Bio) */
 .team-section {
   position: relative !important;
-  padding: clamp(4.5rem, 6vw, 7.5rem) clamp(1.5rem, 4vw, 4.5rem) clamp(3.5rem, 4vw, 5.5rem) !important;
+  padding: clamp(4.5rem, 6.5vw, 8rem) clamp(1.5rem, 4vw, 4.5rem) clamp(4rem, 5vw, 6rem) !important;
   background: var(--sage) !important;
   box-sizing: border-box !important;
 }
 
-.team-grid {
+/* 4 columns on desktop, wrapping automatically into multiple rows */
+.team-grid,
+.team-page-grid {
   position: relative !important;
   z-index: 2 !important;
   display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)) !important;
-  gap: clamp(1rem, 1.6vw, 1.75rem) !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: clamp(1.25rem, 2vw, 2rem) !important;
   padding-top: clamp(1.5rem, 2.5vw, 2.5rem) !important;
   width: 100% !important;
   box-sizing: border-box !important;
   overflow: visible !important;
 }
 
-.team-card {
+.team-page-grid {
+  padding: 0 clamp(1.5rem, 4vw, 4.5rem) clamp(4rem, 6vw, 7rem) !important;
+}
+
+/* Individual, standalone team card with rounded corners and clean spacing */
+.team-member-card {
   position: relative !important;
   min-width: 0 !important;
   width: 100% !important;
-  height: clamp(340px, 30vw, 440px) !important;
-  min-height: 320px !important;
-  border-radius: 14px !important;
+  height: clamp(380px, 32vw, 480px) !important;
+  aspect-ratio: 3 / 4 !important;
+  border-radius: 16px !important;
   overflow: hidden !important;
   padding: 0 !important;
-  border: 0 !important;
-  background: var(--olive-dark) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background: #141714 !important;
   text-align: left !important;
   cursor: pointer !important;
   box-sizing: border-box !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.09) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12) !important;
   flex: none !important;
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease !important;
 }
 
-.team-card:hover {
+.team-member-card:hover {
   transform: translateY(-4px) !important;
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.14) !important;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18) !important;
 }
 
-.team-card-trigger {
+.team-member-photo-btn {
   position: absolute !important;
   inset: 0 !important;
   width: 100% !important;
   height: 100% !important;
   padding: 0 !important;
   border: 0 !important;
-  border-radius: 14px !important;
+  border-radius: 16px !important;
   overflow: hidden !important;
   background: transparent !important;
   cursor: pointer !important;
   z-index: 1 !important;
 }
 
-.team-card img,
-.team-card video,
-.team-card-trigger img,
-.team-card-trigger video {
+.team-member-media-frame {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+}
+
+.team-member-media-frame img,
+.team-member-media-frame video {
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
   object-position: center 20% !important;
-  border-radius: 14px !important;
+  border-radius: 16px !important;
   display: block !important;
-  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), filter 0.5s ease !important;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), filter 0.4s ease !important;
 }
 
-.team-card.active img,
-.team-card.active video {
-  filter: brightness(0.4) blur(2px) !important;
+.team-member-card:hover .team-member-media-frame img,
+.team-member-card:hover .team-member-media-frame video {
+  transform: scale(1.03) !important;
+}
+
+.team-member-card.active .team-member-media-frame img,
+.team-member-card.active .team-member-media-frame video {
+  filter: brightness(0.32) blur(2px) !important;
   transform: scale(1.05) !important;
 }
 
-/* Overlay description shown ONLY when clicked */
-.team-card-copy {
+/* Information Overlay (Visible ONLY on Click/Tap) */
+.team-member-overlay {
   position: absolute !important;
   inset: 0 !important;
-  z-index: 4 !important;
+  z-index: 5 !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: flex-end !important;
-  padding: 1.5rem !important;
+  padding: clamp(1.25rem, 2vw, 1.75rem) !important;
   box-sizing: border-box !important;
-  background: linear-gradient(180deg, rgba(14, 18, 15, 0.15) 0%, rgba(14, 18, 15, 0.92) 55%, rgba(14, 18, 15, 0.98) 100%) !important;
+  background: linear-gradient(180deg, rgba(14, 18, 15, 0.2) 0%, rgba(14, 18, 15, 0.92) 50%, rgba(14, 18, 15, 0.98) 100%) !important;
   color: #ffffff !important;
   opacity: 0 !important;
   visibility: hidden !important;
   pointer-events: none !important;
-  transform: translateY(12px) !important;
+  transform: translateY(14px) !important;
   transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.35s !important;
-  border-radius: 14px !important;
+  border-radius: 16px !important;
 }
 
-.team-card.active .team-card-copy,
-.team-card-copy.open {
+.team-member-card.active .team-member-overlay,
+.team-member-overlay.open {
   opacity: 1 !important;
   visibility: visible !important;
   pointer-events: auto !important;
   transform: translateY(0) !important;
 }
 
-.team-card-copy span {
-  font-size: 0.62rem !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.1em !important;
-  text-transform: uppercase !important;
-  color: rgba(255, 255, 255, 0.7) !important;
-  margin-bottom: 0.25rem !important;
+.team-member-close-btn {
+  position: absolute !important;
+  top: 1rem !important;
+  right: 1rem !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border: 0 !important;
+  color: #ffffff !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: background 0.2s ease, transform 0.2s ease !important;
 }
 
-.team-card-copy h3 {
-  margin: 0 0 0.5rem !important;
+.team-member-close-btn:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+  transform: scale(1.08) !important;
+}
+
+.team-member-info {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.team-member-role {
+  font-size: 0.65rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: rgba(255, 255, 255, 0.72) !important;
+  margin-bottom: 0.35rem !important;
+  display: block !important;
+}
+
+.team-member-name {
+  margin: 0 0 0.6rem !important;
   font-size: clamp(1.35rem, 1.8vw, 1.85rem) !important;
   font-weight: 500 !important;
   letter-spacing: -0.03em !important;
@@ -7438,11 +7484,11 @@ video {
   text-transform: capitalize !important;
 }
 
-.team-card-copy p {
-  margin: 0 0 1rem !important;
-  font-size: 0.8rem !important;
-  line-height: 1.5 !important;
-  color: rgba(255, 255, 255, 0.85) !important;
+.team-member-bio {
+  margin: 0 0 1.25rem !important;
+  font-size: 0.82rem !important;
+  line-height: 1.55 !important;
+  color: rgba(255, 255, 255, 0.88) !important;
   max-width: 100% !important;
   display: -webkit-box !important;
   -webkit-line-clamp: 4 !important;
@@ -7450,10 +7496,18 @@ video {
   overflow: hidden !important;
 }
 
-.team-card-more-btn {
+.team-member-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 1rem !important;
+  flex-wrap: wrap !important;
+}
+
+.team-member-link,
+.team-member-page-link {
   display: inline-flex !important;
   align-items: center !important;
-  gap: 0.4rem !important;
+  gap: 0.35rem !important;
   font-size: 0.68rem !important;
   font-weight: 600 !important;
   letter-spacing: 0.06em !important;
@@ -7465,63 +7519,31 @@ video {
   width: max-content !important;
 }
 
-.team-card-more-btn:hover {
-  opacity: 0.8 !important;
+.team-member-link:hover,
+.team-member-page-link:hover {
+  opacity: 0.75 !important;
 }
 
-/* Dedicated /team Page Grid (Large Hero Cards) */
-.team-page-grid {
-  display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
-  gap: clamp(1.25rem, 2vw, 2.5rem) !important;
-  padding: 0 clamp(1.5rem, 4vw, 4.5rem) clamp(3.5rem, 5vw, 6rem) !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
+/* Tablet: 2 columns */
+@media (max-width: 1023px) {
+  .team-grid,
+  .team-page-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 1.25rem !important;
+  }
 }
 
-.team-page-card {
-  position: relative !important;
-  min-height: 500px !important;
-  height: clamp(500px, 48vw, 660px) !important;
-  border-radius: 16px !important;
-  overflow: hidden !important;
-  padding: 0 !important;
-  border: 0 !important;
-  background: var(--olive-dark) !important;
-  text-align: left !important;
-  cursor: pointer !important;
-  box-sizing: border-box !important;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12) !important;
-}
-
-.team-page-card-trigger {
-  position: absolute !important;
-  inset: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  padding: 0 !important;
-  border: 0 !important;
-  border-radius: 16px !important;
-  overflow: hidden !important;
-  background: transparent !important;
-  cursor: pointer !important;
-}
-
-.team-page-card img,
-.team-page-card video,
-.team-page-card-trigger img,
-.team-page-card-trigger video {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  object-position: center 20% !important;
-  border-radius: 16px !important;
-  display: block !important;
-  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) !important;
-}
-
-.team-page-card:hover img,
-.team-page-card:hover video {
-  transform: scale(1.035) !important;
+/* Mobile: 1 column */
+@media (max-width: 640px) {
+  .team-grid,
+  .team-page-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+  }
+  .team-member-card {
+    height: 420px !important;
+    max-width: 380px !important;
+    margin: 0 auto !important;
+  }
 }
 
