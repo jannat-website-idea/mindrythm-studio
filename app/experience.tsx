@@ -9,6 +9,7 @@ import {
 import { BackToTop } from "@/app/back-to-top";
 import { BentoGalleryGrid } from "@/app/bento-gallery";
 import { EmphasizedCopy } from "@/app/emphasized-copy";
+import { ImmersiveLightbox } from "@/app/immersive-lightbox";
 import { Media } from "@/app/media";
 import { SocialIcon } from "@/app/social-icon";
 import { getServiceProjects } from "@/lib/services";
@@ -933,42 +934,13 @@ export function Experience({ content }: { content: SiteContent }) {
         const allItems = [...projects, ...galleryItems];
         const seen = new Set<string>();
         const unique = allItems.filter((item) => { if (seen.has(item.id)) return false; seen.add(item.id); return true; });
-        const currentIndex = unique.findIndex((item) => item.id === selectedItem.id);
-        const hasPrev = currentIndex > 0;
-        const hasNext = currentIndex < unique.length - 1;
-        const goPrev = () => hasPrev && setSelectedItem(unique[currentIndex - 1]);
-        const goNext = () => hasNext && setSelectedItem(unique[currentIndex + 1]);
         return (
-          <div className="lightbox-immersive" role="dialog" aria-modal="true" aria-label={selectedItem.title}>
-            <div className="lightbox-stage">
-              <div className="lightbox-media-wrapper">
-                <Media item={selectedItem} priority />
-              </div>
-            </div>
-            <div className="lightbox-immersive-toolbar">
-              <button type="button" className="lightbox-grid-btn" onClick={() => setSelectedItem(null)} aria-label="Close to gallery">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="4" cy="4" r="2"/><circle cx="12" cy="4" r="2"/><circle cx="20" cy="4" r="2"/><circle cx="4" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="20" cy="12" r="2"/><circle cx="4" cy="20" r="2"/><circle cx="12" cy="20" r="2"/><circle cx="20" cy="20" r="2"/></svg>
-              </button>
-              <button type="button" className="lightbox-close-btn" onClick={() => setSelectedItem(null)} aria-label="Close">Close ×</button>
-            </div>
-            {hasPrev && (
-              <button type="button" className="lightbox-nav lightbox-nav-prev" onClick={goPrev} aria-label="Previous image">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-              </button>
-            )}
-            {hasNext && (
-              <button type="button" className="lightbox-nav lightbox-nav-next" onClick={goNext} aria-label="Next image">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-              </button>
-            )}
-            <div className="lightbox-docked-copy">
-              <div className="lightbox-copy-inner">
-                <span>{selectedItem.category || selectedItem.eyebrow}</span>
-                <h2>{selectedItem.title}</h2>
-                {selectedItem.body && <p>{selectedItem.body}</p>}
-              </div>
-            </div>
-          </div>
+          <ImmersiveLightbox
+            selected={selectedItem}
+            items={unique}
+            onClose={() => setSelectedItem(null)}
+            onSelect={setSelectedItem}
+          />
         );
       })()}
     </>
