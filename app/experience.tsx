@@ -72,7 +72,14 @@ export function Experience({ content }: { content: SiteContent }) {
     return [...featured, ...projects.filter((project) => !featuredIds.includes(project.id))].slice(0, 3);
   }, [content.hero.featuredProjectIds, projects]);
   const serviceCollections = useMemo(
-    () => serviceItems.map((service) => ({ ...service, media: getServiceProjects(projects, service.key, serviceItems) })),
+    () =>
+      serviceItems.map((service, index) => {
+        const directMedia = getServiceProjects(projects, service.key, serviceItems);
+        if (directMedia.length) return { ...service, media: directMedia };
+        const offset = (index * 2) % Math.max(1, projects.length);
+        const fallback = [...projects.slice(offset), ...projects.slice(0, offset)].slice(0, 3);
+        return { ...service, media: fallback.length ? fallback : projects.slice(0, 3) };
+      }),
     [projects, serviceItems],
   );
   const galleryItems = useMemo(() => {

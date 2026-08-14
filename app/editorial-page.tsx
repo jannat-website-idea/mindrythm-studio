@@ -23,7 +23,13 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   const projects = content.items.filter((item) => item.kind === "project").sort((a, b) => a.sortOrder - b.sortOrder);
   const gallery = content.items.filter((item) => item.kind === "gallery");
   const galleryItems = gallery.length ? gallery : projects;
-  const serviceCollections = serviceItems.map((service) => ({ ...service, media: getServiceProjects(projects, service.key, serviceItems) }));
+  const serviceCollections = serviceItems.map((service, index) => {
+    const directMedia = getServiceProjects(projects, service.key, serviceItems);
+    if (directMedia.length) return { ...service, media: directMedia };
+    const offset = (index * 2) % Math.max(1, projects.length);
+    const fallback = [...projects.slice(offset), ...projects.slice(0, offset)].slice(0, 3);
+    return { ...service, media: fallback.length ? fallback : projects.slice(0, 3) };
+  });
   const savedTeam = content.items.filter((item) => item.kind === "team").sort((a, b) => a.sortOrder - b.sortOrder);
   const team = savedTeam.length ? savedTeam : content.items.filter((item) => item.kind === "team");
   const [selected, setSelected] = useState<ContentItem | null>(null);
