@@ -4777,7 +4777,7 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   min-width: 0 !important;
   height: 100svh !important;
   min-height: 0 !important;
-  padding: 10.2rem clamp(2.5rem, 4vw, 4rem) 2.7rem clamp(3.5rem, 5.5vw, 6rem) !important;
+  padding: 10.2rem clamp(2.5rem, 4vw, 4.5rem) 2.7rem clamp(4.5rem, 7.5vw, 9rem) !important;
   overflow: visible !important;
   color: var(--ink) !important;
   background: var(--ivory) !important;
@@ -4806,26 +4806,28 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   gap: 1.5rem !important;
   align-items: center !important;
   min-width: 0 !important;
-  padding: 0 !important;
+  padding: 0 0.75rem !important;
   border-bottom: 0 !important;
+  border-radius: 4px !important;
   color: var(--ink) !important;
   opacity: 1 !important;
   visibility: visible !important;
   transform: none !important;
   transition: padding .3s ease, background .3s ease !important;
 }
-.menu-overlay nav a:hover { padding: 0 .55rem !important; background: #dfded8 !important; }
+.menu-overlay nav a:hover { padding: 0 1rem !important; background: #dfded8 !important; }
 .menu-overlay nav a > strong {
   display: block !important;
   min-width: 0 !important;
   color: var(--ink) !important;
-  font-size: clamp(1.85rem, 2.9vw, 3.6rem) !important;
+  font-size: clamp(1.8rem, 2.75vw, 3.4rem) !important;
   font-weight: 300 !important;
-  letter-spacing: -.05em !important;
-  line-height: .88 !important;
+  letter-spacing: -0.04em !important;
+  line-height: .9 !important;
   white-space: nowrap !important;
   text-align: left !important;
   overflow: visible !important;
+  padding-left: 0.25rem !important;
 }
 .menu-overlay nav a > small {
   display: block !important;
