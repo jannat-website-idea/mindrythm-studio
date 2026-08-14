@@ -897,19 +897,19 @@ export function Experience({ content }: { content: SiteContent }) {
               </div>
             </div>
             <div className="lightbox-immersive-toolbar">
-              <button type="button" className="lightbox-grid-btn" onClick={() => setSelectedItem(null)} aria-label="Back to gallery">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="1" y="1" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.5"/><rect x="12" y="1" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.5"/><rect x="1" y="12" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.5"/><rect x="12" y="12" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.5"/></svg>
+              <button type="button" className="lightbox-grid-btn" onClick={() => setSelectedItem(null)} aria-label="Close to gallery">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="4" cy="4" r="2"/><circle cx="12" cy="4" r="2"/><circle cx="20" cy="4" r="2"/><circle cx="4" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="20" cy="12" r="2"/><circle cx="4" cy="20" r="2"/><circle cx="12" cy="20" r="2"/><circle cx="20" cy="20" r="2"/></svg>
               </button>
               <button type="button" className="lightbox-close-btn" onClick={() => setSelectedItem(null)} aria-label="Close">Close ×</button>
             </div>
             {hasPrev && (
               <button type="button" className="lightbox-nav lightbox-nav-prev" onClick={goPrev} aria-label="Previous image">
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M18 4L8 14L18 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
               </button>
             )}
             {hasNext && (
               <button type="button" className="lightbox-nav lightbox-nav-next" onClick={goNext} aria-label="Next image">
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M10 4L20 14L10 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
               </button>
             )}
             <div className="lightbox-docked-copy">
