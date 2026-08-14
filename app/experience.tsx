@@ -804,22 +804,41 @@ export function Experience({ content }: { content: SiteContent }) {
               <div className="team-heading-action"><p>{teamIntroduction}</p><a href="/team">Meet our team</a></div>
             </div>
             <div className="team-grid" aria-label="Meet the Mindrythm team">
-              {team.map((member, index) => (
-                <a
-                  href="/team"
-                  className="team-card"
-                  key={`${member.id}-${index}`}
-                  aria-label={`View profile for ${member.title}`}
-                >
-                  <div className="team-card-trigger">
-                    <Media item={member} />
-                  </div>
-                  <div className="team-card-badge">
-                    <strong>{member.title}</strong>
-                    <span>{member.category || member.eyebrow}</span>
-                  </div>
-                </a>
-              ))}
+              {team.map((member, index) => {
+                const isActive = activeTeamCardId === member.id;
+                return (
+                  <article
+                    className={`team-card ${isActive ? "active" : ""}`}
+                    key={`${member.id}-${index}`}
+                    onClick={() => setActiveTeamCardId((current) => (current === member.id ? null : member.id))}
+                  >
+                    <button
+                      type="button"
+                      className="team-card-trigger"
+                      aria-expanded={isActive}
+                      aria-controls={`team-card-copy-${index}`}
+                      aria-label={`View description for ${member.title}`}
+                    >
+                      <Media item={member} />
+                    </button>
+                    <div
+                      className={`team-card-copy ${isActive ? "open" : ""}`}
+                      id={`team-card-copy-${index}`}
+                    >
+                      <span>{member.category || member.eyebrow}</span>
+                      <h3>{member.title}</h3>
+                      {member.body && <p>{member.body}</p>}
+                      <a
+                        href="/team"
+                        className="team-card-more-btn"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        Explore team profile →
+                      </a>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
             <a className="team-page-link" href="/team"><span>People behind the images</span><strong>Explore the full team</strong></a>
           </section>

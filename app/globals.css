@@ -7314,25 +7314,32 @@ video {
    Curved Team Images & Multi-Member Responsive Layout
    ========================================================================== */
 
-/* Homepage Team Section (Compact & Displays All Members) */
+/* Homepage Team Section (Clean, Independent Cards with Click-to-Reveal Bio) */
 .team-section {
-  padding: clamp(4rem, 6vw, 7rem) clamp(1.5rem, 4vw, 4.5rem) clamp(3rem, 4vw, 5rem) !important;
+  position: relative !important;
+  padding: clamp(4.5rem, 6vw, 7.5rem) clamp(1.5rem, 4vw, 4.5rem) clamp(3.5rem, 4vw, 5.5rem) !important;
   background: var(--sage) !important;
+  box-sizing: border-box !important;
 }
 
 .team-grid {
+  position: relative !important;
+  z-index: 2 !important;
   display: grid !important;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr)) !important;
-  gap: clamp(0.75rem, 1.25vw, 1.25rem) !important;
-  padding-top: clamp(1.5rem, 2vw, 2.5rem) !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)) !important;
+  gap: clamp(1rem, 1.6vw, 1.75rem) !important;
+  padding-top: clamp(1.5rem, 2.5vw, 2.5rem) !important;
   width: 100% !important;
   box-sizing: border-box !important;
+  overflow: visible !important;
 }
 
 .team-card {
   position: relative !important;
-  height: clamp(260px, 24vw, 360px) !important;
-  min-height: 240px !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  height: clamp(340px, 30vw, 440px) !important;
+  min-height: 320px !important;
   border-radius: 14px !important;
   overflow: hidden !important;
   padding: 0 !important;
@@ -7341,9 +7348,14 @@ video {
   text-align: left !important;
   cursor: pointer !important;
   box-sizing: border-box !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
-  display: block !important;
-  text-decoration: none !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.09) !important;
+  flex: none !important;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease !important;
+}
+
+.team-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.14) !important;
 }
 
 .team-card-trigger {
@@ -7357,6 +7369,7 @@ video {
   overflow: hidden !important;
   background: transparent !important;
   cursor: pointer !important;
+  z-index: 1 !important;
 }
 
 .team-card img,
@@ -7369,46 +7382,91 @@ video {
   object-position: center 20% !important;
   border-radius: 14px !important;
   display: block !important;
-  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), filter 0.5s ease !important;
 }
 
-.team-card:hover img,
-.team-card:hover video {
-  transform: scale(1.04) !important;
+.team-card.active img,
+.team-card.active video {
+  filter: brightness(0.4) blur(2px) !important;
+  transform: scale(1.05) !important;
 }
 
-.team-card-badge {
+/* Overlay description shown ONLY when clicked */
+.team-card-copy {
   position: absolute !important;
-  bottom: 0.75rem !important;
-  left: 0.75rem !important;
-  right: 0.75rem !important;
-  z-index: 3 !important;
+  inset: 0 !important;
+  z-index: 4 !important;
   display: flex !important;
   flex-direction: column !important;
-  gap: 0.15rem !important;
-  padding: 0.5rem 0.75rem !important;
-  border-radius: 10px !important;
-  background: rgba(14, 18, 15, 0.78) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
+  justify-content: flex-end !important;
+  padding: 1.5rem !important;
+  box-sizing: border-box !important;
+  background: linear-gradient(180deg, rgba(14, 18, 15, 0.15) 0%, rgba(14, 18, 15, 0.92) 55%, rgba(14, 18, 15, 0.98) 100%) !important;
   color: #ffffff !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
   pointer-events: none !important;
+  transform: translateY(12px) !important;
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.35s !important;
+  border-radius: 14px !important;
 }
 
-.team-card-badge strong {
-  font-size: 0.82rem !important;
+.team-card.active .team-card-copy,
+.team-card-copy.open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transform: translateY(0) !important;
+}
+
+.team-card-copy span {
+  font-size: 0.62rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  margin-bottom: 0.25rem !important;
+}
+
+.team-card-copy h3 {
+  margin: 0 0 0.5rem !important;
+  font-size: clamp(1.35rem, 1.8vw, 1.85rem) !important;
   font-weight: 500 !important;
-  letter-spacing: -0.01em !important;
-  color: #ffffff !important;
+  letter-spacing: -0.03em !important;
   line-height: 1.1 !important;
+  color: #ffffff !important;
+  text-transform: capitalize !important;
 }
 
-.team-card-badge span {
-  font-size: 0.58rem !important;
-  font-weight: 500 !important;
+.team-card-copy p {
+  margin: 0 0 1rem !important;
+  font-size: 0.8rem !important;
+  line-height: 1.5 !important;
+  color: rgba(255, 255, 255, 0.85) !important;
+  max-width: 100% !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 4 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+.team-card-more-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  font-size: 0.68rem !important;
+  font-weight: 600 !important;
   letter-spacing: 0.06em !important;
   text-transform: uppercase !important;
-  color: rgba(255, 255, 255, 0.75) !important;
+  color: #ffffff !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px !important;
+  transition: opacity 0.2s ease !important;
+  width: max-content !important;
+}
+
+.team-card-more-btn:hover {
+  opacity: 0.8 !important;
 }
 
 /* Dedicated /team Page Grid (Large Hero Cards) */
