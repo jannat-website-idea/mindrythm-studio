@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  defaultItems,
   mainInstagramUrl as defaultInstagramUrl,
   type ContentItem,
   type SiteContent,
@@ -112,6 +113,15 @@ export function Experience({ content }: { content: SiteContent }) {
     );
     return celebrations.length ? celebrations : galleryItems.slice(3);
   }, [galleryItems]);
+
+  const bentoProjects = useMemo(() => {
+    const fallbackList = defaultItems.filter((i: ContentItem) => i.kind === "project");
+    const list: ContentItem[] = [];
+    for (let i = 0; i < 6; i++) {
+      list.push(projects[i] || fallbackList[i % fallbackList.length]);
+    }
+    return list;
+  }, [projects]);
 
   const savedTeam = useMemo(
     () => content.items.filter((item) => item.kind === "team").sort((a, b) => a.sortOrder - b.sortOrder),
@@ -714,7 +724,7 @@ export function Experience({ content }: { content: SiteContent }) {
               <p>“{brandTaglines[2]}”</p>
             </div>
             <div className="projects-bento">
-              {projects.slice(0, 6).map((project, index) => <ProjectCard key={project.id} project={project} index={index} onOpen={() => setSelectedItem(project)} />)}
+              {bentoProjects.map((project, index) => <ProjectCard key={`${project.id}-bento-${index}`} project={project} index={index} onOpen={() => setSelectedItem(project)} />)}
               <a className="project-tile project-statement" href="/story" data-reveal>
                 <span>Our approach</span>
                 <blockquote>“Every place and every celebration begins with a feeling. Our work is to make it visible.”</blockquote>
