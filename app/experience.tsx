@@ -584,12 +584,18 @@ export function Experience({ content }: { content: SiteContent }) {
                         {isActive && (
                           <div className="services-row-expanded">
                             <p className="services-row-description">{service.copy}</p>
+                            <div className="services-row-actions">
+                              <a className="services-row-link" href={`/services#service-${service.key}`}>
+                                <span>Explore {service.title} photos</span>
+                                <span aria-hidden="true">→</span>
+                              </a>
+                            </div>
                             <div className="services-row-mobile-media">
                               {serviceCollections[index]?.media?.[0] && (
                                 <Media item={serviceCollections[index].media[0]} active={isActive} priority />
                               )}
-                              <a className="services-row-mobile-cta" href={`/work?service=${service.key}`}>
-                                <span>View service work</span>
+                              <a className="services-row-mobile-cta" href={`/services#service-${service.key}`}>
+                                <span>View {service.title} & photos</span>
                                 <span aria-hidden="true">→</span>
                               </a>
                             </div>
@@ -633,10 +639,10 @@ export function Experience({ content }: { content: SiteContent }) {
                           </div>
                           <a
                             className="services-bar-cta"
-                            href={`/work?service=${service.key}`}
-                            aria-label={`View ${service.title} work`}
+                            href={`/services#service-${service.key}`}
+                            aria-label={`View ${service.title} on services page`}
                           >
-                            <span>View service work</span>
+                            <span>Explore service & photos</span>
                             <span aria-hidden="true" className="services-bar-arrow">→</span>
                           </a>
                         </div>

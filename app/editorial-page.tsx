@@ -187,38 +187,64 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
               <p className="services-page-hero-subtext">
                 A focused visual practice across real estate, hospitality, architecture, commercial campaigns, and modern digital identity.
               </p>
+              <nav className="services-quick-nav" aria-label="Quick jump to service">
+                <span className="services-quick-title">Services Directory:</span>
+                <div className="services-quick-chips">
+                  {serviceItems.map((service) => (
+                    <a key={service.key} href={`#service-${service.key}`} className="services-quick-chip">
+                      {service.title}
+                    </a>
+                  ))}
+                </div>
+              </nav>
             </section>
 
-            <section className="services-catalogue-section" aria-label="Mindrythm services showcase">
-              <div className="services-catalogue-grid">
+            <section className="services-stream-section" aria-label="Mindrythm studio services catalogue">
+              <div className="services-stream-list">
                 {serviceCollections.map((service, index) => {
                   const primaryMedia = service.media[0] || projects[0];
                   const secondaryMedia = service.media[1];
+                  const num = String(index + 1).padStart(2, "0");
+                  const isEven = index % 2 === 1;
                   return (
-                    <article className="services-catalogue-card" key={service.key}>
-                      <div className="services-card-visual">
-                        <div className="services-card-media-wrap">
-                          {primaryMedia && (
-                            <div className="services-card-media-primary">
-                              <Media item={primaryMedia} priority={index < 4} />
-                            </div>
-                          )}
-                          {secondaryMedia && (
-                            <div className="services-card-media-secondary">
-                              <Media item={secondaryMedia} />
-                            </div>
-                          )}
-                          <div className="services-card-media-shade" />
+                    <article
+                      className={`services-stream-card ${isEven ? "is-reversed" : ""}`}
+                      id={`service-${service.key}`}
+                      key={service.key}
+                    >
+                      <div className="services-stream-info">
+                        <div className="services-stream-meta">
+                          <span className="services-stream-number">Service {num}</span>
+                          <span className="services-stream-badge">Mindrythm Studio</span>
+                        </div>
+                        <h2 className="services-stream-title">{service.title}</h2>
+                        <p className="services-stream-copy">{service.copy}</p>
+
+                        <div className="services-stream-actions">
+                          <Link className="services-stream-primary-cta" href={`/work?service=${service.key}`}>
+                            <span>View service commissions</span>
+                            <span aria-hidden="true">→</span>
+                          </Link>
+                          <Link className="services-stream-secondary-cta" href="/contact">
+                            <span>Enquire about this service</span>
+                          </Link>
                         </div>
                       </div>
 
-                      <div className="services-card-content">
-                        <h2 className="services-card-title">{service.title}</h2>
-                        <p className="services-card-copy">{service.copy}</p>
-                        <Link className="services-card-cta" href={`/work?service=${service.key}`}>
-                          <span>View commissions</span>
-                          <span aria-hidden="true" className="services-card-arrow">→</span>
-                        </Link>
+                      <div className="services-stream-visual">
+                        <div className="services-stream-frame">
+                          {primaryMedia && (
+                            <div className="services-frame-primary">
+                              <Media item={primaryMedia} priority={index < 2} />
+                            </div>
+                          )}
+                          {secondaryMedia && (
+                            <div className="services-frame-secondary">
+                              <Media item={secondaryMedia} />
+                            </div>
+                          )}
+                          <div className="services-frame-shade" />
+                        </div>
                       </div>
                     </article>
                   );
