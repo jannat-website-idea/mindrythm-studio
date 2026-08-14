@@ -45,7 +45,10 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   }, []);
 
   function returnToHero() {
-    window.sessionStorage.setItem("mindrythmSkipIntro", "1");
+    try {
+      window.sessionStorage.setItem("mindrythmSkipIntro", "1");
+      window.sessionStorage.setItem("mindrythmSeenIntro", "1");
+    } catch {}
     setNavigationOpen(false);
   }
 
@@ -203,7 +206,6 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
               <div className="services-stream-list">
                 {serviceCollections.map((service, index) => {
                   const primaryMedia = service.media[0] || projects[0];
-                  const secondaryMedia = service.media[1];
                   const isEven = index % 2 === 1;
                   return (
                     <article
@@ -217,7 +219,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
 
                         <div className="services-stream-actions">
                           <Link className="services-stream-primary-cta" href={`/work?service=${service.key}`}>
-                            <span>View all commissions</span>
+                            <span>View all</span>
                             <span aria-hidden="true">→</span>
                           </Link>
                           <Link className="services-stream-secondary-cta" href="/contact">
@@ -227,30 +229,17 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                       </div>
 
                       <div className="services-stream-visual">
-                        <div className="services-stream-gallery">
-                          {primaryMedia && (
-                            <button
-                              type="button"
-                              className="services-photo-thumb services-photo-lead"
-                              onClick={() => setSelected(primaryMedia)}
-                              aria-label={`Open full size photo of ${service.title}`}
-                            >
-                              <Media item={primaryMedia} priority={index < 2} />
-                              <span className="services-photo-hint">Click to enlarge</span>
-                            </button>
-                          )}
-                          {secondaryMedia && (
-                            <button
-                              type="button"
-                              className="services-photo-thumb services-photo-sub"
-                              onClick={() => setSelected(secondaryMedia)}
-                              aria-label={`Open secondary photo of ${service.title}`}
-                            >
-                              <Media item={secondaryMedia} />
-                              <span className="services-photo-hint">Click to enlarge</span>
-                            </button>
-                          )}
-                        </div>
+                        {primaryMedia && (
+                          <button
+                            type="button"
+                            className="services-photo-thumb services-photo-single"
+                            onClick={() => setSelected(primaryMedia)}
+                            aria-label={`Open full size photo of ${service.title}`}
+                          >
+                            <Media item={primaryMedia} priority={index < 2} />
+                            <span className="services-photo-hint">Click to enlarge</span>
+                          </button>
+                        )}
                         <div className="services-gallery-footer">
                           <span>{service.media.length} photos available</span>
                           <button

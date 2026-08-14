@@ -145,6 +145,10 @@ export function Experience({ content }: { content: SiteContent }) {
 
   function returnToHero(event: ReactMouseEvent<HTMLAnchorElement>) {
     event.preventDefault();
+    try {
+      window.sessionStorage.setItem("mindrythmSkipIntro", "1");
+      window.sessionStorage.setItem("mindrythmSeenIntro", "1");
+    } catch {}
     setMenuOpen(false);
     setActiveHash("#home");
     setSectionNavVisible(false);
@@ -153,15 +157,22 @@ export function Experience({ content }: { content: SiteContent }) {
   }
 
   useEffect(() => {
-    const shouldSkipIntro = window.sessionStorage.getItem("mindrythmSkipIntro") === "1";
-    if (shouldSkipIntro) {
-      window.sessionStorage.removeItem("mindrythmSkipIntro");
-      const skipFrame = window.requestAnimationFrame(() => {
-        setLoaderProgress(100);
-        setLoaded(true);
-        setShowLoader(false);
-      });
-      return () => window.cancelAnimationFrame(skipFrame);
+    let hasSeen = false;
+    try {
+      hasSeen = window.sessionStorage.getItem("mindrythmSkipIntro") === "1" ||
+                window.sessionStorage.getItem("mindrythmSeenIntro") === "1" ||
+                Boolean(window.location.hash && window.location.hash !== "#home");
+    } catch {}
+
+    if (hasSeen) {
+      try {
+        window.sessionStorage.setItem("mindrythmSeenIntro", "1");
+        window.sessionStorage.removeItem("mindrythmSkipIntro");
+      } catch {}
+      setLoaderProgress(100);
+      setLoaded(true);
+      setShowLoader(false);
+      return;
     }
 
     const startedAt = performance.now();
@@ -178,6 +189,9 @@ export function Experience({ content }: { content: SiteContent }) {
     const finish = () => {
       if (finished) return;
       finished = true;
+      try {
+        window.sessionStorage.setItem("mindrythmSeenIntro", "1");
+      } catch {}
       window.cancelAnimationFrame(frame);
       setLoaderProgress(100);
       revealTimer = window.setTimeout(() => {

@@ -6264,33 +6264,22 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   background: rgba(18, 18, 16, 0.04);
 }
 
-/* Visual Gallery Container in Services Stream */
+/* Visual Media Container in Services Stream — Single Elegant Frame */
 .services-stream-visual {
   position: relative;
   width: 100%;
-}
-
-.services-stream-gallery {
-  display: grid;
-  grid-template-columns: 1.35fr 0.95fr;
-  gap: 0.5rem;
-  width: 100%;
-}
-
-.services-stream-gallery:has(> :only-child) {
-  grid-template-columns: 1fr;
 }
 
 .services-photo-thumb {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 10;
-  max-height: 280px;
-  border-radius: 4px;
+  max-height: 320px;
+  border-radius: 12px;
   overflow: hidden;
   background: #0c0c0a;
   border: 1px solid rgba(18, 18, 16, 0.1);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
   cursor: pointer;
   padding: 0;
   margin: 0;
@@ -6305,27 +6294,28 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   height: 100%;
   object-fit: cover;
   object-position: center;
+  border-radius: 12px;
   transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .services-photo-thumb:hover img,
 .services-photo-thumb:hover video {
-  transform: scale(1.04);
+  transform: scale(1.035);
 }
 
 .services-photo-hint {
   position: absolute;
-  bottom: 0.5rem;
-  right: 0.5rem;
+  bottom: 0.75rem;
+  right: 0.75rem;
   z-index: 3;
-  background: rgba(10, 10, 9, 0.75);
+  background: rgba(10, 10, 9, 0.78);
   color: #ffffff;
-  font-size: 0.55rem;
+  font-size: 0.58rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  padding: 0.25rem 0.55rem;
-  border-radius: 3px;
+  padding: 0.3rem 0.65rem;
+  border-radius: 6px;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   opacity: 0;
@@ -6343,7 +6333,7 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 0.45rem;
+  margin-top: 0.55rem;
   padding: 0 0.25rem;
   font-size: 0.65rem;
   color: var(--muted);
@@ -6386,14 +6376,35 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   .services-stream-card.is-reversed .services-stream-visual {
     order: 2;
   }
+}
 
-  .services-stream-gallery {
-    grid-template-columns: 1fr;
-  }
+/* ==========================================================================
+   Global Image & Media Rounded Corners (Luxury Studio Aesthetic)
+   ========================================================================== */
+img:not(.wordmark img):not(.inner-footer img):not(.mobile-menu-brand img):not(.social-icon):not([src*="logomark"]),
+video {
+  border-radius: 12px;
+}
 
-  .services-photo-thumb.services-photo-sub {
-    display: none;
-  }
+.services-photo-thumb,
+.services-canvas-box,
+.services-card-visual,
+.gallery-card,
+.gallery-figure,
+.bento-card,
+.bento-media,
+.scroll-cinema-frame,
+.cinema-tile,
+.team-card-trigger,
+.team-card-trigger img,
+.team-page-card,
+.team-page-card img,
+.story-pillar-media,
+.hero-media-wrapper,
+.lightbox-media-wrapper img,
+.lightbox-media-wrapper video {
+  border-radius: 12px !important;
+  overflow: hidden;
 }
 
 /* Editorial Split Layout (Homepage #services) */
