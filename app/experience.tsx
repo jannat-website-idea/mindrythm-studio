@@ -975,15 +975,34 @@ function ProjectCard({ project, index, onOpen }: { project: ContentItem; index: 
 }
 
 function GalleryCollection({ title, items, socials, onOpen }: { title: string; items: ContentItem[]; socials: SiteContent["settings"]; onOpen: (item: ContentItem) => void }) {
-  const shown = items.length ? items.slice(0, 7) : [];
   const isCelebrations = title === "Celebrations";
+  const fallbackPool = defaultItems.filter((i: ContentItem) =>
+    isCelebrations
+      ? i.category?.toLowerCase().includes("wedding") || i.category?.toLowerCase().includes("event")
+      : i.category?.toLowerCase().includes("space") || i.category?.toLowerCase().includes("retreat") || i.category?.toLowerCase().includes("interior")
+  );
+  const slots: ContentItem[] = [];
+  for (let i = 0; i < 7; i++) {
+    slots.push(items[i] || fallbackPool[i % fallbackPool.length] || defaultItems[i % defaultItems.length]);
+  }
+
   return (
     <article className="gallery-board" data-reveal>
-      <header><h3>{title}</h3><p>Images / motion / fragments</p></header>
+      <header>
+        <h3>{title}</h3>
+        <p>{isCelebrations ? "Weddings, gatherings & live human moments" : "Architecture, interiors & quiet sanctuaries"}</p>
+      </header>
       <div className="gallery-board-grid">
-        {shown.map((item, itemIndex) => (
-          <button type="button" className={`gallery-card gallery-slot-${itemIndex + 1}`} key={`${item.id}-${itemIndex}`} onClick={() => onOpen(item)}>
-            <Media item={item} /><span>{item.title}</span>
+        {slots.map((item, itemIndex) => (
+          <button
+            type="button"
+            className={`gallery-card gallery-slot-${itemIndex + 1}`}
+            key={`${item.id}-slot-${itemIndex}`}
+            onClick={() => onOpen(item)}
+            aria-label={`Open ${item.title}`}
+          >
+            <Media item={item} />
+            <span>{item.title}</span>
           </button>
         ))}
         <div className="gallery-card gallery-note gallery-note-social" aria-label="Mindrythm social channels">
@@ -991,7 +1010,11 @@ function GalleryCollection({ title, items, socials, onOpen }: { title: string; i
           <a href={socials.facebook} target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook"><SocialIcon name="facebook" /></a>
           <a href={socials.youtube} target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube"><SocialIcon name="youtube" /></a>
         </div>
-        <a className="gallery-card gallery-note gallery-note-feature" href="/gallery"><span>Mindrythm archive</span><p>{isCelebrations ? "Wedding stories with feeling, movement and detail." : "Spaces shaped by light, material and a sense of arrival."}</p><i>Open the full gallery</i></a>
+        <a className="gallery-card gallery-note gallery-note-feature" href="/gallery">
+          <span>Mindrythm archive</span>
+          <p>{isCelebrations ? "Wedding stories with feeling, movement and detail." : "Spaces shaped by light, material and a sense of arrival."}</p>
+          <i>Open the full gallery</i>
+        </a>
       </div>
     </article>
   );

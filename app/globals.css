@@ -609,45 +609,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .gallery-page {
   color: var(--ivory);
   background: var(--brown);
-  padding: 4rem clamp(1.5rem, 4vw, 4rem) 6rem;
+  padding: 3.5rem clamp(1rem, 3vw, 2.5rem) 6rem;
 }
 
-.gallery-area-section {
-  margin-bottom: clamp(4rem, 6vw, 6.5rem);
-}
-
-.gallery-area-header {
-  margin-bottom: clamp(1.8rem, 3vw, 2.5rem);
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--light-line);
-}
-
-.gallery-area-tag {
-  display: inline-block;
-  font-size: 0.64rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 0.4rem;
-}
-
-.gallery-area-header h2 {
-  font-size: clamp(2.4rem, 5vw, 4.5rem);
-  font-weight: 300;
-  text-transform: uppercase;
-  letter-spacing: -0.04em;
-  margin: 0 0 0.5rem 0;
-  line-height: 0.95;
-  color: #ffffff;
-}
-
-.gallery-area-header p {
-  font-size: 0.92rem;
-  color: rgba(251, 250, 245, 0.72);
-  max-width: 60ch;
-  margin: 0;
-  line-height: 1.5;
+.gallery-page .gallery-scroll {
+  padding: 0;
+  display: grid;
+  gap: 3.5rem;
+  overflow: visible;
 }
 
 /* Large Image Area: 2-column wide layout (16:10 aspect ratio) */

@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  defaultItems,
   mainInstagramUrl as defaultInstagramUrl,
   type ContentItem,
   type SiteContent,
@@ -294,12 +295,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
         )}
 
         {page === "gallery" && (() => {
-          const isVideoUrl = (url: string) => /\.(mp4|webm|mov)(\?.*)?$/i.test(url);
-          
-          const videoItems = galleryItems.filter((item) => isVideoUrl(item.mediaUrl) || item.category?.toLowerCase().includes("film") || item.eyebrow?.toLowerCase().includes("film"));
-          const nonVideoItems = galleryItems.filter((item) => !videoItems.includes(item));
-          
-          const largeItems = nonVideoItems.filter((item) =>
+          const spacesItems = galleryItems.filter((item) =>
             item.category?.toLowerCase().includes("space") ||
             item.category?.toLowerCase().includes("interior") ||
             item.category?.toLowerCase().includes("landscape") ||
@@ -310,110 +306,38 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
             item.eyebrow?.toLowerCase().includes("retreat") ||
             item.eyebrow?.toLowerCase().includes("architecture")
           );
-          
-          const smallItems = nonVideoItems.filter((item) => !largeItems.includes(item));
+          const celebrationsItems = galleryItems.filter((item) =>
+            item.category?.toLowerCase().includes("wedding") ||
+            item.category?.toLowerCase().includes("event") ||
+            item.category?.toLowerCase().includes("celebration") ||
+            item.category?.toLowerCase().includes("ritual") ||
+            item.eyebrow?.toLowerCase().includes("wedding") ||
+            item.eyebrow?.toLowerCase().includes("event")
+          );
 
-          const finalLarge = largeItems.length ? largeItems : nonVideoItems.slice(0, 4);
-          const finalSmall = smallItems.length ? smallItems : (nonVideoItems.slice(4).length ? nonVideoItems.slice(4) : nonVideoItems);
-          const finalVideos = videoItems.length ? videoItems : projects.filter((p) => isVideoUrl(p.mediaUrl));
+          const finalSpaces = spacesItems.length ? spacesItems : galleryItems;
+          const finalCelebrations = celebrationsItems.length ? celebrationsItems : galleryItems.slice(3);
 
           return (
             <div className="gallery-page">
-              {/* 1. Large Image Area */}
-              <section className="gallery-area-section gallery-area-large" id="large-spaces">
-                <header className="gallery-area-header">
-                  <span className="gallery-area-tag">Large Image Area / Spaces</span>
-                  <h2>Spaces &amp; Architecture</h2>
-                  <p>Wide perspective views of luxury properties, villas, retreats and atmospheric interiors.</p>
-                </header>
-                <div className="gallery-large-grid">
-                  {finalLarge.map((item) => (
-                    <button
-                      type="button"
-                      className="gallery-large-card"
-                      key={item.id}
-                      onClick={() => setSelected(item)}
-                      aria-label={`Open ${item.title}`}
-                    >
-                      <Media item={item} />
-                      <div className="gallery-card-meta">
-                        <span>{item.category || "Spaces"}</span>
-                        <h3>{item.title}</h3>
-                      </div>
-                    </button>
-                  ))}
-                  <article className="gallery-area-feature-tile">
-                    <span>Mindrythm Visual Archive</span>
-                    <p>Spaces, light, material and stories captured with intention.</p>
-                    <i>Explore collection</i>
-                  </article>
-                </div>
-              </section>
-
-              {/* 2. Small Image Area */}
-              <section className="gallery-area-section gallery-area-small" id="small-moments">
-                <header className="gallery-area-header">
-                  <span className="gallery-area-tag">Small Image Area / Editorial</span>
-                  <h2>Moments &amp; Celebrations</h2>
-                  <p>Portraits, candid gatherings, rituals, weddings and intricate details.</p>
-                </header>
-                <div className="gallery-small-grid">
-                  {finalSmall.map((item) => (
-                    <button
-                      type="button"
-                      className="gallery-small-card"
-                      key={item.id}
-                      onClick={() => setSelected(item)}
-                      aria-label={`Open ${item.title}`}
-                    >
-                      <Media item={item} />
-                      <div className="gallery-card-meta">
-                        <span>{item.category || "Celebrations"}</span>
-                        <h3>{item.title}</h3>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </section>
-
-              {/* 3. Video Area */}
-              {finalVideos.length > 0 && (
-                <section className="gallery-area-section gallery-area-video" id="video-motion">
-                  <header className="gallery-area-header">
-                    <span className="gallery-area-tag">Video Area / Motion</span>
-                    <h2>Cinematic Films &amp; Motion</h2>
-                    <p>Moving stories capturing the cadence, sound and emotion of places and people.</p>
-                  </header>
-                  <div className="gallery-video-grid">
-                    {finalVideos.map((item) => (
-                      <button
-                        type="button"
-                        className="gallery-video-card"
-                        key={item.id}
-                        onClick={() => setSelected(item)}
-                        aria-label={`Play ${item.title}`}
-                      >
-                        <Media item={item} priority />
-                        <div className="gallery-video-overlay">
-                          <span className="gallery-video-play">▶</span>
-                          <div className="gallery-card-meta">
-                            <span>{item.category || "Film"}</span>
-                            <h3>{item.title}</h3>
-                          </div>
-                        </div>
-                      </button>
-                    ))}
-                    <article className="gallery-page-social">
-                      <span>Follow the living archive</span>
-                      <div className="gallery-page-social-links" aria-label="Mindrythm social links">
-                        <a href={mainInstagramUrl} target="_blank" rel="noreferrer" aria-label="Mindrythm on Instagram" title="Instagram"><SocialIcon name="instagram" /></a>
-                        <a href={settings.facebook} target="_blank" rel="noreferrer" aria-label="Mindrythm on Facebook" title="Facebook"><SocialIcon name="facebook" /></a>
-                        <a href={settings.youtube} target="_blank" rel="noreferrer" aria-label="Mindrythm on YouTube" title="YouTube"><SocialIcon name="youtube" /></a>
-                      </div>
-                    </article>
-                  </div>
-                </section>
-              )}
+              <div className="gallery-scroll" aria-label="Gallery archive">
+                <GalleryBoardBento
+                  title="Spaces"
+                  subtitle="Architecture, interiors & quiet sanctuaries"
+                  items={finalSpaces}
+                  socials={settings}
+                  onOpen={(item) => setSelected(item)}
+                  isCelebrations={false}
+                />
+                <GalleryBoardBento
+                  title="Celebrations"
+                  subtitle="Weddings, music & live moments"
+                  items={finalCelebrations}
+                  socials={settings}
+                  onOpen={(item) => setSelected(item)}
+                  isCelebrations={true}
+                />
+              </div>
             </div>
           );
         })()}
@@ -580,5 +504,64 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
         );
       })()}
     </div>
+  );
+}
+
+function GalleryBoardBento({
+  title,
+  subtitle,
+  items,
+  socials,
+  onOpen,
+  isCelebrations = false,
+}: {
+  title: string;
+  subtitle: string;
+  items: ContentItem[];
+  socials: SiteContent["settings"];
+  onOpen: (item: ContentItem) => void;
+  isCelebrations?: boolean;
+}) {
+  const fallbackPool = defaultItems.filter((i: ContentItem) =>
+    isCelebrations
+      ? i.category?.toLowerCase().includes("wedding") || i.category?.toLowerCase().includes("event")
+      : i.category?.toLowerCase().includes("space") || i.category?.toLowerCase().includes("retreat") || i.category?.toLowerCase().includes("interior")
+  );
+  const slots: ContentItem[] = [];
+  for (let i = 0; i < 7; i++) {
+    slots.push(items[i] || fallbackPool[i % fallbackPool.length] || defaultItems[i % defaultItems.length]);
+  }
+
+  return (
+    <article className="gallery-board" data-reveal>
+      <header>
+        <h3>{title}</h3>
+        <p>{subtitle}</p>
+      </header>
+      <div className="gallery-board-grid">
+        {slots.map((item, itemIndex) => (
+          <button
+            type="button"
+            className={`gallery-card gallery-slot-${itemIndex + 1}`}
+            key={`${item.id}-slot-${itemIndex}`}
+            onClick={() => onOpen(item)}
+            aria-label={`Open ${item.title}`}
+          >
+            <Media item={item} />
+            <span>{item.title}</span>
+          </button>
+        ))}
+        <div className="gallery-card gallery-note gallery-note-social" aria-label="Mindrythm social channels">
+          <a href={socials.instagram || defaultInstagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram"><SocialIcon name="instagram" /></a>
+          <a href={socials.facebook} target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook"><SocialIcon name="facebook" /></a>
+          <a href={socials.youtube} target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube"><SocialIcon name="youtube" /></a>
+        </div>
+        <div className="gallery-card gallery-note gallery-note-feature">
+          <span>Mindrythm archive</span>
+          <p>{isCelebrations ? "Celebrations, music & unscripted human stories." : "Spaces shaped by light, material and a sense of arrival."}</p>
+          <i>Mindrythm Studio</i>
+        </div>
+      </div>
+    </article>
   );
 }
