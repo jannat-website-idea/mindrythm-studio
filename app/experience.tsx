@@ -555,37 +555,99 @@ export function Experience({ content }: { content: SiteContent }) {
           </section>
 
           <section className="services-experience" id="services" aria-label="Mindrythm services">
-            <header data-reveal><span>Our services</span><h2>One studio.<br />Many visual languages.</h2><p>“{brandTaglines[0]}”</p></header>
-            <div className="services-layout">
-              <div className="services-list">
-                {serviceItems.map((service, index) => {
-                  const num = String(index + 1).padStart(2, "0");
-                  return (
-                    <button
-                      type="button"
-                      aria-pressed={activeService === index}
-                      className={activeService === index ? "active" : ""}
-                      key={service.key || service.title}
-                      onMouseEnter={() => setActiveService(index)}
-                      onFocus={() => setActiveService(index)}
-                      onClick={() => setActiveService(index)}
-                    >
-                      <b>{num}</b>
-                      <strong>{service.title}</strong>
-                      <span>{service.copy}</span>
-                    </button>
-                  );
-                })}
+            <header data-reveal>
+              <span>Our services</span>
+              <h2>One studio.<br />Many visual languages.</h2>
+              <p>“{brandTaglines[0]}”</p>
+            </header>
+            <div className="services-editorial-split" data-reveal>
+              <div className="services-index-column">
+                <div className="services-index-list" role="tablist" aria-label="Services list">
+                  {serviceItems.map((service, index) => {
+                    const isActive = activeService === index;
+                    const num = String(index + 1).padStart(2, "0");
+                    return (
+                      <div
+                        key={service.key || service.title}
+                        className={`services-index-row ${isActive ? "is-active" : ""}`}
+                      >
+                        <button
+                          type="button"
+                          role="tab"
+                          aria-selected={isActive}
+                          className="services-row-header"
+                          onMouseEnter={() => setActiveService(index)}
+                          onFocus={() => setActiveService(index)}
+                          onClick={() => setActiveService(index)}
+                        >
+                          <span className="services-row-num">{num}</span>
+                          <span className="services-row-title">{service.title}</span>
+                        </button>
+                        {isActive && (
+                          <div className="services-row-expanded">
+                            <p className="services-row-description">{service.copy}</p>
+                            <div className="services-row-mobile-media">
+                              {serviceCollections[index]?.media?.[0] && (
+                                <Media item={serviceCollections[index].media[0]} active={isActive} priority />
+                              )}
+                              <a className="services-row-mobile-cta" href={`/work?service=${service.key}`}>
+                                <span>View service work</span>
+                                <span aria-hidden="true">→</span>
+                              </a>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-              <div className="services-preview" aria-live="polite">
-                {serviceCollections.map((service, index) => (
-                  <div className={`service-preview-group ${activeService === index ? "active" : ""}`} data-count={service.media.length} key={service.key}>
-                    {service.media.map((item) => <span className="service-preview-media" key={`${service.key}-${item.id}`}><Media item={item} active={activeService === index} /></span>)}
-                  </div>
-                ))}
-                <a className="services-preview-link" href={`/work?service=${serviceItems[activeService]?.key || serviceItems[0]?.key}`}>
-                  <span>{serviceItems[activeService]?.title || serviceItems[0]?.title}</span><i>View service work →</i>
-                </a>
+
+              <div className="services-canvas-column" aria-live="polite">
+                <div className="services-canvas-box">
+                  {serviceCollections.map((service, index) => {
+                    const isActive = activeService === index;
+                    const mainMedia = service.media[0] || projects[0];
+                    const secondaryMedia = service.media[1];
+                    const num = String(index + 1).padStart(2, "0");
+                    return (
+                      <div
+                        key={service.key}
+                        className={`services-canvas-item ${isActive ? "is-active" : ""}`}
+                        aria-hidden={!isActive}
+                      >
+                        <div className="services-canvas-media-wrap">
+                          {mainMedia && (
+                            <div className="services-media-primary">
+                              <Media item={mainMedia} priority={isActive} active={isActive} />
+                            </div>
+                          )}
+                          {secondaryMedia && (
+                            <div className="services-media-secondary">
+                              <Media item={secondaryMedia} active={isActive} />
+                            </div>
+                          )}
+                          <div className="services-media-vignette" />
+                        </div>
+
+                        <div className="services-canvas-bar">
+                          <div className="services-bar-info">
+                            <span className="services-bar-num">{num}</span>
+                            <span className="services-bar-name">{service.title}</span>
+                          </div>
+                          <a
+                            className="services-bar-cta"
+                            href={`/work?service=${service.key}`}
+                            aria-label={`View ${service.title} work`}
+                          >
+                            <span>View service work</span>
+                            <span aria-hidden="true" className="services-bar-arrow">→</span>
+                          </a>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </section>
