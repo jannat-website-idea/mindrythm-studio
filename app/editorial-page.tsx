@@ -165,13 +165,12 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
       </header>
 
       <main>
-        {page !== "services" && (
+        {page !== "services" && page !== "gallery" && (
           <section className={`inner-hero inner-hero-${page}`}>
             <span>Mindrythm / {page === "work" ? "Our Work" : page === "story" ? "Our Story" : page === "team" ? "Our Team" : page.slice(0, 1).toUpperCase() + page.slice(1)}</span>
-            <h1>{page === "work" ? "Our Work" : page === "gallery" ? "Gallery" : page === "team" ? "Our Team" : page === "story" ? "Our Story" : "Enquire"}</h1>
+            <h1>{page === "work" ? "Our Work" : page === "team" ? "Our Team" : page === "story" ? "Our Story" : "Enquire"}</h1>
             <p>
               {page === "work" && "Selected commissions spanning properties, retreats, moments and commercial narratives."}
-              {page === "gallery" && "An immersive visual archive of spaces, architecture, lifestyle and human moments."}
               {page === "team" && "Photographers, filmmakers, directors and craftspeople dedicated to purposeful storytelling."}
               {page === "story" && "A studio shaped around listening, authenticity and the belief that every story has a rhythm."}
               {page === "contact" && "Tell us about your space, occasion or brand vision. We listen before we frame."}
@@ -296,6 +295,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
 
         {page === "gallery" && (() => {
           const spacesItems = galleryItems.filter((item) =>
+            item.category?.toLowerCase() === "spaces" ||
             item.category?.toLowerCase().includes("space") ||
             item.category?.toLowerCase().includes("interior") ||
             item.category?.toLowerCase().includes("landscape") ||
@@ -307,6 +307,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
             item.eyebrow?.toLowerCase().includes("architecture")
           );
           const celebrationsItems = galleryItems.filter((item) =>
+            item.category?.toLowerCase() === "celebrations" ||
             item.category?.toLowerCase().includes("wedding") ||
             item.category?.toLowerCase().includes("event") ||
             item.category?.toLowerCase().includes("celebration") ||
@@ -315,77 +316,44 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
             item.eyebrow?.toLowerCase().includes("event")
           );
 
-          const fallbackSpaces = defaultItems.filter((i: ContentItem) =>
-            i.category?.toLowerCase().includes("space") || i.category?.toLowerCase().includes("retreat") || i.category?.toLowerCase().includes("interior")
+          const defaultSpaces = defaultItems.filter(
+            (i) => i.kind === "gallery" && i.category?.toLowerCase() === "spaces"
           );
-          const fallbackCelebrations = defaultItems.filter((i: ContentItem) =>
-            i.category?.toLowerCase().includes("wedding") || i.category?.toLowerCase().includes("event")
+          const defaultCelebrations = defaultItems.filter(
+            (i) => i.kind === "gallery" && i.category?.toLowerCase() === "celebrations"
           );
 
-          const finalSpaces: ContentItem[] = [];
-          for (let i = 0; i < 7; i++) {
-            finalSpaces.push(spacesItems[i] || fallbackSpaces[i % fallbackSpaces.length] || defaultItems[i % defaultItems.length]);
-          }
-
-          const finalCelebrations: ContentItem[] = [];
-          for (let i = 0; i < 7; i++) {
-            finalCelebrations.push(celebrationsItems[i] || fallbackCelebrations[i % fallbackCelebrations.length] || defaultItems[i % defaultItems.length]);
-          }
+          const filledSpaces = [...spacesItems, ...defaultSpaces.filter((d) => !spacesItems.some((s) => s.id === d.id))];
+          const filledCelebrations = [...celebrationsItems, ...defaultCelebrations.filter((d) => !celebrationsItems.some((c) => c.id === d.id))];
 
           return (
             <div className="gallery-page">
               {/* Section 1: SPACES */}
-              <section className="gallery-page-section" id="spaces">
-                <header>
+              <section className="gallery-section-container" id="spaces">
+                <header className="gallery-section-header">
                   <h2>Spaces</h2>
-                  <p>Properties, architecture, interior light and quiet sanctuary environments.</p>
+                  <p>Architecture, interiors &amp; quiet sanctuaries</p>
                 </header>
-                <div className="gallery-page-grid">
-                  {finalSpaces.map((item, index) => (
-                    <button
-                      type="button"
-                      className="gallery-page-card"
-                      key={`${item.id}-spaces-${index}`}
-                      onClick={() => setSelected(item)}
-                      aria-label={`Open ${item.title}`}
-                    >
-                      <Media item={item} />
-                      <span>{item.title}</span>
-                    </button>
-                  ))}
-                  <article className="gallery-page-feature">
-                    <span>Spaces Shaped By</span>
-                    <p>Spaces shaped by light, material and a sense of arrival.</p>
-                    <i>Open the full gallery</i>
-                  </article>
-                </div>
+                <BentoGalleryGrid
+                  items={filledSpaces}
+                  editorialEyebrow="MINDRYTHM ARCHIVE"
+                  editorialText="SPACES SHAPED BY LIGHT, MATERIAL AND A SENSE OF ARRIVAL."
+                  onOpen={setSelected}
+                />
               </section>
 
               {/* Section 2: CELEBRATIONS */}
-              <section className="gallery-page-section" id="celebrations">
-                <header>
+              <section className="gallery-section-container" id="celebrations">
+                <header className="gallery-section-header">
                   <h2>Celebrations</h2>
-                  <p>Weddings, music, human gatherings and candid live moments captured cinematically.</p>
+                  <p>Weddings, gatherings &amp; live human moments</p>
                 </header>
-                <div className="gallery-page-grid">
-                  {finalCelebrations.map((item, index) => (
-                    <button
-                      type="button"
-                      className="gallery-page-card"
-                      key={`${item.id}-celebrations-${index}`}
-                      onClick={() => setSelected(item)}
-                      aria-label={`Open ${item.title}`}
-                    >
-                      <Media item={item} />
-                      <span>{item.title}</span>
-                    </button>
-                  ))}
-                  <article className="gallery-page-feature">
-                    <span>Celebrations &amp; Rituals</span>
-                    <p>Celebrations, music &amp; unscripted human stories.</p>
-                    <i>Open the full gallery</i>
-                  </article>
-                </div>
+                <BentoGalleryGrid
+                  items={filledCelebrations}
+                  editorialEyebrow="MINDRYTHM ARCHIVE"
+                  editorialText="WEDDING STORIES WITH FEELING, MOVEMENT AND DETAIL."
+                  onOpen={setSelected}
+                />
               </section>
             </div>
           );
@@ -556,61 +524,199 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   );
 }
 
-function GalleryBoardBento({
-  title,
-  subtitle,
+export function BentoGalleryGrid({
   items,
-  socials,
+  editorialText,
   onOpen,
-  isCelebrations = false,
 }: {
-  title: string;
-  subtitle: string;
   items: ContentItem[];
-  socials: SiteContent["settings"];
+  editorialText: string;
+  editorialEyebrow?: string;
   onOpen: (item: ContentItem) => void;
-  isCelebrations?: boolean;
 }) {
-  const fallbackPool = defaultItems.filter((i: ContentItem) =>
-    isCelebrations
-      ? i.category?.toLowerCase().includes("wedding") || i.category?.toLowerCase().includes("event")
-      : i.category?.toLowerCase().includes("space") || i.category?.toLowerCase().includes("retreat") || i.category?.toLowerCase().includes("interior")
-  );
-  const slots: ContentItem[] = [];
-  for (let i = 0; i < 7; i++) {
-    slots.push(items[i] || fallbackPool[i % fallbackPool.length] || defaultItems[i % defaultItems.length]);
+  const slot1 = items[0]; // Col 1 Top (Short - Minimal Elegance)
+  const slot2 = items[1]; // Col 2 Top (Tall - Soft Details)
+  const slot3 = items[2]; // Col 3 Top (Short - Hand-painted Murals)
+  const slot4 = items[3]; // Col 1 Bottom (Tall - Wellness Redefined)
+  const slot5 = items[4]; // Col 3 Bottom (Tall - Minimal Living)
+  const slot6 = items[5]; // Col 4 Bottom (Short - Warm Natural Interiors)
+  const slot7 = items[6]; // Col 2 Bottom (Short - Arambol)
+
+  const extraMedia = items.slice(7);
+  const additionalGroups: ContentItem[][] = [];
+  for (let i = 0; i < extraMedia.length; i += 8) {
+    additionalGroups.push(extraMedia.slice(i, i + 8));
   }
 
   return (
-    <article className="gallery-board" data-reveal>
-      <header>
-        <h3>{title}</h3>
-        <p>{subtitle}</p>
-      </header>
-      <div className="gallery-board-grid">
-        {slots.map((item, itemIndex) => (
-          <button
-            type="button"
-            className={`gallery-card gallery-slot-${itemIndex + 1}`}
-            key={`${item.id}-slot-${itemIndex}`}
-            onClick={() => onOpen(item)}
-            aria-label={`Open ${item.title}`}
-          >
-            <Media item={item} />
-            <span>{item.title}</span>
-          </button>
-        ))}
-        <div className="gallery-card gallery-note gallery-note-social" aria-label="Mindrythm social channels">
-          <a href={socials.instagram || defaultInstagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram"><SocialIcon name="instagram" /></a>
-          <a href={socials.facebook} target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook"><SocialIcon name="facebook" /></a>
-          <a href={socials.youtube} target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube"><SocialIcon name="youtube" /></a>
+    <div className="bento-stream">
+      {/* Primary Bento Board (100% exact match to reference screenshot) */}
+      <div className="bento-board">
+        {/* Column 1: Short Top (Minimal Elegance) + Tall Bottom (Wellness Redefined) */}
+        <div className="bento-col bento-col-a">
+          {slot1 && (
+            <button
+              type="button"
+              className="bento-card bento-card-short"
+              onClick={() => onOpen(slot1)}
+              aria-label={`Open ${slot1.title}`}
+            >
+              <Media item={slot1} priority />
+              <span className="bento-badge">{slot1.title}</span>
+            </button>
+          )}
+          {slot4 && (
+            <button
+              type="button"
+              className="bento-card bento-card-tall"
+              onClick={() => onOpen(slot4)}
+              aria-label={`Open ${slot4.title}`}
+            >
+              <Media item={slot4} />
+              <span className="bento-badge">{slot4.title}</span>
+            </button>
+          )}
         </div>
-        <div className="gallery-card gallery-note gallery-note-feature">
-          <span>Mindrythm archive</span>
-          <p>{isCelebrations ? "Celebrations, music & unscripted human stories." : "Spaces shaped by light, material and a sense of arrival."}</p>
-          <i>Mindrythm Studio</i>
+
+        {/* Column 2: Tall Top (Soft Details) + Short Bottom (Arambol) */}
+        <div className="bento-col bento-col-b">
+          {slot2 && (
+            <button
+              type="button"
+              className="bento-card bento-card-tall"
+              onClick={() => onOpen(slot2)}
+              aria-label={`Open ${slot2.title}`}
+            >
+              <Media item={slot2} priority />
+              <span className="bento-badge">{slot2.title}</span>
+            </button>
+          )}
+          {slot7 && (
+            <button
+              type="button"
+              className="bento-card bento-card-short"
+              onClick={() => onOpen(slot7)}
+              aria-label={`Open ${slot7.title}`}
+            >
+              <Media item={slot7} />
+              <span className="bento-badge">{slot7.title}</span>
+            </button>
+          )}
+        </div>
+
+        {/* Column 3: Short Top (Hand-painted Murals) + Tall Bottom (Minimal Living) */}
+        <div className="bento-col bento-col-a">
+          {slot3 && (
+            <button
+              type="button"
+              className="bento-card bento-card-short"
+              onClick={() => onOpen(slot3)}
+              aria-label={`Open ${slot3.title}`}
+            >
+              <Media item={slot3} priority />
+              <span className="bento-badge">{slot3.title}</span>
+            </button>
+          )}
+          {slot5 && (
+            <button
+              type="button"
+              className="bento-card bento-card-tall"
+              onClick={() => onOpen(slot5)}
+              aria-label={`Open ${slot5.title}`}
+            >
+              <Media item={slot5} />
+              <span className="bento-badge">{slot5.title}</span>
+            </button>
+          )}
+        </div>
+
+        {/* Column 4: Tall Top (Editorial Card) + Short Bottom (Warm Natural Interiors) */}
+        <div className="bento-col bento-col-b">
+          <article className="bento-card bento-card-editorial">
+            <p className="bento-editorial-statement">{editorialText}</p>
+            <button
+              type="button"
+              className="bento-editorial-link"
+              onClick={() => slot1 && onOpen(slot1)}
+            >
+              OPEN THE FULL GALLERY
+            </button>
+          </article>
+          {slot6 && (
+            <button
+              type="button"
+              className="bento-card bento-card-short"
+              onClick={() => onOpen(slot6)}
+              aria-label={`Open ${slot6.title}`}
+            >
+              <Media item={slot6} />
+              <span className="bento-badge">{slot6.title}</span>
+            </button>
+          )}
         </div>
       </div>
-    </article>
+
+      {/* Subsequent Bento Boards for extra media beyond 7 */}
+      {additionalGroups.map((group, groupIdx) => (
+        <div className="bento-board bento-board-subsequent" key={`extra-group-${groupIdx + 2}`}>
+          <div className="bento-col bento-col-a">
+            {group[0] && (
+              <button type="button" className="bento-card bento-card-short" onClick={() => onOpen(group[0])}>
+                <Media item={group[0]} />
+                <span className="bento-badge">{group[0].title}</span>
+              </button>
+            )}
+            {group[4] && (
+              <button type="button" className="bento-card bento-card-tall" onClick={() => onOpen(group[4])}>
+                <Media item={group[4]} />
+                <span className="bento-badge">{group[4].title}</span>
+              </button>
+            )}
+          </div>
+          <div className="bento-col bento-col-b">
+            {group[1] && (
+              <button type="button" className="bento-card bento-card-tall" onClick={() => onOpen(group[1])}>
+                <Media item={group[1]} />
+                <span className="bento-badge">{group[1].title}</span>
+              </button>
+            )}
+            {group[5] && (
+              <button type="button" className="bento-card bento-card-short" onClick={() => onOpen(group[5])}>
+                <Media item={group[5]} />
+                <span className="bento-badge">{group[5].title}</span>
+              </button>
+            )}
+          </div>
+          <div className="bento-col bento-col-a">
+            {group[2] && (
+              <button type="button" className="bento-card bento-card-short" onClick={() => onOpen(group[2])}>
+                <Media item={group[2]} />
+                <span className="bento-badge">{group[2].title}</span>
+              </button>
+            )}
+            {group[6] && (
+              <button type="button" className="bento-card bento-card-tall" onClick={() => onOpen(group[6])}>
+                <Media item={group[6]} />
+                <span className="bento-badge">{group[6].title}</span>
+              </button>
+            )}
+          </div>
+          <div className="bento-col bento-col-b">
+            {group[3] && (
+              <button type="button" className="bento-card bento-card-tall" onClick={() => onOpen(group[3])}>
+                <Media item={group[3]} />
+                <span className="bento-badge">{group[3].title}</span>
+              </button>
+            )}
+            {group[7] && (
+              <button type="button" className="bento-card bento-card-short" onClick={() => onOpen(group[7])}>
+                <Media item={group[7]} />
+                <span className="bento-badge">{group[7].title}</span>
+              </button>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
   );
 }

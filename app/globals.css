@@ -6820,3 +6820,275 @@ video {
     text-transform: uppercase;
   }
 }
+
+/* ==========================================================================
+   Fixed Bento Gallery System (SPACES & CELEBRATIONS)
+   Exact bento board matching user reference screenshot:
+   4 columns, 2 items per column with alternating Short/Tall stagger,
+   14px uniform gap, rounded corners, zero distortion, robust responsive flow.
+   ========================================================================== */
+
+.gallery-page {
+  min-height: 100vh !important;
+  background: var(--paper) !important;
+  color: var(--ink) !important;
+  padding: 0 0 clamp(4rem, 6vw, 8rem) 0 !important;
+}
+
+.gallery-section-container {
+  padding: clamp(2.5rem, 4vw, 4.5rem) clamp(1.5rem, 4vw, 4.5rem) clamp(3.5rem, 5vw, 6rem) !important;
+}
+
+.gallery-section-container:first-of-type {
+  padding-top: clamp(2.5rem, 4.5vw, 4.5rem) !important;
+}
+
+.gallery-section-container + .gallery-section-container {
+  border-top: 1px solid var(--line) !important;
+}
+
+.gallery-section-header {
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: space-between !important;
+  gap: 2rem !important;
+  padding-bottom: clamp(1rem, 1.8vw, 1.8rem) !important;
+  margin-bottom: clamp(1.25rem, 2vw, 2rem) !important;
+  border-bottom: 1px solid var(--line) !important;
+}
+
+.gallery-section-header h2 {
+  margin: 0 !important;
+  font-family: inherit !important;
+  font-size: clamp(2.2rem, 4.5vw, 4.8rem) !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.04em !important;
+  text-transform: uppercase !important;
+  line-height: 0.9 !important;
+  color: var(--ink) !important;
+}
+
+.gallery-section-header p {
+  margin: 0 !important;
+  font-size: clamp(0.58rem, 0.72vw, 0.72rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  color: var(--muted) !important;
+  text-align: right !important;
+  max-width: 44ch !important;
+  line-height: 1.4 !important;
+}
+
+.bento-stream {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: clamp(1rem, 1.8vw, 2rem) !important;
+  width: 100% !important;
+}
+
+.bento-board {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: clamp(10px, 1.25vw, 18px) !important;
+  width: 100% !important;
+  height: clamp(560px, 52vw, 760px) !important;
+  box-sizing: border-box !important;
+}
+
+.bento-col {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: clamp(10px, 1.25vw, 18px) !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Stagger A (Col 1 & 3): Top Short (34%), Bottom Tall (66%) */
+.bento-col-a .bento-card:first-child,
+.bento-col-a > button:first-child {
+  flex: 0.34 !important;
+  height: 34% !important;
+}
+.bento-col-a .bento-card:last-child,
+.bento-col-a > button:last-child {
+  flex: 0.66 !important;
+  height: 66% !important;
+}
+
+/* Stagger B (Col 2 & 4): Top Tall (58%), Bottom Short (42%) */
+.bento-col-b .bento-card:first-child,
+.bento-col-b > *:first-child {
+  flex: 0.58 !important;
+  height: 58% !important;
+}
+.bento-col-b .bento-card:last-child,
+.bento-col-b > *:last-child {
+  flex: 0.42 !important;
+  height: 42% !important;
+}
+
+.bento-card {
+  position: relative !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  min-width: 0 !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: #14100e !important;
+  cursor: pointer !important;
+  text-align: left !important;
+  display: block !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+}
+
+.bento-card img,
+.bento-card video {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: 12px !important;
+  display: block !important;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.bento-card:hover img,
+.bento-card:hover video {
+  transform: scale(1.035) !important;
+}
+
+.bento-badge {
+  position: absolute !important;
+  bottom: 0.75rem !important;
+  left: 0.75rem !important;
+  z-index: 3 !important;
+  padding: 0.32rem 0.7rem !important;
+  border-radius: 999px !important;
+  background: rgba(14, 10, 8, 0.72) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  color: #ffffff !important;
+  font-size: 0.58rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  pointer-events: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Editorial Card */
+.bento-card-editorial {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  padding: clamp(1.4rem, 2.4vw, 2.5rem) !important;
+  background: #080807 !important;
+  color: #ffffff !important;
+  border-radius: 12px !important;
+  cursor: default !important;
+  text-decoration: none !important;
+}
+
+.bento-editorial-statement {
+  margin: 0 !important;
+  font-family: inherit !important;
+  font-size: clamp(1.3rem, 2.15vw, 2.45rem) !important;
+  font-weight: 300 !important;
+  letter-spacing: -0.025em !important;
+  line-height: 1.12 !important;
+  text-transform: uppercase !important;
+  color: #ffffff !important;
+  max-width: 18ch !important;
+}
+
+.bento-editorial-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  width: max-content !important;
+  padding: 0 0 0.2rem 0 !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.45) !important;
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.72) !important;
+  font: inherit !important;
+  font-size: 0.58rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.bento-editorial-link:hover {
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+  transform: translateX(2px) !important;
+}
+
+/* Tablet Breakpoint (641px - 920px) */
+@media (max-width: 920px) and (min-width: 641px) {
+  .bento-board {
+    grid-template-columns: repeat(2, 1fr) !important;
+    height: auto !important;
+    gap: 12px !important;
+  }
+  .bento-col {
+    height: 520px !important;
+  }
+}
+
+/* Mobile Breakpoint (<= 640px) */
+@media (max-width: 640px) {
+  .gallery-section-container {
+    padding: 2.5rem 1rem 3.5rem !important;
+  }
+  .gallery-section-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.5rem !important;
+  }
+  .gallery-section-header p {
+    text-align: left !important;
+  }
+  .bento-board {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    gap: 10px !important;
+  }
+  .bento-col {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    gap: 10px !important;
+  }
+  .bento-col-a .bento-card:first-child,
+  .bento-col-a > button:first-child,
+  .bento-col-b .bento-card:last-child,
+  .bento-col-b > *:last-child {
+    aspect-ratio: 16 / 10 !important;
+    height: auto !important;
+    flex: none !important;
+  }
+  .bento-col-a .bento-card:last-child,
+  .bento-col-a > button:last-child,
+  .bento-col-b .bento-card:first-child,
+  .bento-col-b > *:first-child {
+    aspect-ratio: 4 / 5 !important;
+    height: auto !important;
+    flex: none !important;
+  }
+  .bento-card-editorial {
+    min-height: 220px !important;
+  }
+}
