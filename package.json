@@ -15,6 +15,7 @@
     "studio:seed": "sanity exec sanity/seed/seed.ts --with-user-token",
     "studio:migrate-media-ids": "sanity exec sanity/migrations/public-media-document-ids.ts --with-user-token",
     "studio:validate": "sanity schema validate",
+    "deploy:hostinger": "bash scripts/deploy-hostinger.sh",
     "test": "pnpm run build && node --test tests/rendered-html.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern .sanity --ignore-pattern 'opencode work'"
   },
