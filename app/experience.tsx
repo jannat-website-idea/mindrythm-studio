@@ -565,7 +565,6 @@ export function Experience({ content }: { content: SiteContent }) {
                 <div className="services-index-list" role="tablist" aria-label="Services list">
                   {serviceItems.map((service, index) => {
                     const isActive = activeService === index;
-                    const num = String(index + 1).padStart(2, "0");
                     return (
                       <div
                         key={service.key || service.title}
@@ -580,7 +579,6 @@ export function Experience({ content }: { content: SiteContent }) {
                           onFocus={() => setActiveService(index)}
                           onClick={() => setActiveService(index)}
                         >
-                          <span className="services-row-num">{num}</span>
                           <span className="services-row-title">{service.title}</span>
                         </button>
                         {isActive && (
@@ -609,7 +607,6 @@ export function Experience({ content }: { content: SiteContent }) {
                     const isActive = activeService === index;
                     const mainMedia = service.media[0] || projects[0];
                     const secondaryMedia = service.media[1];
-                    const num = String(index + 1).padStart(2, "0");
                     return (
                       <div
                         key={service.key}
@@ -632,7 +629,6 @@ export function Experience({ content }: { content: SiteContent }) {
 
                         <div className="services-canvas-bar">
                           <div className="services-bar-info">
-                            <span className="services-bar-num">{num}</span>
                             <span className="services-bar-name">{service.title}</span>
                           </div>
                           <a

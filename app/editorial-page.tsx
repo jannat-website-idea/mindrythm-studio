@@ -178,102 +178,51 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
         {page === "services" && (
           <div className="services-page-root">
             <section className="services-page-hero">
-              <span className="services-page-hero-eyebrow">SERVICES</span>
+              <span className="services-page-hero-eyebrow">Mindrythm / Services</span>
               <h1 className="services-page-hero-headline">
                 “Visual stories, digital experiences<br />
                 and creative systems built around<br />
                 how brands are experienced.”
               </h1>
+              <p className="services-page-hero-subtext">
+                A focused visual practice across real estate, hospitality, architecture, commercial campaigns, and modern digital identity.
+              </p>
             </section>
 
-            <section className="services-editorial-split" aria-label="Mindrythm services directory">
-              <div className="services-index-column">
-                <div className="services-index-list" role="tablist" aria-label="Services list">
-                  {serviceItems.map((service, index) => {
-                    const isActive = activeService === index;
-                    const num = String(index + 1).padStart(2, "0");
-                    return (
-                      <div
-                        key={service.key || service.title}
-                        className={`services-index-row ${isActive ? "is-active" : ""}`}
-                      >
-                        <button
-                          type="button"
-                          role="tab"
-                          aria-selected={isActive}
-                          className="services-row-header"
-                          onMouseEnter={() => setActiveService(index)}
-                          onFocus={() => setActiveService(index)}
-                          onClick={() => setActiveService(index)}
-                        >
-                          <span className="services-row-num">{num}</span>
-                          <span className="services-row-title">{service.title}</span>
-                        </button>
-                        {isActive && (
-                          <div className="services-row-expanded">
-                            <p className="services-row-description">{service.copy}</p>
-                            <div className="services-row-mobile-media">
-                              {serviceCollections[index]?.media?.[0] && (
-                                <Media item={serviceCollections[index].media[0]} active={isActive} priority />
-                              )}
-                              <Link className="services-row-mobile-cta" href={`/work?service=${service.key}`}>
-                                <span>View service work</span>
-                                <span aria-hidden="true">→</span>
-                              </Link>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="services-canvas-column" aria-live="polite">
-                <div className="services-canvas-box">
-                  {serviceCollections.map((service, index) => {
-                    const isActive = activeService === index;
-                    const mainMedia = service.media[0] || projects[0];
-                    const secondaryMedia = service.media[1];
-                    const num = String(index + 1).padStart(2, "0");
-                    return (
-                      <div
-                        key={service.key}
-                        className={`services-canvas-item ${isActive ? "is-active" : ""}`}
-                        aria-hidden={!isActive}
-                      >
-                        <div className="services-canvas-media-wrap">
-                          {mainMedia && (
-                            <div className="services-media-primary">
-                              <Media item={mainMedia} priority={isActive} active={isActive} />
+            <section className="services-catalogue-section" aria-label="Mindrythm services showcase">
+              <div className="services-catalogue-grid">
+                {serviceCollections.map((service, index) => {
+                  const primaryMedia = service.media[0] || projects[0];
+                  const secondaryMedia = service.media[1];
+                  return (
+                    <article className="services-catalogue-card" key={service.key}>
+                      <div className="services-card-visual">
+                        <div className="services-card-media-wrap">
+                          {primaryMedia && (
+                            <div className="services-card-media-primary">
+                              <Media item={primaryMedia} priority={index < 4} />
                             </div>
                           )}
                           {secondaryMedia && (
-                            <div className="services-media-secondary">
-                              <Media item={secondaryMedia} active={isActive} />
+                            <div className="services-card-media-secondary">
+                              <Media item={secondaryMedia} />
                             </div>
                           )}
-                          <div className="services-media-vignette" />
-                        </div>
-
-                        <div className="services-canvas-bar">
-                          <div className="services-bar-info">
-                            <span className="services-bar-num">{num}</span>
-                            <span className="services-bar-name">{service.title}</span>
-                          </div>
-                          <Link
-                            className="services-bar-cta"
-                            href={`/work?service=${service.key}`}
-                            aria-label={`View ${service.title} work`}
-                          >
-                            <span>View service work</span>
-                            <span aria-hidden="true" className="services-bar-arrow">→</span>
-                          </Link>
+                          <div className="services-card-media-shade" />
                         </div>
                       </div>
-                    );
-                  })}
-                </div>
+
+                      <div className="services-card-content">
+                        <h2 className="services-card-title">{service.title}</h2>
+                        <p className="services-card-copy">{service.copy}</p>
+                        <Link className="services-card-cta" href={`/work?service=${service.key}`}>
+                          <span>View commissions</span>
+                          <span aria-hidden="true" className="services-card-arrow">→</span>
+                        </Link>
+                      </div>
+                    </article>
+                  );
+                })}
               </div>
             </section>
           </div>
