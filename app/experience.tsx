@@ -780,31 +780,45 @@ export function Experience({ content }: { content: SiteContent }) {
         <BackToTop />
       </div>
 
-      {selectedItem && (
-        <div className="project-modal" role="dialog" aria-modal="true" aria-label={selectedItem.title}>
-          <button type="button" className="modal-close" onClick={() => setSelectedItem(null)} aria-label="Close modal">Close ×</button>
-          <div className="modal-copy">
-            <span>{selectedItem.category || selectedItem.eyebrow} {selectedItem.year ? `/ ${selectedItem.year}` : ""}</span>
-            <h2>{selectedItem.title}</h2>
-            <p>{selectedItem.body}</p>
-            {selectedItem.kind === "team" && (
-              <div className="modal-socials">
-                <a href={selectedItem.href || mainInstagramUrl} target="_blank" rel="noreferrer">Instagram</a>
-                <a href={settings.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
-              </div>
+      {selectedItem && (() => {
+        const allItems = [...projects, ...galleryItems];
+        const seen = new Set<string>();
+        const unique = allItems.filter((item) => { if (seen.has(item.id)) return false; seen.add(item.id); return true; });
+        const currentIndex = unique.findIndex((item) => item.id === selectedItem.id);
+        const hasPrev = currentIndex > 0;
+        const hasNext = currentIndex < unique.length - 1;
+        const goPrev = () => hasPrev && setSelectedItem(unique[currentIndex - 1]);
+        const goNext = () => hasNext && setSelectedItem(unique[currentIndex + 1]);
+        return (
+          <div className="lightbox-immersive" role="dialog" aria-modal="true" aria-label={selectedItem.title}>
+            <div className="lightbox-immersive-bg">
+              <Media item={selectedItem} priority />
+            </div>
+            <div className="lightbox-immersive-gradient" />
+            <div className="lightbox-immersive-toolbar">
+              <button type="button" className="lightbox-grid-btn" onClick={() => setSelectedItem(null)} aria-label="Back to gallery">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="1" y="1" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.5"/><rect x="12" y="1" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.5"/><rect x="1" y="12" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.5"/><rect x="12" y="12" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.5"/></svg>
+              </button>
+              <button type="button" className="lightbox-close-btn" onClick={() => setSelectedItem(null)} aria-label="Close">Close ×</button>
+            </div>
+            {hasPrev && (
+              <button type="button" className="lightbox-nav lightbox-nav-prev" onClick={goPrev} aria-label="Previous image">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M18 4L8 14L18 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </button>
             )}
-            {selectedItem.kind === "project" && (
-              <div className="modal-related">
-                {galleryItems.slice(0, 3).map((item) => <div key={item.id}><Media item={item} /></div>)}
-              </div>
+            {hasNext && (
+              <button type="button" className="lightbox-nav lightbox-nav-next" onClick={goNext} aria-label="Next image">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M10 4L20 14L10 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </button>
             )}
-            <div className="modal-footer"><span>{selectedItem.category}</span><span>Mindrythm</span></div>
+            <div className="lightbox-immersive-copy">
+              <span>{selectedItem.category || selectedItem.eyebrow}</span>
+              <h2>{selectedItem.title}</h2>
+              <p>{selectedItem.body}</p>
+            </div>
           </div>
-          <div className="modal-media">
-            <Media item={selectedItem} priority />
-          </div>
-        </div>
-      )}
+        );
+      })()}
     </>
   );
 }
