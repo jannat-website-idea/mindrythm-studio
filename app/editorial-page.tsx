@@ -403,7 +403,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                 <img className="story-pillar-media" src="/images/event-stage.jpg" alt="Guided wellness gathering captured by Mindrythm" />
                 <div className="story-pillar-copy">
                   <h2>Who we work with</h2>
-                  <p>We work with real estate clients, luxury villas, heritage houses or heritage properties, cafes and restaurants (small and large-scale F&B businesses), wellness and hospitality spaces, and event managers to cover corporate events and music festivals.</p>
+                  <p>We work with real estate clients, luxury villas, heritage houses or heritage properties, small F&amp;B businesses or not small-scale F&amp;B businesses like cafes and restaurants. We work with wellness and hospitality spaces. We work with event managers to cover corporate events and to cover music events or music festivals.</p>
                 </div>
               </article>
               <article>
