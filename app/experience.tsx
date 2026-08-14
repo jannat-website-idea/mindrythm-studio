@@ -7,6 +7,7 @@ import {
   type SiteContent,
 } from "@/lib/content";
 import { BackToTop } from "@/app/back-to-top";
+import { BentoGalleryGrid } from "@/app/bento-gallery";
 import { EmphasizedCopy } from "@/app/emphasized-copy";
 import { Media } from "@/app/media";
 import { SocialIcon } from "@/app/social-icon";
@@ -743,20 +744,30 @@ export function Experience({ content }: { content: SiteContent }) {
             </div>
           </section>
 
-          <section className="gallery-section" id="gallery">
-            <img className="section-watermark section-watermark-one" src="/mindrythm-logomark.png" alt="" aria-hidden="true" />
-            <div className="gallery-heading" data-reveal>
-              <span>Gallery</span>
-              <h2>Spaces, people &amp;<br /><em>moments.</em></h2>
-              <div className="gallery-heading-copy">
-                <p>An immersive archive of properties, portraits, architecture and moving moments from every side of the studio.</p>
-              </div>
+          <section className="gallery-section-root" id="gallery">
+            <div className="gallery-section-container" id="spaces">
+              <header className="gallery-section-header" data-reveal>
+                <h2>Spaces</h2>
+                <p>Architecture, interiors &amp; quiet sanctuaries</p>
+              </header>
+              <BentoGalleryGrid
+                items={gallerySpaces}
+                editorialText="SPACES SHAPED BY LIGHT, MATERIAL AND A SENSE OF ARRIVAL."
+                onOpen={setSelectedItem}
+              />
             </div>
-            <div className="gallery-scroll" aria-label="Gallery archive">
-              <GalleryCollection title="Spaces" items={gallerySpaces} socials={settings} onOpen={setSelectedItem} />
-              <GalleryCollection title="Celebrations" items={galleryCelebrations} socials={settings} onOpen={setSelectedItem} />
+
+            <div className="gallery-section-container" id="celebrations">
+              <header className="gallery-section-header" data-reveal>
+                <h2>Celebrations</h2>
+                <p>Weddings, gatherings &amp; live human moments</p>
+              </header>
+              <BentoGalleryGrid
+                items={galleryCelebrations}
+                editorialText="WEDDING STORIES WITH FEELING, MOVEMENT AND DETAIL."
+                onOpen={setSelectedItem}
+              />
             </div>
-            <div className="gallery-scroll-note"><span>Visual archive</span><span>Mindrythm Studio</span></div>
           </section>
 
           <aside className="story-whisper story-whisper-light" data-reveal><span>Our point of view</span><p>“{brandTaglines[3]}”</p></aside>
@@ -971,137 +982,5 @@ function ProjectCard({ project, index, onOpen }: { project: ContentItem; index: 
       <span className="card-category">{project.category}</span>
       <div className="project-title"><span>{project.eyebrow}</span><h3>{project.title}</h3><p>{project.body}</p></div>
     </button>
-  );
-}
-
-function GalleryCollection({ title, items, socials, onOpen }: { title: string; items: ContentItem[]; socials: SiteContent["settings"]; onOpen: (item: ContentItem) => void }) {
-  const isCelebrations = title === "Celebrations";
-  const fallbackPool = defaultItems.filter((i: ContentItem) =>
-    isCelebrations
-      ? i.category?.toLowerCase().includes("wedding") || i.category?.toLowerCase().includes("event")
-      : i.category?.toLowerCase().includes("space") || i.category?.toLowerCase().includes("retreat") || i.category?.toLowerCase().includes("interior")
-  );
-  const slots: ContentItem[] = [];
-  for (let i = 0; i < 7; i++) {
-    slots.push(items[i] || fallbackPool[i % fallbackPool.length] || defaultItems[i % defaultItems.length]);
-  }
-
-  const slot1 = slots[0];
-  const slot2 = slots[1];
-  const slot3 = slots[2];
-  const slot4 = slots[3];
-  const slot5 = slots[4];
-  const slot6 = slots[5];
-  const slot7 = slots[6];
-
-  return (
-    <article className="gallery-board" data-reveal>
-      <header>
-        <h3>{title}</h3>
-        <p>{isCelebrations ? "Weddings, gatherings & live human moments" : "Architecture, interiors & quiet sanctuaries"}</p>
-      </header>
-      <div className="bento-board">
-        {/* Column 1 */}
-        <div className="bento-col bento-col-a">
-          {slot1 && (
-            <button
-              type="button"
-              className="bento-card bento-card-short"
-              onClick={() => onOpen(slot1)}
-              aria-label={`Open ${slot1.title}`}
-            >
-              <Media item={slot1} />
-              <span className="bento-badge">{slot1.title}</span>
-            </button>
-          )}
-          {slot4 && (
-            <button
-              type="button"
-              className="bento-card bento-card-tall"
-              onClick={() => onOpen(slot4)}
-              aria-label={`Open ${slot4.title}`}
-            >
-              <Media item={slot4} />
-              <span className="bento-badge">{slot4.title}</span>
-            </button>
-          )}
-        </div>
-
-        {/* Column 2 */}
-        <div className="bento-col bento-col-b">
-          {slot2 && (
-            <button
-              type="button"
-              className="bento-card bento-card-tall"
-              onClick={() => onOpen(slot2)}
-              aria-label={`Open ${slot2.title}`}
-            >
-              <Media item={slot2} />
-              <span className="bento-badge">{slot2.title}</span>
-            </button>
-          )}
-          {slot7 && (
-            <button
-              type="button"
-              className="bento-card bento-card-short"
-              onClick={() => onOpen(slot7)}
-              aria-label={`Open ${slot7.title}`}
-            >
-              <Media item={slot7} />
-              <span className="bento-badge">{slot7.title}</span>
-            </button>
-          )}
-        </div>
-
-        {/* Column 3 */}
-        <div className="bento-col bento-col-a">
-          {slot3 && (
-            <button
-              type="button"
-              className="bento-card bento-card-short"
-              onClick={() => onOpen(slot3)}
-              aria-label={`Open ${slot3.title}`}
-            >
-              <Media item={slot3} />
-              <span className="bento-badge">{slot3.title}</span>
-            </button>
-          )}
-          {slot5 && (
-            <button
-              type="button"
-              className="bento-card bento-card-tall"
-              onClick={() => onOpen(slot5)}
-              aria-label={`Open ${slot5.title}`}
-            >
-              <Media item={slot5} />
-              <span className="bento-badge">{slot5.title}</span>
-            </button>
-          )}
-        </div>
-
-        {/* Column 4 */}
-        <div className="bento-col bento-col-b">
-          <a className="bento-card bento-card-editorial" href="/gallery">
-            <p className="bento-editorial-statement">
-              {isCelebrations
-                ? "WEDDING STORIES WITH FEELING, MOVEMENT AND DETAIL."
-                : "SPACES SHAPED BY LIGHT, MATERIAL AND A SENSE OF ARRIVAL."}
-            </p>
-            <span className="bento-editorial-link">OPEN THE FULL GALLERY</span>
-          </a>
-          {slot6 && (
-            <button
-              type="button"
-              className="bento-card bento-card-short"
-              onClick={() => onOpen(slot6)}
-              aria-label={`Open ${slot6.title}`}
-            >
-              <Media item={slot6} />
-              <span className="bento-badge">{slot6.title}</span>
-            </button>
-          )}
-        </div>
-      </div>
-    </article>
   );
 }
