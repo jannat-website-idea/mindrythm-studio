@@ -136,8 +136,9 @@ export function Experience({ content }: { content: SiteContent }) {
     return saved.length ? saved : fallbackTestimonials;
   }, [content.items]);
 
-  const team = useMemo(() => {
-    const placeholders: ContentItem[] = [
+  const team = useMemo<ContentItem[]>(() => {
+    if (savedTeam.length > 0) return savedTeam;
+    return [
       {
         id: "team-direction", kind: "team", sortOrder: 80, title: "Property & commercial", eyebrow: "Core team",
         body: "Architecture, resort, real-estate and brand photography.", mediaUrl: "/images/dance-study.jpg",
@@ -154,7 +155,6 @@ export function Experience({ content }: { content: SiteContent }) {
         mediaAlt: "Mindrythm aerial film specialist", category: "Film & Post", year: "", href: mainInstagramUrl, accent: "forest",
       },
     ];
-    return [...savedTeam, ...placeholders].slice(0, 3);
   }, [mainInstagramUrl, projects, savedTeam, settings.linkedin]);
 
   const [loaded, setLoaded] = useState(false);

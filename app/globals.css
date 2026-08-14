@@ -7309,3 +7309,79 @@ video {
   color: rgba(251, 250, 245, 0.65) !important;
   z-index: 5 !important;
 }
+
+/* ==========================================================================
+   Curved Team Images & Unlimited Multi-Member Grid
+   ========================================================================== */
+.team-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)) !important;
+  gap: clamp(1rem, 1.8vw, 2rem) !important;
+  padding-top: clamp(1.5rem, 2.5vw, 2.5rem) !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.team-page-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)) !important;
+  gap: clamp(1rem, 1.8vw, 2rem) !important;
+  padding: 0 clamp(1.5rem, 4vw, 4.5rem) clamp(3.5rem, 5vw, 6rem) !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.team-card,
+.team-page-card {
+  position: relative !important;
+  min-height: 480px !important;
+  height: clamp(480px, 48vw, 620px) !important;
+  border-radius: 14px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: var(--olive-dark) !important;
+  text-align: left !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.08) !important;
+}
+
+.team-card-trigger,
+.team-page-card-trigger {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 14px !important;
+  overflow: hidden !important;
+  background: transparent !important;
+  cursor: pointer !important;
+}
+
+.team-card img,
+.team-card video,
+.team-card-trigger img,
+.team-card-trigger video,
+.team-page-card img,
+.team-page-card video,
+.team-page-card-trigger img,
+.team-page-card-trigger video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: 14px !important;
+  display: block !important;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.team-card:hover img,
+.team-card:hover video,
+.team-page-card:hover img,
+.team-page-card:hover video {
+  transform: scale(1.035) !important;
+}
+
