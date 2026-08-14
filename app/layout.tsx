@@ -44,7 +44,11 @@ export async function generateMetadata(): Promise<Metadata> {
       images: [seo.shareImageUrl],
     },
     icons: {
-      icon: [{url: "/favicon.svg", type: "image/svg+xml"}],
+      icon: [
+        {url: "/favicon.svg", type: "image/svg+xml"},
+        {url: "/mindrythm-logomark.png", type: "image/png"},
+      ],
+      apple: [{url: "/mindrythm-logomark.png"}],
     },
   };
 }
