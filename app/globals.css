@@ -4696,25 +4696,38 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   height: 100svh !important;
   min-height: 0 !important;
   overflow: hidden !important;
-  padding: 9.8rem 3.6vw 2.8rem !important;
+  padding: clamp(3.2rem, 5vh, 4.5rem) 3.6vw 2.8rem !important;
   color: var(--ivory) !important;
   background: var(--ink) !important;
   clip-path: polygon(0 0, 100% 0, 64% 100%, 0 100%) !important;
 }
 .menu-brand-context,
 .menu-overlay-brand > small { position: relative !important; z-index: 3 !important; }
-.menu-brand-context { display: grid; gap: .65rem; }
-.menu-brand-context > span,
-.menu-brand-context > small,
-.menu-overlay-brand > small {
-  max-width: 300px;
-  color: rgba(251,250,245,.78);
-  font-size: .58rem;
-  letter-spacing: .1em;
-  line-height: 1.5;
-  text-transform: uppercase;
+.menu-brand-context {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.3rem !important;
+  margin-left: clamp(1rem, 3.5vw, 4rem) !important;
+  max-width: 320px !important;
 }
-.menu-brand-context > small { color: rgba(251,250,245,.38); }
+.menu-brand-context > span {
+  font-size: 0.62rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.12em !important;
+  line-height: 1.3 !important;
+  text-transform: uppercase !important;
+  color: rgba(251, 250, 245, 0.85) !important;
+  white-space: nowrap !important;
+}
+.menu-brand-context > small {
+  font-size: 0.56rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.1em !important;
+  line-height: 1.3 !important;
+  text-transform: uppercase !important;
+  color: rgba(251, 250, 245, 0.45) !important;
+  white-space: nowrap !important;
+}
 .menu-overlay-brand > small {
   position: relative !important;
   z-index: 3 !important;
@@ -4760,9 +4773,9 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   margin: 0 !important;
   color: var(--ivory) !important;
   font-family: "Avenir Next", Avenir, var(--font-avenir), "Helvetica Neue", Arial, sans-serif !important;
-  font-size: clamp(2.35rem, 3.5vw, 4.3rem) !important;
+  font-size: clamp(3.2rem, 4.8vw, 5.8rem) !important;
   font-weight: 400 !important;
-  letter-spacing: -.075em !important;
+  letter-spacing: -.06em !important;
   line-height: .9 !important;
   opacity: 1 !important;
   visibility: visible !important;
