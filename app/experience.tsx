@@ -86,6 +86,33 @@ export function Experience({ content }: { content: SiteContent }) {
     const saved = content.items.filter((item) => item.kind === "gallery").sort((a, b) => a.sortOrder - b.sortOrder);
     return saved.length ? saved : projects;
   }, [content.items, projects]);
+
+  const gallerySpaces = useMemo(() => {
+    const spaces = galleryItems.filter((item) =>
+      item.category?.toLowerCase().includes("space") ||
+      item.category?.toLowerCase().includes("interior") ||
+      item.category?.toLowerCase().includes("landscape") ||
+      item.category?.toLowerCase().includes("retreat") ||
+      item.category?.toLowerCase().includes("hospitality") ||
+      item.eyebrow?.toLowerCase().includes("space") ||
+      item.eyebrow?.toLowerCase().includes("interior") ||
+      item.eyebrow?.toLowerCase().includes("retreat")
+    );
+    return spaces.length ? spaces : galleryItems.slice(0, 7);
+  }, [galleryItems]);
+
+  const galleryCelebrations = useMemo(() => {
+    const celebrations = galleryItems.filter((item) =>
+      item.category?.toLowerCase().includes("wedding") ||
+      item.category?.toLowerCase().includes("event") ||
+      item.category?.toLowerCase().includes("celebration") ||
+      item.category?.toLowerCase().includes("ritual") ||
+      item.eyebrow?.toLowerCase().includes("wedding") ||
+      item.eyebrow?.toLowerCase().includes("event")
+    );
+    return celebrations.length ? celebrations : galleryItems.slice(3);
+  }, [galleryItems]);
+
   const savedTeam = useMemo(
     () => content.items.filter((item) => item.kind === "team").sort((a, b) => a.sortOrder - b.sortOrder),
     [content.items],
@@ -716,7 +743,8 @@ export function Experience({ content }: { content: SiteContent }) {
               </div>
             </div>
             <div className="gallery-scroll" aria-label="Gallery archive">
-              <GalleryCollection title="Mindrythm Archive" items={galleryItems} socials={settings} onOpen={setSelectedItem} />
+              <GalleryCollection title="Spaces" items={gallerySpaces} socials={settings} onOpen={setSelectedItem} />
+              <GalleryCollection title="Celebrations" items={galleryCelebrations} socials={settings} onOpen={setSelectedItem} />
             </div>
             <div className="gallery-scroll-note"><span>Visual archive</span><span>Mindrythm Studio</span></div>
           </section>

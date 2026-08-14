@@ -293,42 +293,89 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
           </>
         )}
 
-        {page === "gallery" && (
-          <div className="gallery-page">
-            <section className="gallery-page-section gallery-page-unified">
-              <header>
-                <h2>Gallery Archive</h2>
-                <p>An immersive visual collection of spaces, architecture, lifestyle and human moments.</p>
-              </header>
-              <div className="gallery-page-grid">
-                {galleryItems.map((item, index) => (
-                  <button
-                    type="button"
-                    className={`gallery-page-card gallery-page-card-${(index % 4) + 1}`}
-                    key={item.id}
-                    onClick={() => setSelected(item)}
-                  >
-                    <Media item={item} />
-                    <span>{item.title}</span>
-                  </button>
-                ))}
-                <article className="gallery-page-feature">
-                  <span>Mindrythm archive</span>
-                  <p>Spaces, light, material and stories captured with intention.</p>
-                  <i>Explore the full collection</i>
-                </article>
-                <article className="gallery-page-social">
-                  <span>Follow the living archive</span>
-                  <div className="gallery-page-social-links" aria-label="Mindrythm social links">
-                    <a href={mainInstagramUrl} target="_blank" rel="noreferrer" aria-label="Mindrythm on Instagram" title="Instagram"><SocialIcon name="instagram" /></a>
-                    <a href={settings.facebook} target="_blank" rel="noreferrer" aria-label="Mindrythm on Facebook" title="Facebook"><SocialIcon name="facebook" /></a>
-                    <a href={settings.youtube} target="_blank" rel="noreferrer" aria-label="Mindrythm on YouTube" title="YouTube"><SocialIcon name="youtube" /></a>
-                  </div>
-                </article>
-              </div>
-            </section>
-          </div>
-        )}
+        {page === "gallery" && (() => {
+          const spacesItems = galleryItems.filter((item) =>
+            item.category?.toLowerCase().includes("space") ||
+            item.category?.toLowerCase().includes("interior") ||
+            item.category?.toLowerCase().includes("landscape") ||
+            item.category?.toLowerCase().includes("retreat") ||
+            item.category?.toLowerCase().includes("hospitality") ||
+            item.eyebrow?.toLowerCase().includes("space") ||
+            item.eyebrow?.toLowerCase().includes("interior") ||
+            item.eyebrow?.toLowerCase().includes("retreat")
+          );
+          const celebrationsItems = galleryItems.filter((item) =>
+            item.category?.toLowerCase().includes("wedding") ||
+            item.category?.toLowerCase().includes("event") ||
+            item.category?.toLowerCase().includes("celebration") ||
+            item.category?.toLowerCase().includes("ritual") ||
+            item.eyebrow?.toLowerCase().includes("wedding") ||
+            item.eyebrow?.toLowerCase().includes("event")
+          );
+          const finalSpaces = spacesItems.length ? spacesItems : galleryItems.slice(0, 6);
+          const finalCelebrations = celebrationsItems.length ? celebrationsItems : galleryItems.slice(4);
+
+          return (
+            <div className="gallery-page">
+              {/* Section 1: SPACES */}
+              <section className="gallery-page-section" id="spaces">
+                <header>
+                  <h2>Spaces</h2>
+                  <p>Properties, architecture, interior light and quiet sanctuary environments.</p>
+                </header>
+                <div className="gallery-page-grid">
+                  {finalSpaces.map((item, index) => (
+                    <button
+                      type="button"
+                      className={`gallery-page-card gallery-page-card-${(index % 4) + 1}`}
+                      key={item.id}
+                      onClick={() => setSelected(item)}
+                      aria-label={`Open ${item.title}`}
+                    >
+                      <Media item={item} />
+                      <span>{item.title}</span>
+                    </button>
+                  ))}
+                  <article className="gallery-page-feature">
+                    <span>Spaces &amp; Architecture</span>
+                    <p>Spaces, light, material and stories captured with intention.</p>
+                    <i>Mindrythm Archive</i>
+                  </article>
+                </div>
+              </section>
+
+              {/* Section 2: CELEBRATIONS */}
+              <section className="gallery-page-section" id="celebrations">
+                <header>
+                  <h2>Celebrations</h2>
+                  <p>Weddings, music, human gatherings and candid live moments captured cinematically.</p>
+                </header>
+                <div className="gallery-page-grid">
+                  {finalCelebrations.map((item, index) => (
+                    <button
+                      type="button"
+                      className={`gallery-page-card gallery-page-card-${(index % 4) + 1}`}
+                      key={item.id}
+                      onClick={() => setSelected(item)}
+                      aria-label={`Open ${item.title}`}
+                    >
+                      <Media item={item} />
+                      <span>{item.title}</span>
+                    </button>
+                  ))}
+                  <article className="gallery-page-social">
+                    <span>Follow the living archive</span>
+                    <div className="gallery-page-social-links" aria-label="Mindrythm social links">
+                      <a href={mainInstagramUrl} target="_blank" rel="noreferrer" aria-label="Mindrythm on Instagram" title="Instagram"><SocialIcon name="instagram" /></a>
+                      <a href={settings.facebook} target="_blank" rel="noreferrer" aria-label="Mindrythm on Facebook" title="Facebook"><SocialIcon name="facebook" /></a>
+                      <a href={settings.youtube} target="_blank" rel="noreferrer" aria-label="Mindrythm on YouTube" title="YouTube"><SocialIcon name="youtube" /></a>
+                    </div>
+                  </article>
+                </div>
+              </section>
+            </div>
+          );
+        })()}
 
         {page === "team" && (
           <>
