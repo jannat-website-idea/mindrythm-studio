@@ -805,16 +805,20 @@ export function Experience({ content }: { content: SiteContent }) {
             </div>
             <div className="team-grid" aria-label="Meet the Mindrythm team">
               {team.map((member, index) => (
-                <article className={`team-card ${activeTeamCardId === member.id ? "active" : ""}`} key={`${member.id}-${index}`} onClick={() => setActiveTeamCardId((current) => current === member.id ? null : member.id)}>
-                  <button type="button" className="team-card-trigger" aria-expanded={activeTeamCardId === member.id} aria-controls={`team-card-copy-${index}`}>
+                <a
+                  href="/team"
+                  className="team-card"
+                  key={`${member.id}-${index}`}
+                  aria-label={`View profile for ${member.title}`}
+                >
+                  <div className="team-card-trigger">
                     <Media item={member} />
-                    <span className="sr-only">Show information about {member.title}</span>
-                  </button>
-                  <div className="team-card-copy" id={`team-card-copy-${index}`}>
-                    <span>{member.category || member.eyebrow}</span><h3>{member.title}</h3><p>{member.body}</p>
-                    <button type="button" onClick={(event) => { event.stopPropagation(); setActiveTeamCardId(null); setSelectedItem(member); }}>View profile</button>
                   </div>
-                </article>
+                  <div className="team-card-badge">
+                    <strong>{member.title}</strong>
+                    <span>{member.category || member.eyebrow}</span>
+                  </div>
+                </a>
               ))}
             </div>
             <a className="team-page-link" href="/team"><span>People behind the images</span><strong>Explore the full team</strong></a>
