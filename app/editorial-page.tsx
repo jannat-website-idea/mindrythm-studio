@@ -204,7 +204,6 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                 {serviceCollections.map((service, index) => {
                   const primaryMedia = service.media[0] || projects[0];
                   const secondaryMedia = service.media[1];
-                  const num = String(index + 1).padStart(2, "0");
                   const isEven = index % 2 === 1;
                   return (
                     <article
@@ -213,37 +212,54 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                       key={service.key}
                     >
                       <div className="services-stream-info">
-                        <div className="services-stream-meta">
-                          <span className="services-stream-number">Service {num}</span>
-                          <span className="services-stream-badge">Mindrythm Studio</span>
-                        </div>
                         <h2 className="services-stream-title">{service.title}</h2>
                         <p className="services-stream-copy">{service.copy}</p>
 
                         <div className="services-stream-actions">
                           <Link className="services-stream-primary-cta" href={`/work?service=${service.key}`}>
-                            <span>View service commissions</span>
+                            <span>View all commissions</span>
                             <span aria-hidden="true">→</span>
                           </Link>
                           <Link className="services-stream-secondary-cta" href="/contact">
-                            <span>Enquire about this service</span>
+                            <span>Book this service</span>
                           </Link>
                         </div>
                       </div>
 
                       <div className="services-stream-visual">
-                        <div className="services-stream-frame">
+                        <div className="services-stream-gallery">
                           {primaryMedia && (
-                            <div className="services-frame-primary">
+                            <button
+                              type="button"
+                              className="services-photo-thumb services-photo-lead"
+                              onClick={() => setSelected(primaryMedia)}
+                              aria-label={`Open full size photo of ${service.title}`}
+                            >
                               <Media item={primaryMedia} priority={index < 2} />
-                            </div>
+                              <span className="services-photo-hint">Click to enlarge</span>
+                            </button>
                           )}
                           {secondaryMedia && (
-                            <div className="services-frame-secondary">
+                            <button
+                              type="button"
+                              className="services-photo-thumb services-photo-sub"
+                              onClick={() => setSelected(secondaryMedia)}
+                              aria-label={`Open secondary photo of ${service.title}`}
+                            >
                               <Media item={secondaryMedia} />
-                            </div>
+                              <span className="services-photo-hint">Click to enlarge</span>
+                            </button>
                           )}
-                          <div className="services-frame-shade" />
+                        </div>
+                        <div className="services-gallery-footer">
+                          <span>{service.media.length} photos available</span>
+                          <button
+                            type="button"
+                            className="services-gallery-view-btn"
+                            onClick={() => setSelected(primaryMedia)}
+                          >
+                            View full gallery →
+                          </button>
                         </div>
                       </div>
                     </article>

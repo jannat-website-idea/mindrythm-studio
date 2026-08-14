@@ -570,32 +570,21 @@ export function Experience({ content }: { content: SiteContent }) {
                         key={service.key || service.title}
                         className={`services-index-row ${isActive ? "is-active" : ""}`}
                       >
-                        <button
-                          type="button"
-                          role="tab"
-                          aria-selected={isActive}
+                        <a
+                          href={`/services#service-${service.key}`}
                           className="services-row-header"
                           onMouseEnter={() => setActiveService(index)}
                           onFocus={() => setActiveService(index)}
-                          onClick={() => setActiveService(index)}
                         >
                           <span className="services-row-title">{service.title}</span>
-                        </button>
+                          <span className="services-row-arrow" aria-hidden="true">→</span>
+                        </a>
                         {isActive && (
                           <div className="services-row-expanded">
                             <p className="services-row-description">{service.copy}</p>
                             <div className="services-row-actions">
                               <a className="services-row-link" href={`/services#service-${service.key}`}>
-                                <span>Explore {service.title} photos</span>
-                                <span aria-hidden="true">→</span>
-                              </a>
-                            </div>
-                            <div className="services-row-mobile-media">
-                              {serviceCollections[index]?.media?.[0] && (
-                                <Media item={serviceCollections[index].media[0]} active={isActive} priority />
-                              )}
-                              <a className="services-row-mobile-cta" href={`/services#service-${service.key}`}>
-                                <span>View {service.title} & photos</span>
+                                <span>See all {service.title} photos</span>
                                 <span aria-hidden="true">→</span>
                               </a>
                             </div>
@@ -614,10 +603,12 @@ export function Experience({ content }: { content: SiteContent }) {
                     const mainMedia = service.media[0] || projects[0];
                     const secondaryMedia = service.media[1];
                     return (
-                      <div
+                      <a
                         key={service.key}
+                        href={`/services#service-${service.key}`}
                         className={`services-canvas-item ${isActive ? "is-active" : ""}`}
                         aria-hidden={!isActive}
+                        aria-label={`View ${service.title} photos on services page`}
                       >
                         <div className="services-canvas-media-wrap">
                           {mainMedia && (
@@ -637,16 +628,12 @@ export function Experience({ content }: { content: SiteContent }) {
                           <div className="services-bar-info">
                             <span className="services-bar-name">{service.title}</span>
                           </div>
-                          <a
-                            className="services-bar-cta"
-                            href={`/services#service-${service.key}`}
-                            aria-label={`View ${service.title} on services page`}
-                          >
-                            <span>Explore service & photos</span>
+                          <span className="services-bar-cta">
+                            <span>View photos &amp; details</span>
                             <span aria-hidden="true" className="services-bar-arrow">→</span>
-                          </a>
+                          </span>
                         </div>
-                      </div>
+                      </a>
                     );
                   })}
                 </div>
