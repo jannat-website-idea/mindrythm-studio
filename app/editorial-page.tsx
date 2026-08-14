@@ -354,9 +354,9 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                     </button>
                   ))}
                   <article className="gallery-page-feature">
-                    <span>Spaces &amp; Architecture</span>
-                    <p>Spaces, light, material and stories captured with intention.</p>
-                    <i>Mindrythm Archive</i>
+                    <span>Spaces Shaped By</span>
+                    <p>Spaces shaped by light, material and a sense of arrival.</p>
+                    <i>Open the full gallery</i>
                   </article>
                 </div>
               </section>
@@ -382,8 +382,8 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                   ))}
                   <article className="gallery-page-feature">
                     <span>Celebrations &amp; Rituals</span>
-                    <p>Weddings, music, human gatherings and candid live moments.</p>
-                    <i>Mindrythm Archive</i>
+                    <p>Celebrations, music &amp; unscripted human stories.</p>
+                    <i>Open the full gallery</i>
                   </article>
                 </div>
               </section>
