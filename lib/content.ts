@@ -56,7 +56,7 @@ export type SiteCopy = {
 };
 
 export type ServiceContent = {
-  key: "real-estate" | "hospitality" | "wellness" | "wedding";
+  key: string;
   title: string;
   copy: string;
   projectIds: string[];
@@ -181,34 +181,70 @@ export const defaultCopy: SiteCopy = {
 export const defaultServices: ServiceContent[] = [
   {
     key: "real-estate",
-    title: "Real-estate",
-    copy: "Architecture, interiors and property campaigns shaped around light, proportion and a true sense of place.",
-    projectIds: ["field-notes", "tropical-pavilion", "sanctuary-interiors"],
+    title: "Real estate photography",
+    copy: "Architecture, interiors and property visual campaigns shaped around light, proportion and spatial character.",
+    projectIds: ["room-to-breathe", "tropical-pavilion", "sanctuary-interiors"],
   },
   {
-    key: "hospitality",
-    title: "Hospitality",
-    copy: "Cinematic films and photography that let future guests feel the atmosphere before they arrive.",
-    projectIds: ["quiet-frequency", "resort-at-dusk", "tropical-pavilion"],
+    key: "wellness-hospitality",
+    title: "Wellness & Hospitality photography",
+    copy: "Quiet, human imagery for retreats, luxury stays and brands built around restoration, landscape and care.",
+    projectIds: ["quiet-frequency", "resort-at-dusk", "event-photography"],
   },
   {
-    key: "wellness",
-    title: "Wellness",
-    copy: "Quiet, human imagery for retreats, rituals and brands built around restoration and care.",
-    projectIds: ["event-photography", "event-film", "in-passing"],
+    key: "fb-photography",
+    title: "F&B photography",
+    copy: "Editorial food and beverage imagery celebrating culinary craftsmanship, ambient table settings and brand identity.",
+    projectIds: ["in-passing", "hands-of-stillness"],
   },
   {
-    key: "wedding",
-    title: "Wedding / Moments",
-    copy: "Photography and films that preserve the emotion, rituals and unscripted moments that make a day your own.",
-    projectIds: ["wedding-celebration", "wedding-film"],
+    key: "luxury-villa",
+    title: "Luxury Villa Photography",
+    copy: "High-end bespoke architectural and lifestyle capture for private estates, vacation rentals and luxury villas.",
+    projectIds: ["room-to-breathe", "sanctuary-interiors"],
+  },
+  {
+    key: "event-photography",
+    title: "Event photography (corporate and music)",
+    copy: "Dynamic, candid coverage capturing the unscripted energy, stage atmosphere and key moments of corporate and music events.",
+    projectIds: ["event-film", "wedding-film"],
+  },
+  {
+    key: "web-development",
+    title: "Website development",
+    copy: "Modern, high-performance digital experiences and custom bespoke websites built for creative brands and businesses.",
+    projectIds: [],
+  },
+  {
+    key: "logo-generation",
+    title: "Logo generation",
+    copy: "Thoughtful visual identity, logomarks and brand typography crafted to give your business an iconic signature.",
+    projectIds: [],
+  },
+  {
+    key: "meta-ads",
+    title: "Running Meta Ads",
+    copy: "Data-driven paid social campaigns across Instagram and Facebook engineered for targeted reach, engagement and conversion.",
+    projectIds: [],
+  },
+  {
+    key: "social-creatives",
+    title: "Social media creatives",
+    copy: "Curated aesthetic visual assets, graphic design and editorial templates aligned with your brand's unique rhythm.",
+    projectIds: [],
+  },
+  {
+    key: "social-handling",
+    title: "Social Media Handling",
+    copy: "End-to-end social media management, content scheduling, community engagement and brand storytelling.",
+    projectIds: [],
   },
 ];
 
 export const defaultFooter: FooterContent = {
   callout: footerTaglines[1],
   actionLabel: footerTaglines[0],
-  locationLabel: "Kolkata / Everywhere",
+  locationLabel: "Everywhere",
   studioUrl: "/studio",
 };
 

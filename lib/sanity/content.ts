@@ -82,11 +82,11 @@ export async function getSanitySiteContent(options: {stega?: boolean} = {}): Pro
     );
 
     const services = (raw.services || []).map((service) => ({
-      key: text(service.key) as ServiceContent["key"],
+      key: text(service.key),
       title: text(service.title),
       copy: text(service.copy),
       projectIds: strings(service.projectIds, []),
-    })).filter((service) => ["real-estate", "hospitality", "wellness", "wedding"].includes(service.key) && service.title && service.copy && service.projectIds.length);
+    })).filter((service) => Boolean(service.key && service.title && service.copy));
 
     return {
       settings: {

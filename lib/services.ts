@@ -1,6 +1,6 @@
 import { defaultServices, type ContentItem, type ServiceContent } from "@/lib/content";
 
-export type ServiceKey = "real-estate" | "hospitality" | "wellness" | "wedding";
+export type ServiceKey = string;
 
 export type ServiceDefinition = ServiceContent;
 export const serviceItems: readonly ServiceDefinition[] = defaultServices;

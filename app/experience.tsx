@@ -424,7 +424,7 @@ export function Experience({ content }: { content: SiteContent }) {
           </span>
         </div>
         <div className="loader-reference-footer" aria-hidden="true">
-          <span>Visual stories / Kolkata</span>
+          <span>Visual stories</span>
           <span className="loader-reference-count">{loaderProgress}<sup>%</sup></span>
         </div>
         <div className="loader-reference-progress" aria-hidden="true"><span style={{ transform: `scaleX(${loaderProgress / 100})` }} /></div>
@@ -467,10 +467,10 @@ export function Experience({ content }: { content: SiteContent }) {
           <aside className="menu-overlay-brand" aria-hidden="true">
             <div className="menu-brand-context">
               <span>Creative professional studio</span>
-              <small>Independent visual practice / Kolkata</small>
+              <small>Independent visual practice</small>
             </div>
             <div className="menu-brand-feature">
-              <img src="/mindrythm-logomark.png" alt="" />
+              <img src="/mindrythm-logomark.png" alt="" className="menu-brand-logo-centered" />
               <p><span>Mindrythm</span></p>
             </div>
             <small>Every image begins with a pulse.</small>
@@ -486,7 +486,7 @@ export function Experience({ content }: { content: SiteContent }) {
               ))}
             </nav>
             <div className="menu-overlay-meta">
-              <span>Kolkata / Everywhere</span>
+              <span>Everywhere</span>
               <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
               <div className="menu-overlay-socials" aria-label="Mindrythm social links">
                 <a href={mainInstagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram"><SocialIcon name="instagram" /></a>
@@ -508,116 +508,60 @@ export function Experience({ content }: { content: SiteContent }) {
               ))}
             </a>
             <div className="hero-overlay" />
-            <div className="hero-content">
-              <div className="hero-title-row">
-                <h1 id="hero-title">
-                  <a href="/work" aria-label="Explore our work">
-                    <span className="hero-title-line"><span>{content.hero.titleLineOne}</span></span>
-                    <span className="hero-title-line"><span>{content.hero.titleLineTwo}</span></span>
-                  </a>
+            <div className="hero-copy">
+              <div className="hero-title-group">
+                <span className="hero-eyebrow">Mindrythm studio / Visual practice</span>
+                <h1 className="hero-title" id="hero-title">
+                  <span>{content.hero.titleLineOne}</span>
+                  <em>{content.hero.titleLineTwo}</em>
                 </h1>
               </div>
-            </div>
-          </section>
-
-          <section className="vision-section" id="vision">
-            <span className="section-index" data-reveal>Our vision</span>
-            <p className="vision-statement" data-reveal>
-              {content.hero.visionHighlights.map((line) => <span key={line}>“{line}”</span>)}
-            </p>
-            <details className="vision-note" data-reveal>
-              <summary><span>Where we begin</span><i>Read the thought +</i></summary>
-              <p><EmphasizedCopy text={visionParagraphs[0]} /></p>
-            </details>
-            <div className="vision-bridge" data-reveal>
-              <a href="/work" className="vision-bridge-frame">
-                <img src="/images/tropical-interior.jpg" alt="Natural reception area photographed by Mindrythm" />
-                <span>Spaces / Hospitality</span>
-              </a>
-              <a href="/story" className="vision-bridge-centre">
-                <img src="/mindrythm-logomark.png" alt="" />
-                <span>One studio</span>
-                <strong>Many ways of seeing.</strong>
-                <i>Our story</i>
-              </a>
-              <a href="/work" className="vision-bridge-frame vision-bridge-frame-last">
-                <img src="/images/wedding-celebration.jpg" alt="Bengali wedding couple photographed by Mindrythm" />
-                <span>People / Celebrations</span>
-              </a>
-            </div>
-          </section>
-
-          <section className="services-experience" id="services" aria-label="Mindrythm services">
-            <header data-reveal><span>Our services</span><h2>One studio.<br />Many visual languages.</h2><p>“{brandTaglines[0]}”</p></header>
-            <div className="services-layout">
-              <div className="services-list">
-                {serviceItems.map((service, index) => (
-                  <button type="button" aria-pressed={activeService === index} className={activeService === index ? "active" : ""} key={service.title} onMouseEnter={() => setActiveService(index)} onFocus={() => setActiveService(index)} onClick={() => setActiveService(index)}>
-                    <strong>{service.title}</strong><span>{service.copy}</span>
-                  </button>
-                ))}
-              </div>
-              <div className="services-preview" aria-live="polite">
-                {serviceCollections.map((service, index) => (
-                  <div className={`service-preview-group ${activeService === index ? "active" : ""}`} data-count={service.media.length} key={service.key}>
-                    {service.media.map((item) => <span className="service-preview-media" key={`${service.key}-${item.id}`}><Media item={item} active={activeService === index} /></span>)}
-                  </div>
-                ))}
-                <a className="services-preview-link" href={`/work?service=${serviceItems[activeService].key}`}>
-                  <span>{serviceItems[activeService].title}</span><i>View service work</i>
-                </a>
-              </div>
-            </div>
-          </section>
-
-          <aside className="story-whisper" data-reveal><span>Our point of view</span><p>“{brandTaglines[1]}”</p></aside>
-
-          <section className="scroll-cinema" ref={scrollCinemaRef} aria-label="A scroll-led view of Mindrythm">
-            <div className="scroll-cinema-sticky">
-              <div className="scroll-cinema-top"><span>Scroll through the visual portfolio</span><span>Selected stories / 2026</span></div>
-              <div className="scroll-cinema-window">
-                <div className="scroll-cinema-track">
-                  {heroItems.slice(0, 3).map((item) => (
-                    <button type="button" className="scroll-cinema-panel" key={`scroll-${item.id}`} onClick={() => setSelectedItem(item)} aria-label={`Open ${item.title}`}>
-                      <Media item={item} />
-                      <div><span>{item.category || "Selected frame"}</span><h2>{item.title}</h2><p>{item.eyebrow}</p></div>
-                    </button>
-                  ))}
-                  <article className="scroll-cinema-panel scroll-cinema-statement">
-                    <span>Mindrythm / Places &amp; people</span>
-                    <h2>Stories that make time feel different.</h2>
-                    <p>“{brandTaglines[2]}”</p>
-                    <a href="/work">Explore all work</a>
-                  </article>
+              <div className="hero-body">
+                <p>{content.settings.description}</p>
+                <div className="hero-actions">
+                  <a className="button button-solid" href="#projects">Explore work</a>
+                  <a className="button button-outline" href="/contact">Begin a brief</a>
                 </div>
               </div>
-              <div className="scroll-cinema-progress"><span /><i>Keep scrolling</i></div>
             </div>
           </section>
 
-          <section className="work-section" id="projects">
-            <div className="section-intro" data-reveal>
-              <span className="section-index">Our work</span>
-              <h2>Selected stories,<br /><em>across every service.</em></h2>
-              <p>“{brandTaglines[2]}”</p>
+          <section className="vision-strip" aria-label="Studio vision">
+            <div className="vision-strip-marquee">
+              <div className="vision-strip-track">
+                {content.hero.visionHighlights.map((highlight, index) => (
+                  <span key={`${highlight}-${index}`}>{highlight}</span>
+                ))}
+              </div>
             </div>
-            <div className="projects-bento">
-              {projects.slice(0, 6).map((project, index) => <ProjectCard key={project.id} project={project} index={index} onOpen={() => setSelectedItem(project)} />)}
-              <a className="project-tile project-statement" href="/story" data-reveal>
-                <span>Our approach</span>
-                <blockquote>“Every place and every celebration begins with a feeling. Our work is to make it visible.”</blockquote>
-                <div className="pulse-glyph" aria-hidden="true"><i /><i /><i /></div>
-              </a>
-              <a className="project-tile project-process" href="#process" data-reveal>
-                <span>Method / People first</span>
-                <h3><span>Listen.</span><em>Frame.</em><span>Remember.</span></h3>
-                <p>Clear planning, deliberate composition and a calm production process.</p>
-              </a>
-              <a className="project-tile project-metric" href="/work" data-reveal>
-                <div className="metric-ring"><strong>∞</strong></div>
-                <h3>One studio.<br />Many stories.</h3>
-                <p>Property / Events / Weddings / Film</p>
-              </a>
+          </section>
+
+          <section className="projects-bento" id="projects">
+            <header className="projects-heading" data-reveal>
+              <span>Selected commissions</span>
+              <h2>Built around space, people and light.</h2>
+            </header>
+            <div className="projects-grid">
+              {projects.slice(0, 6).map((project, index) => (
+                <ProjectCard key={project.id} project={project} index={index} onOpen={() => setSelectedItem(project)} />
+              ))}
+            </div>
+          </section>
+
+          <section className="services-section" id="services">
+            <div className="services-heading" data-reveal>
+              <span>Services</span>
+              <h2>Visual craft for spaces, hospitality &amp; brands.</h2>
+            </div>
+            <div className="services-grid">
+              {serviceItems.map((service, index) => (
+                <a className="service-card" href={`/services`} key={service.key || index} data-reveal>
+                  <span>0{index + 1}</span>
+                  <h3>{service.title}</h3>
+                  <p>{service.copy}</p>
+                  <i>Explore service</i>
+                </a>
+              ))}
             </div>
           </section>
 
@@ -625,16 +569,15 @@ export function Experience({ content }: { content: SiteContent }) {
             <img className="section-watermark section-watermark-one" src="/mindrythm-logomark.png" alt="" aria-hidden="true" />
             <div className="gallery-heading" data-reveal>
               <span>Gallery</span>
-              <h2>Spaces, people &amp;<br /><em>celebrations.</em></h2>
+              <h2>Spaces, people &amp;<br /><em>moments.</em></h2>
               <div className="gallery-heading-copy">
-                <p>An immersive archive of properties, portraits, celebrations and moving moments from every side of the studio.</p>
+                <p>An immersive archive of properties, portraits, architecture and moving moments from every side of the studio.</p>
               </div>
             </div>
-            <div className="gallery-scroll" aria-label="Spaces and celebrations galleries">
-              <GalleryCollection title="Spaces" items={spacesBentoItems.length ? spacesBentoItems : galleryItems} socials={settings} onOpen={setSelectedItem} />
-              <GalleryCollection title="Celebrations" items={momentsBentoItems.length ? momentsBentoItems : galleryItems} socials={settings} onOpen={setSelectedItem} />
+            <div className="gallery-scroll" aria-label="Gallery archive">
+              <GalleryCollection title="Mindrythm Archive" items={galleryItems} socials={settings} onOpen={setSelectedItem} />
             </div>
-            <div className="gallery-scroll-note"><span>Two visual stories</span><span>Spaces / Celebrations</span></div>
+            <div className="gallery-scroll-note"><span>Visual archive</span><span>Mindrythm Studio</span></div>
           </section>
 
           <aside className="story-whisper story-whisper-light" data-reveal><span>Our point of view</span><p>“{brandTaglines[3]}”</p></aside>
@@ -725,7 +668,7 @@ export function Experience({ content }: { content: SiteContent }) {
             <div className="contact-discovery" data-reveal>
               <div className="contact-map-card">
                 <iframe title="Mindrythm location" loading="lazy" src={`https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`} />
-                <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noreferrer"><span>Find us in Kolkata</span><strong>{address}</strong><i>Open map</i></a>
+                <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noreferrer"><span>Studio location</span><strong>{address}</strong><i>Open map</i></a>
               </div>
               <div className="contact-connect-card">
                 <span>Follow the living archive</span>
@@ -754,7 +697,23 @@ export function Experience({ content }: { content: SiteContent }) {
                 <div className="form-field"><label htmlFor="name">Full name *</label><input id="name" name="name" required autoComplete="name" /></div>
                 <div className="form-field"><label htmlFor="phone">Phone number *</label><input id="phone" name="phone" required type="tel" autoComplete="tel" /></div>
                 <div className="form-field"><label htmlFor="email">Email ID</label><input id="email" name="email" type="email" autoComplete="email" /></div>
-                <div className="form-field"><label htmlFor="service">Service *</label><select id="service" name="service" required defaultValue=""><option value="" disabled>Select a service</option><option>Property photography</option><option>Resort &amp; hospitality</option><option>Event photography</option><option>Event film</option><option>Wedding photography</option><option>Wedding or pre-wedding film</option><option>Other</option></select></div>
+                <div className="form-field">
+                  <label htmlFor="service">Service *</label>
+                  <select id="service" name="service" required defaultValue="">
+                    <option value="" disabled>Select a service</option>
+                    <option>Real estate photography</option>
+                    <option>Wellness &amp; Hospitality photography</option>
+                    <option>F&amp;B photography</option>
+                    <option>Luxury Villa Photography</option>
+                    <option>Event photography (corporate and music)</option>
+                    <option>Website development</option>
+                    <option>Logo generation</option>
+                    <option>Running Meta Ads</option>
+                    <option>Social media creatives</option>
+                    <option>Social Media Handling</option>
+                    <option>Other / Custom Brief</option>
+                  </select>
+                </div>
                 <div className="form-field form-field-wide"><label htmlFor="query">Your query *</label><textarea id="query" name="query" required maxLength={1000} rows={6} /></div>
                 <button type="submit" disabled={enquiryState === "sending"}>{enquiryState === "sending" ? "Sending…" : "Send enquiry"}</button>
                 <p className={`form-message ${enquiryState}`} aria-live="polite">{enquiryState === "sent" ? "Thank you. Your enquiry has been sent to admin@mindrythm.com." : enquiryState === "error" ? "Your enquiry could not be delivered. Please email admin@mindrythm.com directly." : "Your message will be sent securely to admin@mindrythm.com."}</p>
@@ -791,10 +750,11 @@ export function Experience({ content }: { content: SiteContent }) {
         const goNext = () => hasNext && setSelectedItem(unique[currentIndex + 1]);
         return (
           <div className="lightbox-immersive" role="dialog" aria-modal="true" aria-label={selectedItem.title}>
-            <div className="lightbox-immersive-bg">
-              <Media item={selectedItem} priority />
+            <div className="lightbox-stage">
+              <div className="lightbox-media-wrapper">
+                <Media item={selectedItem} priority />
+              </div>
             </div>
-            <div className="lightbox-immersive-gradient" />
             <div className="lightbox-immersive-toolbar">
               <button type="button" className="lightbox-grid-btn" onClick={() => setSelectedItem(null)} aria-label="Back to gallery">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="1" y="1" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.5"/><rect x="12" y="1" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.5"/><rect x="1" y="12" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.5"/><rect x="12" y="12" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.5"/></svg>
@@ -811,10 +771,12 @@ export function Experience({ content }: { content: SiteContent }) {
                 <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M10 4L20 14L10 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </button>
             )}
-            <div className="lightbox-immersive-copy">
-              <span>{selectedItem.category || selectedItem.eyebrow}</span>
-              <h2>{selectedItem.title}</h2>
-              <p>{selectedItem.body}</p>
+            <div className="lightbox-docked-copy">
+              <div className="lightbox-copy-inner">
+                <span>{selectedItem.category || selectedItem.eyebrow}</span>
+                <h2>{selectedItem.title}</h2>
+                {selectedItem.body && <p>{selectedItem.body}</p>}
+              </div>
             </div>
           </div>
         );

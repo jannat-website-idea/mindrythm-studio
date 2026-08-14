@@ -1,0 +1,13 @@
+# Hostinger SSH Deployment Details
+# ================================
+
+HOST=86.38.243.142
+PORT=65002
+USERNAME=u989720899
+PASSWORD=Sam@12345
+
+# SSH Command:
+# ssh -p 65002 u989720899@86.38.243.142
+
+# SCP Upload Example:
+# scp -P 65002 -r ./out/* u989720899@86.38.243.142:~/public_html/

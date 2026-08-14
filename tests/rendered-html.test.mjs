@@ -21,8 +21,8 @@ test("includes the complete client narratives and service scope", async () => {
   assert.match(content, /every meaningful project begins with a conversation/i);
   assert.match(content, /Mindrythm has never been about one person/);
 
-  for (const service of ["Real-estate", "Hospitality", "Wellness", "Wedding / Moments"]) {
-    assert.match(content, new RegExp(service.replace("/", "\\/")));
+  for (const service of ["Real estate photography", "Wellness & Hospitality photography", "F&B photography", "Luxury Villa Photography"]) {
+    assert.match(content, new RegExp(service.replace("&", "\\&")));
   }
   assert.doesNotMatch(experience, /title: "Fashion"/);
   assert.match(experience, /content\.services/);
@@ -40,7 +40,6 @@ test("uses the revised loader, menu, social links and neutral design system", as
 
   assert.doesNotMatch(experience, /loader-echo/);
   assert.match(experience, /Mindrythm/);
-  assert.match(experience, /details className="vision-note"/);
   assert.match(experience, /loaderProgress/);
   assert.match(experience, /loader-reference-count/);
   assert.match(experience, /mindrythmSkipIntro/);
