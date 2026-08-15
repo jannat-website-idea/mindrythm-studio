@@ -4707,8 +4707,11 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   display: flex !important;
   flex-direction: column !important;
   gap: 0.35rem !important;
-  margin-left: clamp(1.5rem, 4vw, 5rem) !important;
+  align-self: flex-start !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
   max-width: 360px !important;
+  text-align: left !important;
 }
 .menu-brand-context > span {
   font-size: clamp(0.65rem, 0.9vw, 0.78rem) !important;
@@ -4733,7 +4736,8 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   z-index: 3 !important;
   display: block !important;
   align-self: flex-start !important;
-  margin-left: clamp(2rem, 7vw, 9rem) !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
   max-width: 360px !important;
   color: rgba(251, 250, 245, 0.75) !important;
   font-size: clamp(0.62rem, 0.85vw, 0.74rem) !important;
