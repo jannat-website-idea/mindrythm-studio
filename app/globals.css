@@ -3606,7 +3606,7 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   .menu-overlay nav a > strong { font-size: clamp(1.9rem, 10vw, 3.2rem); font-weight: 300; letter-spacing: -.06em; }
 }
 
-/* Restore the cinematic split-screen menu with the brand lockup behind the name. */
+/* Reference-accurate cinematic split-screen menu */
 @media (min-width: 681px) {
   .menu-overlay {
     inset: 0;
@@ -3616,7 +3616,7 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
     grid-template-columns: 1fr 1fr;
     overflow: hidden;
     color: var(--ink);
-    background: transparent;
+    background: #f1efe8;
     clip-path: inset(0 0 0 100%);
     transform: none;
     transition: visibility 0s linear .85s, opacity .35s ease, clip-path .85s cubic-bezier(.76,0,.24,1);
@@ -3628,8 +3628,8 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
     pointer-events: auto;
     transition-delay: 0s;
   }
-  .menu-overlay::before { display: block; position: absolute; inset: 0; z-index: 0; content: ""; background: linear-gradient(110deg, #0b0b0a 0 50%, #f4f2eb 50% 100%); }
-  .menu-overlay::after { display: block; position: absolute; top: -10%; left: 40%; z-index: 1; width: 120%; height: 120%; content: ""; background: #0b0b0a; transform: rotate(-18deg); transform-origin: top left; pointer-events: none; }
+  .menu-overlay::before,
+  .menu-overlay::after { display: none; }
   .menu-overlay-brand {
     position: relative;
     z-index: 2;
@@ -3637,8 +3637,10 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
     min-height: 100svh;
     flex-direction: column;
     justify-content: space-between;
-    padding: clamp(1.5rem, 3.5vw, 3rem) clamp(1.5rem, 4vw, 3.5rem) clamp(1.5rem, 3vw, 2.5rem);
+    padding: 2.8rem 2.5rem 2rem;
     color: var(--ivory);
+    background: #0b0b0a;
+    clip-path: polygon(0 0, 100% 0, 78% 100%, 0 100%);
   }
   .menu-overlay-brand > small { margin-top: auto; }
   .menu-overlay-index {
@@ -3647,45 +3649,46 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
     display: grid;
     min-height: 100svh;
     grid-template-rows: auto 1fr auto;
-    padding: clamp(5.5rem, 9vw, 8rem) clamp(2rem, 4.5vw, 4rem) clamp(1.5rem, 3vw, 2.5rem) clamp(3rem, 7vw, 7rem);
+    padding: 3rem 2.5rem 2rem 10vw;
     background: transparent;
   }
   .menu-overlay-heading {
     display: flex;
     justify-content: space-between;
-    padding-bottom: .8rem;
+    padding-bottom: 1rem;
     border-bottom: 1px solid rgba(23,23,20,.18);
     font-size: .58rem;
     letter-spacing: .12em;
     text-transform: uppercase;
-    color: rgba(23,23,20,.7);
+    color: rgba(23,23,20,.65);
   }
   .menu-overlay nav {
     display: grid;
     min-height: 0;
     align-content: center;
-    gap: .1rem;
+    gap: .25rem;
     padding: 0;
+    margin-left: -0.35rem;
   }
   .menu-overlay nav a,
   .menu-overlay.nav-open nav a {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(120px, .42fr);
-    gap: 1rem 1.4rem;
+    grid-template-columns: minmax(0, 1fr) minmax(140px, .38fr);
+    gap: 1rem 2rem;
     align-items: center;
-    padding: .7rem 0;
+    padding: .45rem 0;
     border-bottom: 0;
     opacity: 1;
     color: var(--ink);
     transform: none;
   }
-  .menu-overlay nav a:hover { padding-right: 0; padding-left: .5rem; background: transparent; }
+  .menu-overlay nav a:hover { padding-right: 0; padding-left: .35rem; background: transparent; }
   .menu-overlay nav a > strong {
     display: block;
-    font-size: clamp(2rem, 4.3vw, 5rem);
+    font-size: clamp(2.8rem, 5.6vw, 4.6rem);
     font-weight: 300;
-    letter-spacing: -.06em;
-    line-height: .96;
+    letter-spacing: -.04em;
+    line-height: 1.08;
     white-space: nowrap;
     transition: transform .45s var(--motion-ease), letter-spacing .45s ease;
   }
@@ -3694,9 +3697,9 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
     display: block;
     justify-self: end;
     align-self: center;
-    color: rgba(23,23,20,.55);
-    font-size: .58rem;
-    letter-spacing: .1em;
+    color: rgba(23,23,20,.45);
+    font-size: .62rem;
+    letter-spacing: .08em;
     text-transform: uppercase;
     text-align: right;
   }
@@ -3705,16 +3708,16 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
     grid-template-columns: 1fr auto;
     gap: .7rem 1rem;
     align-items: end;
-    padding-top: 1.1rem;
+    padding-top: 1.4rem;
     border-top: 1px solid rgba(23,23,20,.18);
     font-size: .58rem;
     letter-spacing: .07em;
     text-transform: uppercase;
   }
-  .menu-overlay-meta > a { justify-self: end; align-self: center; color: rgba(23,23,20,.55); text-decoration: none; transition: color .3s ease; }
+  .menu-overlay-meta > a { justify-self: end; align-self: center; color: rgba(23,23,20,.5); text-decoration: none; transition: color .3s ease; }
   .menu-overlay-meta > a:hover { color: var(--ink); }
   .menu-overlay-meta > div { grid-column: 1 / 2; }
-  .menu-overlay-meta div { display: flex; flex-wrap: wrap; gap: 1.25rem; }
+  .menu-overlay-meta div { display: flex; flex-wrap: wrap; gap: 1.6rem; }
   .menu-overlay-socials a { display: grid; width: 2.35rem; height: 2.35rem; place-items: center; overflow: hidden; border: 0; border-radius: .65rem; background: transparent; transition: transform .35s var(--motion-ease); }
   .menu-overlay-socials a:hover { transform: translateY(-3px); }
   .menu-brand-feature {
@@ -3723,25 +3726,25 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
     inset: 0;
     display: grid;
     place-items: center;
-    padding: 8rem 2.5vw 6rem;
+    padding: 0;
     pointer-events: none;
   }
   .menu-brand-feature > img {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 46%;
+    left: 38%;
     z-index: 0;
-    width: min(36vw, 520px);
-    max-height: 70vh;
+    width: min(34vw, 480px);
+    max-height: 64vh;
     object-fit: contain;
-    opacity: .12;
+    opacity: .13;
     filter: invert(1);
     transform: translate(-50%, -50%);
   }
   .menu-brand-feature > p {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 46%;
+    left: 30%;
     z-index: 2;
     display: flex;
     margin: 0;
@@ -3749,10 +3752,10 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
     justify-content: center;
     color: var(--ivory);
     font-family: "Avenir Next", Avenir, var(--font-avenir), "Helvetica Neue", Arial, sans-serif;
-    font-size: clamp(2.7rem, 4.8vw, 5.8rem);
-    font-weight: 500;
-    letter-spacing: -.075em;
-    line-height: .9;
+    font-size: clamp(2.8rem, 5.2vw, 5rem);
+    font-weight: 300;
+    letter-spacing: -.04em;
+    line-height: 1;
     text-align: center;
     white-space: nowrap;
     transform: translate(-50%, -50%);
