@@ -11,7 +11,7 @@ type MediaProps = {
 
 export function Media({ item, priority = false, active = true }: MediaProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const isVideo = /\.(mp4|webm|mov)(\?.*)?$/i.test(item.mediaUrl);
+  const isVideo = item.mediaType === "video" || /\.(mp4|webm|mov)(\?.*)?$/i.test(item.mediaUrl);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -47,6 +47,7 @@ export function Media({ item, priority = false, active = true }: MediaProps) {
   }, [active, item.mediaUrl, priority]);
 
   if (isVideo) {
+    if (!item.mediaUrl) return null;
     return (
       <video
         ref={videoRef}
@@ -60,9 +61,11 @@ export function Media({ item, priority = false, active = true }: MediaProps) {
     );
   }
 
+  if (!item.mediaUrl) return null;
+
   return (
     <img
-      src={item.mediaUrl || "/images/resort-exterior.jpg"}
+      src={item.mediaUrl}
       alt={item.mediaAlt || item.title}
       loading={priority ? "eager" : "lazy"}
       decoding="async"

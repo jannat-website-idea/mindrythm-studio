@@ -44,6 +44,8 @@ export const siteContentQuery = `{
     "mediaUrl": coalesce(media.image.asset->url, media.video.asset->url, media.externalUrl),
     "mediaAlt": media.alt,
     category,
+    mediaType,
+    layoutType,
     href
   },
   "team": *[_type == "teamMember"] | order(sortOrder asc){

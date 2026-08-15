@@ -29,6 +29,8 @@ const fallbackTestimonials: ContentItem[] = [
     mediaUrl: "",
     mediaAlt: "",
     category: "Google Business Profile",
+    mediaType: "image",
+    layoutType: "large",
     year: "",
     href: googleBusinessUrl,
     accent: "approved",
@@ -43,6 +45,8 @@ const fallbackTestimonials: ContentItem[] = [
     mediaUrl: "",
     mediaAlt: "",
     category: "Google review",
+    mediaType: "image",
+    layoutType: "large",
     year: "5.0",
     href: "#testimonials",
     accent: "approved",
@@ -133,17 +137,17 @@ export function Experience({ content }: { content: SiteContent }) {
       {
         id: "team-direction", kind: "team", sortOrder: 80, title: "Property & commercial", eyebrow: "Core team",
         body: "Architecture, resort, real-estate and brand photography.", mediaUrl: "/images/dance-study.jpg",
-        mediaAlt: "Mindrythm wellness and lifestyle photography", category: "Lead Photographer", year: "", href: mainInstagramUrl, accent: "forest",
+        mediaAlt: "Mindrythm wellness and lifestyle photography", category: "Lead Photographer", mediaType: "image", layoutType: "large", year: "", href: mainInstagramUrl, accent: "forest",
       },
       {
         id: "team-image", kind: "team", sortOrder: 90, title: "Events & celebrations", eyebrow: "Core team",
         body: "Candid photography, portraits, rituals and live moments.", mediaUrl: projects[1]?.mediaUrl || "/images/wedding-celebration.jpg",
-        mediaAlt: "Mindrythm event and wedding photographer", category: "Event Photographer", year: "", href: settings.linkedin, accent: "forest",
+        mediaAlt: "Mindrythm event and wedding photographer", category: "Event Photographer", mediaType: "image", layoutType: "large", year: "", href: settings.linkedin, accent: "forest",
       },
       {
         id: "team-post", kind: "team", sortOrder: 100, title: "Aerial film & post", eyebrow: "Core team",
         body: "Wedding films, event aftermovies, drone capture, edit and colour.", mediaUrl: projects[2]?.mediaUrl || "/videos/event-film.mp4",
-        mediaAlt: "Mindrythm aerial film specialist", category: "Film & Post", year: "", href: mainInstagramUrl, accent: "forest",
+        mediaAlt: "Mindrythm aerial film specialist", category: "Film & Post", mediaType: "video", layoutType: "large", year: "", href: mainInstagramUrl, accent: "forest",
       },
     ];
   }, [mainInstagramUrl, projects, savedTeam, settings.linkedin]);

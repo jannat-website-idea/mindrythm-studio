@@ -7,7 +7,7 @@ import {
   type SiteContent,
 } from "@/lib/content";
 import { BackToTop } from "@/app/back-to-top";
-import { BentoGalleryGrid } from "@/app/bento-gallery";
+import { BentoTemplate } from "@/app/bento-template";
 import { EmphasizedCopy } from "@/app/emphasized-copy";
 import { ImmersiveLightbox } from "@/app/immersive-lightbox";
 import { Media } from "@/app/media";
@@ -313,24 +313,12 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
             item.eyebrow?.toLowerCase().includes("retreat") ||
             item.eyebrow?.toLowerCase().includes("architecture")
           );
-          const celebrationsItems = galleryItems.filter((item) =>
-            item.category?.toLowerCase().includes("wedding") ||
-            item.category?.toLowerCase().includes("event") ||
-            item.category?.toLowerCase().includes("celebration") ||
-            item.category?.toLowerCase().includes("ritual") ||
-            item.eyebrow?.toLowerCase().includes("wedding") ||
-            item.eyebrow?.toLowerCase().includes("event")
-          );
 
           const defaultSpaces = defaultItems.filter(
             (i) => i.kind === "gallery" && (i.category?.toLowerCase().includes("space") || i.category?.toLowerCase().includes("wellness") || i.category?.toLowerCase().includes("interior") || i.category?.toLowerCase().includes("landscape"))
           );
-          const defaultCelebrations = defaultItems.filter(
-            (i) => i.kind === "gallery" && (i.category?.toLowerCase().includes("wedding") || i.category?.toLowerCase().includes("celebration") || i.category?.toLowerCase().includes("event"))
-          );
 
           const filledSpaces = [...spacesItems, ...defaultSpaces.filter((d) => !spacesItems.some((s) => s.id === d.id))];
-          const filledCelebrations = [...celebrationsItems, ...defaultCelebrations.filter((d) => !celebrationsItems.some((s) => s.id === d.id))];
 
           return (
             <div className="gallery-page">
@@ -340,27 +328,15 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                   <h2>Spaces</h2>
                   <p>Architecture, interiors &amp; quiet sanctuaries</p>
                 </header>
-                <BentoGalleryGrid
+                <BentoTemplate
                   items={filledSpaces}
+                  pattern="gallery"
                   editorialEyebrow="MINDRYTHM ARCHIVE"
                   editorialText="SPACES SHAPED BY LIGHT, MATERIAL AND A SENSE OF ARRIVAL."
                   onOpen={setSelected}
                 />
               </section>
 
-              {/* Section 2: Celebrations */}
-              <section className="gallery-section-container" id="celebrations">
-                <header className="gallery-section-header">
-                  <h2>Celebrations</h2>
-                  <p>Weddings, music &amp; unscripted human stories</p>
-                </header>
-                <BentoGalleryGrid
-                  items={filledCelebrations}
-                  editorialEyebrow="MINDRYTHM ARCHIVE"
-                  editorialText="CELEBRATIONS, MUSIC &amp; UNSCRIPTED HUMAN STORIES."
-                  onOpen={setSelected}
-                />
-              </section>
             </div>
           );
         })()}
