@@ -519,36 +519,36 @@ export function Experience({ content }: { content: SiteContent }) {
           <span>Close</span>
           <i aria-hidden="true">×</i>
         </button>
-          <aside className="menu-overlay-brand" aria-hidden="true">
-            <div className="menu-brand-context">
-              <span>Creative professional studio</span>
-              <small>Independent visual practice</small>
-            </div>
-            <div className="menu-brand-feature">
-              <img src="/mindrythm-logomark.png" alt="" className="menu-brand-logo-centered" />
-              <p><span>Mindrythm</span></p>
-            </div>
-            <small>Every image begins with a pulse.</small>
-          </aside>
-          <div className="menu-overlay-index">
-            <div className="menu-overlay-heading"><span>Navigation</span><span>Studio directory</span></div>
-            <nav aria-label="Main navigation">
-              {navigationItems.map((item) => (
-                <a href={item.href} key={item.label} onClick={(event) => item.href === "#home" ? returnToHero(event) : setMenuOpen(false)}>
-                  <strong>{item.label}</strong>
-                  <small>{item.note}</small>
-                </a>
-              ))}
-            </nav>
-            <div className="menu-overlay-meta">
-              <div className="menu-overlay-socials" aria-label="Mindrythm social links">
-                <a href={mainInstagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram"><SocialIcon name="instagram" /></a>
-                <a href={settings.facebook} target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook"><SocialIcon name="facebook" /></a>
-                <a href={settings.youtube} target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube"><SocialIcon name="youtube" /></a>
-              </div>
-              <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
-            </div>
+        <aside className="menu-overlay-brand" aria-hidden="true">
+          <div className="menu-brand-context">
+            <span>Creative professional studio</span>
+            <small>Independent visual practice</small>
           </div>
+          <div className="menu-brand-feature">
+            <img src="/mindrythm-logomark.png" alt="" className="menu-brand-logo-centered" />
+            <p><span>Mindrythm</span></p>
+          </div>
+          <small>Every image begins with a pulse.</small>
+        </aside>
+        <div className="menu-overlay-index">
+          <div className="menu-overlay-heading"><span>Navigation</span><span>Studio directory</span></div>
+          <nav aria-label="Main navigation">
+            {navigationItems.map((item) => (
+              <a href={item.href} key={item.label} onClick={(event) => item.href === "#home" ? returnToHero(event) : setMenuOpen(false)}>
+                <strong>{item.label}</strong>
+                <small>{item.note}</small>
+              </a>
+            ))}
+          </nav>
+          <div className="menu-overlay-meta">
+            <div className="menu-overlay-socials" aria-label="Mindrythm social links">
+              <a href={mainInstagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram"><SocialIcon name="instagram" /></a>
+              <a href={settings.facebook} target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook"><SocialIcon name="facebook" /></a>
+              <a href={settings.youtube} target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube"><SocialIcon name="youtube" /></a>
+            </div>
+            <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+          </div>
+        </div>
       </div>
 
       <div className={`site-shell ${loaded ? "site-ready" : ""}`}>
