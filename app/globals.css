@@ -4708,7 +4708,7 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   flex-direction: column !important;
   gap: 0.35rem !important;
   align-self: flex-start !important;
-  margin-left: 0 !important;
+  margin-left: clamp(0.8rem, 2vw, 2.5rem) !important;
   margin-right: auto !important;
   max-width: 360px !important;
   text-align: left !important;
@@ -4736,7 +4736,7 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   z-index: 3 !important;
   display: block !important;
   align-self: flex-start !important;
-  margin-left: 0 !important;
+  margin-left: clamp(0.8rem, 2vw, 2.5rem) !important;
   margin-right: auto !important;
   max-width: 360px !important;
   color: rgba(251, 250, 245, 0.75) !important;
