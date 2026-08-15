@@ -7,6 +7,9 @@ export type ContentKind =
   | "social"
   | "note";
 
+export type LayoutType = "large" | "medium" | "tall" | "small" | "wide";
+export type MediaType = "image" | "video";
+
 export type ContentItem = {
   id: string;
   kind: ContentKind;
@@ -17,6 +20,8 @@ export type ContentItem = {
   mediaUrl: string;
   mediaAlt: string;
   category: string;
+  mediaType: MediaType;
+  layoutType: LayoutType;
   year: string;
   href: string;
   accent: string;
@@ -276,7 +281,17 @@ export const defaultTermsConditions: LegalPageContent = {
   ],
 };
 
-export const defaultItems: ContentItem[] = [
+function withItemDefaults(
+  items: Array<Omit<ContentItem, "mediaType" | "layoutType"> & Partial<Pick<ContentItem, "mediaType" | "layoutType">>>
+): ContentItem[] {
+  return items.map((item) => ({
+    ...item,
+    mediaType: item.mediaType || "image",
+    layoutType: item.layoutType || "large",
+  }));
+}
+
+export const defaultItems: ContentItem[] = withItemDefaults([
   {
     id: "quiet-frequency",
     kind: "project",
@@ -287,6 +302,7 @@ export const defaultItems: ContentItem[] = [
     mediaUrl: "/videos/resort-pool.mp4",
     mediaAlt: "Aerial view of a tropical shoreline featured in a wellness retreat film",
     category: "Wellness Film",
+    mediaType: "video",
     year: "2026",
     href: "#svabodha-wellness",
     accent: "forest",
@@ -473,101 +489,115 @@ export const defaultItems: ContentItem[] = [
     href: mainInstagramUrl,
     accent: "lime",
   },
-  // Default Curated Gallery Items: Spaces (Matching Reference Bento)
+  // Default Curated Gallery Items: Spaces (from CMS + local fallbacks)
   {
-    id: "gallery-svabodha-wellness",
+    id: "gallery-minimal-elegance",
     kind: "gallery",
     sortOrder: 10,
-    title: "Svabodha Wellness",
-    eyebrow: "Wellness retreat",
-    body: "Minimal twin bedroom with natural terracotta floor tones and soft diffused daylight.",
-    mediaUrl: "/images/resort-exterior.jpg",
-    mediaAlt: "Twin bedroom at retreat with warm terracotta floors",
+    title: "Minimal Elegance",
+    eyebrow: "Spaces",
+    body: "Quiet material palette and soft daylight shaping a calm interior moment.",
+    mediaUrl: "https://cdn.sanity.io/files/n9nyugiq/production/6c0448566c3deac611522696ded992368e1e5f18.mp4",
+    mediaAlt: "Minimal interior with gentle natural light",
     category: "Spaces",
+    mediaType: "video",
+    layoutType: "large",
     year: "2026",
     href: "",
     accent: "ink",
   },
   {
-    id: "gallery-elegant-interiors",
+    id: "gallery-thoughtful-interiors",
     kind: "gallery",
     sortOrder: 20,
-    title: "Elegant Interiors",
-    eyebrow: "Interior Photography",
-    body: "Airy retreat guest room framed by dreamcatchers, indoor greenery, and handcrafted timber beds.",
-    mediaUrl: "/images/luxury-interior.jpg",
+    title: "Thoughtful Interiors",
+    eyebrow: "Spaces",
+    body: "Twin bedroom with handcrafted timber beds, white walls and soft diffused daylight.",
+    mediaUrl: "https://cdn.sanity.io/images/n9nyugiq/production/d69baa36038b187634ebc2a229b5e8e07ec0bab0-5941x3344.jpg",
     mediaAlt: "Retreat interior with wooden beds and white walls",
-    category: "Interior Photography",
+    category: "Spaces",
+    mediaType: "image",
+    layoutType: "medium",
     year: "2026",
     href: "",
     accent: "forest",
   },
   {
-    id: "gallery-guided-pause",
+    id: "gallery-hand-painted-murals",
     kind: "gallery",
     sortOrder: 30,
-    title: "A Guided Pause",
-    eyebrow: "Retreat space",
-    body: "A quiet film study of guided movement, breath and attentive connection at a retreat pavilion.",
-    mediaUrl: "/images/tropical-interior.jpg",
-    mediaAlt: "Guided wellness practice inside a shaded retreat pavilion",
-    category: "Retreat Spaces",
+    title: "Hand-painted Murals",
+    eyebrow: "Spaces",
+    body: "A window framed by hand-painted botanical forms and warm earthen tones.",
+    mediaUrl: "https://cdn.sanity.io/images/n9nyugiq/production/9a85ee10e94df919b93b95cb9e54504303ca49f1-5237x3496.jpg",
+    mediaAlt: "Hand-painted mural around a retreat window",
+    category: "Spaces",
+    mediaType: "image",
+    layoutType: "medium",
     year: "2026",
     href: "",
     accent: "rust",
   },
   {
-    id: "gallery-hands-of-stillness",
+    id: "gallery-wellness-redefined",
     kind: "gallery",
     sortOrder: 40,
-    title: "Hands of Stillness",
-    eyebrow: "Therapeutic ritual",
-    body: "An intimate moving portrait of restorative touch and sanctuary calm.",
-    mediaUrl: "/images/filmmaker.jpg",
-    mediaAlt: "Dreamcatcher and bells in green sanctuary pavilion",
-    category: "Retreat Spaces",
+    title: "Wellness Redefined",
+    eyebrow: "Spaces",
+    body: "Restorative space inviting stillness, natural texture and mindful repose.",
+    mediaUrl: "https://cdn.sanity.io/images/n9nyugiq/production/4b7eb78c6918915319768128c6e59c5f6259eb57-5174x3454.jpg",
+    mediaAlt: "Wellness space bathed in soft natural light",
+    category: "Spaces",
+    mediaType: "image",
+    layoutType: "large",
     year: "2026",
     href: "",
     accent: "sage",
   },
   {
-    id: "gallery-garden-promise",
+    id: "gallery-minimal-living",
     kind: "gallery",
     sortOrder: 50,
-    title: "A Garden Promise",
-    eyebrow: "Wedding / Cinematic Film",
-    body: "A cinematic wedding film following quiet gestures and lush forest pathways.",
-    mediaUrl: "/images/modern-house.jpg",
-    mediaAlt: "Couples and guests in a lush garden pavilion",
+    title: "Minimal Living",
+    eyebrow: "Spaces",
+    body: "Vertical portrait of a quiet corner where objects and light meet simply.",
+    mediaUrl: "https://cdn.sanity.io/images/n9nyugiq/production/2481b37355e8814537aee4e7bf91b3ad98ab0b79-3809x5714.jpg",
+    mediaAlt: "Minimal living corner with gentle daylight",
     category: "Spaces",
+    mediaType: "image",
+    layoutType: "large",
     year: "2026",
     href: "",
     accent: "ink",
   },
   {
-    id: "gallery-earth-and-stillness",
+    id: "gallery-warm-natural-interiors",
     kind: "gallery",
     sortOrder: 60,
-    title: "Earth & Stillness",
-    eyebrow: "Wellness Ritual",
-    body: "A tactile portrait of an elemental mud ritual, photographed with natural light.",
-    mediaUrl: "/images/villa-pool.jpg",
-    mediaAlt: "Tactile mud ritual with natural textures",
+    title: "Warm Natural Interiors",
+    eyebrow: "Spaces",
+    body: "Evening interior atmosphere lit by warm tones and soft lantern glow.",
+    mediaUrl: "https://cdn.sanity.io/files/n9nyugiq/production/60eb8bc26ffcd3324726af9560ee4a56705d8ea6.mp4",
+    mediaAlt: "Warm natural interior with ambient evening light",
     category: "Spaces",
+    mediaType: "video",
+    layoutType: "medium",
     year: "2026",
     href: "",
-    accent: "rust",
+    accent: "forest",
   },
   {
     id: "gallery-arambol",
     kind: "gallery",
     sortOrder: 70,
     title: "Arambol",
-    eyebrow: "Coastal Panorama",
+    eyebrow: "Spaces",
     body: "Dramatic coastline meeting emerald cliffs and coastal architectural enclaves.",
-    mediaUrl: "/images/dance-study.jpg",
+    mediaUrl: "https://cdn.sanity.io/images/n9nyugiq/production/5be16ef5a1af48bcc956a698be9db44eafc9f4e5-4032x2268.jpg",
     mediaAlt: "Aerial view of coastal headland and crashing waves",
     category: "Spaces",
+    mediaType: "image",
+    layoutType: "large",
     year: "2026",
     href: "",
     accent: "forest",
@@ -671,7 +701,7 @@ export const defaultItems: ContentItem[] = [
     href: "",
     accent: "ink",
   },
-];
+]);
 
 export const defaultContent: SiteContent = {
   settings: defaultSettings,
