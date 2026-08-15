@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { type ContentItem } from "@/lib/content";
-import { Media } from "@/app/media";
 
 export function ImmersiveLightbox({
   selected,
@@ -20,6 +19,8 @@ export function ImmersiveLightbox({
   const hasNext = currentIndex < items.length - 1;
   const goPrev = () => hasPrev && onSelect(items[currentIndex - 1]);
   const goNext = () => (hasNext ? onSelect(items[currentIndex + 1]) : onClose());
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [aspectRatio, setAspectRatio] = useState<number | null>(null);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -31,17 +32,64 @@ export function ImmersiveLightbox({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [currentIndex, hasPrev, hasNext, items, onClose, onSelect]);
 
+  useEffect(() => {
+    setAspectRatio(null);
+    if (selected.mediaType === "video" || /\.(mp4|webm|mov)(\?.*)?$/i.test(selected.mediaUrl)) {
+      const video = document.createElement("video");
+      video.preload = "metadata";
+      video.src = selected.mediaUrl;
+      video.onloadedmetadata = () => {
+        if (video.videoWidth && video.videoHeight) {
+          setAspectRatio(video.videoWidth / video.videoHeight);
+        }
+      };
+    } else {
+      const img = new Image();
+      img.src = selected.mediaUrl;
+      img.onload = () => {
+        if (img.naturalWidth && img.naturalHeight) {
+          setAspectRatio(img.naturalWidth / img.naturalHeight);
+        }
+      };
+    }
+  }, [selected.mediaUrl, selected.mediaType]);
+
+  useEffect(() => {
+    if (wrapperRef.current && aspectRatio) {
+      wrapperRef.current.style.setProperty("--media-aspect", String(aspectRatio));
+    }
+  }, [aspectRatio]);
+
   return (
     <div className="lightbox-immersive" role="dialog" aria-modal="true" aria-label={selected.title}>
       <div className="lightbox-stage">
         <div
+          ref={wrapperRef}
           className="lightbox-media-wrapper"
           onClick={goNext}
           role="button"
           tabIndex={0}
           aria-label="Click image to view next"
         >
-          <Media item={selected} priority />
+          {selected.mediaType === "video" || /\.(mp4|webm|mov)(\?.*)?$/i.test(selected.mediaUrl) ? (
+            <video
+              src={selected.mediaUrl}
+              autoPlay
+              loop
+              muted
+              playsInline
+              controls={false}
+              preload="auto"
+              className="lightbox-media"
+              aria-label={selected.title}
+            />
+          ) : (
+            <img
+              src={selected.mediaUrl}
+              alt={selected.mediaAlt || selected.title}
+              className="lightbox-media"
+            />
+          )}
         </div>
       </div>
       <div className="lightbox-immersive-toolbar">

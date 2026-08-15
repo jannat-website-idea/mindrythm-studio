@@ -420,11 +420,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   cursor: pointer !important;
 }
 
-.lightbox-media-wrapper img,
-.lightbox-media-wrapper video {
-  width: auto !important;
-  height: auto !important;
-  max-width: 96vw !important;
+.lightbox-media-wrapper img.lightbox-media,
+.lightbox-media-wrapper video.lightbox-media {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: min(96vw, calc(96vh * var(--media-aspect, 1))) !important;
   max-height: 92vh !important;
   object-fit: contain !important;
   object-position: center !important;
