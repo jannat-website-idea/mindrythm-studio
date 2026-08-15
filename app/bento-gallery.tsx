@@ -2,16 +2,21 @@
 
 import { defaultItems, type ContentItem } from "@/lib/content";
 import { Media } from "@/app/media";
+import { SocialIcon } from "@/app/social-icon";
 
 export function BentoGalleryGrid({
   items,
   editorialText,
   onOpen,
+  showSocialCard = false,
+  socialLinks,
 }: {
   items: ContentItem[];
   editorialText: string;
   editorialEyebrow?: string;
   onOpen: (item: ContentItem) => void;
+  showSocialCard?: boolean;
+  socialLinks?: { instagram?: string; facebook?: string; youtube?: string };
 }) {
   const isCelebrations = editorialText.toUpperCase().includes("WEDDING") || editorialText.toUpperCase().includes("CELEBRATION");
   
@@ -39,13 +44,13 @@ export function BentoGalleryGrid({
     fallbackIndex++;
   }
 
-  const slot1 = displayItems[0]; // Col 1 Top (Short - Minimal Elegance)
-  const slot2 = displayItems[1]; // Col 2 Top (Tall - Soft Details)
-  const slot3 = displayItems[2]; // Col 3 Top (Short - Hand-painted Murals)
-  const slot4 = displayItems[3]; // Col 1 Bottom (Tall - Wellness Redefined)
-  const slot5 = displayItems[4]; // Col 3 Bottom (Tall - Minimal Living)
-  const slot6 = displayItems[5]; // Col 4 Bottom (Short - Warm Natural Interiors)
-  const slot7 = displayItems[6]; // Col 2 Bottom (Short - Arambol)
+  const slot1 = displayItems[0]; // Col 1 Top (Short)
+  const slot2 = displayItems[1]; // Col 2 Top (Tall)
+  const slot3 = displayItems[2]; // Col 3 Top (Short)
+  const slot4 = displayItems[3]; // Col 1 Bottom (Tall)
+  const slot5 = displayItems[4]; // Col 3 Bottom (Tall)
+  const slot6 = displayItems[5]; // Col 4 Bottom (Short)
+  const slot7 = displayItems[6]; // Col 2 Bottom (Short)
 
   const extraMedia = displayItems.slice(7);
   const additionalGroups: ContentItem[][] = [];
@@ -53,11 +58,15 @@ export function BentoGalleryGrid({
     additionalGroups.push(extraMedia.slice(i, i + 8));
   }
 
+  const defaultInstagram = "https://www.instagram.com/mindrythm";
+  const defaultFacebook = "https://www.facebook.com/mindrythm";
+  const defaultYoutube = "https://www.youtube.com/@mindrythm";
+
   return (
     <div className="bento-stream">
-      {/* Primary Bento Board (100% exact match to reference screenshot) */}
+      {/* Primary Bento Board */}
       <div className="bento-board">
-        {/* Column 1: Short Top (Minimal Elegance) + Tall Bottom (Wellness Redefined) */}
+        {/* Column 1: Short Top + Tall Bottom */}
         <div className="bento-col bento-col-a">
           {slot1 && (
             <button
@@ -70,20 +79,29 @@ export function BentoGalleryGrid({
               <span className="bento-badge">{slot1.title}</span>
             </button>
           )}
-          {slot4 && (
-            <button
-              type="button"
-              className="bento-card bento-card-tall"
-              onClick={() => onOpen(slot4)}
-              aria-label={`Open ${slot4.title}`}
-            >
-              <Media item={slot4} />
-              <span className="bento-badge">{slot4.title}</span>
-            </button>
+          {showSocialCard ? (
+            /* LISTEN. FRAME. REMEMBER. tagline card */
+            <div className="bento-card bento-card-tagline">
+              <span className="bento-tagline-text">Listen.</span>
+              <span className="bento-tagline-text">Frame.</span>
+              <span className="bento-tagline-text">Remember.</span>
+            </div>
+          ) : (
+            slot4 && (
+              <button
+                type="button"
+                className="bento-card bento-card-tall"
+                onClick={() => onOpen(slot4)}
+                aria-label={`Open ${slot4.title}`}
+              >
+                <Media item={slot4} />
+                <span className="bento-badge">{slot4.title}</span>
+              </button>
+            )
           )}
         </div>
 
-        {/* Column 2: Tall Top (Soft Details) + Short Bottom (Arambol) */}
+        {/* Column 2: Tall Top + Short Bottom */}
         <div className="bento-col bento-col-b">
           {slot2 && (
             <button
@@ -109,7 +127,7 @@ export function BentoGalleryGrid({
           )}
         </div>
 
-        {/* Column 3: Short Top (Hand-painted Murals) + Tall Bottom (Minimal Living) */}
+        {/* Column 3: Short Top + Tall Bottom */}
         <div className="bento-col bento-col-a">
           {slot3 && (
             <button
@@ -135,34 +153,130 @@ export function BentoGalleryGrid({
           )}
         </div>
 
-        {/* Column 4: Tall Top (Editorial Card) + Short Bottom (Warm Natural Interiors) */}
+        {/* Column 4: Editorial/Social Top + Short Bottom */}
         <div className="bento-col bento-col-b">
-          <article className="bento-card bento-card-editorial">
-            <p className="bento-editorial-statement">{editorialText}</p>
-            <button
-              type="button"
-              className="bento-editorial-link"
-              onClick={() => slot1 && onOpen(slot1)}
-            >
-              OPEN THE FULL GALLERY
+          {showSocialCard ? (
+            <>
+              {/* Editorial quote card */}
+              <article className="bento-card bento-card-editorial">
+                <span className="bento-editorial-eyebrow">Our Approach</span>
+                <p className="bento-editorial-statement">
+                  &ldquo;Every place and every celebration begins with a feeling. Our work is to make it visible.&rdquo;
+                </p>
+                <button
+                  type="button"
+                  className="bento-editorial-link bento-editorial-play"
+                  onClick={() => slot1 && onOpen(slot1)}
+                  aria-label="Play reel"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="3"/><line x1="9" y1="2" x2="9" y2="22"/><line x1="15" y1="2" x2="15" y2="22"/></svg>
+                </button>
+              </article>
+
+              {/* Social media + infinity card */}
+              <div className="bento-card bento-card-social">
+                <div className="bento-social-infinity">∞</div>
+                <div className="bento-social-content">
+                  <h3 className="bento-social-headline">One Studio.<br />Many Stories.</h3>
+                  <p className="bento-social-categories">Property / Events / Weddings / Film</p>
+                  <div className="bento-social-links">
+                    <a href={socialLinks?.instagram || defaultInstagram} target="_blank" rel="noreferrer" aria-label="Instagram"><SocialIcon name="instagram" /></a>
+                    <a href={socialLinks?.facebook || defaultFacebook} target="_blank" rel="noreferrer" aria-label="Facebook"><SocialIcon name="facebook" /></a>
+                    <a href={socialLinks?.youtube || defaultYoutube} target="_blank" rel="noreferrer" aria-label="YouTube"><SocialIcon name="youtube" /></a>
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <article className="bento-card bento-card-editorial">
+                <p className="bento-editorial-statement">{editorialText}</p>
+                <button
+                  type="button"
+                  className="bento-editorial-link"
+                  onClick={() => slot1 && onOpen(slot1)}
+                >
+                  OPEN THE FULL GALLERY
+                </button>
+              </article>
+              {slot6 && (
+                <button
+                  type="button"
+                  className="bento-card bento-card-short"
+                  onClick={() => onOpen(slot6)}
+                  aria-label={`Open ${slot6.title}`}
+                >
+                  <Media item={slot6} />
+                  <span className="bento-badge">{slot6.title}</span>
+                </button>
+              )}
+            </>
+          )}
+        </div>
+
+        {/* When showSocialCard, render remaining image slots after the board */}
+      </div>
+
+      {/* Additional image cards that didn't fit in the social layout */}
+      {showSocialCard && slot4 && slot6 && (
+        <div className="bento-board bento-board-subsequent">
+          <div className="bento-col bento-col-a">
+            <button type="button" className="bento-card bento-card-short" onClick={() => onOpen(slot4)}>
+              <Media item={slot4} />
+              <span className="bento-badge">{slot4.title}</span>
             </button>
-          </article>
-          {slot6 && (
-            <button
-              type="button"
-              className="bento-card bento-card-short"
-              onClick={() => onOpen(slot6)}
-              aria-label={`Open ${slot6.title}`}
-            >
+            {displayItems[7] && (
+              <button type="button" className="bento-card bento-card-tall" onClick={() => onOpen(displayItems[7])}>
+                <Media item={displayItems[7]} />
+                <span className="bento-badge">{displayItems[7].title}</span>
+              </button>
+            )}
+          </div>
+          <div className="bento-col bento-col-b">
+            <button type="button" className="bento-card bento-card-tall" onClick={() => onOpen(slot6)}>
               <Media item={slot6} />
               <span className="bento-badge">{slot6.title}</span>
             </button>
-          )}
+            {displayItems[8] && (
+              <button type="button" className="bento-card bento-card-short" onClick={() => onOpen(displayItems[8])}>
+                <Media item={displayItems[8]} />
+                <span className="bento-badge">{displayItems[8].title}</span>
+              </button>
+            )}
+          </div>
+          <div className="bento-col bento-col-a">
+            {displayItems[9] && (
+              <button type="button" className="bento-card bento-card-short" onClick={() => onOpen(displayItems[9])}>
+                <Media item={displayItems[9]} />
+                <span className="bento-badge">{displayItems[9].title}</span>
+              </button>
+            )}
+            {displayItems[10] && (
+              <button type="button" className="bento-card bento-card-tall" onClick={() => onOpen(displayItems[10])}>
+                <Media item={displayItems[10]} />
+                <span className="bento-badge">{displayItems[10].title}</span>
+              </button>
+            )}
+          </div>
+          <div className="bento-col bento-col-b">
+            {displayItems[11] && (
+              <button type="button" className="bento-card bento-card-tall" onClick={() => onOpen(displayItems[11])}>
+                <Media item={displayItems[11]} />
+                <span className="bento-badge">{displayItems[11].title}</span>
+              </button>
+            )}
+            {displayItems[12] && (
+              <button type="button" className="bento-card bento-card-short" onClick={() => onOpen(displayItems[12])}>
+                <Media item={displayItems[12]} />
+                <span className="bento-badge">{displayItems[12].title}</span>
+              </button>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Subsequent Bento Boards for extra media beyond 7 */}
-      {additionalGroups.map((group, groupIdx) => (
+      {/* Subsequent Bento Boards for extra media beyond 7 (non-social layout) */}
+      {!showSocialCard && additionalGroups.map((group, groupIdx) => (
         <div className="bento-board bento-board-subsequent" key={`extra-group-${groupIdx + 2}`}>
           <div className="bento-col bento-col-a">
             {group[0] && (

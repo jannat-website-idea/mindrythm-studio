@@ -105,17 +105,7 @@ export function Experience({ content }: { content: SiteContent }) {
     return spaces.length ? spaces : galleryItems.slice(0, 7);
   }, [galleryItems]);
 
-  const galleryCelebrations = useMemo(() => {
-    const celebrations = galleryItems.filter((item) =>
-      item.category?.toLowerCase().includes("wedding") ||
-      item.category?.toLowerCase().includes("event") ||
-      item.category?.toLowerCase().includes("celebration") ||
-      item.category?.toLowerCase().includes("ritual") ||
-      item.eyebrow?.toLowerCase().includes("wedding") ||
-      item.eyebrow?.toLowerCase().includes("event")
-    );
-    return celebrations.length ? celebrations : galleryItems.slice(3);
-  }, [galleryItems]);
+
 
   const bentoProjects = useMemo(() => {
     const fallbackList = defaultItems.filter((i: ContentItem) => i.kind === "project");
@@ -755,18 +745,8 @@ export function Experience({ content }: { content: SiteContent }) {
                 items={gallerySpaces}
                 editorialText="SPACES SHAPED BY LIGHT, MATERIAL AND A SENSE OF ARRIVAL."
                 onOpen={setSelectedItem}
-              />
-            </div>
-
-            <div className="gallery-section-container" id="celebrations">
-              <header className="gallery-section-header" data-reveal>
-                <h2>Celebrations</h2>
-                <p>Weddings, gatherings &amp; live human moments</p>
-              </header>
-              <BentoGalleryGrid
-                items={galleryCelebrations}
-                editorialText="WEDDING STORIES WITH FEELING, MOVEMENT AND DETAIL."
-                onOpen={setSelectedItem}
+                showSocialCard
+                socialLinks={{ instagram: mainInstagramUrl, facebook: settings.facebook, youtube: settings.youtube }}
               />
             </div>
           </section>
