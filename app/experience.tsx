@@ -547,13 +547,12 @@ export function Experience({ content }: { content: SiteContent }) {
               ))}
             </nav>
             <div className="menu-overlay-meta">
-              <span>Everywhere</span>
-              <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
               <div className="menu-overlay-socials" aria-label="Mindrythm social links">
                 <a href={mainInstagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram"><SocialIcon name="instagram" /></a>
                 <a href={settings.facebook} target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook"><SocialIcon name="facebook" /></a>
                 <a href={settings.youtube} target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube"><SocialIcon name="youtube" /></a>
               </div>
+              <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
             </div>
           </div>
       </div>
