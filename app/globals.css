@@ -4759,9 +4759,9 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   left: 45% !important;
   z-index: 0 !important;
   display: block !important;
-  width: min(34vw, 460px) !important;
-  max-width: 82% !important;
-  max-height: 64vh !important;
+  width: min(42vw, 575px) !important;
+  max-width: 100% !important;
+  max-height: 80vh !important;
   object-fit: contain !important;
   opacity: .22 !important;
   filter: invert(1) !important;
