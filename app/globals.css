@@ -7116,18 +7116,26 @@ video {
   border-color: transparent !important;
 }
 
-/* Tagline Bar Card (LISTEN. FRAME. REMEMBER.) */
+/* Tagline Bar Card (LISTEN. FRAME. REMEMBER. + Social Icons) */
 .bento-card-tagline {
   display: flex !important;
+  flex-direction: column !important;
   align-items: center !important;
-  justify-content: space-around !important;
-  padding: clamp(1rem, 1.8vw, 1.6rem) clamp(1.2rem, 2vw, 2rem) !important;
+  justify-content: center !important;
+  padding: clamp(1rem, 1.6vw, 1.5rem) clamp(1.2rem, 2vw, 2rem) !important;
   background: #14100e !important;
   border-radius: 12px !important;
-  gap: 0.5rem !important;
-  flex: 0.15 !important;
+  gap: clamp(0.6rem, 1vw, 0.9rem) !important;
+  flex: 0.22 !important;
   height: auto !important;
   min-height: 0 !important;
+}
+.bento-tagline-words {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: clamp(1.2rem, 2.5vw, 3rem) !important;
+  width: 100% !important;
 }
 .bento-tagline-text {
   font-size: clamp(0.78rem, 1.3vw, 1.35rem) !important;
@@ -7137,18 +7145,44 @@ video {
   text-transform: uppercase !important;
   white-space: nowrap !important;
 }
+.bento-tagline-socials {
+  display: flex !important;
+  gap: 0.6rem !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.bento-tagline-socials a {
+  display: grid !important;
+  width: 1.75rem !important;
+  height: 1.75rem !important;
+  place-items: center !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  transition: background 0.2s ease, transform 0.2s ease !important;
+}
+.bento-tagline-socials a:hover {
+  background: rgba(255, 255, 255, 0.25) !important;
+  transform: scale(1.1) !important;
+}
+.bento-tagline-socials .social-icon-image {
+  width: 1rem !important;
+  height: 1rem !important;
+  object-fit: contain !important;
+  filter: invert(1) !important;
+}
 
 /* Social Media + Infinity Card */
 .bento-card-social {
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between !important;
-  padding: clamp(1.4rem, 2.2vw, 2.2rem) !important;
+  padding: clamp(1.2rem, 1.8vw, 1.8rem) !important;
   background: #f5f4ef !important;
   color: #14100e !important;
   border-radius: 12px !important;
   cursor: default !important;
   overflow: hidden !important;
+  flex: 0.42 !important;
 }
 .bento-social-infinity {
   font-size: clamp(2rem, 3.5vw, 3.2rem) !important;

@@ -80,11 +80,18 @@ export function BentoGalleryGrid({
             </button>
           )}
           {showSocialCard ? (
-            /* LISTEN. FRAME. REMEMBER. tagline card */
+            /* LISTEN. FRAME. REMEMBER. tagline card with social icons */
             <div className="bento-card bento-card-tagline">
-              <span className="bento-tagline-text">Listen.</span>
-              <span className="bento-tagline-text">Frame.</span>
-              <span className="bento-tagline-text">Remember.</span>
+              <div className="bento-tagline-words">
+                <span className="bento-tagline-text">Listen.</span>
+                <span className="bento-tagline-text">Frame.</span>
+                <span className="bento-tagline-text">Remember.</span>
+              </div>
+              <div className="bento-tagline-socials">
+                <a href={socialLinks?.instagram || defaultInstagram} target="_blank" rel="noreferrer" aria-label="Instagram"><SocialIcon name="instagram" /></a>
+                <a href={socialLinks?.facebook || defaultFacebook} target="_blank" rel="noreferrer" aria-label="Facebook"><SocialIcon name="facebook" /></a>
+                <a href={socialLinks?.youtube || defaultYoutube} target="_blank" rel="noreferrer" aria-label="YouTube"><SocialIcon name="youtube" /></a>
+              </div>
             </div>
           ) : (
             slot4 && (
