@@ -7204,10 +7204,11 @@ video {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 .social-pill-group {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  gap: clamp(40px, 5vw, 64px);
+  justify-content: space-between;
+  width: 100%;
+  max-width: min(72%, 320px);
 }
 .bento-card-social-bar .social-pill-link {
   display: inline-grid;
