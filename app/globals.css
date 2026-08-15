@@ -7116,57 +7116,49 @@ video {
   border-color: transparent !important;
 }
 
-/* Tagline Bar Card (LISTEN. FRAME. REMEMBER. + Social Icons) */
-.bento-card-tagline {
+/* Home bento column 1: Top photo, slim social bar, bottom photo */
+.bento-board-home .bento-col-a:first-child .bento-card-short {
+  flex: 0.38 !important;
+  height: 38% !important;
+}
+.bento-board-home .bento-col-a:first-child .bento-card-social-bar {
+  flex: 0.16 !important;
+  height: auto !important;
+  min-height: 48px !important;
+  max-height: 64px !important;
+}
+.bento-board-home .bento-col-a:first-child .bento-card-tall {
+  flex: 0.46 !important;
+  height: 46% !important;
+}
+
+/* Slim Social Media Icon Bar */
+.bento-card-social-bar {
   display: flex !important;
-  flex-direction: column !important;
   align-items: center !important;
   justify-content: center !important;
-  padding: clamp(1rem, 1.6vw, 1.5rem) clamp(1.2rem, 2vw, 2rem) !important;
+  gap: clamp(1rem, 2vw, 1.8rem) !important;
+  padding: 0.6rem 1.2rem !important;
   background: #14100e !important;
   border-radius: 12px !important;
-  gap: clamp(0.6rem, 1vw, 0.9rem) !important;
-  flex: 0.22 !important;
-  height: auto !important;
-  min-height: 0 !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
 }
-.bento-tagline-words {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: clamp(1.2rem, 2.5vw, 3rem) !important;
-  width: 100% !important;
-}
-.bento-tagline-text {
-  font-size: clamp(0.78rem, 1.3vw, 1.35rem) !important;
-  font-weight: 300 !important;
-  letter-spacing: 0.04em !important;
-  color: rgba(255, 255, 255, 0.88) !important;
-  text-transform: uppercase !important;
-  white-space: nowrap !important;
-}
-.bento-tagline-socials {
-  display: flex !important;
-  gap: 0.6rem !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-.bento-tagline-socials a {
+.bento-card-social-bar a {
   display: grid !important;
-  width: 1.75rem !important;
-  height: 1.75rem !important;
+  width: 2.1rem !important;
+  height: 2.1rem !important;
   place-items: center !important;
   border-radius: 50% !important;
-  background: rgba(255, 255, 255, 0.12) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
   transition: background 0.2s ease, transform 0.2s ease !important;
 }
-.bento-tagline-socials a:hover {
-  background: rgba(255, 255, 255, 0.25) !important;
+.bento-card-social-bar a:hover {
+  background: rgba(255, 255, 255, 0.22) !important;
   transform: scale(1.1) !important;
 }
-.bento-tagline-socials .social-icon-image {
-  width: 1rem !important;
-  height: 1rem !important;
+.bento-card-social-bar .social-icon-image {
+  width: 1.15rem !important;
+  height: 1.15rem !important;
   object-fit: contain !important;
   filter: invert(1) !important;
 }
@@ -7213,31 +7205,6 @@ video {
   text-transform: uppercase !important;
   color: rgba(20, 16, 14, 0.5) !important;
 }
-.bento-social-links {
-  display: flex !important;
-  gap: 0.65rem !important;
-  align-items: center !important;
-  margin-top: 0.35rem !important;
-}
-.bento-social-links a {
-  display: grid !important;
-  width: 2rem !important;
-  height: 2rem !important;
-  place-items: center !important;
-  border-radius: 50% !important;
-  background: #14100e !important;
-  transition: transform 0.2s ease, opacity 0.2s ease !important;
-}
-.bento-social-links a:hover {
-  transform: scale(1.1) !important;
-  opacity: 0.8 !important;
-}
-.bento-social-links .social-icon-image {
-  width: 1.15rem !important;
-  height: 1.15rem !important;
-  object-fit: contain !important;
-  filter: invert(1) !important;
-}
 
 /* Tablet Breakpoint (641px - 920px) */
 @media (max-width: 920px) and (min-width: 641px) {
@@ -7249,9 +7216,9 @@ video {
   .bento-col {
     height: 520px !important;
   }
-  .bento-card-tagline {
+  .bento-card-social-bar {
+    min-height: 48px !important;
     flex: none !important;
-    min-height: 60px !important;
   }
 }
 
@@ -7299,13 +7266,13 @@ video {
   .bento-card-editorial {
     min-height: 220px !important;
   }
-  .bento-card-tagline {
-    flex: none !important;
-    min-height: 56px !important;
+  .bento-card-social-bar {
+    min-height: 48px !important;
     aspect-ratio: auto !important;
+    flex: none !important;
   }
   .bento-card-social {
-    min-height: 240px !important;
+    min-height: 220px !important;
     aspect-ratio: auto !important;
   }
 }

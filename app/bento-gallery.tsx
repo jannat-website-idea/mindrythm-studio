@@ -47,7 +47,7 @@ export function BentoGalleryGrid({
   const slot1 = displayItems[0]; // Col 1 Top (Short)
   const slot2 = displayItems[1]; // Col 2 Top (Tall)
   const slot3 = displayItems[2]; // Col 3 Top (Short)
-  const slot4 = displayItems[3]; // Col 1 Bottom (Tall)
+  const slot4 = displayItems[3]; // Col 1 Bottom (Tall / Split with bar)
   const slot5 = displayItems[4]; // Col 3 Bottom (Tall)
   const slot6 = displayItems[5]; // Col 4 Bottom (Short)
   const slot7 = displayItems[6]; // Col 2 Bottom (Short)
@@ -64,9 +64,9 @@ export function BentoGalleryGrid({
 
   return (
     <div className="bento-stream">
-      {/* Primary Bento Board */}
-      <div className="bento-board">
-        {/* Column 1: Short Top + Tall Bottom */}
+      {/* Primary Bento Board (Exact match to reference layout) */}
+      <div className={`bento-board ${showSocialCard ? "bento-board-home" : ""}`}>
+        {/* Column 1: Top Photo + Social Bar + Bottom Photo */}
         <div className="bento-col bento-col-a">
           {slot1 && (
             <button
@@ -79,32 +79,23 @@ export function BentoGalleryGrid({
               <span className="bento-badge">{slot1.title}</span>
             </button>
           )}
-          {showSocialCard ? (
-            /* LISTEN. FRAME. REMEMBER. tagline card with social icons */
-            <div className="bento-card bento-card-tagline">
-              <div className="bento-tagline-words">
-                <span className="bento-tagline-text">Listen.</span>
-                <span className="bento-tagline-text">Frame.</span>
-                <span className="bento-tagline-text">Remember.</span>
-              </div>
-              <div className="bento-tagline-socials">
-                <a href={socialLinks?.instagram || defaultInstagram} target="_blank" rel="noreferrer" aria-label="Instagram"><SocialIcon name="instagram" /></a>
-                <a href={socialLinks?.facebook || defaultFacebook} target="_blank" rel="noreferrer" aria-label="Facebook"><SocialIcon name="facebook" /></a>
-                <a href={socialLinks?.youtube || defaultYoutube} target="_blank" rel="noreferrer" aria-label="YouTube"><SocialIcon name="youtube" /></a>
-              </div>
+          {showSocialCard && (
+            <div className="bento-card bento-card-social-bar" aria-label="Mindrythm social media">
+              <a href={socialLinks?.instagram || defaultInstagram} target="_blank" rel="noreferrer" aria-label="Instagram"><SocialIcon name="instagram" /></a>
+              <a href={socialLinks?.facebook || defaultFacebook} target="_blank" rel="noreferrer" aria-label="Facebook"><SocialIcon name="facebook" /></a>
+              <a href={socialLinks?.youtube || defaultYoutube} target="_blank" rel="noreferrer" aria-label="YouTube"><SocialIcon name="youtube" /></a>
             </div>
-          ) : (
-            slot4 && (
-              <button
-                type="button"
-                className="bento-card bento-card-tall"
-                onClick={() => onOpen(slot4)}
-                aria-label={`Open ${slot4.title}`}
-              >
-                <Media item={slot4} />
-                <span className="bento-badge">{slot4.title}</span>
-              </button>
-            )
+          )}
+          {slot4 && (
+            <button
+              type="button"
+              className="bento-card bento-card-tall"
+              onClick={() => onOpen(slot4)}
+              aria-label={`Open ${slot4.title}`}
+            >
+              <Media item={slot4} />
+              <span className="bento-badge">{slot4.title}</span>
+            </button>
           )}
         </div>
 
@@ -160,7 +151,7 @@ export function BentoGalleryGrid({
           )}
         </div>
 
-        {/* Column 4: Editorial/Social Top + Short Bottom */}
+        {/* Column 4: Editorial Top + Social/Short Bottom */}
         <div className="bento-col bento-col-b">
           {showSocialCard ? (
             <>
@@ -186,11 +177,6 @@ export function BentoGalleryGrid({
                 <div className="bento-social-content">
                   <h3 className="bento-social-headline">One Studio.<br />Many Stories.</h3>
                   <p className="bento-social-categories">Property / Events / Weddings / Film</p>
-                  <div className="bento-social-links">
-                    <a href={socialLinks?.instagram || defaultInstagram} target="_blank" rel="noreferrer" aria-label="Instagram"><SocialIcon name="instagram" /></a>
-                    <a href={socialLinks?.facebook || defaultFacebook} target="_blank" rel="noreferrer" aria-label="Facebook"><SocialIcon name="facebook" /></a>
-                    <a href={socialLinks?.youtube || defaultYoutube} target="_blank" rel="noreferrer" aria-label="YouTube"><SocialIcon name="youtube" /></a>
-                  </div>
                 </div>
               </div>
             </>
@@ -220,70 +206,10 @@ export function BentoGalleryGrid({
             </>
           )}
         </div>
-
-        {/* When showSocialCard, render remaining image slots after the board */}
       </div>
 
-      {/* Additional image cards that didn't fit in the social layout */}
-      {showSocialCard && slot4 && slot6 && (
-        <div className="bento-board bento-board-subsequent">
-          <div className="bento-col bento-col-a">
-            <button type="button" className="bento-card bento-card-short" onClick={() => onOpen(slot4)}>
-              <Media item={slot4} />
-              <span className="bento-badge">{slot4.title}</span>
-            </button>
-            {displayItems[7] && (
-              <button type="button" className="bento-card bento-card-tall" onClick={() => onOpen(displayItems[7])}>
-                <Media item={displayItems[7]} />
-                <span className="bento-badge">{displayItems[7].title}</span>
-              </button>
-            )}
-          </div>
-          <div className="bento-col bento-col-b">
-            <button type="button" className="bento-card bento-card-tall" onClick={() => onOpen(slot6)}>
-              <Media item={slot6} />
-              <span className="bento-badge">{slot6.title}</span>
-            </button>
-            {displayItems[8] && (
-              <button type="button" className="bento-card bento-card-short" onClick={() => onOpen(displayItems[8])}>
-                <Media item={displayItems[8]} />
-                <span className="bento-badge">{displayItems[8].title}</span>
-              </button>
-            )}
-          </div>
-          <div className="bento-col bento-col-a">
-            {displayItems[9] && (
-              <button type="button" className="bento-card bento-card-short" onClick={() => onOpen(displayItems[9])}>
-                <Media item={displayItems[9]} />
-                <span className="bento-badge">{displayItems[9].title}</span>
-              </button>
-            )}
-            {displayItems[10] && (
-              <button type="button" className="bento-card bento-card-tall" onClick={() => onOpen(displayItems[10])}>
-                <Media item={displayItems[10]} />
-                <span className="bento-badge">{displayItems[10].title}</span>
-              </button>
-            )}
-          </div>
-          <div className="bento-col bento-col-b">
-            {displayItems[11] && (
-              <button type="button" className="bento-card bento-card-tall" onClick={() => onOpen(displayItems[11])}>
-                <Media item={displayItems[11]} />
-                <span className="bento-badge">{displayItems[11].title}</span>
-              </button>
-            )}
-            {displayItems[12] && (
-              <button type="button" className="bento-card bento-card-short" onClick={() => onOpen(displayItems[12])}>
-                <Media item={displayItems[12]} />
-                <span className="bento-badge">{displayItems[12].title}</span>
-              </button>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Subsequent Bento Boards for extra media beyond 7 (non-social layout) */}
-      {!showSocialCard && additionalGroups.map((group, groupIdx) => (
+      {/* Subsequent Bento Boards for extra media beyond 7 (gallery page) */}
+      {additionalGroups.map((group, groupIdx) => (
         <div className="bento-board bento-board-subsequent" key={`extra-group-${groupIdx + 2}`}>
           <div className="bento-col bento-col-a">
             {group[0] && (
