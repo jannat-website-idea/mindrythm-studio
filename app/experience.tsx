@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  defaultItems,
   mainInstagramUrl as defaultInstagramUrl,
   type ContentItem,
   type SiteContent,
@@ -17,41 +16,6 @@ import { getServiceProjects } from "@/lib/services";
 import { type CSSProperties, type FormEvent, type MouseEvent as ReactMouseEvent, useEffect, useMemo, useRef, useState } from "react";
 
 const googleBusinessUrl = "https://www.google.com/search?kgmid=/g/11njpxjhwk&q=Mindrythm+Studios";
-
-const fallbackTestimonials: ContentItem[] = [
-  {
-    id: "review-one",
-    kind: "testimonial",
-    sortOrder: 10,
-    title: "From Mindrythm Studios",
-    eyebrow: "Official profile description",
-    body: "Mindrythm Weddings is a cinematic wedding photography and filmmaking studio specializing in editorial, emotional, and timeless wedding storytelling. We create luxury wedding visuals that capture genuine moments with an artistic and cinematic approach.",
-    mediaUrl: "",
-    mediaAlt: "",
-    category: "Google Business Profile",
-    mediaType: "image",
-    layoutType: "large",
-    year: "",
-    href: googleBusinessUrl,
-    accent: "approved",
-  },
-  {
-    id: "review-two",
-    kind: "testimonial",
-    sortOrder: 20,
-    title: "Beautiful coverage, handled with total clarity.",
-    eyebrow: "Event partner",
-    body: "From the run sheet to the final delivery, the process was calm, considered and focused on the moments that mattered to our guests and brand.",
-    mediaUrl: "",
-    mediaAlt: "",
-    category: "Google review",
-    mediaType: "image",
-    layoutType: "large",
-    year: "5.0",
-    href: "#testimonials",
-    accent: "approved",
-  },
-];
 
 const navigationItems = [
   { label: "Home", href: "#home", note: "Begin here" },
@@ -90,10 +54,10 @@ export function Experience({ content }: { content: SiteContent }) {
       }),
     [projects, serviceItems],
   );
-  const galleryItems = useMemo(() => {
-    const saved = content.items.filter((item) => item.kind === "gallery").sort((a, b) => a.sortOrder - b.sortOrder);
-    return saved.length ? saved : projects;
-  }, [content.items, projects]);
+  const galleryItems = useMemo(
+    () => content.items.filter((item) => item.kind === "gallery").sort((a, b) => a.sortOrder - b.sortOrder),
+    [content.items],
+  );
 
   const gallerySpaces = useMemo(() => {
     const spaces = galleryItems.filter((item) =>
@@ -111,46 +75,20 @@ export function Experience({ content }: { content: SiteContent }) {
 
 
 
-  const bentoProjects = useMemo(() => {
-    const fallbackList = defaultItems.filter((i: ContentItem) => i.kind === "project");
-    const list: ContentItem[] = [];
-    for (let i = 0; i < 6; i++) {
-      list.push(projects[i] || fallbackList[i % fallbackList.length]);
-    }
-    return list;
-  }, [projects]);
+  const bentoProjects = useMemo(() => projects.slice(0, 6), [projects]);
 
   const savedTeam = useMemo(
     () => content.items.filter((item) => item.kind === "team").sort((a, b) => a.sortOrder - b.sortOrder),
     [content.items],
   );
-  const testimonials = useMemo(() => {
-    const saved = content.items
+  const testimonials = useMemo(
+    () => content.items
       .filter((item) => item.kind === "testimonial" && item.accent !== "rejected")
-      .sort((a, b) => a.sortOrder - b.sortOrder);
-    return saved.length ? saved : fallbackTestimonials;
-  }, [content.items]);
+      .sort((a, b) => a.sortOrder - b.sortOrder),
+    [content.items],
+  );
 
-  const team = useMemo<ContentItem[]>(() => {
-    if (savedTeam.length > 0) return savedTeam;
-    return [
-      {
-        id: "team-direction", kind: "team", sortOrder: 80, title: "Property & commercial", eyebrow: "Core team",
-        body: "Architecture, resort, real-estate and brand photography.", mediaUrl: "/images/dance-study.jpg",
-        mediaAlt: "Mindrythm wellness and lifestyle photography", category: "Lead Photographer", mediaType: "image", layoutType: "large", year: "", href: mainInstagramUrl, accent: "forest",
-      },
-      {
-        id: "team-image", kind: "team", sortOrder: 90, title: "Events & celebrations", eyebrow: "Core team",
-        body: "Candid photography, portraits, rituals and live moments.", mediaUrl: projects[1]?.mediaUrl || "/images/wedding-celebration.jpg",
-        mediaAlt: "Mindrythm event and wedding photographer", category: "Event Photographer", mediaType: "image", layoutType: "large", year: "", href: settings.linkedin, accent: "forest",
-      },
-      {
-        id: "team-post", kind: "team", sortOrder: 100, title: "Aerial film & post", eyebrow: "Core team",
-        body: "Wedding films, event aftermovies, drone capture, edit and colour.", mediaUrl: projects[2]?.mediaUrl || "/videos/event-film.mp4",
-        mediaAlt: "Mindrythm aerial film specialist", category: "Film & Post", mediaType: "video", layoutType: "large", year: "", href: mainInstagramUrl, accent: "forest",
-      },
-    ];
-  }, [mainInstagramUrl, projects, savedTeam, settings.linkedin]);
+  const team = savedTeam;
 
   const [loaded, setLoaded] = useState(false);
   const [loaderExiting, setLoaderExiting] = useState(false);

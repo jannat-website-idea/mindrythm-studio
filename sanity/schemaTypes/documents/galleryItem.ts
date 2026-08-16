@@ -6,7 +6,7 @@ export const galleryItem = defineType({
   type: "document",
   fields: [
     defineField({name: "cmsId", title: "Item ID", type: "slug", options: {source: "title", maxLength: 80}, validation: (Rule) => Rule.required()}),
-    defineField({name: "sortOrder", title: "Display order", type: "number", validation: (Rule) => Rule.required().integer().min(0)}),
+    defineField({name: "sortOrder", title: "Display order", description: "Lower numbers appear first.", type: "number", initialValue: 100, validation: (Rule) => Rule.required().integer().min(0)}),
     defineField({name: "title", title: "Title", type: "string", validation: (Rule) => Rule.required().max(90)}),
     defineField({name: "body", title: "Description", type: "text", rows: 4}),
     defineField({name: "media", title: "Media", type: "mediaAsset", validation: (Rule) => Rule.required()}),
@@ -24,8 +24,11 @@ export const galleryItem = defineType({
       title: "Layout type",
       description: "Defines the Bento slot size. The uploaded media dimensions never affect the grid.",
       type: "string",
-      options: {list: ["Large", "Medium", "Tall", "Small", "Wide"], layout: "dropdown"},
-      initialValue: "Large",
+      options: {list: [
+        {title: "Large", value: "large"},
+        {title: "Small", value: "small"},
+      ], layout: "radio", direction: "horizontal"},
+      initialValue: "large",
       validation: (Rule) => Rule.required(),
     }),
     defineField({name: "href", title: "Optional link", type: "string"}),

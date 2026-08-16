@@ -23,7 +23,7 @@ export const siteContentQuery = `{
     copy,
     "projectIds": projects[]->cmsId.current
   },
-  "projects": *[_type == "project"] | order(sortOrder asc){
+  "projects": *[_type == "project"] | order(sortOrder asc, _createdAt asc){
     "id": cmsId.current,
     sortOrder,
     title,
@@ -36,7 +36,7 @@ export const siteContentQuery = `{
     href,
     accent
   },
-  "gallery": *[_type == "galleryItem"] | order(sortOrder asc){
+  "gallery": *[_type == "galleryItem"] | order(sortOrder asc, _createdAt asc){
     "id": cmsId.current,
     sortOrder,
     title,
@@ -45,10 +45,10 @@ export const siteContentQuery = `{
     "mediaAlt": media.alt,
     category,
     mediaType,
-    layoutType,
+    "layoutType": coalesce(lower(layoutType), "large"),
     href
   },
-  "team": *[_type == "teamMember"] | order(sortOrder asc){
+  "team": *[_type == "teamMember"] | order(sortOrder asc, _createdAt asc){
     "id": coalesce(cmsId.current, _id),
     sortOrder,
     title,

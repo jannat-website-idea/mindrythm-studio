@@ -55,10 +55,6 @@ function legal(value: LegalPageContent | null | undefined, fallback: LegalPageCo
   return value?.title && value.sections?.length ? value : fallback;
 }
 
-function collectionOrFallback(items: ContentItem[], kind: ContentItem["kind"]): ContentItem[] {
-  return items.length ? items : defaultContent.items.filter((item) => item.kind === kind);
-}
-
 export async function getSanitySiteContent(options: {stega?: boolean} = {}): Promise<SiteContent | null> {
   try {
     const response = await sanityFetch({query: siteContentQuery, stega: options.stega});
@@ -66,22 +62,16 @@ export async function getSanitySiteContent(options: {stega?: boolean} = {}): Pro
     const hasContent = Boolean(raw.siteSettings || raw.hero || raw.projects?.length);
     if (!hasContent) return null;
 
-    const projectItems = collectionOrFallback(
-      (raw.projects || []).map((item, index) => itemFromSanity(item, "project", index * 10)).filter((item): item is ContentItem => Boolean(item)),
-      "project",
-    );
-    const galleryItems = collectionOrFallback(
-      (raw.gallery || []).map((item, index) => itemFromSanity(item, "gallery", 300 + index * 10)).filter((item): item is ContentItem => Boolean(item)),
-      "gallery",
-    );
-    const teamItems = collectionOrFallback(
-      (raw.team || []).map((item, index) => itemFromSanity(item, "team", 500 + index * 10)).filter((item): item is ContentItem => Boolean(item)),
-      "team",
-    );
-    const testimonialItems = collectionOrFallback(
-      (raw.testimonials || []).map((item, index) => itemFromSanity(item, "testimonial", 700 + index * 10)).filter((item): item is ContentItem => Boolean(item)),
-      "testimonial",
-    );
+    // Once Sanity responds, its collections are authoritative. This lets a client
+    // remove the final item in any collection without local sample content returning.
+    const projectItems =
+      (raw.projects || []).map((item, index) => itemFromSanity(item, "project", index * 10)).filter((item): item is ContentItem => Boolean(item));
+    const galleryItems =
+      (raw.gallery || []).map((item, index) => itemFromSanity(item, "gallery", 300 + index * 10)).filter((item): item is ContentItem => Boolean(item));
+    const teamItems =
+      (raw.team || []).map((item, index) => itemFromSanity(item, "team", 500 + index * 10)).filter((item): item is ContentItem => Boolean(item));
+    const testimonialItems =
+      (raw.testimonials || []).map((item, index) => itemFromSanity(item, "testimonial", 700 + index * 10)).filter((item): item is ContentItem => Boolean(item));
 
     const services = (raw.services || []).map((service) => ({
       key: text(service.key),
@@ -119,7 +109,7 @@ export async function getSanitySiteContent(options: {stega?: boolean} = {}): Pro
         enquiryTaglines: strings(raw.about?.enquiryTaglines, defaultContent.copy.enquiryTaglines),
         teamIntroduction: text(raw.about?.teamIntroduction, defaultContent.copy.teamIntroduction),
       },
-      services: services.length >= 10 ? services : defaultContent.services,
+      services,
       footer: {
         callout: text(raw.footer?.callout, defaultContent.footer.callout),
         actionLabel: text(raw.footer?.actionLabel, defaultContent.footer.actionLabel),

@@ -137,9 +137,11 @@ function useBentoColumns(items: ContentItem[], pattern: BentoPattern) {
     };
 
     for (const item of sorted) {
-      const type = item.layoutType || "large";
-      if (queues[type]) queues[type].push(item);
-      else queues.large.push(item);
+      // Current documents may contain legacy title-cased values. Normalise them,
+      // then map the simple CMS choice to the two deliberate visual footprints.
+      const type = String(item.layoutType || "large").toLowerCase();
+      const slot = type === "small" || type === "medium" ? "medium" : "large";
+      queues[slot].push(item);
     }
 
     return columns.map((column) => ({

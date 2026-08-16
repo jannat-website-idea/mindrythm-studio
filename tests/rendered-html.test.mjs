@@ -59,17 +59,15 @@ test("uses the revised loader, menu, social links and neutral design system", as
   assert.match(css, /Luxury loader, measured typography and frictionless return navigation/);
 });
 
-test("keeps approved media available when CMS collections are incomplete", async () => {
+test("keeps Sanity collections authoritative after the CMS responds", async () => {
   const [sanityContent, seed] = await Promise.all([
     source("lib/sanity/content.ts"),
     source("sanity/seed/seed.ts"),
   ]);
 
-  assert.match(sanityContent, /function collectionOrFallback/);
-  assert.match(sanityContent, /defaultContent\.items\.filter/);
-  for (const kind of ["project", "gallery", "team", "testimonial"]) {
-    assert.match(sanityContent, new RegExp(`collectionOrFallback\\([\\s\\S]*?"${kind}"`));
-  }
+  assert.doesNotMatch(sanityContent, /collectionOrFallback/);
+  assert.match(sanityContent, /items: \[\.\.\.projectItems, \.\.\.galleryItems, \.\.\.teamItems, \.\.\.testimonialItems\]/);
+  assert.match(sanityContent, /services,/);
   assert.match(seed, /createIfNotExists/);
   assert.doesNotMatch(seed, /createOrReplace/);
   assert.doesNotMatch(seed, /`project\.\$\{/);

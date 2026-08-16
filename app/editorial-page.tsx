@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  defaultItems,
   mainInstagramUrl as defaultInstagramUrl,
   type ContentItem,
   type SiteContent,
@@ -26,7 +25,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   const mainInstagramUrl = settings.instagram || defaultInstagramUrl;
   const projects = content.items.filter((item) => item.kind === "project").sort((a, b) => a.sortOrder - b.sortOrder);
   const gallery = content.items.filter((item) => item.kind === "gallery");
-  const galleryItems = gallery.length ? gallery : projects;
+  const galleryItems = gallery;
   const serviceCollections = serviceItems.map((service, index) => {
     const directMedia = getServiceProjects(projects, service.key, serviceItems);
     if (directMedia.length) return { ...service, media: directMedia };
@@ -34,12 +33,10 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
     const fallback = [...projects.slice(offset), ...projects.slice(0, offset)].slice(0, 3);
     return { ...service, media: fallback.length ? fallback : projects.slice(0, 3) };
   });
-  const team = useMemo(() => {
-    const activeTeam = content.items
-      .filter((item) => item.kind === "team")
-      .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
-    return activeTeam.length ? activeTeam : defaultItems.filter((item) => item.kind === "team");
-  }, [content.items]);
+  const team = useMemo(
+    () => content.items.filter((item) => item.kind === "team").sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0)),
+    [content.items],
+  );
   const [selected, setSelected] = useState<ContentItem | null>(null);
   const [activeTeamCardId, setActiveTeamCardId] = useState<string | null>(null);
   const [activeService, setActiveService] = useState(0);
@@ -319,12 +316,6 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
             item.eyebrow?.toLowerCase().includes("architecture")
           );
 
-          const defaultSpaces = defaultItems.filter(
-            (i) => i.kind === "gallery" && (i.category?.toLowerCase().includes("space") || i.category?.toLowerCase().includes("wellness") || i.category?.toLowerCase().includes("interior") || i.category?.toLowerCase().includes("landscape"))
-          );
-
-          const filledSpaces = [...spacesItems, ...defaultSpaces.filter((d) => !spacesItems.some((s) => s.id === d.id))];
-
           return (
             <div className="gallery-page">
               {/* Section 1: Spaces */}
@@ -334,7 +325,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                   <p>Architecture, interiors &amp; quiet sanctuaries</p>
                 </header>
                 <BentoTemplate
-                  items={filledSpaces}
+                  items={spacesItems}
                   pattern="gallery"
                   editorialEyebrow="MINDRYTHM ARCHIVE"
                   editorialText="SPACES SHAPED BY LIGHT, MATERIAL AND A SENSE OF ARRIVAL."
