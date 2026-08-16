@@ -150,7 +150,12 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
           <img src="/mindrythm-logomark.png" alt="" />
           <span>Mindrythm</span>
         </Link>
-        <nav id="inner-navigation" className={navigationOpen ? "open" : ""} aria-label="Site navigation">
+        <nav
+          id="inner-navigation"
+          className={navigationOpen ? "open" : ""}
+          aria-label="Site navigation"
+          onClick={() => setNavigationOpen(false)}
+        >
           <Link href="/" onClick={returnToHero}>Home</Link>
           <Link className={page === "services" ? "active" : ""} href="/services">Services</Link>
           <Link className={page === "work" ? "active" : ""} href="/work">Our Work</Link>

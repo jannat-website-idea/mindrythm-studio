@@ -6023,7 +6023,8 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
     backdrop-filter: blur(18px) !important;
   }
 
-  .inner-header nav.nav-open { display: grid !important; }
+  /* editorial-page.tsx marks the open mobile menu with `.open` */
+  .inner-header nav.open { display: grid !important; }
 
   .inner-header nav a {
     display: flex;
