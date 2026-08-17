@@ -696,8 +696,8 @@ export function Experience({ content }: { content: SiteContent }) {
 
           <section className="testimonials-section" id="testimonials">
             <div className="testimonials-heading" data-reveal>
-              <span>Testimonials</span>
-              <h2>Words from<br /><em>our collaborators.</em></h2>
+              <span>Words from our collaborators.</span>
+              <h2>Testimonial</h2>
               <div className="testimonial-source"><span>Mindrythm on Google</span><a href={googleBusinessUrl} target="_blank" rel="noreferrer">Read all reviews on Google</a></div>
             </div>
             <div className={`testimonials-scroll ${testimonials.length <= 2 ? "testimonials-scroll--compact" : ""}`} role="region" aria-label="Google reviews" tabIndex={0}>

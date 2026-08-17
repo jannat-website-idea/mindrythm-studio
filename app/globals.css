@@ -479,16 +479,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .lightbox-layout-tall-portrait .lightbox-media-frame video {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
   display: block;
   opacity: 0;
   transition: opacity 0.25s ease;
-}
-
-.lightbox-layout-tall-portrait .lightbox-media-frame img,
-.lightbox-layout-tall-portrait .lightbox-media-frame video {
-  max-height: none;
 }
 
 .lightbox-media-frame img.is-loaded,
