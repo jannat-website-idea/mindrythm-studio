@@ -188,7 +188,7 @@ export const defaultServices: ServiceContent[] = [
     key: "real-estate",
     title: "Real estate photography",
     copy: "Architecture, interiors and property campaigns shaped around light, proportion and a true sense of place.",
-    projectIds: ["room-to-breathe", "tropical-pavilion", "sanctuary-interiors"],
+    projectIds: ["field-notes", "tropical-pavilion", "sanctuary-interiors"],
   },
   {
     key: "wellness-hospitality",
@@ -200,13 +200,13 @@ export const defaultServices: ServiceContent[] = [
     key: "fb-photography",
     title: "F&B photography",
     copy: "Food, interiors and dining experiences captured with an editorial eye that makes people want to be there.",
-    projectIds: ["in-passing", "hands-of-stillness"],
+    projectIds: ["in-passing", "event-photography"],
   },
   {
     key: "luxury-villa",
     title: "Luxury Villa Photography",
     copy: "Refined visual stories for villas and private properties, highlighting architecture, atmosphere and detail.",
-    projectIds: ["room-to-breathe", "sanctuary-interiors"],
+    projectIds: ["field-notes", "sanctuary-interiors"],
   },
   {
     key: "event-photography",
@@ -224,7 +224,7 @@ export const defaultServices: ServiceContent[] = [
     key: "logo-generation",
     title: "Logo generation",
     copy: "Distinctive visual identities created to give brands a clear, memorable and recognisable presence.",
-    projectIds: ["sanctuary-interiors", "room-to-breathe"],
+    projectIds: ["sanctuary-interiors", "field-notes"],
   },
   {
     key: "meta-ads",
@@ -236,13 +236,13 @@ export const defaultServices: ServiceContent[] = [
     key: "social-creatives",
     title: "Social media creatives",
     copy: "Premium visual content for social platforms, campaigns, launches and ongoing brand storytelling.",
-    projectIds: ["tropical-pavilion", "hands-of-stillness"],
+    projectIds: ["tropical-pavilion", "in-passing"],
   },
   {
     key: "social-handling",
     title: "Social Media Handling",
     copy: "Strategic social media management covering content planning, publishing, consistency and day-to-day brand presence.",
-    projectIds: ["vows-in-bloom", "wedding-celebration"],
+    projectIds: ["wedding-celebration", "event-photography"],
   },
 ];
 
