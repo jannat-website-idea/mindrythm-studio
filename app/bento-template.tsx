@@ -88,7 +88,7 @@ const PATTERNS: Record<BentoPattern, ColumnDef[]> = {
       id: "gallery-col-4",
       cells: [
         { id: "gallery-editorial", kind: "static", type: "editorial", className: "bento-card-editorial" },
-        { id: "gallery-medium-04", kind: "static", type: "editorial", className: "bento-card-medium" },
+        { id: "gallery-medium-04", kind: "content", layoutType: "medium", className: "bento-card-medium" },
       ],
     },
   ],
