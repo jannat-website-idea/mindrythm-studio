@@ -322,7 +322,6 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
               <section className="gallery-section-container" id="gallery">
                 <header className="gallery-section-header">
                   <h2>Gallery</h2>
-                  <p>Architecture, interiors &amp; quiet sanctuaries</p>
                 </header>
                 <BentoTemplate
                   items={spacesItems}

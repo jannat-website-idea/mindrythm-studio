@@ -681,7 +681,6 @@ export function Experience({ content }: { content: SiteContent }) {
             <div className="gallery-section-container" id="gallery-spaces">
               <header className="gallery-section-header" data-reveal>
                 <h2>Gallery</h2>
-                <p>Architecture, interiors &amp; quiet sanctuaries</p>
               </header>
               <BentoGalleryGrid
                 items={gallerySpaces}
