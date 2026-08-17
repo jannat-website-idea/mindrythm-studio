@@ -259,16 +259,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .testimonial-source { display: grid; gap: 0.5rem; align-content: start; font-size: 0.68rem; }
 .testimonial-source span { color: var(--muted); font-size: 0.6rem; text-transform: uppercase; }
 .testimonials-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; padding-top: 2rem; }
-.testimonials-scroll { display: flex; gap: 0.8rem; padding: 2rem 0; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
-.testimonials-scroll::-webkit-scrollbar { height: 6px; }
-.testimonials-scroll::-webkit-scrollbar-thumb { border-radius: 3px; background: var(--line); }
-.testimonial-card { position: relative; display: flex; min-height: 480px; flex-direction: column; justify-content: space-between; padding: 1.6rem; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); transition: transform 0.3s ease; }
+.testimonials-scroll { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8rem; padding: 2rem 0; }
+.testimonials-scroll--compact { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.testimonial-card { position: relative; display: flex; min-height: 220px; flex-direction: column; justify-content: space-between; padding: 1.4rem 1.6rem; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); transition: transform 0.3s ease; text-decoration: none; }
 .testimonial-card:hover { transform: translateY(-5px); }
-.testimonials-scroll .testimonial-card { flex: 0 0 auto; width: min(85vw, 420px); min-height: 320px; scroll-snap-align: start; }
-.testimonial-card:nth-child(even) { background: var(--sage); }
-.review-stars { color: var(--olive); font-size: 0.75rem; letter-spacing: 0.2em; }
-.testimonial-card blockquote { max-width: 700px; margin: auto 0; font-size: clamp(2rem, 3.4vw, 4rem); letter-spacing: -0.05em; line-height: 0.97; }
-.testimonials-scroll .testimonial-card blockquote { font-size: clamp(1.05rem, 1.8vw, 1.3rem); line-height: 1.35; }
+.testimonial-card:nth-child(even) { background: var(--ink); color: var(--ivory); }
+.review-stars { color: var(--olive); font-size: 0.85rem; letter-spacing: 0.12em; }
+.reviewer-name { display: block; margin-top: 0.6rem; font-size: clamp(1.1rem, 1.4vw, 1.45rem); font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; }
+.review-text { display: none; }
+.review-platform { margin-top: auto; padding-top: 1.2rem; color: var(--muted); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.testimonial-card:nth-child(even) .review-platform { color: rgba(244, 241, 234, 0.65); }
 .testimonial-card > div:last-of-type { display: grid; gap: 0.2rem; }
 .testimonial-card strong { font-size: 0.84rem; font-weight: 500; }
 .testimonial-card div span { color: var(--muted); font-size: 0.65rem; }

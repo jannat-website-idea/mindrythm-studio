@@ -701,12 +701,13 @@ export function Experience({ content }: { content: SiteContent }) {
               <h2>Words from<br /><em>our collaborators.</em></h2>
               <div className="testimonial-source"><span>Mindrythm on Google</span><a href={googleBusinessUrl} target="_blank" rel="noreferrer">Read all reviews on Google</a></div>
             </div>
-            <div className="testimonials-scroll" role="region" aria-label="Google reviews carousel" tabIndex={0}>
-              {testimonials.slice(0, 4).map((item) => (
+            <div className={`testimonials-scroll ${testimonials.length <= 2 ? "testimonials-scroll--compact" : ""}`} role="region" aria-label="Google reviews" tabIndex={0}>
+              {testimonials.map((item) => (
                 <a className="testimonial-card" href={item.href || googleBusinessUrl} target="_blank" rel="noreferrer" data-reveal key={item.id}>
                   <div className="review-stars" aria-label={`${item.year || "5"} out of 5 stars`}>{"★".repeat(Number(item.year || 5))}</div>
-                  <blockquote>“{item.body}”</blockquote>
-                  <div><strong>{item.title}</strong><span>{item.eyebrow || item.category}</span></div>
+                  <strong className="reviewer-name">{item.title}</strong>
+                  <p className="review-text">{item.body}</p>
+                  <span className="review-platform">Google review</span>
                 </a>
               ))}
             </div>
