@@ -174,25 +174,25 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
       </header>
 
       <main>
-        <section className={`inner-hero inner-hero-${page}`}>
-          <span>Mindrythm / {page === "work" ? "Our Work" : page === "story" ? "Our Story" : page === "team" ? "Our Team" : page === "gallery" ? "Gallery" : page === "services" ? "Services" : page.slice(0, 1).toUpperCase() + page.slice(1)}</span>
-          <h1>
-            {page === "work" && "Our Work"}
-            {page === "team" && "Our Team"}
-            {page === "story" && "Our Story"}
-            {page === "gallery" && "Gallery"}
-            {page === "services" && "Services"}
-            {page === "contact" && "Enquire"}
-          </h1>
-          <p>
-            {page === "work" && "Selected commissions spanning properties, retreats, moments and commercial narratives."}
-            {page === "team" && "Photographers, filmmakers, directors and craftspeople dedicated to purposeful storytelling."}
-            {page === "story" && "A studio shaped around listening, authenticity and the belief that every story has a rhythm."}
-            {page === "gallery" && "A curated look at spaces, light and the quiet details that shape a place."}
-            {page === "services" && "A focused visual practice across real estate, hospitality, architecture, commercial campaigns and modern digital identity."}
-            {page === "contact" && "Tell us about your space, occasion or brand vision. We listen before we frame."}
-          </p>
-        </section>
+        {page !== "gallery" && (
+          <section className={`inner-hero inner-hero-${page}`}>
+            <span>Mindrythm / {page === "work" ? "Our Work" : page === "story" ? "Our Story" : page === "team" ? "Our Team" : page === "services" ? "Services" : page.slice(0, 1).toUpperCase() + page.slice(1)}</span>
+            <h1>
+              {page === "work" && "Our Work"}
+              {page === "team" && "Our Team"}
+              {page === "story" && "Our Story"}
+              {page === "services" && "Services"}
+              {page === "contact" && "Enquire"}
+            </h1>
+            <p>
+              {page === "work" && "Selected commissions spanning properties, retreats, moments and commercial narratives."}
+              {page === "team" && "Photographers, filmmakers, directors and craftspeople dedicated to purposeful storytelling."}
+              {page === "story" && "A studio shaped around listening, authenticity and the belief that every story has a rhythm."}
+              {page === "services" && "A focused visual practice across real estate, hospitality, architecture, commercial campaigns and modern digital identity."}
+              {page === "contact" && "Tell us about your space, occasion or brand vision. We listen before we frame."}
+            </p>
+          </section>
+        )}
 
         {page === "services" && (
           <div className="services-page-root">
