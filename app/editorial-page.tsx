@@ -174,42 +174,38 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
       </header>
 
       <main>
-        {page !== "services" && page !== "gallery" && (
-          <section className={`inner-hero inner-hero-${page}`}>
-            <span>Mindrythm / {page === "work" ? "Our Work" : page === "story" ? "Our Story" : page === "team" ? "Our Team" : page.slice(0, 1).toUpperCase() + page.slice(1)}</span>
-            <h1>{page === "work" ? "Our Work" : page === "team" ? "Our Team" : page === "story" ? "Our Story" : "Enquire"}</h1>
-            <p>
-              {page === "work" && "Selected commissions spanning properties, retreats, moments and commercial narratives."}
-              {page === "team" && "Photographers, filmmakers, directors and craftspeople dedicated to purposeful storytelling."}
-              {page === "story" && "A studio shaped around listening, authenticity and the belief that every story has a rhythm."}
-              {page === "contact" && "Tell us about your space, occasion or brand vision. We listen before we frame."}
-            </p>
-          </section>
-        )}
+        <section className={`inner-hero inner-hero-${page}`}>
+          <span>Mindrythm / {page === "work" ? "Our Work" : page === "story" ? "Our Story" : page === "team" ? "Our Team" : page === "gallery" ? "Gallery" : page === "services" ? "Services" : page.slice(0, 1).toUpperCase() + page.slice(1)}</span>
+          <h1>
+            {page === "work" && "Our Work"}
+            {page === "team" && "Our Team"}
+            {page === "story" && "Our Story"}
+            {page === "gallery" && "Gallery"}
+            {page === "services" && "Services"}
+            {page === "contact" && "Enquire"}
+          </h1>
+          <p>
+            {page === "work" && "Selected commissions spanning properties, retreats, moments and commercial narratives."}
+            {page === "team" && "Photographers, filmmakers, directors and craftspeople dedicated to purposeful storytelling."}
+            {page === "story" && "A studio shaped around listening, authenticity and the belief that every story has a rhythm."}
+            {page === "gallery" && "A curated look at spaces, light and the quiet details that shape a place."}
+            {page === "services" && "A focused visual practice across real estate, hospitality, architecture, commercial campaigns and modern digital identity."}
+            {page === "contact" && "Tell us about your space, occasion or brand vision. We listen before we frame."}
+          </p>
+        </section>
 
         {page === "services" && (
           <div className="services-page-root">
-            <section className="services-page-hero">
-              <span className="services-page-hero-eyebrow">Mindrythm / Services</span>
-              <h1 className="services-page-hero-headline">
-                “Visual stories, digital experiences<br />
-                and creative systems built around<br />
-                how brands are experienced.”
-              </h1>
-              <p className="services-page-hero-subtext">
-                A focused visual practice across real estate, hospitality, architecture, commercial campaigns, and modern digital identity.
-              </p>
-              <nav className="services-quick-nav" aria-label="Quick jump to service">
-                <span className="services-quick-title">Services Directory:</span>
-                <div className="services-quick-chips">
-                  {serviceItems.map((service) => (
-                    <a key={service.key} href={`#service-${service.key}`} className="services-quick-chip">
-                      {service.title}
-                    </a>
-                  ))}
-                </div>
-              </nav>
-            </section>
+            <nav className="services-quick-nav services-quick-nav-standalone" aria-label="Quick jump to service">
+              <span className="services-quick-title">Services Directory:</span>
+              <div className="services-quick-chips">
+                {serviceItems.map((service) => (
+                  <a key={service.key} href={`#service-${service.key}`} className="services-quick-chip">
+                    {service.title}
+                  </a>
+                ))}
+              </div>
+            </nav>
 
             <section className="services-stream-section" aria-label="Mindrythm studio services catalogue">
               <div className="services-stream-list">
@@ -286,13 +282,32 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                 return (
                   <details className="work-page-card" key={project.id}>
                     <summary>
-                      <Media item={project} />
+                      <button
+                        type="button"
+                        className="work-page-media-btn"
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setSelected(project); }}
+                        aria-label={`Open ${project.title} in lightbox`}
+                      >
+                        <Media item={project} />
+                      </button>
                       <div><span>{project.category}</span><h2>{project.title}</h2><p>{project.eyebrow}</p></div>
                       <b>View project +</b>
                     </summary>
                     <div className="work-page-detail">
                       <p>{project.body}</p>
-                      <div>{relatedProjects.slice(0, 3).map((item) => <Media key={`${project.id}-${item.id}`} item={item} />)}</div>
+                      <div>
+                        {relatedProjects.slice(0, 3).map((item) => (
+                          <button
+                            type="button"
+                            key={`${project.id}-${item.id}`}
+                            className="work-page-media-btn"
+                            onClick={() => setSelected(item)}
+                            aria-label={`Open ${item.title} in lightbox`}
+                          >
+                            <Media item={item} />
+                          </button>
+                        ))}
+                      </div>
                       <span>{project.year} / Mindrythm</span>
                     </div>
                   </details>
