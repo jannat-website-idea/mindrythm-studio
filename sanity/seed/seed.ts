@@ -155,6 +155,12 @@ const documents: Array<{_id: string; _type: string; [key: string]: unknown}> = [
   ...testimonials,
 ];
 let transaction = client.transaction();
+
+// Remove outdated placeholder testimonials so the live Google reviews take their place.
+for (const id of ["testimonial-google-profile", "testimonial-event-partner"]) {
+  transaction = transaction.delete(id);
+}
+
 for (const document of documents) transaction = transaction.createIfNotExists(document);
 await transaction.commit();
 
