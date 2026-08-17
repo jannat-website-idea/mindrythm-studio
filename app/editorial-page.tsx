@@ -318,10 +318,10 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
 
           return (
             <div className="gallery-page">
-              {/* Section 1: Spaces */}
-              <section className="gallery-section-container" id="spaces">
+              {/* Section 1: Gallery */}
+              <section className="gallery-section-container" id="gallery">
                 <header className="gallery-section-header">
-                  <h2>Spaces</h2>
+                  <h2>Gallery</h2>
                   <p>Architecture, interiors &amp; quiet sanctuaries</p>
                 </header>
                 <BentoTemplate

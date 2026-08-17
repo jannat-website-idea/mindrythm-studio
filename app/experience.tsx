@@ -524,7 +524,7 @@ export function Experience({ content }: { content: SiteContent }) {
             <div className="vision-bridge" data-reveal>
               <a href="/work" className="vision-bridge-frame">
                 <img src="/images/tropical-interior.jpg" alt="Natural reception area photographed by Mindrythm" />
-                <span>Spaces / Hospitality</span>
+                <span>Gallery / Hospitality</span>
               </a>
               <a href="/story" className="vision-bridge-centre">
                 <img src="/mindrythm-logomark.png" alt="" />
@@ -678,9 +678,9 @@ export function Experience({ content }: { content: SiteContent }) {
           </section>
 
           <section className="gallery-section-root" id="gallery">
-            <div className="gallery-section-container" id="spaces">
+            <div className="gallery-section-container" id="gallery-spaces">
               <header className="gallery-section-header" data-reveal>
-                <h2>Spaces</h2>
+                <h2>Gallery</h2>
                 <p>Architecture, interiors &amp; quiet sanctuaries</p>
               </header>
               <BentoGalleryGrid
