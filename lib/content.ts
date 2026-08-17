@@ -701,6 +701,35 @@ export const defaultItems: ContentItem[] = withItemDefaults([
     href: "",
     accent: "ink",
   },
+  // Default Google reviews (live testimonials)
+  {
+    id: "testimonial-jannat-khatun",
+    kind: "testimonial",
+    sortOrder: 10,
+    title: "Jannat Khatun",
+    eyebrow: "Local Guide · Google review",
+    body: "Mindrythm Studio is an excellent choice for professional photography and video services. Their creativity, attention to detail, and ability to capture the right mood and story really stand out. The quality of their work is impressive, and we couldn't be happier.",
+    mediaUrl: "",
+    mediaAlt: "",
+    category: "Local Guide · Google review",
+    year: "5",
+    href: "https://www.google.com/search?kgmid=%2Fg%2F11njpxjhwk&q=Mindrythm+Studios",
+    accent: "light",
+  },
+  {
+    id: "testimonial-omkar-sonawane",
+    kind: "testimonial",
+    sortOrder: 20,
+    title: "Omkar Sonawane",
+    eyebrow: "Local Guide · Google review",
+    body: "One stop solution for all my requirements. They're too good at what they do - zero compromise on quality. Extremely happy with the work and would very highly recommend!!!",
+    mediaUrl: "",
+    mediaAlt: "",
+    category: "Local Guide · Google review",
+    year: "5",
+    href: "https://www.google.com/search?kgmid=%2Fg%2F11njpxjhwk&q=Mindrythm+Studios",
+    accent: "dark",
+  },
 ]);
 
 export const defaultContent: SiteContent = {
