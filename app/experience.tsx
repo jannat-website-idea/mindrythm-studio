@@ -696,7 +696,6 @@ export function Experience({ content }: { content: SiteContent }) {
 
           <section className="testimonials-section" id="testimonials">
             <div className="testimonials-heading" data-reveal>
-              <span>Words from our collaborators.</span>
               <h2>Testimonial</h2>
               <div className="testimonial-source"><span>Mindrythm on Google</span><a href={googleBusinessUrl} target="_blank" rel="noreferrer">Read all reviews on Google</a></div>
             </div>

@@ -256,6 +256,21 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
 /* Testimonials */
 .testimonials-section { padding: 9rem 2rem 2rem; background: var(--ivory); }
+.testimonials-heading {
+  grid-template-columns: 1fr auto;
+  align-items: end;
+}
+.testimonials-heading h2 {
+  font-size: clamp(3.8rem, 7.2vw, 8rem) !important;
+  font-weight: 300;
+  letter-spacing: -0.055em;
+  line-height: 0.88 !important;
+  text-transform: uppercase;
+}
+.testimonials-heading .testimonial-source {
+  justify-self: end;
+  align-self: end;
+}
 .testimonial-source { display: grid; gap: 0.5rem; align-content: start; font-size: 0.68rem; }
 .testimonial-source span { color: var(--muted); font-size: 0.6rem; text-transform: uppercase; }
 .testimonials-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; padding-top: 2rem; }
