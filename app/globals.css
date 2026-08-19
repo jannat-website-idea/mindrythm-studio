@@ -466,16 +466,30 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .lightbox-layout-portrait .lightbox-media-area,
 .lightbox-layout-square .lightbox-media-area,
 .lightbox-layout-tall-portrait .lightbox-media-area {
-  width: auto;
+  flex: 1 1 50%;
+  max-width: 50%;
   height: calc(100vh - clamp(2.5rem, 6vh, 5rem));
-  flex: 0 1 auto;
-  max-width: 60vw;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
+  position: relative;
   border-radius: 20px 0 0 20px;
   overflow: hidden;
-  background: #080807;
+  background-color: #080807;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.lightbox-layout-portrait .lightbox-media-area::before,
+.lightbox-layout-square .lightbox-media-area::before,
+.lightbox-layout-tall-portrait .lightbox-media-area::before {
+  content: '';
+  position: absolute;
+  inset: -10%;
+  background: inherit;
+  filter: blur(24px) brightness(0.55) saturate(1.1);
+  z-index: 0;
 }
 
 .lightbox-layout-portrait .lightbox-media-frame,
@@ -486,6 +500,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  z-index: 1;
 }
 
 .lightbox-layout-portrait .lightbox-media-frame img,
@@ -624,9 +640,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .lightbox-layout-square .lightbox-copy-area,
 .lightbox-layout-tall-portrait .lightbox-copy-area {
   position: relative;
-  width: auto;
-  min-width: 340px;
-  flex: 1 1 auto;
+  flex: 1 1 50%;
+  max-width: 50%;
   height: calc(100vh - clamp(2.5rem, 6vh, 5rem));
   display: flex;
   align-items: center;

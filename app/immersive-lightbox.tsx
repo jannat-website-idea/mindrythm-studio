@@ -154,7 +154,16 @@ export function ImmersiveLightbox({
         </button>
       )}
 
-      <div className="lightbox-media-area" onClick={goNext} role="button" tabIndex={0} aria-label="Click image to view next">
+      <div
+        className="lightbox-media-area"
+        onClick={goNext}
+        role="button"
+        tabIndex={0}
+        aria-label="Click image to view next"
+        style={{
+          backgroundImage: isPortraitLike && !isVideo && mediaUrl ? `url(${mediaUrl})` : undefined,
+        }}
+      >
         <div className="lightbox-media-frame">
           {isVideo ? (
             <video
