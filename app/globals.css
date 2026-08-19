@@ -466,8 +466,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .lightbox-layout-portrait .lightbox-media-area,
 .lightbox-layout-square .lightbox-media-area,
 .lightbox-layout-tall-portrait .lightbox-media-area {
-  width: 50vw;
+  width: auto;
   height: calc(100vh - clamp(2.5rem, 6vh, 5rem));
+  flex: 0 1 auto;
+  max-width: 60vw;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -479,7 +481,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .lightbox-layout-portrait .lightbox-media-frame,
 .lightbox-layout-square .lightbox-media-frame,
 .lightbox-layout-tall-portrait .lightbox-media-frame {
-  width: 100%;
+  width: auto;
   height: 100%;
   display: flex;
   align-items: center;
@@ -492,7 +494,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .lightbox-layout-square .lightbox-media-frame video,
 .lightbox-layout-tall-portrait .lightbox-media-frame img,
 .lightbox-layout-tall-portrait .lightbox-media-frame video {
-  width: 100%;
+  width: auto;
   height: 100%;
   object-fit: contain;
   object-position: center;
@@ -622,7 +624,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .lightbox-layout-square .lightbox-copy-area,
 .lightbox-layout-tall-portrait .lightbox-copy-area {
   position: relative;
-  width: 50vw;
+  width: auto;
+  min-width: 340px;
+  flex: 1 1 auto;
   height: calc(100vh - clamp(2.5rem, 6vh, 5rem));
   display: flex;
   align-items: center;
