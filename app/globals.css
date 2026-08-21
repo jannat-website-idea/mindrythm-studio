@@ -7952,7 +7952,7 @@ video {
 }
 
 /* ==========================================================================
-   Full-Screen Scrollable Team Showcase (Snap scroll across all team members)
+   Full-Screen Team Showcase (Direct arrow transitions & swipe across all members)
    ========================================================================== */
 .team-showcase-overlay {
   position: fixed !important;
@@ -7962,12 +7962,11 @@ video {
   height: 100vh !important;
   width: 100dvw !important;
   height: 100dvh !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  scroll-snap-type: y mandatory !important;
-  scroll-behavior: smooth !important;
   background: #080807 !important;
-  -webkit-overflow-scrolling: touch !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
   animation: lightbox-fade-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
@@ -7975,7 +7974,7 @@ video {
   position: fixed !important;
   top: clamp(1.5rem, 4vh, 2.5rem) !important;
   right: clamp(1.5rem, 4vw, 2.5rem) !important;
-  z-index: 1000 !important;
+  z-index: 10000 !important;
   pointer-events: auto !important;
 }
 
@@ -8004,24 +8003,52 @@ video {
   transform: scale(1.04) !important;
 }
 
-.team-showcase-track {
-  width: 100% !important;
-  display: flex !important;
-  flex-direction: column !important;
-}
-
-.team-showcase-slide {
-  width: 100% !important;
-  min-height: 100vh !important;
-  min-height: 100dvh !important;
-  scroll-snap-align: start !important;
-  scroll-snap-stop: always !important;
+.team-showcase-nav-btn {
+  position: fixed !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 10000 !important;
+  width: 56px !important;
+  height: 56px !important;
+  border-radius: 50% !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(23, 23, 20, 0.2) !important;
+  color: #0b0b0a !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  padding: clamp(1.5rem, 4vh, 3rem) clamp(1rem, 3vw, 2.5rem) !important;
+  cursor: pointer !important;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45) !important;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), background 0.2s ease, box-shadow 0.2s ease !important;
+  pointer-events: auto !important;
+}
+
+.team-showcase-nav-btn:hover {
+  background: #ffffff !important;
+  transform: translateY(-50%) scale(1.14) !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6) !important;
+}
+
+.team-showcase-nav-btn:active {
+  transform: translateY(-50%) scale(0.96) !important;
+}
+
+.team-showcase-nav-prev {
+  left: clamp(1rem, 2.5vw, 2.5rem) !important;
+}
+
+.team-showcase-nav-next {
+  right: clamp(1rem, 2.5vw, 2.5rem) !important;
+}
+
+.team-showcase-center {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: clamp(1rem, 3.5vh, 2.5rem) clamp(1rem, 3vw, 2.5rem) !important;
   box-sizing: border-box !important;
-  position: relative !important;
 }
 
 .team-showcase-card {
@@ -8035,6 +8062,7 @@ video {
   box-shadow: 0 30px 90px rgba(0, 0, 0, 0.5) !important;
   background: #141714 !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  animation: lightbox-fade-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .team-showcase-media-area {
@@ -8135,49 +8163,11 @@ video {
   scrollbar-color: rgba(23, 23, 20, 0.25) transparent !important;
 }
 
-.team-showcase-nav-btn {
-  position: fixed !important;
-  top: 50% !important;
-  transform: translateY(-50%) !important;
-  z-index: 1000 !important;
-  width: 48px !important;
-  height: 48px !important;
-  border-radius: 50% !important;
-  background: rgba(242, 240, 232, 0.9) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  border: 1px solid rgba(23, 23, 20, 0.25) !important;
-  color: var(--ink) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  cursor: pointer !important;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
-  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease !important;
-}
-
-.team-showcase-nav-btn:hover {
-  background: #ffffff !important;
-  transform: translateY(-50%) scale(1.1) !important;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35) !important;
-}
-
-.team-showcase-nav-prev {
-  left: clamp(1rem, 2.5vw, 2.5rem) !important;
-}
-
-.team-showcase-nav-next {
-  right: clamp(1rem, 2.5vw, 2.5rem) !important;
-}
-
 .team-showcase-actions {
   display: flex !important;
   align-items: center !important;
   gap: 0.85rem !important;
-  flex-wrap: wrap !important;
-  margin-top: 0.75rem !important;
-  padding-top: 0.85rem !important;
-  border-top: 1px solid rgba(23, 23, 20, 0.1) !important;
+  margin-top: 0.5rem !important;
 }
 
 .team-showcase-connect-btn {
@@ -8205,31 +8195,12 @@ video {
   transform: translateY(-1px) !important;
 }
 
-.team-showcase-next-btn {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 0.4rem !important;
-  padding: 0.55rem 1.25rem !important;
-  border-radius: 999px !important;
-  background: transparent !important;
-  border: 1px solid var(--ink) !important;
-  color: var(--ink) !important;
-  font-size: 0.72rem !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.08em !important;
-  text-transform: uppercase !important;
-  cursor: pointer !important;
-  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease !important;
-}
-
-.team-showcase-next-btn:hover {
-  background: var(--ink) !important;
-  color: var(--ivory) !important;
-  transform: translateY(-1px) !important;
-}
-
 @media (max-width: 900px) {
-  .team-showcase-slide {
+  .team-showcase-overlay {
+    overflow-y: auto !important;
+  }
+  .team-showcase-center {
+    height: auto !important;
     min-height: 100vh !important;
     min-height: 100dvh !important;
     padding: 5rem 1rem 2rem !important;
@@ -8254,7 +8225,8 @@ video {
     overflow-y: visible !important;
   }
   .team-showcase-nav-btn {
-    display: none !important;
+    width: 44px !important;
+    height: 44px !important;
   }
 }
 
