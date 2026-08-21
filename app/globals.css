@@ -7726,30 +7726,33 @@ video {
 
 .team-member-card.active .team-member-media-frame img,
 .team-member-card.active .team-member-media-frame video {
-  filter: brightness(0.32) blur(2px) !important;
-  transform: scale(1.05) !important;
+  filter: brightness(0.92) !important;
+  transform: scale(1.02) !important;
 }
 
-/* Information Overlay (Visible ONLY on Click/Tap) */
+/* Information Overlay (Visible ONLY on Click/Tap - sits on bottom half so photo stays clearly visible) */
 .team-member-overlay {
   position: absolute !important;
-  inset: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  top: auto !important;
   z-index: 5 !important;
   display: flex !important;
   flex-direction: column !important;
-  justify-content: space-between !important;
-  padding: clamp(1rem, 1.6vw, 1.4rem) !important;
+  justify-content: flex-end !important;
+  padding: 1.5rem 1.15rem 1.1rem !important;
   box-sizing: border-box !important;
-  background: rgba(12, 16, 13, 0.94) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
+  background: linear-gradient(180deg, rgba(12, 16, 13, 0) 0%, rgba(12, 16, 13, 0.78) 22%, rgba(12, 16, 13, 0.95) 55%, rgba(12, 16, 13, 0.99) 100%) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
   color: #ffffff !important;
   opacity: 0 !important;
   visibility: hidden !important;
   pointer-events: none !important;
   transform: translateY(12px) !important;
   transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.35s !important;
-  border-radius: 16px !important;
+  border-radius: 0 0 16px 16px !important;
 }
 
 .team-member-card.active .team-member-overlay,
@@ -7765,27 +7768,27 @@ video {
   align-items: center !important;
   justify-content: space-between !important;
   width: 100% !important;
-  margin-bottom: 0.5rem !important;
+  margin-bottom: 0.35rem !important;
   flex-shrink: 0 !important;
 }
 
 .team-member-role {
-  font-size: 0.62rem !important;
+  font-size: 0.6rem !important;
   font-weight: 700 !important;
-  letter-spacing: 0.14em !important;
+  letter-spacing: 0.12em !important;
   text-transform: uppercase !important;
   color: #a8d5ba !important;
   display: inline-block !important;
 }
 
 .team-member-close-btn {
-  width: 30px !important;
-  height: 30px !important;
+  width: 26px !important;
+  height: 26px !important;
   border-radius: 50% !important;
-  background: rgba(255, 255, 255, 0.12) !important;
-  backdrop-filter: blur(10px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
   color: #ffffff !important;
   display: flex !important;
   align-items: center !important;
@@ -7797,29 +7800,8 @@ video {
 }
 
 .team-member-close-btn:hover {
-  background: rgba(255, 255, 255, 0.28) !important;
+  background: rgba(255, 255, 255, 0.3) !important;
   transform: scale(1.08) !important;
-}
-
-.team-member-scroll-body {
-  display: flex !important;
-  flex-direction: column !important;
-  flex: 1 1 auto !important;
-  min-height: 0 !important;
-  overflow-y: auto !important;
-  overscroll-behavior: contain !important;
-  padding-right: 0.35rem !important;
-  scrollbar-width: thin !important;
-  scrollbar-color: rgba(255, 255, 255, 0.3) transparent !important;
-}
-
-.team-member-scroll-body::-webkit-scrollbar {
-  width: 4px !important;
-}
-
-.team-member-scroll-body::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.28) !important;
-  border-radius: 4px !important;
 }
 
 .team-member-info {
@@ -7828,8 +7810,8 @@ video {
 }
 
 .team-member-name {
-  margin: 0 0 0.5rem !important;
-  font-size: clamp(1.2rem, 1.5vw, 1.55rem) !important;
+  margin: 0 0 0.35rem !important;
+  font-size: clamp(1.15rem, 1.4vw, 1.45rem) !important;
   font-weight: 600 !important;
   letter-spacing: -0.02em !important;
   line-height: 1.15 !important;
@@ -7838,22 +7820,24 @@ video {
 }
 
 .team-member-bio {
-  margin: 0 0 0.85rem !important;
-  font-size: clamp(0.78rem, 0.88vw, 0.85rem) !important;
-  line-height: 1.6 !important;
-  color: rgba(245, 245, 240, 0.88) !important;
-  white-space: pre-line !important;
-  display: block !important;
+  margin: 0 0 0.5rem !important;
+  font-size: 0.76rem !important;
+  line-height: 1.45 !important;
+  color: rgba(245, 245, 240, 0.85) !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
   max-width: 100% !important;
 }
 
 .team-member-actions {
   display: flex !important;
   align-items: center !important;
-  gap: 0.75rem !important;
-  flex-wrap: wrap !important;
-  margin-top: auto !important;
-  padding-top: 0.75rem !important;
+  justify-content: space-between !important;
+  gap: 0.5rem !important;
+  margin-top: 0.45rem !important;
+  padding-top: 0.55rem !important;
   border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
   flex-shrink: 0 !important;
 }
@@ -7861,15 +7845,15 @@ video {
 .team-member-link {
   display: inline-flex !important;
   align-items: center !important;
-  gap: 0.45rem !important;
-  padding: 0.45rem 0.9rem !important;
+  gap: 0.35rem !important;
+  padding: 0.38rem 0.75rem !important;
   border-radius: 999px !important;
   background: rgba(255, 255, 255, 0.12) !important;
   border: 1px solid rgba(255, 255, 255, 0.25) !important;
   color: #ffffff !important;
-  font-size: 0.65rem !important;
+  font-size: 0.62rem !important;
   font-weight: 600 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: 0.06em !important;
   text-transform: uppercase !important;
   text-decoration: none !important;
   backdrop-filter: blur(8px) !important;
@@ -7881,30 +7865,67 @@ video {
 }
 
 .team-member-link:hover {
-  background: rgba(255, 255, 255, 0.22) !important;
+  background: rgba(255, 255, 255, 0.24) !important;
   border-color: rgba(255, 255, 255, 0.55) !important;
   transform: translateY(-1px) !important;
 }
 
-.team-member-page-link {
+.team-member-readmore-btn {
   display: inline-flex !important;
   align-items: center !important;
-  gap: 0.35rem !important;
-  font-size: 0.65rem !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.06em !important;
+  gap: 0.3rem !important;
+  padding: 0.38rem 0.8rem !important;
+  border-radius: 999px !important;
+  background: #ffffff !important;
+  border: 1px solid #ffffff !important;
+  color: #0b0b0a !important;
+  font-size: 0.62rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
-  color: rgba(255, 255, 255, 0.75) !important;
-  text-decoration: underline !important;
-  text-underline-offset: 3px !important;
-  transition: color 0.2s ease !important;
+  text-decoration: none !important;
+  transition: background 0.2s ease, transform 0.2s ease, opacity 0.2s ease !important;
   cursor: pointer !important;
   pointer-events: auto !important;
   z-index: 10 !important;
 }
 
-.team-member-page-link:hover {
-  color: #ffffff !important;
+.team-member-readmore-btn:hover {
+  opacity: 0.9 !important;
+  transform: translateY(-1px) !important;
+}
+
+.lightbox-copy-body {
+  white-space: pre-line !important;
+  font-size: clamp(0.85rem, 0.95vw, 0.95rem) !important;
+  line-height: 1.65 !important;
+  max-height: 48vh !important;
+  overflow-y: auto !important;
+  padding-right: 0.5rem !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(23, 23, 20, 0.25) transparent !important;
+}
+
+.lightbox-social-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  margin-top: 1.25rem !important;
+  padding: 0.6rem 1.25rem !important;
+  border-radius: 999px !important;
+  background: var(--ink) !important;
+  color: var(--ivory) !important;
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+  transition: transform 0.2s ease, opacity 0.2s ease !important;
+}
+
+.lightbox-social-btn:hover {
+  opacity: 0.88 !important;
+  transform: translateY(-1px) !important;
 }
 
 /* Tablet: 2 columns */

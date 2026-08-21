@@ -60,6 +60,25 @@ function classifyLayout(width: number, height: number): LightboxLayout {
   return "portrait";
 }
 
+function normalizeSocialUrl(url?: string): string | undefined {
+  if (!url) return undefined;
+  const trimmed = url.trim();
+  if (!trimmed) return undefined;
+  if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+    return trimmed;
+  }
+  if (trimmed.startsWith("@")) {
+    return `https://www.instagram.com/${trimmed.slice(1)}/`;
+  }
+  if (trimmed.startsWith("instagram.com/") || trimmed.startsWith("www.instagram.com/")) {
+    return `https://${trimmed}`;
+  }
+  if (/^[a-zA-Z0-9._]+$/.test(trimmed)) {
+    return `https://www.instagram.com/${trimmed}/`;
+  }
+  return `https://${trimmed}`;
+}
+
 export function ImmersiveLightbox({
   selected,
   items,
@@ -84,14 +103,14 @@ export function ImmersiveLightbox({
     setDims(null);
     const mediaUrl = safeUrl(selected.mediaUrl);
     if (!mediaUrl) return;
-    let cancelled = false;
-    getMediaDimensions(mediaUrl, selected.mediaType).then((result) => {
-      if (!cancelled) setDims(result);
+    let mounted = true;
+    getMediaDimensions(mediaUrl, selected.mediaType).then((d) => {
+      if (mounted) setDims(d);
     });
     return () => {
-      cancelled = true;
+      mounted = false;
     };
-  }, [selected.id, selected.mediaUrl, selected.mediaType]);
+  }, [selected]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -112,6 +131,7 @@ export function ImmersiveLightbox({
 
   const mediaUrl = safeUrl(selected.mediaUrl);
   const isVideo = Boolean(mediaUrl && isVideoUrl(mediaUrl, selected.mediaType));
+  const socialUrl = normalizeSocialUrl(selected.href);
 
   return (
     <div
@@ -195,7 +215,24 @@ export function ImmersiveLightbox({
         <div className="lightbox-copy-inner">
           <span>{selected.category || selected.eyebrow}</span>
           <h2>{selected.title}</h2>
-          {selected.body && <p>{selected.body}</p>}
+          {selected.body && <div className="lightbox-copy-body">{selected.body}</div>}
+          {socialUrl && (
+            <a
+              href={socialUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="lightbox-social-btn"
+              onClick={(e) => e.stopPropagation()}
+              aria-label={`Connect with ${selected.title} on Instagram`}
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+              </svg>
+              <span>Connect on Instagram ↗</span>
+            </a>
+          )}
         </div>
       </div>
     </div>

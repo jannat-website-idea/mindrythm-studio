@@ -96,11 +96,23 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   }, [selected, galleryItems]);
 
   useEffect(() => {
-    if (page !== "work") return;
-    const requested = new URLSearchParams(window.location.search).get("service");
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (requested && isServiceKey(requested, serviceItems)) setWorkFilter(requested as ServiceKey);
-  }, [page, serviceItems]);
+    if (page === "work") {
+      const requested = new URLSearchParams(window.location.search).get("service");
+      if (requested && isServiceKey(requested, serviceItems)) setWorkFilter(requested as ServiceKey);
+    } else if (page === "team") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const memberParam = urlParams.get("member") || (typeof window !== "undefined" ? window.location.hash.replace("#", "") : "");
+      if (memberParam) {
+        const match = team.find(
+          (m) =>
+            m.id.toLowerCase() === memberParam.toLowerCase() ||
+            m.title.toLowerCase().replace(/\s+/g, "-") === memberParam.toLowerCase() ||
+            m.title.toLowerCase().includes(memberParam.toLowerCase())
+        );
+        if (match) setSelected(match);
+      }
+    }
+  }, [page, serviceItems, team]);
 
   const visibleProjects = useMemo(() => {
     if (workFilter === "all") return projects;
@@ -362,6 +374,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                   isActive={activeTeamCardId === member.id}
                   onToggle={() => setActiveTeamCardId((current) => (current === member.id ? null : member.id))}
                   onClose={() => setActiveTeamCardId(null)}
+                  onReadMore={() => setSelected(member)}
                   showExploreLink={false}
                 />
               ))}
@@ -471,11 +484,12 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
 
       {selected && (() => {
         const serviceMedia = serviceCollections.flatMap((s) => s.media);
-        const allItems = Array.from(new Map([...galleryItems, ...serviceMedia, ...projects].map((item) => [item.id, item])).values());
+        const allItems = Array.from(new Map([...team, ...galleryItems, ...serviceMedia, ...projects].map((item) => [item.id, item])).values());
+        const activeItems = selected.kind === "team" ? team : allItems;
         return (
           <ImmersiveLightbox
             selected={selected}
-            items={allItems}
+            items={activeItems}
             onClose={() => setSelected(null)}
             onSelect={setSelected}
           />
