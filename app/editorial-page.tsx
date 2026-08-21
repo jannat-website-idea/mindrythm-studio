@@ -12,6 +12,7 @@ import { ImmersiveLightbox } from "@/app/immersive-lightbox";
 import { Media } from "@/app/media";
 import { SocialIcon } from "@/app/social-icon";
 import { TeamMemberCard } from "@/app/team-member-card";
+import { TeamShowcase } from "@/app/team-showcase";
 import { getProjectService, getServiceProjects, isServiceKey, type ServiceKey } from "@/lib/services";
 import { type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
@@ -482,19 +483,33 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
       </footer>
       <BackToTop />
 
-      {selected && (() => {
-        const serviceMedia = serviceCollections.flatMap((s) => s.media);
-        const allItems = Array.from(new Map([...team, ...galleryItems, ...serviceMedia, ...projects].map((item) => [item.id, item])).values());
-        const activeItems = selected.kind === "team" ? team : allItems;
-        return (
-          <ImmersiveLightbox
-            selected={selected}
-            items={activeItems}
-            onClose={() => setSelected(null)}
-            onSelect={setSelected}
+      {selected && (
+        selected.kind === "team" ? (
+          <TeamShowcase
+            team={team}
+            initialMemberId={selected.id}
+            onClose={() => {
+              setSelected(null);
+              if (typeof window !== "undefined") {
+                const url = new URL(window.location.href);
+                url.searchParams.delete("member");
+                window.history.replaceState(null, "", url.pathname);
+              }
+            }}
           />
-        );
-      })()}
+        ) : (() => {
+          const serviceMedia = serviceCollections.flatMap((s) => s.media);
+          const allItems = Array.from(new Map([...galleryItems, ...serviceMedia, ...projects].map((item) => [item.id, item])).values());
+          return (
+            <ImmersiveLightbox
+              selected={selected}
+              items={allItems}
+              onClose={() => setSelected(null)}
+              onSelect={setSelected}
+            />
+          );
+        })()
+      )}
     </div>
   );
 }

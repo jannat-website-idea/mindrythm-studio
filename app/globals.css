@@ -7950,3 +7950,246 @@ video {
     margin: 0 auto !important;
   }
 }
+
+/* ==========================================================================
+   Full-Screen Scrollable Team Showcase (Snap scroll across all team members)
+   ========================================================================== */
+.team-showcase-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 99999 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  width: 100dvw !important;
+  height: 100dvh !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  scroll-snap-type: y mandatory !important;
+  scroll-behavior: smooth !important;
+  background: #080807 !important;
+  -webkit-overflow-scrolling: touch !important;
+  animation: lightbox-fade-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.team-showcase-toolbar {
+  position: fixed !important;
+  top: clamp(1.5rem, 4vh, 2.5rem) !important;
+  right: clamp(1.5rem, 4vw, 2.5rem) !important;
+  z-index: 1000 !important;
+  pointer-events: auto !important;
+}
+
+.team-showcase-close-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0.5rem 1.25rem !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(23, 23, 20, 0.35) !important;
+  background: rgba(242, 240, 232, 0.92) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  color: var(--ink) !important;
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2) !important;
+  transition: background 0.2s ease, transform 0.2s ease !important;
+}
+
+.team-showcase-close-btn:hover {
+  background: #ffffff !important;
+  transform: scale(1.04) !important;
+}
+
+.team-showcase-track {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.team-showcase-slide {
+  width: 100% !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+  scroll-snap-align: start !important;
+  scroll-snap-stop: always !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: clamp(1.5rem, 4vh, 3rem) clamp(1rem, 3vw, 2.5rem) !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+}
+
+.team-showcase-card {
+  width: 100% !important;
+  max-width: 1260px !important;
+  height: calc(100vh - clamp(3.5rem, 8vh, 5.5rem)) !important;
+  max-height: 820px !important;
+  display: flex !important;
+  border-radius: 20px !important;
+  overflow: hidden !important;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.5) !important;
+  background: #141714 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.team-showcase-media-area {
+  flex: 1 1 50% !important;
+  width: 50% !important;
+  height: 100% !important;
+  position: relative !important;
+  overflow: hidden !important;
+  background-size: cover !important;
+  background-position: center !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background-color: #0b0e0c !important;
+}
+
+.team-showcase-media-area::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: -30px !important;
+  background: inherit !important;
+  background-size: cover !important;
+  background-position: center !important;
+  filter: blur(35px) brightness(0.6) !important;
+  transform: scale(1.15) !important;
+  z-index: 1 !important;
+}
+
+.team-showcase-media-frame {
+  position: relative !important;
+  z-index: 2 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.team-showcase-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  display: block !important;
+}
+
+.team-showcase-copy-area {
+  flex: 1 1 50% !important;
+  width: 50% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: clamp(2rem, 5vw, 4.5rem) clamp(2rem, 4.5vw, 4rem) !important;
+  background: var(--ivory) !important;
+  color: var(--ink) !important;
+  box-sizing: border-box !important;
+  overflow-y: auto !important;
+}
+
+.team-showcase-copy-inner {
+  width: 100% !important;
+  max-width: 520px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.8rem !important;
+  text-align: left !important;
+}
+
+.team-showcase-role {
+  font-size: 0.68rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  color: var(--muted) !important;
+  display: block !important;
+}
+
+.team-showcase-name {
+  font-size: clamp(1.8rem, 2.8vw, 2.75rem) !important;
+  font-weight: 300 !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.05 !important;
+  color: var(--ink) !important;
+  margin: 0 0 0.4rem !important;
+}
+
+.team-showcase-bio {
+  white-space: pre-line !important;
+  font-size: clamp(0.82rem, 0.94vw, 0.92rem) !important;
+  line-height: 1.65 !important;
+  color: var(--ink) !important;
+  opacity: 0.88 !important;
+  max-height: 44vh !important;
+  overflow-y: auto !important;
+  padding-right: 0.5rem !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(23, 23, 20, 0.25) transparent !important;
+}
+
+.team-showcase-actions {
+  display: flex !important;
+  align-items: center !important;
+  margin-top: 0.4rem !important;
+}
+
+.team-showcase-connect-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.55rem !important;
+  padding: 0.55rem 1.25rem !important;
+  border-radius: 999px !important;
+  background: #171917 !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16) !important;
+  transition: background 0.25s ease, transform 0.25s ease, border-color 0.25s ease !important;
+  cursor: pointer !important;
+}
+
+.team-showcase-connect-btn:hover {
+  background: #000000 !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  transform: translateY(-1px) !important;
+}
+
+@media (max-width: 900px) {
+  .team-showcase-slide {
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+    padding: 5rem 1rem 2rem !important;
+  }
+  .team-showcase-card {
+    flex-direction: column !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+  .team-showcase-media-area {
+    width: 100% !important;
+    height: 360px !important;
+    flex: none !important;
+  }
+  .team-showcase-copy-area {
+    width: 100% !important;
+    flex: none !important;
+    padding: 1.75rem 1.25rem !important;
+  }
+  .team-showcase-bio {
+    max-height: none !important;
+    overflow-y: visible !important;
+  }
+}
+
