@@ -8135,10 +8135,49 @@ video {
   scrollbar-color: rgba(23, 23, 20, 0.25) transparent !important;
 }
 
+.team-showcase-nav-btn {
+  position: fixed !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 1000 !important;
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 50% !important;
+  background: rgba(242, 240, 232, 0.9) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(23, 23, 20, 0.25) !important;
+  color: var(--ink) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.team-showcase-nav-btn:hover {
+  background: #ffffff !important;
+  transform: translateY(-50%) scale(1.1) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35) !important;
+}
+
+.team-showcase-nav-prev {
+  left: clamp(1rem, 2.5vw, 2.5rem) !important;
+}
+
+.team-showcase-nav-next {
+  right: clamp(1rem, 2.5vw, 2.5rem) !important;
+}
+
 .team-showcase-actions {
   display: flex !important;
   align-items: center !important;
-  margin-top: 0.4rem !important;
+  gap: 0.85rem !important;
+  flex-wrap: wrap !important;
+  margin-top: 0.75rem !important;
+  padding-top: 0.85rem !important;
+  border-top: 1px solid rgba(23, 23, 20, 0.1) !important;
 }
 
 .team-showcase-connect-btn {
@@ -8166,6 +8205,29 @@ video {
   transform: translateY(-1px) !important;
 }
 
+.team-showcase-next-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  padding: 0.55rem 1.25rem !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  border: 1px solid var(--ink) !important;
+  color: var(--ink) !important;
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease !important;
+}
+
+.team-showcase-next-btn:hover {
+  background: var(--ink) !important;
+  color: var(--ivory) !important;
+  transform: translateY(-1px) !important;
+}
+
 @media (max-width: 900px) {
   .team-showcase-slide {
     min-height: 100vh !important;
@@ -8190,6 +8252,9 @@ video {
   .team-showcase-bio {
     max-height: none !important;
     overflow-y: visible !important;
+  }
+  .team-showcase-nav-btn {
+    display: none !important;
   }
 }
 

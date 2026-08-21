@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { type ContentItem } from "@/lib/content";
 
 function normalizeSocialUrl(url?: string): string | undefined {
@@ -32,11 +32,37 @@ export function TeamShowcase({
   onClose: () => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [activeIdx, setActiveIdx] = useState(() => {
+    const idx = team.findIndex((m) => m.id === initialMemberId);
+    return idx >= 0 ? idx : 0;
+  });
+
+  const scrollToMember = (idx: number) => {
+    if (idx < 0 || idx >= team.length) return;
+    const target = document.getElementById(`team-showcase-${team[idx].id}`);
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  const goNext = () => {
+    if (activeIdx < team.length - 1) {
+      scrollToMember(activeIdx + 1);
+    }
+  };
+
+  const goPrev = () => {
+    if (activeIdx > 0) {
+      scrollToMember(activeIdx - 1);
+    }
+  };
 
   useEffect(() => {
     document.body.classList.add("modal-open");
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") goNext();
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") goPrev();
     };
     window.addEventListener("keydown", handleKeyDown);
 
@@ -46,7 +72,7 @@ export function TeamShowcase({
       targetElement.scrollIntoView({ behavior: "instant", block: "start" });
     }
 
-    // Observe active slide to update URL query
+    // Observe active slide to update activeIdx and URL query
     const container = containerRef.current;
     if (!container) return;
 
@@ -55,10 +81,14 @@ export function TeamShowcase({
         for (const entry of entries) {
           if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
             const memberId = entry.target.getAttribute("data-member-id");
-            if (memberId && typeof window !== "undefined") {
-              const url = new URL(window.location.href);
-              url.searchParams.set("member", memberId);
-              window.history.replaceState(null, "", url.toString());
+            if (memberId) {
+              const idx = team.findIndex((m) => m.id === memberId);
+              if (idx >= 0) setActiveIdx(idx);
+              if (typeof window !== "undefined") {
+                const url = new URL(window.location.href);
+                url.searchParams.set("member", memberId);
+                window.history.replaceState(null, "", url.toString());
+              }
             }
           }
         }
@@ -74,7 +104,7 @@ export function TeamShowcase({
       window.removeEventListener("keydown", handleKeyDown);
       observer.disconnect();
     };
-  }, [initialMemberId, onClose]);
+  }, [initialMemberId, onClose, activeIdx, team]);
 
   return (
     <div
@@ -95,10 +125,37 @@ export function TeamShowcase({
         </button>
       </div>
 
+      {/* Floating Previous & Next Navigation Arrows */}
+      {activeIdx > 0 && (
+        <button
+          type="button"
+          className="team-showcase-nav-btn team-showcase-nav-prev"
+          onClick={goPrev}
+          aria-label="Previous team member"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+      )}
+      {activeIdx < team.length - 1 && (
+        <button
+          type="button"
+          className="team-showcase-nav-btn team-showcase-nav-next"
+          onClick={goNext}
+          aria-label="Next team member"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </button>
+      )}
+
       <div className="team-showcase-track">
-        {team.map((member) => {
+        {team.map((member, index) => {
           const role = member.category || member.eyebrow;
           const socialUrl = normalizeSocialUrl(member.href);
+          const hasNextMember = index < team.length - 1;
 
           return (
             <section
@@ -136,8 +193,8 @@ export function TeamShowcase({
                         {member.body}
                       </div>
                     )}
-                    {socialUrl && (
-                      <div className="team-showcase-actions">
+                    <div className="team-showcase-actions">
+                      {socialUrl && (
                         <a
                           href={socialUrl}
                           target="_blank"
@@ -164,8 +221,25 @@ export function TeamShowcase({
                           </svg>
                           <span>CONNECT ↗</span>
                         </a>
-                      </div>
-                    )}
+                      )}
+                      {hasNextMember ? (
+                        <button
+                          type="button"
+                          className="team-showcase-next-btn"
+                          onClick={() => scrollToMember(index + 1)}
+                        >
+                          <span>Next member →</span>
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          className="team-showcase-next-btn"
+                          onClick={() => scrollToMember(0)}
+                        >
+                          <span>Back to start ↑</span>
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
