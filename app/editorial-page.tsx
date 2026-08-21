@@ -67,7 +67,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   useEffect(() => {
     if (!activeTeamCardId) return;
     const close = (event: PointerEvent) => {
-      if (event.target instanceof Element && event.target.closest(".team-card, .team-page-card")) return;
+      if (event.target instanceof Element && event.target.closest(".team-member-card, .team-card, .team-page-card")) return;
       setActiveTeamCardId(null);
     };
     const closeWithKeyboard = (event: KeyboardEvent) => event.key === "Escape" && setActiveTeamCardId(null);

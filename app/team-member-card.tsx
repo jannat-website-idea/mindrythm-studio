@@ -11,6 +11,25 @@ interface TeamMemberCardProps {
   showExploreLink?: boolean;
 }
 
+function normalizeSocialUrl(url?: string): string | undefined {
+  if (!url) return undefined;
+  const trimmed = url.trim();
+  if (!trimmed) return undefined;
+  if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+    return trimmed;
+  }
+  if (trimmed.startsWith("@")) {
+    return `https://www.instagram.com/${trimmed.slice(1)}/`;
+  }
+  if (trimmed.startsWith("instagram.com/") || trimmed.startsWith("www.instagram.com/")) {
+    return `https://${trimmed}`;
+  }
+  if (/^[a-zA-Z0-9._]+$/.test(trimmed)) {
+    return `https://www.instagram.com/${trimmed}/`;
+  }
+  return `https://${trimmed}`;
+}
+
 export function TeamMemberCard({
   member,
   isActive,
@@ -19,6 +38,7 @@ export function TeamMemberCard({
   showExploreLink = true,
 }: TeamMemberCardProps) {
   const role = member.category || member.eyebrow;
+  const socialUrl = normalizeSocialUrl(member.href);
 
   return (
     <article
@@ -41,34 +61,50 @@ export function TeamMemberCard({
         className={`team-member-overlay ${isActive ? "open" : ""}`}
         aria-hidden={!isActive}
         onClick={(e) => e.stopPropagation()}
+        onPointerDown={(e) => e.stopPropagation()}
       >
-        <button
-          type="button"
-          className="team-member-close-btn"
-          onClick={onClose}
-          aria-label="Close bio"
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
-
-        <div className="team-member-info">
+        <div className="team-member-overlay-header">
           {role && <span className="team-member-role">{role}</span>}
-          <h3 className="team-member-name">{member.title}</h3>
-          {member.body && <p className="team-member-bio">{member.body}</p>}
+          <button
+            type="button"
+            className="team-member-close-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
+            onPointerDown={(e) => e.stopPropagation()}
+            aria-label="Close bio"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="team-member-scroll-body">
+          <div className="team-member-info">
+            <h3 className="team-member-name">{member.title}</h3>
+            {member.body && <div className="team-member-bio">{member.body}</div>}
+          </div>
 
           <div className="team-member-actions">
-            {member.href && (
+            {socialUrl && (
               <a
-                href={member.href}
+                href={socialUrl}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="team-member-link"
                 onClick={(e) => e.stopPropagation()}
+                onPointerDown={(e) => e.stopPropagation()}
+                aria-label={`Connect with ${member.title} on Instagram`}
               >
-                Connect ↗
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                </svg>
+                <span>Connect ↗</span>
               </a>
             )}
             {showExploreLink && (
@@ -76,6 +112,7 @@ export function TeamMemberCard({
                 href="/team"
                 className="team-member-page-link"
                 onClick={(e) => e.stopPropagation()}
+                onPointerDown={(e) => e.stopPropagation()}
               >
                 Our Team Page →
               </a>

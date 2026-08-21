@@ -7737,15 +7737,17 @@ video {
   z-index: 5 !important;
   display: flex !important;
   flex-direction: column !important;
-  justify-content: flex-end !important;
-  padding: clamp(1.25rem, 2vw, 1.75rem) !important;
+  justify-content: space-between !important;
+  padding: clamp(1rem, 1.6vw, 1.4rem) !important;
   box-sizing: border-box !important;
-  background: linear-gradient(180deg, rgba(14, 18, 15, 0.2) 0%, rgba(14, 18, 15, 0.92) 50%, rgba(14, 18, 15, 0.98) 100%) !important;
+  background: rgba(12, 16, 13, 0.94) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
   color: #ffffff !important;
   opacity: 0 !important;
   visibility: hidden !important;
   pointer-events: none !important;
-  transform: translateY(14px) !important;
+  transform: translateY(12px) !important;
   transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.35s !important;
   border-radius: 16px !important;
 }
@@ -7758,28 +7760,66 @@ video {
   transform: translateY(0) !important;
 }
 
+.team-member-overlay-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  margin-bottom: 0.5rem !important;
+  flex-shrink: 0 !important;
+}
+
+.team-member-role {
+  font-size: 0.62rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  color: #a8d5ba !important;
+  display: inline-block !important;
+}
+
 .team-member-close-btn {
-  position: absolute !important;
-  top: 1rem !important;
-  right: 1rem !important;
-  width: 32px !important;
-  height: 32px !important;
+  width: 30px !important;
+  height: 30px !important;
   border-radius: 50% !important;
-  background: rgba(255, 255, 255, 0.15) !important;
+  background: rgba(255, 255, 255, 0.12) !important;
   backdrop-filter: blur(10px) !important;
   -webkit-backdrop-filter: blur(10px) !important;
-  border: 0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
   color: #ffffff !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   cursor: pointer !important;
   transition: background 0.2s ease, transform 0.2s ease !important;
+  flex-shrink: 0 !important;
+  margin-left: auto !important;
 }
 
 .team-member-close-btn:hover {
-  background: rgba(255, 255, 255, 0.3) !important;
+  background: rgba(255, 255, 255, 0.28) !important;
   transform: scale(1.08) !important;
+}
+
+.team-member-scroll-body {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  padding-right: 0.35rem !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent !important;
+}
+
+.team-member-scroll-body::-webkit-scrollbar {
+  width: 4px !important;
+}
+
+.team-member-scroll-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.28) !important;
+  border-radius: 4px !important;
 }
 
 .team-member-info {
@@ -7787,64 +7827,84 @@ video {
   flex-direction: column !important;
 }
 
-.team-member-role {
-  font-size: 0.65rem !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.12em !important;
-  text-transform: uppercase !important;
-  color: rgba(255, 255, 255, 0.72) !important;
-  margin-bottom: 0.35rem !important;
-  display: block !important;
-}
-
 .team-member-name {
-  margin: 0 0 0.6rem !important;
-  font-size: clamp(1.35rem, 1.8vw, 1.85rem) !important;
-  font-weight: 500 !important;
-  letter-spacing: -0.03em !important;
-  line-height: 1.1 !important;
+  margin: 0 0 0.5rem !important;
+  font-size: clamp(1.2rem, 1.5vw, 1.55rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.15 !important;
   color: #ffffff !important;
   text-transform: capitalize !important;
 }
 
 .team-member-bio {
-  margin: 0 0 1.25rem !important;
-  font-size: 0.82rem !important;
-  line-height: 1.55 !important;
-  color: rgba(255, 255, 255, 0.88) !important;
+  margin: 0 0 0.85rem !important;
+  font-size: clamp(0.78rem, 0.88vw, 0.85rem) !important;
+  line-height: 1.6 !important;
+  color: rgba(245, 245, 240, 0.88) !important;
+  white-space: pre-line !important;
+  display: block !important;
   max-width: 100% !important;
-  display: -webkit-box !important;
-  -webkit-line-clamp: 4 !important;
-  -webkit-box-orient: vertical !important;
-  overflow: hidden !important;
 }
 
 .team-member-actions {
   display: flex !important;
   align-items: center !important;
-  gap: 1rem !important;
+  gap: 0.75rem !important;
   flex-wrap: wrap !important;
+  margin-top: auto !important;
+  padding-top: 0.75rem !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+  flex-shrink: 0 !important;
 }
 
-.team-member-link,
+.team-member-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.45rem !important;
+  padding: 0.45rem 0.9rem !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+  font-size: 0.65rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease !important;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  z-index: 10 !important;
+}
+
+.team-member-link:hover {
+  background: rgba(255, 255, 255, 0.22) !important;
+  border-color: rgba(255, 255, 255, 0.55) !important;
+  transform: translateY(-1px) !important;
+}
+
 .team-member-page-link {
   display: inline-flex !important;
   align-items: center !important;
   gap: 0.35rem !important;
-  font-size: 0.68rem !important;
+  font-size: 0.65rem !important;
   font-weight: 600 !important;
   letter-spacing: 0.06em !important;
   text-transform: uppercase !important;
-  color: #ffffff !important;
+  color: rgba(255, 255, 255, 0.75) !important;
   text-decoration: underline !important;
   text-underline-offset: 3px !important;
-  transition: opacity 0.2s ease !important;
-  width: max-content !important;
+  transition: color 0.2s ease !important;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  z-index: 10 !important;
 }
 
-.team-member-link:hover,
 .team-member-page-link:hover {
-  opacity: 0.75 !important;
+  color: #ffffff !important;
 }
 
 /* Tablet: 2 columns */

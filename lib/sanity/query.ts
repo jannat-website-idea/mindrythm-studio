@@ -57,7 +57,7 @@ export const siteContentQuery = `{
     "mediaUrl": coalesce(media.image.asset->url, media.video.asset->url, media.externalUrl),
     "mediaAlt": coalesce(media.alt, title),
     "category": role,
-    "href": profileUrl
+    "href": coalesce(profileUrl, instagram, instagramUrl, socialUrl, href)
   },
   "testimonials": *[_type == "testimonial"] | order(sortOrder asc){
     "id": _id,

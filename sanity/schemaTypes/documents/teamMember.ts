@@ -11,7 +11,12 @@ export const teamMember = defineType({
     defineField({name: "role", title: "Role", type: "string", validation: (Rule) => Rule.required().max(80)}),
     defineField({name: "bio", title: "Biography", type: "text", rows: 5, validation: (Rule) => Rule.required().min(30)}),
     defineField({name: "media", title: "Portrait", type: "mediaAsset", validation: (Rule) => Rule.required()}),
-    defineField({name: "profileUrl", title: "Profile link", type: "url", validation: (Rule) => Rule.uri({scheme: ["http", "https"]})}),
+    defineField({
+      name: "profileUrl",
+      title: "Instagram / Social link",
+      description: "Direct link to Instagram profile (e.g. https://www.instagram.com/username) or handle (@username)",
+      type: "string",
+    }),
   ],
   preview: {select: {title: "title", subtitle: "role", media: "media.image"}},
 });
