@@ -193,11 +193,12 @@ export function ImmersiveLightbox({
               loop
               muted
               playsInline
-              controls={false}
+              controls
               preload="auto"
               className={`lightbox-media ${loaded ? "is-loaded" : ""}`}
               aria-label={selected.title}
               onLoadedData={() => setLoaded(true)}
+              onClick={(e) => e.stopPropagation()}
             />
           ) : mediaUrl ? (
             <img

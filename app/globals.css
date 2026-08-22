@@ -422,8 +422,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  padding: clamp(1rem, 5vh, 3rem) clamp(1rem, 5vw, 3rem);
+  padding: clamp(0.75rem, 2.5vh, 2rem) clamp(1rem, 3.5vw, 3rem);
   box-sizing: border-box;
 }
 
@@ -431,24 +430,29 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .lightbox-layout-cinematic .lightbox-media-frame {
   width: 100%;
   height: 100%;
+  max-width: 96vw;
+  max-height: 92vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .lightbox-layout-landscape .lightbox-media-frame img,
 .lightbox-layout-landscape .lightbox-media-frame video,
 .lightbox-layout-cinematic .lightbox-media-frame img,
 .lightbox-layout-cinematic .lightbox-media-frame video {
-  width: auto;
-  height: auto;
-  max-width: 100vw;
-  max-height: 100vh;
-  object-fit: contain;
-  object-position: center;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 96vw !important;
+  max-height: 90vh !important;
+  object-fit: contain !important;
+  object-position: center !important;
   display: block;
   opacity: 0;
   transition: opacity 0.25s ease;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
 }
 
 /* Portrait / Square / Tall-portrait: elegant split card, full image visible */
@@ -617,22 +621,25 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   pointer-events: none;
 }
 
-/* Landscape / Cinematic: content sits bottom-left, no dark box */
+/* Landscape / Cinematic: content sits bottom-left with translucent frosted backing */
 .lightbox-layout-landscape .lightbox-copy-area,
 .lightbox-layout-cinematic .lightbox-copy-area {
   position: absolute;
-  bottom: clamp(1.5rem, 4vh, 3rem);
-  left: clamp(1.5rem, 4vw, 3rem);
-  max-width: min(560px, 46vw);
-  padding: 0;
-  background: transparent;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+  bottom: clamp(1.25rem, 3.5vh, 2.5rem);
+  left: clamp(1.25rem, 3.5vw, 2.5rem);
+  max-width: min(560px, 80vw);
+  padding: 1rem 1.4rem;
+  background: rgba(14, 17, 15, 0.78);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 .lightbox-layout-landscape .lightbox-copy-inner,
 .lightbox-layout-cinematic .lightbox-copy-inner {
-  text-shadow: 0 1px 18px rgba(0, 0, 0, 0.55);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
 }
 
 /* Portrait / Square / Tall-portrait: content panel on the right */
