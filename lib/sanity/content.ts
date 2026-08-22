@@ -29,9 +29,10 @@ const text = (value: unknown, fallback = "") => typeof value === "string" && val
 const strings = (value: unknown, fallback: string[]) => Array.isArray(value) && value.every((item) => typeof item === "string") && value.length ? value : fallback;
 
 function itemFromSanity(raw: Record<string, unknown>, kind: ContentItem["kind"], fallbackOrder: number): ContentItem | null {
-  const id = text(raw.id);
-  const title = text(raw.title);
-  if (!id || !title) return null;
+  const rawId = text(raw.id, typeof raw._id === "string" ? raw._id : "");
+  const title = text(raw.title, "Untitled");
+  const id = rawId || title.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  if (!id) return null;
 
   return {
     id,
@@ -42,7 +43,7 @@ function itemFromSanity(raw: Record<string, unknown>, kind: ContentItem["kind"],
     body: text(raw.body),
     mediaUrl: text(raw.mediaUrl),
     mediaAlt: text(raw.mediaAlt, title),
-    category: text(raw.category),
+    category: text(raw.category, "Spaces"),
     mediaType: text(raw.mediaType, "image") as ContentItem["mediaType"],
     layoutType: text(raw.layoutType, "large") as ContentItem["layoutType"],
     year: text(raw.year),

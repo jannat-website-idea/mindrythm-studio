@@ -24,26 +24,26 @@ export const siteContentQuery = `{
     "projectIds": projects[]->cmsId.current
   },
   "projects": *[_type == "project"] | order(sortOrder asc, _createdAt asc){
-    "id": cmsId.current,
+    "id": coalesce(cmsId.current, _id),
     sortOrder,
     title,
     eyebrow,
     body,
-    "mediaUrl": coalesce(media.image.asset->url, media.video.asset->url, media.externalUrl),
-    "mediaAlt": media.alt,
+    "mediaUrl": coalesce(media.image.asset->url, media.video.asset->url, media.externalUrl, image.asset->url, url),
+    "mediaAlt": coalesce(media.alt, title),
     category,
     year,
     href,
     accent
   },
   "gallery": *[_type == "galleryItem"] | order(sortOrder asc, _createdAt asc){
-    "id": cmsId.current,
+    "id": coalesce(cmsId.current, _id),
     sortOrder,
     title,
     body,
-    "mediaUrl": coalesce(media.image.asset->url, media.video.asset->url, media.externalUrl),
-    "mediaAlt": media.alt,
-    category,
+    "mediaUrl": coalesce(media.image.asset->url, media.video.asset->url, media.externalUrl, image.asset->url, url),
+    "mediaAlt": coalesce(media.alt, title),
+    "category": coalesce(category, "Spaces"),
     mediaType,
     "layoutType": coalesce(lower(layoutType), "large"),
     href

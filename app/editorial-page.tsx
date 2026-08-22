@@ -330,39 +330,22 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
           </>
         )}
 
-        {page === "gallery" && (() => {
-          const spacesItems = galleryItems.filter((item) =>
-            item.category?.toLowerCase() === "spaces" ||
-            item.category?.toLowerCase().includes("space") ||
-            item.category?.toLowerCase().includes("interior") ||
-            item.category?.toLowerCase().includes("landscape") ||
-            item.category?.toLowerCase().includes("retreat") ||
-            item.category?.toLowerCase().includes("hospitality") ||
-            item.eyebrow?.toLowerCase().includes("space") ||
-            item.eyebrow?.toLowerCase().includes("interior") ||
-            item.eyebrow?.toLowerCase().includes("retreat") ||
-            item.eyebrow?.toLowerCase().includes("architecture")
-          );
-
-          return (
-            <div className="gallery-page">
-              {/* Section 1: Gallery */}
-              <section className="gallery-section-container" id="gallery">
-                <header className="gallery-section-header">
-                  <h2>Gallery</h2>
-                </header>
-                <BentoTemplate
-                  items={spacesItems}
-                  pattern="gallery"
-                  editorialEyebrow="MINDRYTHM ARCHIVE"
-                  editorialText="SPACES SHAPED BY LIGHT, MATERIAL AND A SENSE OF ARRIVAL."
-                  onOpen={setSelected}
-                />
-              </section>
-
-            </div>
-          );
-        })()}
+        {page === "gallery" && (
+          <div className="gallery-page">
+            <section className="gallery-section-container" id="gallery">
+              <header className="gallery-section-header">
+                <h2>Gallery</h2>
+              </header>
+              <BentoTemplate
+                items={galleryItems}
+                pattern="gallery"
+                editorialEyebrow="MINDRYTHM ARCHIVE"
+                editorialText="SPACES SHAPED BY LIGHT, MATERIAL AND A SENSE OF ARRIVAL."
+                onOpen={setSelected}
+              />
+            </section>
+          </div>
+        )}
 
         {page === "team" && (
           <>

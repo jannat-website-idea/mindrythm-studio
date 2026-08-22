@@ -12,6 +12,7 @@ type ContentSlot = {
   kind: "content";
   layoutType: LayoutType;
   className: string;
+  item?: ContentItem | null;
 };
 
 type StaticSlot = {
@@ -125,34 +126,99 @@ const PATTERNS: Record<BentoPattern, ColumnDef[]> = {
 
 function useBentoColumns(items: ContentItem[], pattern: BentoPattern) {
   return useMemo(() => {
-    const columns = PATTERNS[pattern];
-    const sorted = [...items].sort((a, b) => a.sortOrder - b.sortOrder);
+    const sorted = [...items].sort((a, b) => (a.sortOrder ?? 100) - (b.sortOrder ?? 100));
 
-    const queues: Record<LayoutType, ContentItem[]> = {
-      large: [],
-      medium: [],
-      tall: [],
-      small: [],
-      wide: [],
-    };
+    if (pattern === "gallery") {
+      const numCols = 4;
+      const cols: ColumnDef[] = Array.from({ length: numCols }, (_, i) => ({
+        id: `gallery-col-${i + 1}`,
+        cells: [],
+      }));
 
-    for (const item of sorted) {
-      // Current documents may contain legacy title-cased values. Normalise them,
-      // then map the simple CMS choice to the two deliberate visual footprints.
-      const type = String(item.layoutType || "large").toLowerCase();
-      const slot = type === "small" || type === "medium" ? "medium" : "large";
-      queues[slot].push(item);
+      // Approximate heights to keep columns visually balanced
+      const colHeights = [0, 0, 0, 0];
+      let editorialPlaced = false;
+
+      sorted.forEach((item, index) => {
+        // Place editorial card around the 3rd or 4th item if not placed yet
+        if (!editorialPlaced && (index === 2 || (index === sorted.length - 1 && index < 3))) {
+          cols[3].cells.push({
+            id: "gallery-editorial",
+            kind: "static",
+            type: "editorial",
+            className: "bento-card-editorial",
+          });
+          colHeights[3] += 360;
+          editorialPlaced = true;
+        }
+
+        // Find the column with the minimum height
+        let shortestCol = 0;
+        for (let c = 1; c < numCols; c++) {
+          if (colHeights[c] < colHeights[shortestCol]) {
+            shortestCol = c;
+          }
+        }
+
+        const isSmall = item.layoutType === "small" || item.layoutType === "medium";
+        // Alternate large and medium based on column cell count if not explicitly set
+        const cellCountInCol = cols[shortestCol].cells.length;
+        const layoutType = isSmall ? "medium" : cellCountInCol % 2 === 0 ? "large" : "medium";
+        const cardHeight = layoutType === "medium" ? 260 : 380;
+
+        cols[shortestCol].cells.push({
+          id: `gallery-item-${item.id || index}`,
+          kind: "content",
+          layoutType,
+          className: `bento-card-${layoutType}`,
+          item,
+        } as BentoCell & { item: ContentItem });
+
+        colHeights[shortestCol] += cardHeight;
+      });
+
+      if (!editorialPlaced) {
+        let shortestCol = 0;
+        for (let c = 1; c < numCols; c++) {
+          if (colHeights[c] < colHeights[shortestCol]) {
+            shortestCol = c;
+          }
+        }
+        cols[shortestCol].cells.push({
+          id: "gallery-editorial",
+          kind: "static",
+          type: "editorial",
+          className: "bento-card-editorial",
+        });
+      }
+
+      return cols.filter((col) => col.cells.length > 0);
     }
 
-    return columns.map((column) => ({
-      ...column,
-      cells: column.cells.map((cell) =>
-        cell.kind === "content"
-          ? { ...cell, item: queues[cell.layoutType].shift() || null }
-          : cell
-      ),
-    }));
+    // For home and compact patterns:
+    const baseColumns = PATTERNS[pattern];
+    const pool = [...sorted];
+
+    return baseColumns.map((col) => ({
+      ...col,
+      cells: col.cells
+        .map((cell) => {
+          if (cell.kind !== "content") return cell;
+          // Prefer matching layoutType, else take next available item
+          const matchIdx = pool.findIndex(
+            (it) => (it.layoutType === "small" || it.layoutType === "medium" ? "medium" : "large") === cell.layoutType
+          );
+          const chosen = matchIdx >= 0 ? pool.splice(matchIdx, 1)[0] : pool.shift();
+          if (!chosen) return null;
+          return { ...cell, item: chosen };
+        })
+        .filter(Boolean) as (BentoCell & { item?: ContentItem | null })[],
+    })).filter((col) => col.cells.length > 0);
   }, [items, pattern]);
+}
+
+function EmptySlot({ className }: { className?: string }) {
+  return null;
 }
 
 function BentoMediaCard({
@@ -181,10 +247,6 @@ function BentoMediaCard({
       </div>
     </button>
   );
-}
-
-function EmptySlot({ className }: { className: string }) {
-  return <div className={`bento-card bento-card-empty ${className}`} aria-hidden="true" />;
 }
 
 function SocialBar({
