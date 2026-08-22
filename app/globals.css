@@ -638,8 +638,31 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 }
 
 .lightbox-layout-landscape .lightbox-copy-inner,
-.lightbox-layout-cinematic .lightbox-copy-inner {
+.lightbox-layout-cinematic .lightbox-copy-inner,
+.lightbox-copy-docked .lightbox-copy-inner {
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+  color: #ffffff !important;
+}
+
+.lightbox-layout-landscape .lightbox-copy-inner span,
+.lightbox-layout-cinematic .lightbox-copy-inner span,
+.lightbox-copy-docked .lightbox-copy-inner span {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.lightbox-layout-landscape .lightbox-copy-inner h2,
+.lightbox-layout-cinematic .lightbox-copy-inner h2,
+.lightbox-copy-docked .lightbox-copy-inner h2 {
+  color: #ffffff !important;
+}
+
+.lightbox-layout-landscape .lightbox-copy-inner .lightbox-copy-body,
+.lightbox-layout-cinematic .lightbox-copy-inner .lightbox-copy-body,
+.lightbox-copy-docked .lightbox-copy-inner .lightbox-copy-body,
+.lightbox-layout-landscape .lightbox-copy-inner p,
+.lightbox-layout-cinematic .lightbox-copy-inner p,
+.lightbox-copy-docked .lightbox-copy-inner p {
+  color: rgba(255, 255, 255, 0.92) !important;
 }
 
 /* Portrait / Square / Tall-portrait: content panel on the right */
@@ -7904,13 +7927,14 @@ video {
 
 .lightbox-copy-body {
   white-space: pre-line !important;
+  color: rgba(255, 255, 255, 0.92) !important;
   font-size: clamp(0.85rem, 0.95vw, 0.95rem) !important;
   line-height: 1.65 !important;
   max-height: 48vh !important;
   overflow-y: auto !important;
   padding-right: 0.5rem !important;
   scrollbar-width: thin !important;
-  scrollbar-color: rgba(23, 23, 20, 0.25) transparent !important;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent !important;
 }
 
 .lightbox-social-btn {
