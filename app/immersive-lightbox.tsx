@@ -131,6 +131,30 @@ export function ImmersiveLightbox({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [currentIndex, hasPrev, hasNext, items, onClose, onSelect]);
 
+  // Touch swipe support for mobile devices
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [touchStartY, setTouchStartY] = useState<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.targetTouches[0].clientX);
+    setTouchStartY(e.targetTouches[0].clientY);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX === null || touchStartY === null) return;
+    const deltaX = e.changedTouches[0].clientX - touchStartX;
+    const deltaY = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) {
+      if (deltaX < 0 && hasNext) {
+        onSelect(items[currentIndex + 1]);
+      } else if (deltaX > 0 && hasPrev) {
+        onSelect(items[currentIndex - 1]);
+      }
+    }
+    setTouchStartX(null);
+    setTouchStartY(null);
+  };
+
   const layout = useMemo(() => {
     if (!dims) return "landscape";
     return classifyLayout(dims.width, dims.height);
@@ -144,6 +168,8 @@ export function ImmersiveLightbox({
       role="dialog"
       aria-modal="true"
       aria-label={selected.title}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       <div className="lightbox-immersive-toolbar">
         <button type="button" className="lightbox-grid-btn" onClick={onClose} aria-label="Close to gallery">
