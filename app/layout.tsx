@@ -27,6 +27,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const title = seo.title;
   const description = seo.description;
 
+  const imageUrl = `${origin}/og-final.png?v=3`;
+
   return {
     metadataBase: new URL(origin),
     title,
@@ -34,14 +36,15 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title,
       description,
+      siteName: "Mindrythm",
       type: "website",
-      images: [{ url: seo.shareImageUrl, width: 1200, height: 630, alt: title }],
+      images: [{ url: imageUrl, width: 1200, height: 630, alt: "Mindrythm" }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [seo.shareImageUrl],
+      images: [imageUrl],
     },
     icons: {
       icon: [
