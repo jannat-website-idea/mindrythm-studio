@@ -12,37 +12,42 @@ function safeUrl(url: string): string | null {
   return typeof url === "string" && url.trim() ? url.trim() : null;
 }
 
+const dimsCache = new Map<string, { width: number; height: number }>();
+
+function getMediaDimensionsSync(url: string, mediaType?: string): { width: number; height: number } | null {
+  if (dimsCache.has(url)) return dimsCache.get(url)!;
+  if (isVideoUrl(url, mediaType)) {
+    const res = { width: 16, height: 9 };
+    dimsCache.set(url, res);
+    return res;
+  }
+  // Sanity image asset format: ...-3809x5714.jpg
+  const match = url.match(/[-_](\d+)x(\d+)\.[a-z0-9]+$/i);
+  if (match) {
+    const res = { width: parseInt(match[1], 10), height: parseInt(match[2], 10) };
+    dimsCache.set(url, res);
+    return res;
+  }
+  return null;
+}
+
 function getMediaDimensions(
   url: string,
   mediaType?: string
 ): Promise<{ width: number; height: number }> {
-  if (isVideoUrl(url, mediaType)) {
-    return new Promise((resolve) => {
-      const video = document.createElement("video");
-      video.preload = "metadata";
-      video.crossOrigin = "anonymous";
-      video.src = url;
-      const finish = () => {
-        if (video.videoWidth && video.videoHeight) {
-          resolve({ width: video.videoWidth, height: video.videoHeight });
-        } else {
-          resolve({ width: 16, height: 9 });
-        }
-      };
-      video.onloadedmetadata = finish;
-      video.onerror = finish;
-    });
-  }
+  const sync = getMediaDimensionsSync(url, mediaType);
+  if (sync) return Promise.resolve(sync);
+
   return new Promise((resolve) => {
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.src = url;
     const finish = () => {
-      if (img.naturalWidth && img.naturalHeight) {
-        resolve({ width: img.naturalWidth, height: img.naturalHeight });
-      } else {
-        resolve({ width: 3, height: 2 });
-      }
+      const res = img.naturalWidth && img.naturalHeight
+        ? { width: img.naturalWidth, height: img.naturalHeight }
+        : { width: 3, height: 2 };
+      dimsCache.set(url, res);
+      resolve(res);
     };
     img.onload = finish;
     img.onerror = finish;
@@ -76,14 +81,20 @@ export function ImmersiveLightbox({
   const hasNext = currentIndex < items.length - 1;
   const goPrev = () => hasPrev && onSelect(items[currentIndex - 1]);
   const goNext = () => (hasNext ? onSelect(items[currentIndex + 1]) : onClose());
-  const [loaded, setLoaded] = useState(false);
-  const [dims, setDims] = useState<{ width: number; height: number } | null>(null);
+  const mediaUrl = safeUrl(selected.mediaUrl);
+  const isVideo = Boolean(mediaUrl && isVideoUrl(mediaUrl, selected.mediaType));
+
+  const [dims, setDims] = useState<{ width: number; height: number } | null>(() => {
+    return mediaUrl ? getMediaDimensionsSync(mediaUrl, selected.mediaType) : null;
+  });
 
   useEffect(() => {
-    setLoaded(false);
-    setDims(null);
-    const mediaUrl = safeUrl(selected.mediaUrl);
     if (!mediaUrl) return;
+    const sync = getMediaDimensionsSync(mediaUrl, selected.mediaType);
+    if (sync) {
+      setDims(sync);
+      return;
+    }
     let mounted = true;
     getMediaDimensions(mediaUrl, selected.mediaType).then((d) => {
       if (mounted) setDims(d);
@@ -91,7 +102,24 @@ export function ImmersiveLightbox({
     return () => {
       mounted = false;
     };
-  }, [selected]);
+  }, [mediaUrl, selected.mediaType]);
+
+  // Preload surrounding media for instant next/prev clicks
+  useEffect(() => {
+    const toPreload = [
+      items[currentIndex + 1],
+      items[currentIndex + 2],
+      items[currentIndex - 1],
+    ];
+    toPreload.forEach((item) => {
+      const url = item ? safeUrl(item.mediaUrl) : null;
+      if (url && !isVideoUrl(url, item?.mediaType)) {
+        const img = new Image();
+        img.src = url;
+        getMediaDimensions(url, item?.mediaType);
+      }
+    });
+  }, [currentIndex, items]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -109,9 +137,6 @@ export function ImmersiveLightbox({
   }, [dims]);
 
   const isPortraitLike = layout === "portrait" || layout === "tall-portrait" || layout === "square";
-
-  const mediaUrl = safeUrl(selected.mediaUrl);
-  const isVideo = Boolean(mediaUrl && isVideoUrl(mediaUrl, selected.mediaType));
 
   return (
     <div
@@ -175,9 +200,8 @@ export function ImmersiveLightbox({
               playsInline
               controls
               preload="auto"
-              className={`lightbox-media ${loaded ? "is-loaded" : ""}`}
+              className="lightbox-media is-loaded"
               aria-label={selected.title}
-              onLoadedData={() => setLoaded(true)}
               onClick={(e) => e.stopPropagation()}
             />
           ) : mediaUrl ? (
@@ -185,8 +209,7 @@ export function ImmersiveLightbox({
               key={selected.id}
               src={mediaUrl}
               alt={selected.mediaAlt || selected.title}
-              className={`lightbox-media ${loaded ? "is-loaded" : ""}`}
-              onLoad={() => setLoaded(true)}
+              className="lightbox-media is-loaded"
             />
           ) : null}
         </div>

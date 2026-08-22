@@ -449,8 +449,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   object-fit: contain !important;
   object-position: center !important;
   display: block;
-  opacity: 0;
-  transition: opacity 0.25s ease;
+  opacity: 1;
+  transition: opacity 0.2s ease;
   border-radius: 12px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
 }
@@ -519,8 +519,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   object-fit: contain;
   object-position: center;
   display: block;
-  opacity: 0;
-  transition: opacity 0.25s ease;
+  opacity: 1;
+  transition: opacity 0.2s ease;
 }
 
 .lightbox-media-frame img.is-loaded,
@@ -752,20 +752,23 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   color: var(--ink);
 }
 
-.lightbox-copy-inner p {
+.lightbox-copy-inner p,
+.lightbox-copy-body {
   font-size: clamp(0.84rem, 0.98vw, 0.94rem);
-  color: rgba(255, 255, 255, 0.88);
   line-height: 1.55;
   margin: 0;
   max-width: 52ch;
   font-weight: 300;
 }
 
+.lightbox-layout-portrait .lightbox-copy-inner .lightbox-copy-body,
+.lightbox-layout-square .lightbox-copy-inner .lightbox-copy-body,
+.lightbox-layout-tall-portrait .lightbox-copy-inner .lightbox-copy-body,
 .lightbox-layout-portrait .lightbox-copy-inner p,
 .lightbox-layout-square .lightbox-copy-inner p,
 .lightbox-layout-tall-portrait .lightbox-copy-inner p {
-  color: var(--ink);
-  opacity: 0.85;
+  color: #171714 !important;
+  opacity: 0.88 !important;
 }
 
 /* Dedicated editorial pages */
@@ -7927,14 +7930,13 @@ video {
 
 .lightbox-copy-body {
   white-space: pre-line !important;
-  color: rgba(255, 255, 255, 0.92) !important;
   font-size: clamp(0.85rem, 0.95vw, 0.95rem) !important;
   line-height: 1.65 !important;
   max-height: 48vh !important;
   overflow-y: auto !important;
   padding-right: 0.5rem !important;
   scrollbar-width: thin !important;
-  scrollbar-color: rgba(255, 255, 255, 0.3) transparent !important;
+  scrollbar-color: rgba(120, 120, 120, 0.3) transparent !important;
 }
 
 .lightbox-social-btn {
