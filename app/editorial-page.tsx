@@ -209,69 +209,26 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
 
         {page === "services" && (
           <div className="services-page-root">
-            <nav className="services-quick-nav services-quick-nav-standalone" aria-label="Quick jump to service">
-              <span className="services-quick-title">Services Directory:</span>
-              <div className="services-quick-chips">
-                {serviceItems.map((service) => (
-                  <a key={service.key} href={`#service-${service.key}`} className="services-quick-chip">
-                    {service.title}
-                  </a>
+            <section className="services-clean-section" aria-label="Mindrythm studio services catalogue">
+              <div className="services-clean-grid">
+                {serviceItems.map((service, index) => (
+                  <article className="services-clean-card" key={service.key} id={`service-${service.key}`}>
+                    <span className="services-clean-index">{String(index + 1).padStart(2, "0")}</span>
+                    <div className="services-clean-content">
+                      <h2 className="services-clean-title">{service.title}</h2>
+                      <p className="services-clean-copy">{service.copy}</p>
+                      <div className="services-clean-actions">
+                        <Link className="services-clean-enquire-btn" href={`/contact?service=${encodeURIComponent(service.title)}`}>
+                          <span>Book service</span>
+                          <span aria-hidden="true">→</span>
+                        </Link>
+                        <Link className="services-clean-work-link" href={`/work?service=${service.key}`}>
+                          <span>View work</span>
+                        </Link>
+                      </div>
+                    </div>
+                  </article>
                 ))}
-              </div>
-            </nav>
-
-            <section className="services-stream-section" aria-label="Mindrythm studio services catalogue">
-              <div className="services-stream-list">
-                {serviceCollections.map((service, index) => {
-                  const primaryMedia = service.media[0] || projects[0];
-                  const isEven = index % 2 === 1;
-                  return (
-                    <article
-                      className={`services-stream-card ${isEven ? "is-reversed" : ""}`}
-                      id={`service-${service.key}`}
-                      key={service.key}
-                    >
-                      <div className="services-stream-info">
-                        <h2 className="services-stream-title">{service.title}</h2>
-                        <p className="services-stream-copy">{service.copy}</p>
-
-                        <div className="services-stream-actions">
-                          <Link className="services-stream-primary-cta" href={`/work?service=${service.key}`}>
-                            <span>View all</span>
-                            <span aria-hidden="true">→</span>
-                          </Link>
-                          <Link className="services-stream-secondary-cta" href="/contact">
-                            <span>Book this service</span>
-                          </Link>
-                        </div>
-                      </div>
-
-                      <div className="services-stream-visual">
-                        {primaryMedia && (
-                          <button
-                            type="button"
-                            className="services-photo-thumb services-photo-single"
-                            onClick={() => setSelected(primaryMedia)}
-                            aria-label={`Open full size photo of ${service.title}`}
-                          >
-                            <Media item={primaryMedia} priority={index < 2} />
-                            <span className="services-photo-hint">Click to enlarge</span>
-                          </button>
-                        )}
-                        <div className="services-gallery-footer">
-                          <span>{service.media.length} photos available</span>
-                          <button
-                            type="button"
-                            className="services-gallery-view-btn"
-                            onClick={() => setSelected(primaryMedia)}
-                          >
-                            View full gallery →
-                          </button>
-                        </div>
-                      </div>
-                    </article>
-                  );
-                })}
               </div>
             </section>
           </div>
@@ -331,7 +288,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
         )}
 
         {page === "gallery" && (
-          <div className="gallery-page">
+          <div className="gallery-page gallery-page-dark">
             <section className="gallery-section-container" id="gallery">
               <header className="gallery-section-header">
                 <h2>Gallery</h2>
@@ -339,8 +296,6 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
               <BentoTemplate
                 items={galleryItems}
                 pattern="gallery"
-                editorialEyebrow="MINDRYTHM ARCHIVE"
-                editorialText="SPACES SHAPED BY LIGHT, MATERIAL AND A SENSE OF ARRIVAL."
                 onOpen={setSelected}
               />
             </section>
@@ -372,29 +327,6 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
             <section className="story-manifesto">
               <span>What is Mindrythm?</span>
               <blockquote>“{visionParagraphs[0]}”</blockquote>
-            </section>
-            <section className="story-pillars">
-              <article>
-                <img className="story-pillar-media" src="/images/filmmaker.jpg" alt="Wellness guest reading in a tropical retreat" />
-                <div className="story-pillar-copy">
-                  <h2>What we capture</h2>
-                  <p>We work across properties, resorts, luxury villas, culinary spaces and events through photography, cinematic film and aerial capture.</p>
-                </div>
-              </article>
-              <article>
-                <img className="story-pillar-media" src="/images/event-stage.jpg" alt="Guided wellness gathering captured by Mindrythm" />
-                <div className="story-pillar-copy">
-                  <h2>Who we work with</h2>
-                  <p>We work with real estate clients, luxury villas, heritage houses or heritage properties, small F&amp;B businesses or not small-scale F&amp;B businesses like cafes and restaurants. We work with wellness and hospitality spaces. We work with event managers to cover corporate events and to cover music events or music festivals.</p>
-                </div>
-              </article>
-              <article>
-                <img className="story-pillar-media" src="/images/modern-house.jpg" alt="Woodland retreat setting photographed by Mindrythm" />
-                <div className="story-pillar-copy">
-                  <h2>How we work</h2>
-                  <p>Every commission begins with listening, a clear visual plan and space for authentic, intentional moments to unfold.</p>
-                </div>
-              </article>
             </section>
             <section className="story-narrative story-vision-full">
               <header><span>Our vision</span><h2>Ideas find their visual language.</h2></header>

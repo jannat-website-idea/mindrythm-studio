@@ -8334,3 +8334,195 @@ video {
   }
 }
 
+/* ==========================================================================
+   Clean Typography-Driven Services Catalogue (Photo-free)
+   ========================================================================== */
+.services-clean-section {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 5vw, 4.5rem) clamp(1.2rem, 4vw, 3.5rem);
+}
+
+.services-clean-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.services-clean-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding: clamp(1.75rem, 3vw, 2.5rem);
+  background: var(--ivory);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-sizing: border-box;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.services-clean-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(23, 23, 20, 0.35);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.services-clean-index {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  margin-top: 0.2rem;
+}
+
+.services-clean-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.services-clean-title {
+  font-size: clamp(1.2rem, 1.75vw, 1.65rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--ink);
+  margin: 0;
+}
+
+.services-clean-copy {
+  font-size: clamp(0.85rem, 0.95vw, 0.95rem);
+  line-height: 1.6;
+  color: var(--ink);
+  opacity: 0.82;
+  margin: 0;
+}
+
+.services-clean-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.services-clean-enquire-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 2px;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.services-clean-enquire-btn:hover {
+  opacity: 0.65;
+}
+
+.services-clean-work-link {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.services-clean-work-link:hover {
+  color: var(--ink);
+}
+
+@media (max-width: 840px) {
+  .services-clean-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+/* ==========================================================================
+   Full-Width Edge-to-Edge Project Highlights in Our Work
+   ========================================================================== */
+.work-page-grid {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  gap: 2px !important;
+}
+
+.work-page-card {
+  width: 100% !important;
+  max-width: 100% !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+}
+
+.work-page-card summary {
+  width: 100% !important;
+  aspect-ratio: 21 / 9 !important;
+  min-height: 440px !important;
+  border-radius: 0 !important;
+}
+
+@media (max-width: 900px) {
+  .work-page-card summary {
+    aspect-ratio: 16 / 10 !important;
+    min-height: 320px !important;
+  }
+}
+
+@media (max-width: 680px) {
+  .work-page-card summary {
+    aspect-ratio: 4 / 3 !important;
+    min-height: 280px !important;
+  }
+}
+
+/* ==========================================================================
+   Dedicated Black Theme for Gallery Page Only
+   ========================================================================== */
+html:has(.gallery-page-dark),
+body:has(.gallery-page-dark),
+.inner-shell:has(.gallery-page-dark),
+.gallery-page-dark,
+.gallery-page-dark .gallery-section-container {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+.inner-shell:has(.gallery-page-dark) .inner-header {
+  background: rgba(0, 0, 0, 0.92) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.inner-shell:has(.gallery-page-dark) .inner-header .wordmark span,
+.inner-shell:has(.gallery-page-dark) .inner-header nav a,
+.inner-shell:has(.gallery-page-dark) .inner-header .inner-home,
+.inner-shell:has(.gallery-page-dark) .inner-header .inner-menu-toggle {
+  color: #ffffff !important;
+}
+
+.inner-shell:has(.gallery-page-dark) .inner-header nav a:hover,
+.inner-shell:has(.gallery-page-dark) .inner-header nav a.active {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+.gallery-page-dark .gallery-section-header h2 {
+  color: #ffffff !important;
+}
+
+.gallery-page-dark .bento-board {
+  background: transparent !important;
+}
+
+

@@ -417,7 +417,7 @@ export function Experience({ content }: { content: SiteContent }) {
           </span>
         </div>
         <div className="loader-reference-footer" aria-hidden="true">
-          <span>Visual stories</span>
+          <span>visual production agency</span>
           <span className="loader-reference-count">{loaderProgress}<sup>%</sup></span>
         </div>
         <div className="loader-reference-progress" aria-hidden="true"><span style={{ transform: `scaleX(${loaderProgress / 100})` }} /></div>
@@ -448,32 +448,31 @@ export function Experience({ content }: { content: SiteContent }) {
           </nav>
           <button type="button" className="menu-toggle" aria-expanded={menuOpen} aria-label="Toggle navigation" onClick={() => setMenuOpen((open) => !open)}>
             <span className="menu-toggle-label">{menuOpen ? "Close" : "Menu"}</span>
-            <i aria-hidden="true" />
           </button>
       </header>
 
-      <div className={`menu-overlay ${menuOpen ? "nav-open" : ""}`} aria-hidden={!menuOpen}>
-        <button type="button" className="menu-overlay-close" aria-label="Close navigation" onClick={() => setMenuOpen(false)}>
-          <span>Close</span>
-          <i aria-hidden="true">×</i>
-        </button>
-        <aside className="menu-overlay-brand" aria-hidden="true">
-          <div className="menu-brand-context">
-            <span>Creative professional studio</span>
-            <small>Independent visual practice</small>
+      <div className={`menu-overlay ${menuOpen ? "is-open" : ""}`} aria-hidden={!menuOpen}>
+        <div className="menu-overlay-panel">
+          <div className="menu-overlay-header">
+            <span className="menu-overlay-title">Navigation</span>
+            <button type="button" className="menu-overlay-close" aria-label="Close menu" onClick={() => setMenuOpen(false)}>
+              ✕
+            </button>
           </div>
-          <div className="menu-brand-feature">
-            <img src="/mindrythm-logomark.png" alt="" className="menu-brand-logo-centered" />
-            <p><span>Mindrythm</span></p>
-          </div>
-          <small>Every image begins with a pulse.</small>
-        </aside>
-        <div className="menu-overlay-index">
-          <div className="menu-overlay-heading"><span>Navigation</span><span>Studio directory</span></div>
-          <nav aria-label="Main navigation">
+          <nav className="menu-overlay-links" aria-label="Main menu">
             {navigationItems.map((item) => (
-              <a href={item.href} key={item.label} onClick={(event) => item.href === "#home" ? returnToHero(event) : setMenuOpen(false)}>
-                <strong>{item.label}</strong>
+              <a
+                key={item.href}
+                href={item.href}
+                className="menu-overlay-link"
+                onClick={(e) => {
+                  if (item.href === "#home") {
+                    returnToHero(e);
+                  }
+                  setMenuOpen(false);
+                }}
+              >
+                <span>{item.label}</span>
                 <small>{item.note}</small>
               </a>
             ))}
@@ -569,7 +568,7 @@ export function Experience({ content }: { content: SiteContent }) {
                             <p className="services-row-description">{service.copy}</p>
                             <div className="services-row-actions">
                               <a className="services-row-link" href={`/services#service-${service.key}`}>
-                                <span>See all {service.title} photos</span>
+                                <span>See all {service.title}</span>
                                 <span aria-hidden="true">→</span>
                               </a>
                             </div>

@@ -137,21 +137,8 @@ function useBentoColumns(items: ContentItem[], pattern: BentoPattern) {
 
       // Approximate heights to keep columns visually balanced
       const colHeights = [0, 0, 0, 0];
-      let editorialPlaced = false;
 
       sorted.forEach((item, index) => {
-        // Place editorial card around the 3rd or 4th item if not placed yet
-        if (!editorialPlaced && (index === 2 || (index === sorted.length - 1 && index < 3))) {
-          cols[3].cells.push({
-            id: "gallery-editorial",
-            kind: "static",
-            type: "editorial",
-            className: "bento-card-editorial",
-          });
-          colHeights[3] += 360;
-          editorialPlaced = true;
-        }
-
         // Find the column with the minimum height
         let shortestCol = 0;
         for (let c = 1; c < numCols; c++) {
@@ -176,21 +163,6 @@ function useBentoColumns(items: ContentItem[], pattern: BentoPattern) {
 
         colHeights[shortestCol] += cardHeight;
       });
-
-      if (!editorialPlaced) {
-        let shortestCol = 0;
-        for (let c = 1; c < numCols; c++) {
-          if (colHeights[c] < colHeights[shortestCol]) {
-            shortestCol = c;
-          }
-        }
-        cols[shortestCol].cells.push({
-          id: "gallery-editorial",
-          kind: "static",
-          type: "editorial",
-          className: "bento-card-editorial",
-        });
-      }
 
       return cols.filter((col) => col.cells.length > 0);
     }
@@ -333,7 +305,7 @@ function SocialInfoCard() {
 function CellRenderer({
   cell,
   onOpen,
-  editorialText,
+  editorialText = "",
   editorialEyebrow,
   socialLinks,
   firstItem,
@@ -341,7 +313,7 @@ function CellRenderer({
 }: {
   cell: BentoCell & { item?: ContentItem | null };
   onOpen: (item: ContentItem) => void;
-  editorialText: string;
+  editorialText?: string;
   editorialEyebrow?: string;
   socialLinks?: { instagram?: string; facebook?: string; youtube?: string };
   firstItem?: ContentItem | null;
@@ -396,7 +368,7 @@ export function BentoTemplate({
 }: {
   items: ContentItem[];
   pattern: BentoPattern;
-  editorialText: string;
+  editorialText?: string;
   editorialEyebrow?: string;
   onOpen: (item: ContentItem) => void;
   socialLinks?: { instagram?: string; facebook?: string; youtube?: string };
