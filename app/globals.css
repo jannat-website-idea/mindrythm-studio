@@ -8566,4 +8566,14 @@ body:has(.gallery-page-dark),
   background: transparent !important;
 }
 
+.inner-shell:has(.gallery-page-dark) .inner-footer {
+  background: #000000 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+}
+
+.inner-shell:has(.gallery-page-dark) .inner-footer a {
+  color: #ffffff !important;
+}
+
 
