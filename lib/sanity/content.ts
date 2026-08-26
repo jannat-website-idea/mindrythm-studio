@@ -74,12 +74,8 @@ export async function getSanitySiteContent(options: {stega?: boolean} = {}): Pro
     const testimonialItems =
       (raw.testimonials || []).map((item, index) => itemFromSanity(item, "testimonial", 700 + index * 10)).filter((item): item is ContentItem => Boolean(item));
 
-    const services = (raw.services || []).map((service) => ({
-      key: text(service.key),
-      title: text(service.title),
-      copy: text(service.copy),
-      projectIds: strings(service.projectIds, []),
-    })).filter((service) => Boolean(service.key && service.title && service.copy));
+    // The 8 official services defined in defaultContent.services
+    const services = defaultContent.services;
 
     return {
       settings: {

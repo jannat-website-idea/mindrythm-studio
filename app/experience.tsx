@@ -806,17 +806,12 @@ export function Experience({ content }: { content: SiteContent }) {
                   <label htmlFor="service">Service *</label>
                   <select id="service" name="service" required defaultValue="">
                     <option value="" disabled>Select a service</option>
-                    <option>Real estate photography</option>
-                    <option>Wellness &amp; Hospitality photography</option>
-                    <option>F&amp;B photography</option>
-                    <option>Luxury Villa Photography</option>
-                    <option>Event photography (corporate and music)</option>
-                    <option>Website development</option>
-                    <option>Logo generation</option>
-                    <option>Running Meta Ads</option>
-                    <option>Social media creatives</option>
-                    <option>Social Media Handling</option>
-                    <option>Other / Custom Brief</option>
+                    {serviceItems.map((service) => (
+                      <option key={service.key} value={service.title}>
+                        {service.title}
+                      </option>
+                    ))}
+                    <option value="Other / Custom Brief">Other / Custom Brief</option>
                   </select>
                 </div>
                 <div className="form-field form-field-wide"><label htmlFor="query">Your query *</label><textarea id="query" name="query" required maxLength={1000} rows={6} /></div>
