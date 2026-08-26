@@ -8496,36 +8496,144 @@ video {
 .work-page-grid {
   width: 100% !important;
   max-width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
   padding: 0 !important;
   margin: 0 !important;
-  gap: 2px !important;
+  gap: 3px !important;
 }
 
 .work-page-card {
   width: 100% !important;
   max-width: 100% !important;
-  border-radius: 0 !important;
   margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  background: #0c0c0a !important;
 }
 
-.work-page-card summary {
-  width: 100% !important;
-  aspect-ratio: 21 / 9 !important;
-  min-height: 440px !important;
-  border-radius: 0 !important;
+.work-page-hero-btn {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  outline: none;
+}
+
+.work-page-media-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  min-height: 460px;
+  overflow: hidden;
+  background: #0c0c0a;
+}
+
+.work-page-media-frame img,
+.work-page-media-frame video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.work-page-hero-btn:hover .work-page-media-frame img,
+.work-page-hero-btn:hover .work-page-media-frame video {
+  transform: scale(1.025);
+}
+
+.work-page-card-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: clamp(1.75rem, 3.5vw, 3.5rem);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.82) 100%);
+  color: #ffffff;
+  transition: background 0.3s ease;
+}
+
+.work-page-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.work-page-card-badge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.work-page-card-title {
+  margin: 0;
+  font-size: clamp(1.4rem, 2.5vw, 2.75rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.work-page-card-eyebrow {
+  margin: 0;
+  font-size: clamp(0.78rem, 0.95vw, 0.95rem);
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 300;
+}
+
+.work-page-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: all 0.25s ease;
+}
+
+.work-page-hero-btn:hover .work-page-card-cta {
+  background: #ffffff;
+  color: #0c0c0a;
+  transform: translateY(-2px);
 }
 
 @media (max-width: 900px) {
-  .work-page-card summary {
-    aspect-ratio: 16 / 10 !important;
-    min-height: 320px !important;
+  .work-page-media-frame {
+    aspect-ratio: 16 / 10;
+    min-height: 320px;
   }
 }
 
 @media (max-width: 680px) {
-  .work-page-card summary {
-    aspect-ratio: 4 / 3 !important;
-    min-height: 280px !important;
+  .work-page-media-frame {
+    aspect-ratio: 4 / 3;
+    min-height: 280px;
+  }
+  .work-page-card-overlay {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem;
   }
 }
 

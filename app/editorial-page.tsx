@@ -268,44 +268,32 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                 ))}
               </div>
             </section>
-            <section className="work-page-grid">
-              {visibleProjects.map((project) => {
-                const projectService = workFilter === "all" ? getProjectService(project, serviceItems) : workFilter;
-                const relatedProjects = projectService ? getServiceProjects(projects, projectService, serviceItems) : [project];
-                return (
-                  <details className="work-page-card" key={project.id}>
-                    <summary>
-                      <button
-                        type="button"
-                        className="work-page-media-btn"
-                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setSelected(project); }}
-                        aria-label={`Open ${project.title} in lightbox`}
-                      >
-                        <Media item={project} />
-                      </button>
-                      <div><span>{project.category}</span><h2>{project.title}</h2><p>{project.eyebrow}</p></div>
-                      <b>View project +</b>
-                    </summary>
-                    <div className="work-page-detail">
-                      <p>{project.body}</p>
-                      <div>
-                        {relatedProjects.slice(0, 3).map((item) => (
-                          <button
-                            type="button"
-                            key={`${project.id}-${item.id}`}
-                            className="work-page-media-btn"
-                            onClick={() => setSelected(item)}
-                            aria-label={`Open ${item.title} in lightbox`}
-                          >
-                            <Media item={item} />
-                          </button>
-                        ))}
+            <section className="work-page-grid" aria-label="Mindrythm project highlights">
+              {visibleProjects.map((project, index) => (
+                <article className="work-page-card" key={project.id}>
+                  <button
+                    type="button"
+                    className="work-page-hero-btn"
+                    onClick={() => setSelected(project)}
+                    aria-label={`Open ${project.title} full size in lightbox`}
+                  >
+                    <div className="work-page-media-frame">
+                      <Media item={project} priority={index < 2} />
+                      <div className="work-page-card-overlay">
+                        <div className="work-page-card-meta">
+                          <span className="work-page-card-badge">{project.category}</span>
+                          <h2 className="work-page-card-title">{project.title}</h2>
+                          <p className="work-page-card-eyebrow">{project.eyebrow}</p>
+                        </div>
+                        <span className="work-page-card-cta">
+                          <span>Open full view</span>
+                          <span aria-hidden="true">→</span>
+                        </span>
                       </div>
-                      <span>{project.year} / Mindrythm</span>
                     </div>
-                  </details>
-                );
-              })}
+                  </button>
+                </article>
+              ))}
             </section>
           </>
         )}
