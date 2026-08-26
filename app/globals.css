@@ -312,7 +312,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 /* About */
 .about-section { padding: 9rem 2rem 2rem; background: var(--ivory); }
 .about-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; padding-top: 2rem; }
+.about-grid.about-grid-single { grid-template-columns: 1fr; max-width: 720px; }
 .about-grid > a { display: flex; min-height: 390px; flex-direction: column; padding: 1.3rem; border: 1px solid var(--line); border-radius: 12px; transition: transform 0.3s ease; }
+.about-grid.about-grid-single > a { min-height: 220px; padding: 2rem; background: var(--paper); }
 .about-grid > a:hover { transform: translateY(-6px); }
 .about-grid > a:nth-child(2) { background: var(--sage); }
 .about-grid > a:nth-child(3) { color: var(--ivory); background: var(--olive); }

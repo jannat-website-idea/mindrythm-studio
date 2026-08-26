@@ -739,11 +739,8 @@ export function Experience({ content }: { content: SiteContent }) {
               <span>About us</span>
               <h2>“Mindrythm is where<br />ideas find a visual language.”</h2>
             </div>
-            <div className="about-grid">
-              <a href="/story" data-reveal><h3>What is Mindrythm?</h3><p>We translate unseen narratives into honest, timeless imagery and films that reveal the essence already there.</p><i>Read more</i></a>
-              <a href="/work" data-reveal><h3>What we capture</h3><p>Properties, resorts, corporate events and weddings—through photography, cinematic film, aerial footage and social edits.</p><i>Explore our work</i></a>
-              <a href="/contact" data-reveal><h3>Who we work with</h3><p>Couples, families, event teams, developers, architects, resorts and brands looking for imagery with feeling and precision.</p><i>Work with us</i></a>
-              <a href="#process" data-reveal><h3>How we work</h3><p>We plan timing, light, shot lists and delivery around each brief, keeping the experience calm from first conversation to final files.</p><i>See the process</i></a>
+            <div className="about-grid about-grid-single">
+              <a href="/story" data-reveal><h3>What is Mindrythm?</h3><p>We translate unseen narratives into honest, timeless imagery and films that reveal the essence already there.</p><i>Discover our story →</i></a>
             </div>
           </section>
 
