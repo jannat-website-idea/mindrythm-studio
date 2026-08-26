@@ -6506,6 +6506,15 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   align-items: flex-start;
 }
 
+.services-stream-info .services-clean-index {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 0.4rem;
+}
+
 .services-stream-title {
   margin: 0 0 0.85rem 0;
   font-size: clamp(1.15rem, 1.65vw, 1.55rem);

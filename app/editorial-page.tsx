@@ -209,26 +209,49 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
 
         {page === "services" && (
           <div className="services-page-root">
-            <section className="services-clean-section" aria-label="Mindrythm studio services catalogue">
-              <div className="services-clean-grid">
-                {serviceItems.map((service, index) => (
-                  <article className="services-clean-card" key={service.key} id={`service-${service.key}`}>
-                    <span className="services-clean-index">{String(index + 1).padStart(2, "0")}</span>
-                    <div className="services-clean-content">
-                      <h2 className="services-clean-title">{service.title}</h2>
-                      <p className="services-clean-copy">{service.copy}</p>
-                      <div className="services-clean-actions">
-                        <Link className="services-clean-enquire-btn" href={`/contact?service=${encodeURIComponent(service.title)}`}>
-                          <span>Book service</span>
-                          <span aria-hidden="true">→</span>
-                        </Link>
-                        <Link className="services-clean-work-link" href={`/work?service=${service.key}`}>
-                          <span>View work</span>
-                        </Link>
+            <section className="services-stream-section" aria-label="Mindrythm studio services catalogue">
+              <div className="services-stream-list">
+                {serviceCollections.map((service, index) => {
+                  const primaryMedia = service.media[0] || projects[index % Math.max(1, projects.length)];
+                  const isEven = index % 2 === 1;
+                  return (
+                    <article
+                      className={`services-stream-card ${isEven ? "is-reversed" : ""}`}
+                      id={`service-${service.key}`}
+                      key={service.key}
+                    >
+                      <div className="services-stream-info">
+                        <span className="services-clean-index">{String(index + 1).padStart(2, "0")}</span>
+                        <h2 className="services-stream-title">{service.title}</h2>
+                        <p className="services-stream-copy">{service.copy}</p>
+
+                        <div className="services-stream-actions">
+                          <Link className="services-stream-primary-cta" href={`/contact?service=${encodeURIComponent(service.title)}`}>
+                            <span>Book this service</span>
+                            <span aria-hidden="true">→</span>
+                          </Link>
+                          <Link className="services-stream-secondary-cta" href={`/work?service=${service.key}`}>
+                            <span>View work</span>
+                          </Link>
+                        </div>
                       </div>
-                    </div>
-                  </article>
-                ))}
+
+                      <div className="services-stream-visual">
+                        {primaryMedia && (
+                          <button
+                            type="button"
+                            className="services-photo-thumb services-photo-single"
+                            onClick={() => setSelected(primaryMedia)}
+                            aria-label={`Open full size photo of ${service.title}`}
+                          >
+                            <Media item={primaryMedia} priority={index < 2} />
+                            <span className="services-photo-hint">Click to enlarge</span>
+                          </button>
+                        )}
+                      </div>
+                    </article>
+                  );
+                })}
               </div>
             </section>
           </div>
