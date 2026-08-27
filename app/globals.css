@@ -1212,31 +1212,196 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .site-header.menu-active .menu-toggle-count { color: var(--muted); }
 .site-header.menu-active .menu-toggle-label::before { box-shadow: 0 0 0 4px rgba(11,11,10,.08); }
 .site-header.menu-active .menu-toggle i { color: var(--ivory); background: var(--ink); }
-.menu-overlay { position: fixed; inset: 0; z-index: 55; display: grid; grid-template-columns: 1fr 1fr; visibility: hidden; overflow: hidden; color: var(--ink); opacity: 0; clip-path: inset(0 0 0 100%); pointer-events: none; transition: visibility 0s linear .85s, opacity .35s ease, clip-path .85s cubic-bezier(.76,0,.24,1); }
-.menu-overlay.nav-open { visibility: visible; opacity: 1; clip-path: inset(0); pointer-events: auto; transition-delay: 0s; }
-.menu-overlay::before { position: absolute; inset: 0; z-index: 0; content: ""; background: linear-gradient(110deg, #0b0b0a 0 50%, #f4f2eb 50% 100%); }
-.menu-overlay::after { position: absolute; top: -10%; left: 42%; z-index: 1; width: 120%; height: 120%; content: ""; background: #0b0b0a; transform: rotate(-18deg); transform-origin: top left; pointer-events: none; }
-.menu-overlay-brand { position: relative; z-index: 2; display: flex; min-height: 100svh; flex-direction: column; justify-content: space-between; padding: clamp(1.5rem, 3.5vw, 3rem) clamp(1.5rem, 4vw, 3.5rem) clamp(1.5rem, 3vw, 2.5rem); color: var(--ivory); }
-.menu-overlay-brand > span, .menu-overlay-brand > small { max-width: 320px; font-size: .58rem; letter-spacing: .12em; line-height: 1.6; text-transform: uppercase; color: rgba(251,250,245,.72); }
-.menu-overlay-brand > small { margin-top: auto; color: rgba(251,250,245,.9); }
-.menu-overlay-brand p { display: grid; margin: 0; font-size: clamp(4.8rem, 9vw, 11rem); font-weight: 300; letter-spacing: -.08em; line-height: .68; text-transform: uppercase; }
-.menu-overlay-brand p em { padding-left: 8vw; font-size: .82em; text-transform: none; }
-.menu-overlay-index { position: relative; z-index: 2; display: grid; min-height: 100svh; grid-template-rows: auto 1fr auto; padding: clamp(5.5rem, 9vw, 8rem) clamp(2rem, 4.5vw, 4rem) clamp(1.5rem, 3vw, 2.5rem) clamp(3rem, 7vw, 7rem); background: transparent; }
-.menu-overlay-heading { display: flex; justify-content: space-between; padding-bottom: .8rem; border-bottom: 1px solid rgba(23,23,20,.18); font-size: .58rem; letter-spacing: .12em; text-transform: uppercase; color: rgba(23,23,20,.7); }
-.menu-overlay nav { display: grid; align-content: center; gap: .1rem; }
-.menu-overlay nav a { display: grid; grid-template-columns: minmax(0,1fr) minmax(120px,.42fr); gap: 1rem 1.4rem; align-items: baseline; padding: .7rem 0; border-bottom: 0; text-transform: uppercase; transition: padding .3s ease, background .3s ease; }
-.menu-overlay nav a:hover { padding-left: .5rem; background: transparent; }
-.menu-overlay nav a > strong { font-size: clamp(2rem, 4.3vw, 5rem); font-weight: 300; letter-spacing: -.06em; line-height: .96; color: var(--ink); transition: transform .45s var(--motion-ease), letter-spacing .45s ease; }
-.menu-overlay nav a:hover > strong { letter-spacing: -.045em; transform: translateX(7px); }
-.menu-overlay nav a > small { justify-self: end; align-self: center; color: rgba(23,23,20,.55); font-size: .58rem; letter-spacing: .1em; text-transform: uppercase; text-align: right; }
-.menu-overlay nav a i { display: none; }
-.menu-overlay-meta { display: grid; grid-template-columns: 1fr auto; gap: .7rem 1rem; align-items: end; padding-top: 1.1rem; border-top: 1px solid rgba(23,23,20,.18); font-size: .58rem; letter-spacing: .07em; text-transform: uppercase; }
-.menu-overlay-meta > a { justify-self: end; align-self: center; color: rgba(23,23,20,.55); text-decoration: none; transition: color .3s ease; }
-.menu-overlay-meta > a:hover { color: var(--ink); }
-.menu-overlay-meta > div { grid-column: 1 / 2; }
-.menu-overlay-meta div { display: flex; flex-wrap: wrap; gap: 1.25rem; }
-.menu-overlay-socials a { display: grid; width: 2.35rem; height: 2.35rem; place-items: center; overflow: hidden; border: 0; border-radius: .65rem; background: transparent; transition: transform .35s var(--motion-ease); }
-.menu-overlay-socials a:hover { transform: translateY(-3px); }
+/* ==========================================================================
+   Full-Screen Studio Menu Overlay (Web & Mobile)
+   ========================================================================== */
+.menu-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 99999 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: rgba(14, 14, 12, 0.97) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  color: #f7f6f1 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s ease !important;
+}
+
+.menu-overlay.is-open,
+.menu-overlay.nav-open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+.menu-overlay-panel {
+  position: relative;
+  width: min(920px, 92vw);
+  max-height: 92svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(1.75rem, 4vw, 3.5rem) clamp(1.25rem, 3.5vw, 2.75rem);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.menu-overlay-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  margin-bottom: 1.75rem;
+}
+
+.menu-overlay-title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.menu-overlay-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0.5rem 1.15rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.menu-overlay-close:hover {
+  background: #ffffff;
+  color: #0e0e0c;
+  transform: scale(1.04);
+}
+
+.menu-overlay-links {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.4rem, 1.2vh, 1rem);
+}
+
+.menu-overlay-link {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  text-decoration: none;
+  color: #f7f6f1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.25s ease;
+}
+
+.menu-overlay-link span {
+  font-size: clamp(1.85rem, 4.5vw, 3.8rem);
+  font-weight: 350;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  text-transform: uppercase;
+  color: #ffffff;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
+}
+
+.menu-overlay-link small {
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  transition: color 0.2s ease;
+}
+
+.menu-overlay-link:hover span {
+  transform: translateX(10px);
+  color: #ffffff;
+}
+
+.menu-overlay-link:hover small {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.menu-overlay-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.menu-overlay-socials {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.menu-overlay-socials a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.menu-overlay-socials a:hover {
+  background: #ffffff;
+  color: #0e0e0c;
+  transform: translateY(-2px);
+}
+
+.menu-overlay-meta > a {
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  transition: color 0.2s ease;
+}
+
+.menu-overlay-meta > a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+@media (max-width: 680px) {
+  .menu-overlay-panel {
+    padding: 1.25rem 0.75rem;
+  }
+  .menu-overlay-link span {
+    font-size: clamp(1.6rem, 7.5vw, 2.25rem);
+  }
+  .menu-overlay-link small {
+    display: none;
+  }
+  .menu-overlay-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.85rem;
+  }
+}
 
 /* Full-viewport image hero with a restrained left-aligned statement */
 .hero { height: 100svh; min-height: 640px; background: #111; }
@@ -6169,68 +6334,42 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
 .inner-menu-toggle {
   display: none;
   min-height: 2.25rem;
-  padding: 0 .85rem;
+  padding: 0 1rem;
   border: 1px solid var(--line);
   border-radius: 999px;
   color: var(--ink);
-  background: rgba(251, 250, 245, .78);
+  background: rgba(251, 250, 245, .85);
   font: inherit;
-  font-size: .6rem;
+  font-size: .65rem;
   font-weight: 600;
   letter-spacing: .08em;
   text-transform: uppercase;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.inner-menu-toggle:hover {
+  background: var(--ink);
+  color: var(--ivory);
 }
 
 @media (max-width: 1050px) {
   .inner-header {
     position: relative;
     grid-template-columns: minmax(0, 1fr) auto !important;
-    padding-right: 1rem !important;
-    padding-left: 1rem !important;
+    padding-right: 1.25rem !important;
+    padding-left: 1.25rem !important;
   }
 
   .inner-header .inner-home { display: none !important; }
+  .inner-header nav#inner-navigation { display: none !important; }
 
   .inner-menu-toggle {
-    display: inline-flex;
+    display: inline-flex !important;
     align-items: center;
     justify-content: center;
     justify-self: end;
   }
-
-  .inner-header nav {
-    position: absolute !important;
-    top: 100%;
-    right: 0;
-    left: 0;
-    z-index: 60;
-    display: none !important;
-    grid-template-columns: 1fr;
-    gap: 0 !important;
-    max-height: calc(100svh - 68px);
-    padding: .55rem 1rem 1rem !important;
-    overflow-y: auto;
-    border-bottom: 1px solid var(--line) !important;
-    background: rgba(247, 246, 241, .98) !important;
-    box-shadow: 0 18px 32px rgba(11, 11, 10, .08) !important;
-    backdrop-filter: blur(18px) !important;
-  }
-
-  /* editorial-page.tsx marks the open mobile menu with `.open` */
-  .inner-header nav.open { display: grid !important; }
-
-  .inner-header nav a {
-    display: flex;
-    min-height: 3.15rem;
-    align-items: center;
-    padding: 0 .2rem;
-    border-bottom: 1px solid rgba(23, 23, 20, .11);
-    opacity: .72;
-  }
-
-  .inner-header nav a:last-child { border-bottom: 0; }
-  .inner-header nav a.active { opacity: 1; }
 }
 
 /* A calmer editorial scale for the dedicated work archive. */
@@ -8707,6 +8846,202 @@ body:has(.gallery-page-dark),
 
 .inner-shell:has(.gallery-page-dark) .inner-footer a {
   color: #ffffff !important;
+}
+
+/* ==========================================================================
+   Master Full-Screen Studio Menu Overlay (Authoritative Styles)
+   ========================================================================== */
+.menu-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 999999 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: rgba(14, 14, 12, 0.98) !important;
+  backdrop-filter: blur(28px) !important;
+  -webkit-backdrop-filter: blur(28px) !important;
+  color: #f7f6f1 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s ease !important;
+  clip-path: none !important;
+  transform: none !important;
+  padding: 0 !important;
+}
+
+.menu-overlay.is-open,
+.menu-overlay.nav-open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+.menu-overlay-panel {
+  position: relative !important;
+  width: min(920px, 92vw) !important;
+  max-height: 92svh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  padding: clamp(1.75rem, 4vw, 3.5rem) clamp(1.25rem, 3.5vw, 2.75rem) !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  background: transparent !important;
+}
+
+.menu-overlay-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding-bottom: 1.25rem !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+  margin-bottom: 1.75rem !important;
+}
+
+.menu-overlay-title {
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.menu-overlay-close {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 48px !important;
+  min-height: 44px !important;
+  padding: 0.5rem 1.25rem !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.14) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: #ffffff !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.menu-overlay-close:hover {
+  background: #ffffff !important;
+  color: #0e0e0c !important;
+  transform: scale(1.04) !important;
+}
+
+.menu-overlay-links {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: clamp(0.35rem, 1vh, 0.85rem) !important;
+}
+
+.menu-overlay-link {
+  display: flex !important;
+  align-items: baseline !important;
+  justify-content: space-between !important;
+  padding: 0.55rem 0 !important;
+  text-decoration: none !important;
+  color: #f7f6f1 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  transition: all 0.25s ease !important;
+  background: transparent !important;
+}
+
+.menu-overlay-link span {
+  font-size: clamp(1.85rem, 4.5vw, 3.8rem) !important;
+  font-weight: 350 !important;
+  letter-spacing: -0.04em !important;
+  line-height: 1.05 !important;
+  text-transform: uppercase !important;
+  color: #ffffff !important;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease !important;
+}
+
+.menu-overlay-link small {
+  font-size: 0.68rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+  transition: color 0.2s ease !important;
+}
+
+.menu-overlay-link:hover span {
+  transform: translateX(10px) !important;
+  color: #ffffff !important;
+}
+
+.menu-overlay-link:hover small {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.menu-overlay-meta {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-wrap: wrap !important;
+  gap: 1.25rem !important;
+  margin-top: 2rem !important;
+  padding-top: 1.5rem !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.menu-overlay-socials {
+  display: flex !important;
+  align-items: center !important;
+  gap: 1rem !important;
+}
+
+.menu-overlay-socials a {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+  transition: all 0.2s ease !important;
+}
+
+.menu-overlay-socials a:hover {
+  background: #ffffff !important;
+  color: #0e0e0c !important;
+  transform: translateY(-2px) !important;
+}
+
+.menu-overlay-meta > a {
+  color: rgba(255, 255, 255, 0.8) !important;
+  text-decoration: none !important;
+  font-size: 0.85rem !important;
+  letter-spacing: 0.04em !important;
+  transition: color 0.2s ease !important;
+}
+
+.menu-overlay-meta > a:hover {
+  color: #ffffff !important;
+  text-decoration: underline !important;
+}
+
+@media (max-width: 680px) {
+  .menu-overlay-panel {
+    padding: 1.25rem 0.75rem !important;
+  }
+  .menu-overlay-link span {
+    font-size: clamp(1.6rem, 7.5vw, 2.25rem) !important;
+  }
+  .menu-overlay-link small {
+    display: none !important;
+  }
+  .menu-overlay-meta {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.85rem !important;
+  }
 }
 
 

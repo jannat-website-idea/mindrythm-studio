@@ -19,8 +19,19 @@ import Link from "next/link";
 
 export type EditorialPageKind = "services" | "work" | "gallery" | "team" | "story" | "contact";
 
+const navigationItems = [
+  { label: "Home", href: "/", note: "Begin here" },
+  { label: "Services", href: "/services", note: "What we create" },
+  { label: "Our Work", href: "/work", note: "Selected commissions" },
+  { label: "Gallery", href: "/gallery", note: "Stories and moments" },
+  { label: "Our Team", href: "/team", note: "The people behind it" },
+  { label: "Our Story", href: "/story", note: "The studio rhythm" },
+  { label: "Enquire", href: "/contact", note: "Start a conversation" },
+] as const;
+
 export function EditorialPage({ content, page }: { content: SiteContent; page: EditorialPageKind }) {
   const { settings } = content;
+  const contactEmail = settings.contactEmail === "hello@mindrythm.studio" ? "Admin@mindrythm.com" : settings.contactEmail;
   const {enquiryTaglines, missionParagraphs, teamIntroduction, visionParagraphs} = content.copy;
   const serviceItems = content.services;
   const mainInstagramUrl = settings.instagram || defaultInstagramUrl;
@@ -179,12 +190,49 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
           type="button"
           className="inner-menu-toggle"
           aria-expanded={navigationOpen}
-          aria-controls="inner-navigation"
+          aria-label="Toggle navigation"
           onClick={() => setNavigationOpen((open) => !open)}
         >
           {navigationOpen ? "Close" : "Menu"}
         </button>
       </header>
+
+      <div className={`menu-overlay ${navigationOpen ? "is-open nav-open" : ""}`} aria-hidden={!navigationOpen}>
+        <div className="menu-overlay-panel">
+          <div className="menu-overlay-header">
+            <span className="menu-overlay-title">Navigation</span>
+            <button type="button" className="menu-overlay-close" aria-label="Close menu" onClick={() => setNavigationOpen(false)}>
+              ✕ Close
+            </button>
+          </div>
+          <nav className="menu-overlay-links" aria-label="Main menu">
+            {navigationItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="menu-overlay-link"
+                onClick={() => {
+                  if (item.href === "/") {
+                    returnToHero();
+                  }
+                  setNavigationOpen(false);
+                }}
+              >
+                <span>{item.label}</span>
+                <small>{item.note}</small>
+              </Link>
+            ))}
+          </nav>
+          <div className="menu-overlay-meta">
+            <div className="menu-overlay-socials" aria-label="Mindrythm social links">
+              <a href={mainInstagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram"><SocialIcon name="instagram" /></a>
+              <a href={settings.facebook} target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook"><SocialIcon name="facebook" /></a>
+              <a href={settings.youtube} target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube"><SocialIcon name="youtube" /></a>
+            </div>
+            <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+          </div>
+        </div>
+      </div>
 
       <main>
         {page !== "gallery" && (

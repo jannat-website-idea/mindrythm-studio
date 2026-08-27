@@ -451,12 +451,12 @@ export function Experience({ content }: { content: SiteContent }) {
           </button>
       </header>
 
-      <div className={`menu-overlay ${menuOpen ? "is-open" : ""}`} aria-hidden={!menuOpen}>
+      <div className={`menu-overlay ${menuOpen ? "is-open nav-open" : ""}`} aria-hidden={!menuOpen}>
         <div className="menu-overlay-panel">
           <div className="menu-overlay-header">
             <span className="menu-overlay-title">Navigation</span>
             <button type="button" className="menu-overlay-close" aria-label="Close menu" onClick={() => setMenuOpen(false)}>
-              ✕
+              ✕ Close
             </button>
           </div>
           <nav className="menu-overlay-links" aria-label="Main menu">
