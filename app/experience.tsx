@@ -719,19 +719,7 @@ export function Experience({ content }: { content: SiteContent }) {
               <h2>The right eye<br />for <em>every story.</em></h2>
               <div className="team-heading-action"><p>{teamIntroduction}</p><a href="/team">Meet our team</a></div>
             </div>
-            <div className="team-grid" aria-label="Meet the Mindrythm team">
-              {team.map((member) => (
-                <TeamMemberCard
-                  key={member.id}
-                  member={member}
-                  isActive={activeTeamCardId === member.id}
-                  onToggle={() => setActiveTeamCardId((current) => (current === member.id ? null : member.id))}
-                  onClose={() => setActiveTeamCardId(null)}
-                  showExploreLink={true}
-                />
-              ))}
-            </div>
-            <a className="team-page-link" href="/team"><span>People behind the images</span><strong>Explore the full team</strong></a>
+            <a className="team-page-link" href="/team"><span>People behind the images</span><strong>Explore the full team →</strong></a>
           </section>
 
           <section className="about-section" id="about">
