@@ -357,6 +357,77 @@ function CellRenderer({
   );
 }
 
+const BENTO_TILE_CYCLE: Array<"hero" | "tall" | "wide" | "standard"> = [
+  "hero",     // 0: Span 2x2
+  "standard", // 1: Span 1x1
+  "tall",     // 2: Span 1x2
+  "standard", // 3: Span 1x1
+  "tall",     // 4: Span 1x2
+  "wide",     // 5: Span 2x1
+  "standard", // 6: Span 1x1
+  "standard", // 7: Span 1x1
+  "wide",     // 8: Span 2x1
+  "standard", // 9: Span 1x1
+  "hero",     // 10: Span 2x2
+  "tall",     // 11: Span 1x2
+  "standard", // 12: Span 1x1
+  "wide",     // 13: Span 2x1
+];
+
+export function getBentoTileSize(item: ContentItem, index: number): "hero" | "tall" | "wide" | "standard" {
+  if (item.layoutType === "large") return "hero";
+  if (item.layoutType === "tall") return "tall";
+  if (item.layoutType === "wide") return "wide";
+  if (item.layoutType === "small") return "standard";
+  return BENTO_TILE_CYCLE[index % BENTO_TILE_CYCLE.length];
+}
+
+function BentoGalleryFlow({
+  items,
+  onOpen,
+  className = "",
+}: {
+  items: ContentItem[];
+  onOpen: (item: ContentItem) => void;
+  className?: string;
+}) {
+  const sorted = useMemo(() => {
+    return [...items].sort((a, b) => (a.sortOrder ?? 100) - (b.sortOrder ?? 100));
+  }, [items]);
+
+  return (
+    <div className={`bento-flow-grid ${className}`}>
+      {sorted.map((item, index) => {
+        const size = getBentoTileSize(item, index);
+        return (
+          <button
+            key={item.id || `bento-flow-${index}`}
+            type="button"
+            className={`bento-tile bento-tile-${size}`}
+            onClick={() => onOpen(item)}
+            aria-label={`Open ${item.title}`}
+          >
+            <Media item={item} priority={index < 4} />
+            {item.category && <span className="bento-badge-tag">{item.category}</span>}
+            <div className="bento-card-gradient">
+              {item.eyebrow && <span className="bento-item-eyebrow">{item.eyebrow}</span>}
+              <h3 className="bento-item-title">{item.title}</h3>
+            </div>
+            <span className="bento-tile-zoom-btn" aria-hidden="true">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 3 21 3 21 9" />
+                <polyline points="9 21 3 21 3 15" />
+                <line x1="21" y1="3" x2="14" y2="10" />
+                <line x1="3" y1="21" x2="10" y2="14" />
+              </svg>
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 export function BentoTemplate({
   items,
   pattern,
@@ -374,6 +445,15 @@ export function BentoTemplate({
   socialLinks?: { instagram?: string; facebook?: string; youtube?: string };
   className?: string;
 }) {
+  if (pattern === "gallery") {
+    return (
+      <BentoGalleryFlow
+        items={items}
+        onOpen={onOpen}
+        className={className}
+      />
+    );
+  }
   const columns = useBentoColumns(items, pattern);
   const firstItem =
     columns
