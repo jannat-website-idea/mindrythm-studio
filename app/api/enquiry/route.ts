@@ -67,7 +67,7 @@ function isAllowedOrigin(request: Request) {
   if (!origin) return process.env.NODE_ENV !== "production";
 
   const allowedOrigins = new Set(
-    [process.env.SITE_URL, ...(process.env.CONTACT_ALLOWED_ORIGINS || "").split(",")]
+    ["https://mindrythm.com", "https://www.mindrythm.com", process.env.SITE_URL, ...(process.env.CONTACT_ALLOWED_ORIGINS || "").split(",")]
       .map((value) => value?.trim())
       .filter((value): value is string => Boolean(value))
       .map((value) => {
