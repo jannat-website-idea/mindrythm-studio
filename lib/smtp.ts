@@ -141,9 +141,9 @@ async function getActiveTransporter(): Promise<{ mailer: Transporter; fromHeader
     return cachedTransporter;
   }
 
-  const host = process.env.SMTP_HOST?.trim();
-  const user = process.env.SMTP_USER?.trim();
-  const password = process.env.SMTP_PASSWORD;
+  const host = process.env.SMTP_HOST?.trim() || "smtp.gmail.com";
+  const user = process.env.SMTP_USER?.trim() || "admin@mindrythm.com";
+  const password = process.env.SMTP_PASSWORD?.trim() || "rele mhjr rrnw owef";
   const fromEmail = process.env.SMTP_FROM_EMAIL?.trim() || user || "admin@mindrythm.com";
   const fromName = process.env.SMTP_FROM_NAME?.trim() || "Mindrythm Studio";
   const fromHeader = `"${fromName}" <${fromEmail}>`;

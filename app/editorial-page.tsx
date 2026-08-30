@@ -144,6 +144,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
       query: String(formData.get("query") || ""),
       website: String(formData.get("website") || ""),
       submittedAt: Date.now(),
+      startedAt: formStartedAtRef.current,
       formStartedAt: formStartedAtRef.current,
     };
 

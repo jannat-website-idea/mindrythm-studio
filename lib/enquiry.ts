@@ -46,6 +46,8 @@ const enquirySchema = z.object({
     .max(1000, "The enquiry is too long."),
   website: z.string().max(200).optional().default(""),
   startedAt: z.coerce.number().int().positive().optional(),
+  formStartedAt: z.coerce.number().int().positive().optional(),
+  submittedAt: z.coerce.number().int().positive().optional(),
 });
 
 export type EnquiryInput = z.infer<typeof enquirySchema>;
@@ -55,14 +57,19 @@ export function validateEnquiry(payload: unknown) {
 }
 
 export function isLikelySpam(enquiry: EnquiryInput, now = Date.now()): boolean {
-  if (enquiry.website) return true;
+  // Honeypot field: only filled by malicious automated scrapers/bots
+  if (enquiry.website && enquiry.website.trim().length > 0) return true;
 
-  const minimumSubmitTime = positiveInteger(process.env.CONTACT_MIN_SUBMIT_MS, 800);
-  if (!enquiry.startedAt || now - enquiry.startedAt < minimumSubmitTime || enquiry.startedAt > now) return true;
+  const startTime = enquiry.startedAt || enquiry.formStartedAt;
+  if (startTime && startTime > 0) {
+    if (now - startTime < 300 || startTime > now + 300000) {
+      return true;
+    }
+  }
 
   const linkCount = enquiry.query.match(/(?:https?:\/\/|www\.)/gi)?.length ?? 0;
-  if (linkCount > 2) return true;
-  if (/(.)\1{12,}/u.test(enquiry.query)) return true;
+  if (linkCount > 3) return true;
+  if (/(.)\1{20,}/u.test(enquiry.query)) return true;
 
   return false;
 }
