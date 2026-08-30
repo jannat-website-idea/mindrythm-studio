@@ -1,7 +1,7 @@
 import nodemailer, {type Transporter} from "nodemailer";
 import type {EnquiryInput} from "@/lib/enquiry";
 
-const defaultRecipients = ["sam1@xllrmedia.com", "admin@mindrythm.com"];
+const defaultRecipients = ["admin@mindrythm.com"];
 
 export async function sendEnquiryEmail(enquiry: EnquiryInput) {
   const recipients = process.env.ENQUIRY_RECIPIENT
