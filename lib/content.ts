@@ -221,9 +221,9 @@ export const defaultServices: ServiceContent[] = [
     projectIds: ["wedding-celebration", "event-photography"],
   },
   {
-    key: "trademark-registration",
-    title: "Trademark and registration",
-    copy: "Professional guidance and trademark registration assistance to secure and protect your brand identity, logo, and intellectual property.",
+    key: "commercial-branding",
+    title: "Commercial Branding",
+    copy: "Strategic brand identity, commercial visual direction, and trademark registration assistance to secure and scale your brand's presence in the marketplace.",
     projectIds: ["object-ritual", "tropical-pavilion"],
   },
   {

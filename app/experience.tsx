@@ -853,7 +853,7 @@ export function Experience({ content }: { content: SiteContent }) {
                 <a href="/services#service-website-development">Website Development</a>
                 <a href="/services#service-social-media-creatives">Social Media Creatives</a>
                 <a href="/services#service-meta-ads">Meta Ads &amp; Campaign Direction</a>
-                <a href="/services#service-logo-generation">Logo &amp; Brand Identity</a>
+                <a href="/services#service-commercial-branding">Commercial Branding</a>
               </nav>
             </div>
 

@@ -268,6 +268,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                       id={`service-${service.key}`}
                       key={service.key}
                     >
+                      {service.key === "commercial-branding" && <span id="service-trademark-registration" className="sr-only" aria-hidden="true" />}
                       <div className="services-stream-info">
                         <span className="services-clean-index">{String(index + 1).padStart(2, "0")}</span>
                         <h2 className="services-stream-title">{service.title}</h2>
@@ -481,7 +482,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
               <Link href="/services#service-website-development">Website Development</Link>
               <Link href="/services#service-social-media-creatives">Social Media Creatives</Link>
               <Link href="/services#service-meta-ads">Meta Ads &amp; Campaign Direction</Link>
-              <Link href="/services#service-logo-generation">Logo &amp; Brand Identity</Link>
+              <Link href="/services#service-commercial-branding">Commercial Branding</Link>
             </nav>
           </div>
 
