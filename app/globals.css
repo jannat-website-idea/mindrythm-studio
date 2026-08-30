@@ -9687,7 +9687,7 @@ main {
 }
 
 .gallery-page-dark .gallery-section-container {
-  padding: clamp(2.5rem, 5vw, 5rem) clamp(1.5rem, 4vw, 4rem) clamp(5rem, 8vw, 8rem) !important;
+  padding: clamp(2rem, 5vw, 4.5rem) clamp(1rem, 4vw, 3.5rem) clamp(4rem, 6vw, 6rem) !important;
   max-width: 1600px;
   margin: 0 auto;
 }
