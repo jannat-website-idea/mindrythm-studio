@@ -124,73 +124,91 @@ const PATTERNS: Record<BentoPattern, ColumnDef[]> = {
   ],
 };
 
-function useBentoColumns(items: ContentItem[], pattern: BentoPattern) {
+function useBentoInstances(items: ContentItem[], pattern: BentoPattern): ColumnDef[][] {
   return useMemo(() => {
     const sorted = [...items].sort((a, b) => (a.sortOrder ?? 100) - (b.sortOrder ?? 100));
+    const baseColumns = PATTERNS[pattern];
 
-    if (pattern === "gallery") {
-      const numCols = 4;
-      const cols: ColumnDef[] = Array.from({ length: numCols }, (_, i) => ({
-        id: `gallery-col-${i + 1}`,
-        cells: [],
-      }));
+    // Determine the content slot count defined by the existing Bento pattern
+    const slotCount = baseColumns.reduce(
+      (count, col) => count + col.cells.filter((cell) => cell.kind === "content").length,
+      0
+    );
 
-      // Approximate heights to keep columns visually balanced
-      const colHeights = [0, 0, 0, 0];
-
-      sorted.forEach((item, index) => {
-        // Find the column with the minimum height
-        let shortestCol = 0;
-        for (let c = 1; c < numCols; c++) {
-          if (colHeights[c] < colHeights[shortestCol]) {
-            shortestCol = c;
-          }
-        }
-
-        const isSmall = item.layoutType === "small" || item.layoutType === "medium";
-        // Alternate large and medium based on column cell count if not explicitly set
-        const cellCountInCol = cols[shortestCol].cells.length;
-        const layoutType = isSmall ? "medium" : cellCountInCol % 2 === 0 ? "large" : "medium";
-        const cardHeight = layoutType === "medium" ? 260 : 380;
-
-        cols[shortestCol].cells.push({
-          id: `gallery-item-${item.id || index}`,
-          kind: "content",
-          layoutType,
-          className: `bento-card-${layoutType}`,
-          item,
-        } as BentoCell & { item: ContentItem });
-
-        colHeights[shortestCol] += cardHeight;
-      });
-
-      return cols.filter((col) => col.cells.length > 0);
+    if (slotCount === 0 || sorted.length === 0) {
+      return [];
     }
 
-    // For home and compact patterns:
-    const baseColumns = PATTERNS[pattern];
-    const pool = [...sorted];
+    // Split items into chunks matching the slotCount of the Bento pattern
+    const chunks: ContentItem[][] = [];
+    for (let i = 0; i < sorted.length; i += slotCount) {
+      chunks.push(sorted.slice(i, i + slotCount));
+    }
 
-    return baseColumns.map((col) => ({
-      ...col,
-      cells: col.cells
-        .map((cell) => {
-          if (cell.kind !== "content") return cell;
-          // Prefer matching layoutType, else take next available item
-          const matchIdx = pool.findIndex(
-            (it) => (it.layoutType === "small" || it.layoutType === "medium" ? "medium" : "large") === cell.layoutType
-          );
-          const chosen = matchIdx >= 0 ? pool.splice(matchIdx, 1)[0] : pool.shift();
-          if (!chosen) return null;
-          return { ...cell, item: chosen };
-        })
-        .filter(Boolean) as (BentoCell & { item?: ContentItem | null })[],
-    })).filter((col) => col.cells.length > 0);
+    // Order content slots row-first across the 4 columns for balanced visual distribution
+    interface SlotRef {
+      colIndex: number;
+      cellIndex: number;
+      cell: ContentSlot;
+    }
+    const contentSlots: SlotRef[] = [];
+    const maxCells = Math.max(...baseColumns.map((c) => c.cells.length));
+    for (let r = 0; r < maxCells; r++) {
+      for (let c = 0; c < baseColumns.length; c++) {
+        const cell = baseColumns[c].cells[r];
+        if (cell && cell.kind === "content") {
+          contentSlots.push({ colIndex: c, cellIndex: r, cell });
+        }
+      }
+    }
+
+    return chunks.map((chunk, instanceIndex) => {
+      const pool = [...chunk];
+      const assigned = new Map<string, ContentItem | null>();
+
+      for (const slot of contentSlots) {
+        const matchIdx = pool.findIndex(
+          (it) => (it.layoutType === "small" || it.layoutType === "medium" ? "medium" : "large") === slot.cell.layoutType
+        );
+        const chosen = matchIdx >= 0 ? pool.splice(matchIdx, 1)[0] : pool.shift();
+        assigned.set(`${slot.colIndex}-${slot.cellIndex}`, chosen || null);
+      }
+
+      return baseColumns.map((col, colIndex) => ({
+        id: `${col.id}-inst-${instanceIndex}`,
+        cells: col.cells
+          .map((cell, cellIndex) => {
+            if (cell.kind !== "content") {
+              // Static cards only appear on the first instance if repeating
+              if (instanceIndex > 0) return null;
+              return {
+                ...cell,
+                id: `${cell.id}-inst-${instanceIndex}-${cellIndex}`,
+              };
+            }
+
+            const item = assigned.get(`${colIndex}-${cellIndex}`) || null;
+            if (!item) {
+              return {
+                ...cell,
+                id: `${cell.id}-inst-${instanceIndex}-${cellIndex}-empty`,
+                item: null,
+              };
+            }
+            return {
+              ...cell,
+              id: `${cell.id}-inst-${instanceIndex}-${cellIndex}`,
+              item,
+            };
+          })
+          .filter(Boolean) as (BentoCell & { item?: ContentItem | null })[],
+      })).filter((col) => col.cells.some((c) => c.kind !== "content" || c.item !== null));
+    });
   }, [items, pattern]);
 }
 
 function EmptySlot({ className }: { className?: string }) {
-  return null;
+  return <div className={`bento-card bento-card-empty ${className || ""}`} aria-hidden="true" />;
 }
 
 function BentoMediaCard({
@@ -357,77 +375,6 @@ function CellRenderer({
   );
 }
 
-const BENTO_TILE_CYCLE: Array<"hero" | "tall" | "wide" | "standard"> = [
-  "hero",     // 0: Span 2x2
-  "standard", // 1: Span 1x1
-  "tall",     // 2: Span 1x2
-  "standard", // 3: Span 1x1
-  "tall",     // 4: Span 1x2
-  "wide",     // 5: Span 2x1
-  "standard", // 6: Span 1x1
-  "standard", // 7: Span 1x1
-  "wide",     // 8: Span 2x1
-  "standard", // 9: Span 1x1
-  "hero",     // 10: Span 2x2
-  "tall",     // 11: Span 1x2
-  "standard", // 12: Span 1x1
-  "wide",     // 13: Span 2x1
-];
-
-export function getBentoTileSize(item: ContentItem, index: number): "hero" | "tall" | "wide" | "standard" {
-  if (item.layoutType === "large") return "hero";
-  if (item.layoutType === "tall") return "tall";
-  if (item.layoutType === "wide") return "wide";
-  if (item.layoutType === "small") return "standard";
-  return BENTO_TILE_CYCLE[index % BENTO_TILE_CYCLE.length];
-}
-
-function BentoGalleryFlow({
-  items,
-  onOpen,
-  className = "",
-}: {
-  items: ContentItem[];
-  onOpen: (item: ContentItem) => void;
-  className?: string;
-}) {
-  const sorted = useMemo(() => {
-    return [...items].sort((a, b) => (a.sortOrder ?? 100) - (b.sortOrder ?? 100));
-  }, [items]);
-
-  return (
-    <div className={`bento-flow-grid ${className}`}>
-      {sorted.map((item, index) => {
-        const size = getBentoTileSize(item, index);
-        return (
-          <button
-            key={item.id || `bento-flow-${index}`}
-            type="button"
-            className={`bento-tile bento-tile-${size}`}
-            onClick={() => onOpen(item)}
-            aria-label={`Open ${item.title}`}
-          >
-            <Media item={item} priority={index < 4} />
-            {item.category && <span className="bento-badge-tag">{item.category}</span>}
-            <div className="bento-card-gradient">
-              {item.eyebrow && <span className="bento-item-eyebrow">{item.eyebrow}</span>}
-              <h3 className="bento-item-title">{item.title}</h3>
-            </div>
-            <span className="bento-tile-zoom-btn" aria-hidden="true">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="15 3 21 3 21 9" />
-                <polyline points="9 21 3 21 3 15" />
-                <line x1="21" y1="3" x2="14" y2="10" />
-                <line x1="3" y1="21" x2="10" y2="14" />
-              </svg>
-            </span>
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
 export function BentoTemplate({
   items,
   pattern,
@@ -445,41 +392,39 @@ export function BentoTemplate({
   socialLinks?: { instagram?: string; facebook?: string; youtube?: string };
   className?: string;
 }) {
-  if (pattern === "gallery") {
-    return (
-      <BentoGalleryFlow
-        items={items}
-        onOpen={onOpen}
-        className={className}
-      />
-    );
-  }
-  const columns = useBentoColumns(items, pattern);
+  const instances = useBentoInstances(items, pattern);
   const firstItem =
-    columns
-      .flatMap((col) => col.cells)
+    instances[0]
+      ?.flatMap((col) => col.cells)
       .filter((cell): cell is ContentSlot & { item: ContentItem } =>
         cell.kind === "content" && cell.item !== null && cell.item !== undefined
       )[0]?.item || null;
 
   return (
-    <div className={`bento-board ${className}`}>
-      {columns.map((column, columnIndex) => (
+    <div className={`bento-stream ${className}`}>
+      {instances.map((columns, instanceIndex) => (
         <div
-          key={column.id}
-          className={`bento-col bento-col-${columnIndex % 2 === 0 ? "a" : "b"} bento-col-index-${columnIndex + 1}`}
+          key={`bento-board-inst-${instanceIndex}`}
+          className={`bento-board ${className}`}
         >
-          {column.cells.map((cell, cellIndex) => (
-            <CellRenderer
-              key={cell.id}
-              cell={cell}
-              onOpen={onOpen}
-              editorialText={editorialText}
-              editorialEyebrow={editorialEyebrow}
-              socialLinks={socialLinks}
-              firstItem={firstItem}
-              priority={columnIndex === 0 && cellIndex === 0}
-            />
+          {columns.map((column, columnIndex) => (
+            <div
+              key={column.id}
+              className={`bento-col bento-col-${columnIndex % 2 === 0 ? "a" : "b"} bento-col-index-${columnIndex + 1}`}
+            >
+              {column.cells.map((cell, cellIndex) => (
+                <CellRenderer
+                  key={cell.id}
+                  cell={cell}
+                  onOpen={onOpen}
+                  editorialText={editorialText}
+                  editorialEyebrow={editorialEyebrow}
+                  socialLinks={socialLinks}
+                  firstItem={firstItem}
+                  priority={instanceIndex === 0 && columnIndex === 0 && cellIndex === 0}
+                />
+              ))}
+            </div>
           ))}
         </div>
       ))}

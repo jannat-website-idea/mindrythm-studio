@@ -351,14 +351,8 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
           <div className="gallery-page gallery-page-dark">
             <section className="gallery-section-container" id="gallery">
               <header className="gallery-section-header">
-                <div className="gallery-header-meta">
-                  <span className="gallery-badge-pill">Curated Archive</span>
-                  <span className="gallery-count-tag">{galleryItems.length} Selected Frames</span>
-                </div>
                 <h2>Gallery</h2>
-                <p className="gallery-header-description">
-                  An expansive visual archive of architecture, interior spaces, celebrations and crafted environments.
-                </p>
+                <p>Curated frames / Selected works</p>
               </header>
               <BentoTemplate
                 items={galleryItems}
