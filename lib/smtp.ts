@@ -88,6 +88,8 @@ export async function sendEnquiryEmail(enquiry: EnquiryInput) {
       `- Phone: ${safePhone}`,
       `- Message: ${enquiry.query}`,
       ``,
+      `If you have any immediate questions, feel free to reply directly to this email or reach us at +91 62923 33492.`,
+      ``,
       `Warm regards,`,
       `Mindrythm Studio`,
       `https://mindrythm.com`,
@@ -110,7 +112,7 @@ export async function sendEnquiryEmail(enquiry: EnquiryInput) {
           <p style="margin: 12px 0 4px; font-size: 14px; color: #5a544e;">${escapeHtml(enquiry.query).replace(/\n/g, "<br>")}</p>
         </div>
         <p style="font-size: 14px; line-height: 1.6; color: #5a544e;">
-          If you have any immediate questions, feel free to reply directly to this email or reach us at <a href="tel:+918235282218" style="color: #171513;">+91 82352 82218</a>.
+          If you have any immediate questions, feel free to reply directly to this email or reach us at <a href="tel:+916292333492" style="color: #171513;">+91 62923 33492</a>.
         </p>
         <div style="border-top: 1px solid #eae7e1; margin-top: 32px; padding-top: 16px; font-size: 12px; color: #8a8279;">
           Warm regards,<br>
