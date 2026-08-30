@@ -1,6 +1,14 @@
 import {z} from "zod";
 
 export const enquiryServices = [
+  "Premium visual production (photography + videography)",
+  "Drone imagery",
+  "Website development",
+  "Logo generation",
+  "Meta Ads",
+  "Social media management",
+  "Commercial Branding",
+  "Social media creatives",
   "Property photography",
   "Resort & hospitality",
   "Event photography",
@@ -30,7 +38,7 @@ const enquirySchema = z.object({
     .trim()
     .max(180, "The email address is too long.")
     .refine((value) => value === "" || z.string().email().safeParse(value).success, "Please enter a valid email address."),
-  service: z.enum(enquiryServices),
+  service: z.string().trim().min(2, "Please select a valid service.").max(120),
   query: z
     .string()
     .trim()
