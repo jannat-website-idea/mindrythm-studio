@@ -297,20 +297,19 @@ export function Experience({ content }: { content: SiteContent }) {
     let travel = 0;
 
     const updatePosition = () => {
-      if (distance <= 0) return;
-      const progress = Math.min(1, Math.max(0, (window.scrollY - sectionTop) / distance));
-      section.style.setProperty("--scroll-x", `${-progress * travel}px`);
-    };
-
-    const measure = () => {
       if (window.innerWidth <= 680) {
-        distance = 0;
         section.style.setProperty("--scroll-x", "0px");
         return;
       }
-      sectionTop = section.offsetTop;
-      distance = Math.max(1, section.offsetHeight - window.innerHeight);
-      travel = Math.max(0, track.scrollWidth - window.innerWidth);
+      const rect = section.getBoundingClientRect();
+      const sTop = rect.top + window.scrollY;
+      const dist = Math.max(1, section.offsetHeight - window.innerHeight);
+      const trav = Math.max(0, track.scrollWidth - window.innerWidth);
+      const progress = Math.min(1, Math.max(0, (window.scrollY - sTop) / dist));
+      section.style.setProperty("--scroll-x", `${-progress * trav}px`);
+    };
+
+    const measure = () => {
       updatePosition();
     };
 
