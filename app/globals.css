@@ -6413,6 +6413,36 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   min-height: 11rem;
 }
 
+.query-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  width: 100%;
+  margin-bottom: 0.35rem;
+}
+
+.query-label-row label {
+  margin-bottom: 0 !important;
+}
+
+.query-char-guide {
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  color: #8a8279;
+  transition: color 0.2s ease, opacity 0.2s ease;
+  font-family: inherit;
+}
+
+.query-char-guide.is-short {
+  color: #c97a4e;
+  font-weight: 500;
+}
+
+.query-char-guide.is-ready {
+  color: #52796f;
+  font-weight: 500;
+}
+
 @media (max-width: 680px) {
   .contact-page {
     grid-template-columns: 1fr;

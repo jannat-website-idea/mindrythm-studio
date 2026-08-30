@@ -55,6 +55,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   const [workFilter, setWorkFilter] = useState<"all" | ServiceKey>("all");
   const [formState, setFormState] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [formErrorMessage, setFormErrorMessage] = useState("");
+  const [contactQuery, setContactQuery] = useState("");
   const [navigationOpen, setNavigationOpen] = useState(false);
   const formStartedAtRef = useRef(0);
 
@@ -137,12 +138,21 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
     setFormState("sending");
     const form = event.currentTarget;
     const formData = new FormData(form);
+    const rawQuery = String(formData.get("query") || "").trim();
+    if (rawQuery.length < 10) {
+      setFormErrorMessage("Please write at least 10 characters to send your enquiry.");
+      setFormState("error");
+      const textarea = form.querySelector<HTMLTextAreaElement>("#contact-query");
+      textarea?.focus();
+      return;
+    }
+
     const payload = {
       name: String(formData.get("name") || ""),
       phone: String(formData.get("phone") || ""),
       email: String(formData.get("email") || ""),
       service: String(formData.get("service") || ""),
-      query: String(formData.get("query") || ""),
+      query: rawQuery,
       website: String(formData.get("website") || ""),
       submittedAt: Date.now(),
       startedAt: formStartedAtRef.current,
@@ -170,6 +180,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
       }
       setFormErrorMessage("");
       setFormState("sent");
+      setContactQuery("");
       form.reset();
     } catch {
       setFormState("error");
@@ -448,7 +459,42 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                   <option value="Other / Custom Brief">Other / Custom Brief</option>
                 </select>
               </div>
-              <div className="form-field form-field-wide"><label htmlFor="contact-query">Your query *</label><textarea id="contact-query" name="query" rows={7} maxLength={1000} required /></div>
+              <div className="form-field form-field-wide">
+                <div className="query-label-row">
+                  <label htmlFor="contact-query">Your query *</label>
+                  <span
+                    className={`query-char-guide ${
+                      contactQuery.trim().length === 0
+                        ? ""
+                        : contactQuery.trim().length < 10
+                        ? "is-short"
+                        : "is-ready"
+                    }`}
+                    aria-live="polite"
+                  >
+                    {contactQuery.trim().length === 0
+                      ? "Min. 10 characters"
+                      : contactQuery.trim().length < 10
+                      ? `Please write at least 10 characters (${10 - contactQuery.trim().length} more needed)`
+                      : `✓ ${contactQuery.trim().length} characters`}
+                  </span>
+                </div>
+                <textarea
+                  id="contact-query"
+                  name="query"
+                  rows={7}
+                  maxLength={1000}
+                  minLength={10}
+                  required
+                  value={contactQuery}
+                  onChange={(e) => {
+                    setContactQuery(e.target.value);
+                    if (formErrorMessage) setFormErrorMessage("");
+                    if (formState === "error") setFormState("idle");
+                  }}
+                  placeholder="Describe your project, vision, timelines or requirements (min. 10 characters)…"
+                />
+              </div>
               <button type="submit" disabled={formState === "sending"}>{formState === "sending" ? "Sending…" : "Send enquiry"}</button>
               <p className={`form-message ${formState}`} aria-live="polite">
                 {formState === "sent"

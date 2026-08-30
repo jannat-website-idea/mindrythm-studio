@@ -102,6 +102,8 @@ export function Experience({ content }: { content: SiteContent }) {
   const [activeTeamCardId, setActiveTeamCardId] = useState<string | null>(null);
   const [activeService, setActiveService] = useState(0);
   const [enquiryState, setEnquiryState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [enquiryErrorMessage, setEnquiryErrorMessage] = useState("");
+  const [enquiryQuery, setEnquiryQuery] = useState("");
   const heroRef = useRef<HTMLElement | null>(null);
   const scrollCinemaRef = useRef<HTMLElement | null>(null);
   const enquiryStartedAtRef = useRef(0);
@@ -341,16 +343,46 @@ export function Experience({ content }: { content: SiteContent }) {
     event.preventDefault();
     setEnquiryState("sending");
     const formElement = event.currentTarget;
+    const form = new FormData(formElement);
+    const rawQuery = String(form.get("query") || "").trim();
+
+    if (rawQuery.length < 10) {
+      setEnquiryErrorMessage("Please write at least 10 characters to send your enquiry.");
+      setEnquiryState("error");
+      const textarea = formElement.querySelector<HTMLTextAreaElement>("#query");
+      textarea?.focus();
+      return;
+    }
+
     try {
-      const form = new FormData(formElement);
-      const payload = {...Object.fromEntries(form.entries()), startedAt: enquiryStartedAtRef.current};
+      const payload = {
+        ...Object.fromEntries(form.entries()),
+        query: rawQuery,
+        startedAt: enquiryStartedAtRef.current,
+        formStartedAt: enquiryStartedAtRef.current,
+        submittedAt: Date.now(),
+      };
       const response = await fetch("/api/enquiry", {
         method: "POST",
         headers: {"content-type": "application/json"},
         body: JSON.stringify(payload),
       });
-      if (!response.ok) throw new Error("Enquiry delivery failed");
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        const errorMsg =
+          data?.fields?.query?.[0] ||
+          data?.fields?.phone?.[0] ||
+          data?.fields?.email?.[0] ||
+          data?.fields?.name?.[0] ||
+          data?.fields?.service?.[0] ||
+          data?.error ||
+          "Your enquiry could not be delivered. Please email admin@mindrythm.com directly.";
+        setEnquiryErrorMessage(errorMsg);
+        throw new Error(errorMsg);
+      }
+      setEnquiryErrorMessage("");
       setEnquiryState("sent");
+      setEnquiryQuery("");
       formElement.reset();
       enquiryStartedAtRef.current = Date.now();
     } catch {
@@ -758,9 +790,50 @@ export function Experience({ content }: { content: SiteContent }) {
                     <option value="Other / Custom Brief">Other / Custom Brief</option>
                   </select>
                 </div>
-                <div className="form-field form-field-wide"><label htmlFor="query">Your query *</label><textarea id="query" name="query" required maxLength={1000} rows={6} /></div>
+                <div className="form-field form-field-wide">
+                  <div className="query-label-row">
+                    <label htmlFor="query">Your query *</label>
+                    <span
+                      className={`query-char-guide ${
+                        enquiryQuery.trim().length === 0
+                          ? ""
+                          : enquiryQuery.trim().length < 10
+                          ? "is-short"
+                          : "is-ready"
+                      }`}
+                      aria-live="polite"
+                    >
+                      {enquiryQuery.trim().length === 0
+                        ? "Min. 10 characters"
+                        : enquiryQuery.trim().length < 10
+                        ? `Please write at least 10 characters (${10 - enquiryQuery.trim().length} more needed)`
+                        : `✓ ${enquiryQuery.trim().length} characters`}
+                    </span>
+                  </div>
+                  <textarea
+                    id="query"
+                    name="query"
+                    required
+                    maxLength={1000}
+                    minLength={10}
+                    rows={6}
+                    value={enquiryQuery}
+                    onChange={(e) => {
+                      setEnquiryQuery(e.target.value);
+                      if (enquiryErrorMessage) setEnquiryErrorMessage("");
+                      if (enquiryState === "error") setEnquiryState("idle");
+                    }}
+                    placeholder="Describe your project, vision, timelines or requirements (min. 10 characters)…"
+                  />
+                </div>
                 <button type="submit" disabled={enquiryState === "sending"}>{enquiryState === "sending" ? "Sending…" : "Send enquiry"}</button>
-                <p className={`form-message ${enquiryState}`} aria-live="polite">{enquiryState === "sent" ? "Thank you. Your enquiry has been sent to admin@mindrythm.com." : enquiryState === "error" ? "Your enquiry could not be delivered. Please email admin@mindrythm.com directly." : "Your message will be sent securely to admin@mindrythm.com."}</p>
+                <p className={`form-message ${enquiryState}`} aria-live="polite">
+                  {enquiryState === "sent"
+                    ? "Thank you. Your enquiry has been sent to admin@mindrythm.com."
+                    : enquiryState === "error"
+                      ? (enquiryErrorMessage || "Your enquiry could not be delivered. Please email admin@mindrythm.com directly.")
+                      : "Your message will be sent securely to admin@mindrythm.com."}
+                </p>
               </form>
             </div>
           </section>

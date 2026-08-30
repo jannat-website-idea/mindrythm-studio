@@ -42,7 +42,7 @@ const enquirySchema = z.object({
   query: z
     .string()
     .trim()
-    .min(2, "Please enter your enquiry query.")
+    .min(10, "Please write at least 10 characters to describe your enquiry.")
     .max(2000, "The enquiry is too long."),
   website: z.string().max(200).optional().default(""),
   startedAt: z.coerce.number().int().positive().optional(),
