@@ -375,6 +375,273 @@ function CellRenderer({
   );
 }
 
+export function computeGallerySlot(index: number, total: number): {
+  gridColumn: string;
+  gridRow: string;
+  className: string;
+} {
+  const fullBlocks = Math.floor(total / 8);
+  const remainder = total % 8;
+  const inFullBlock = index < fullBlocks * 8;
+
+  if (inFullBlock) {
+    const blockIndex = Math.floor(index / 8);
+    const posInBlock = index % 8;
+    const baseTrack = blockIndex * 3 + 1;
+
+    switch (posInBlock) {
+      case 0: // Image 1 -> Col 1, Top (Medium)
+        return {
+          gridColumn: "1",
+          gridRow: `${baseTrack} / ${baseTrack + 1}`,
+          className: "bento-card-medium",
+        };
+      case 1: // Image 2 -> Col 2, Top (Large)
+        return {
+          gridColumn: "2",
+          gridRow: `${baseTrack} / ${baseTrack + 2}`,
+          className: "bento-card-large",
+        };
+      case 2: // Image 3 -> Col 3, Top (Medium)
+        return {
+          gridColumn: "3",
+          gridRow: `${baseTrack} / ${baseTrack + 1}`,
+          className: "bento-card-medium",
+        };
+      case 3: // Image 4 -> Col 4, Top (Large)
+        return {
+          gridColumn: "4",
+          gridRow: `${baseTrack} / ${baseTrack + 2}`,
+          className: "bento-card-large",
+        };
+      case 4: // Image 5 -> Col 1, Bottom (Large)
+        return {
+          gridColumn: "1",
+          gridRow: `${baseTrack + 1} / ${baseTrack + 3}`,
+          className: "bento-card-large",
+        };
+      case 5: // Image 6 -> Col 2, Bottom (Medium)
+        return {
+          gridColumn: "2",
+          gridRow: `${baseTrack + 2} / ${baseTrack + 3}`,
+          className: "bento-card-medium",
+        };
+      case 6: // Image 7 -> Col 3, Bottom (Large)
+        return {
+          gridColumn: "3",
+          gridRow: `${baseTrack + 1} / ${baseTrack + 3}`,
+          className: "bento-card-large",
+        };
+      case 7: // Image 8 -> Col 4, Bottom (Medium)
+        return {
+          gridColumn: "4",
+          gridRow: `${baseTrack + 2} / ${baseTrack + 3}`,
+          className: "bento-card-medium",
+        };
+    }
+  }
+
+  // Remainder items: fill left to right, balanced across 4 columns
+  const remIndex = index - fullBlocks * 8;
+  const baseTrack = fullBlocks * 3 + 1;
+
+  if (remainder === 1) {
+    return {
+      gridColumn: "1 / -1",
+      gridRow: `${baseTrack} / ${baseTrack + 1}`,
+      className: "bento-card-wide",
+    };
+  }
+
+  if (remainder === 2) {
+    if (remIndex === 0) {
+      return {
+        gridColumn: "1 / span 2",
+        gridRow: `${baseTrack} / ${baseTrack + 1}`,
+        className: "bento-card-wide",
+      };
+    }
+    return {
+      gridColumn: "3 / span 2",
+      gridRow: `${baseTrack} / ${baseTrack + 1}`,
+      className: "bento-card-wide",
+    };
+  }
+
+  if (remainder === 3) {
+    if (remIndex === 0) {
+      return {
+        gridColumn: "1 / span 2",
+        gridRow: `${baseTrack} / ${baseTrack + 1}`,
+        className: "bento-card-wide",
+      };
+    }
+    if (remIndex === 1) {
+      return {
+        gridColumn: "3",
+        gridRow: `${baseTrack} / ${baseTrack + 1}`,
+        className: "bento-card-medium",
+      };
+    }
+    return {
+      gridColumn: "4",
+      gridRow: `${baseTrack} / ${baseTrack + 1}`,
+      className: "bento-card-medium",
+    };
+  }
+
+  if (remainder === 4) {
+    const col = remIndex + 1;
+    return {
+      gridColumn: `${col}`,
+      gridRow: `${baseTrack} / ${baseTrack + 1}`,
+      className: col % 2 !== 0 ? "bento-card-medium" : "bento-card-large",
+    };
+  }
+
+  if (remainder === 5) {
+    if (remIndex < 4) {
+      const col = remIndex + 1;
+      return {
+        gridColumn: `${col}`,
+        gridRow: `${baseTrack} / ${baseTrack + 1}`,
+        className: col % 2 !== 0 ? "bento-card-medium" : "bento-card-large",
+      };
+    }
+    return {
+      gridColumn: "1 / -1",
+      gridRow: `${baseTrack + 1} / ${baseTrack + 2}`,
+      className: "bento-card-wide",
+    };
+  }
+
+  if (remainder === 6) {
+    if (remIndex < 4) {
+      const col = remIndex + 1;
+      return {
+        gridColumn: `${col}`,
+        gridRow: `${baseTrack} / ${baseTrack + 1}`,
+        className: col % 2 !== 0 ? "bento-card-medium" : "bento-card-large",
+      };
+    }
+    if (remIndex === 4) {
+      return {
+        gridColumn: "1 / span 2",
+        gridRow: `${baseTrack + 1} / ${baseTrack + 2}`,
+        className: "bento-card-wide",
+      };
+    }
+    return {
+      gridColumn: "3 / span 2",
+      gridRow: `${baseTrack + 1} / ${baseTrack + 2}`,
+      className: "bento-card-wide",
+    };
+  }
+
+  if (remainder === 7) {
+    if (remIndex < 4) {
+      const col = remIndex + 1;
+      return {
+        gridColumn: `${col}`,
+        gridRow: `${baseTrack} / ${baseTrack + 1}`,
+        className: col % 2 !== 0 ? "bento-card-medium" : "bento-card-large",
+      };
+    }
+    if (remIndex === 4) {
+      return {
+        gridColumn: "1 / span 2",
+        gridRow: `${baseTrack + 1} / ${baseTrack + 2}`,
+        className: "bento-card-wide",
+      };
+    }
+    if (remIndex === 5) {
+      return {
+        gridColumn: "3",
+        gridRow: `${baseTrack + 1} / ${baseTrack + 2}`,
+        className: "bento-card-medium",
+      };
+    }
+    return {
+      gridColumn: "4",
+      gridRow: `${baseTrack + 1} / ${baseTrack + 2}`,
+      className: "bento-card-medium",
+    };
+  }
+
+  return {
+    gridColumn: "auto",
+    gridRow: "auto",
+    className: "bento-card-medium",
+  };
+}
+
+function BentoGalleryMosaic({
+  items,
+  onOpen,
+  className = "",
+}: {
+  items: ContentItem[];
+  onOpen: (item: ContentItem) => void;
+  className?: string;
+}) {
+  const sorted = useMemo(() => {
+    return [...items].sort((a, b) => (a.sortOrder ?? 100) - (b.sortOrder ?? 100));
+  }, [items]);
+
+  const total = sorted.length;
+  const fullBlocks = Math.floor(total / 8);
+
+  const gridRowsStyle = useMemo(() => {
+    const tracks: string[] = [];
+    for (let b = 0; b < fullBlocks; b++) {
+      tracks.push(
+        "clamp(260px, 22vw, 320px)",
+        "clamp(90px, 7vw, 110px)",
+        "clamp(260px, 22vw, 320px)"
+      );
+    }
+    const remainder = total % 8;
+    if (remainder > 0) {
+      const remRows = remainder <= 4 ? 1 : 2;
+      for (let r = 0; r < remRows; r++) {
+        tracks.push("clamp(280px, 24vw, 360px)");
+      }
+    }
+    return tracks.join(" ");
+  }, [total, fullBlocks]);
+
+  return (
+    <div
+      className={`bento-gallery-mosaic ${className}`}
+      style={{ gridTemplateRows: gridRowsStyle }}
+    >
+      {sorted.map((item, index) => {
+        const slot = computeGallerySlot(index, total);
+        return (
+          <button
+            key={item.id || `gallery-mosaic-${index}`}
+            type="button"
+            className={`bento-card ${slot.className}`}
+            style={{
+              gridColumn: slot.gridColumn,
+              gridRow: slot.gridRow,
+            }}
+            onClick={() => onOpen(item)}
+            aria-label={`Open ${item.title}`}
+          >
+            <Media item={item} priority={index < 4} />
+            {item.category && <span className="bento-badge-tag">{item.category}</span>}
+            <div className="bento-card-gradient">
+              {item.eyebrow && <span className="bento-item-eyebrow">{item.eyebrow}</span>}
+              <h3 className="bento-item-title">{item.title}</h3>
+            </div>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 export function BentoTemplate({
   items,
   pattern,
@@ -392,6 +659,16 @@ export function BentoTemplate({
   socialLinks?: { instagram?: string; facebook?: string; youtube?: string };
   className?: string;
 }) {
+  if (pattern === "gallery") {
+    return (
+      <BentoGalleryMosaic
+        items={items}
+        onOpen={onOpen}
+        className={className}
+      />
+    );
+  }
+
   const instances = useBentoInstances(items, pattern);
   const firstItem =
     instances[0]
