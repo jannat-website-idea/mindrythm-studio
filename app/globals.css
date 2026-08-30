@@ -157,65 +157,67 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .capabilities-band i { position: absolute; top: 1rem; right: 1rem; font-size: 0.8rem; font-style: normal; opacity: 0.72; }
 
 /* Scroll-led film strip */
+/* Scroll-led film strip */
 .scroll-cinema {
-  --scroll-x: 0px;
   position: relative;
-  height: 220vh;
+  height: auto;
+  padding: clamp(2.5rem, 4vw, 4rem) 0 clamp(1.5rem, 3vw, 2.5rem);
   background: var(--ivory);
+  overflow: hidden;
 }
 
 .scroll-cinema-sticky {
-  position: sticky;
-  top: 70px;
-  height: calc(100svh - 70px);
-  overflow: hidden;
-  padding: 1rem 0;
+  position: static;
+  height: auto;
+  overflow: visible;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
 
 .scroll-cinema-top {
   display: flex;
   justify-content: space-between;
-  margin: 0 clamp(1.5rem, 3vw, 3rem) 0.75rem;
-  padding-bottom: 0.6rem;
+  margin: 0 clamp(1.5rem, 4vw, 4rem) 1.25rem;
+  padding-bottom: 0.75rem;
   border-bottom: 1px solid var(--line);
-  font-size: 0.6rem;
-  letter-spacing: 0.05em;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .scroll-cinema-window {
-  flex: 1;
   width: 100%;
-  overflow: hidden;
-  position: relative;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
   display: flex;
-  align-items: stretch;
-  min-height: 0;
+}
+
+.scroll-cinema-window::-webkit-scrollbar {
+  display: none;
 }
 
 .scroll-cinema-track {
   display: flex;
   width: max-content;
-  height: 100%;
+  height: clamp(440px, 42vw, 560px);
   align-items: stretch;
-  gap: 1.25rem;
-  padding: 0 clamp(1.5rem, 3vw, 3rem);
-  transform: translate3d(var(--scroll-x), 0, 0);
-  will-change: transform;
+  gap: 1.5rem;
+  padding: 0 clamp(1.5rem, 4vw, 4rem);
+  transform: none !important;
 }
 
 .scroll-cinema-panel {
   position: relative;
-  width: min(72vw, 1050px);
+  width: clamp(340px, 38vw, 580px);
   height: 100%;
   flex: 0 0 auto;
   overflow: hidden;
   padding: 0;
   border: 0;
-  border-radius: 12px;
+  border-radius: 16px;
   color: var(--ivory);
   background: var(--olive-dark);
   font: inherit;
@@ -224,6 +226,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  scroll-snap-align: start;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+}
+
+.scroll-cinema-panel:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
 }
 
 .scroll-cinema-panel::after {
@@ -263,10 +273,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
 .scroll-cinema-panel h2 {
   margin: 0;
-  font-size: clamp(2.5rem, 5.5vw, 6.5rem);
+  font-size: clamp(2rem, 3.8vw, 4.2rem);
   font-weight: 400;
-  letter-spacing: -0.06em;
-  line-height: 0.9;
+  letter-spacing: -0.05em;
+  line-height: 0.95;
   color: #ffffff;
 }
 
@@ -280,7 +290,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
 .scroll-cinema-statement {
   position: relative;
-  width: min(72vw, 1050px);
+  width: clamp(340px, 38vw, 580px);
   height: 100%;
   flex: 0 0 auto;
   display: flex;
@@ -289,7 +299,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   padding: clamp(2rem, 4vw, 3.5rem);
   color: var(--ink);
   background: var(--sage);
-  border-radius: 12px;
+  border-radius: 16px;
+  scroll-snap-align: start;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 .scroll-cinema-statement::after {
@@ -299,7 +311,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .scroll-cinema-statement h2 {
   max-width: 860px;
   margin: auto 0;
-  font-size: clamp(3rem, 6.5vw, 7.5rem);
+  font-size: clamp(2.4rem, 4.5vw, 5rem);
   font-weight: 400;
   letter-spacing: -0.05em;
   line-height: 0.95;
@@ -328,24 +340,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 }
 
 .scroll-cinema-progress {
-  position: relative;
-  margin: 0.75rem clamp(1.5rem, 3vw, 3rem) 0;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.scroll-cinema-progress span {
-  height: 1px;
-  flex: 1;
-  background: var(--line);
-}
-
-.scroll-cinema-progress i {
-  font-size: 0.62rem;
-  font-style: normal;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  display: none;
 }
 
 /* Projects */

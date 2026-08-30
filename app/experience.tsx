@@ -288,47 +288,7 @@ export function Experience({ content }: { content: SiteContent }) {
   useEffect(() => {
     const section = scrollCinemaRef.current;
     if (!section) return;
-    const track = section.querySelector<HTMLElement>(".scroll-cinema-track");
-    if (!track) return;
-
-    let frame = 0;
-    let sectionTop = 0;
-    let distance = 0;
-    let travel = 0;
-
-    const updatePosition = () => {
-      if (window.innerWidth <= 680) {
-        section.style.setProperty("--scroll-x", "0px");
-        return;
-      }
-      const rect = section.getBoundingClientRect();
-      const sTop = rect.top + window.scrollY;
-      const dist = Math.max(1, section.offsetHeight - window.innerHeight);
-      const trav = Math.max(0, track.scrollWidth - window.innerWidth);
-      const progress = Math.min(1, Math.max(0, (window.scrollY - sTop) / dist));
-      section.style.setProperty("--scroll-x", `${-progress * trav}px`);
-    };
-
-    const measure = () => {
-      updatePosition();
-    };
-
-    const scheduleUpdate = () => {
-      if (frame) return;
-      frame = window.requestAnimationFrame(() => {
-        frame = 0;
-        updatePosition();
-      });
-    };
-
-    measure();
-    window.addEventListener("scroll", scheduleUpdate, { passive: true });
-    window.addEventListener("resize", measure);
-    return () => {
-      window.removeEventListener("scroll", scheduleUpdate);
-      window.removeEventListener("resize", measure);
-      if (frame) window.cancelAnimationFrame(frame);
-    };
+    section.style.setProperty("--scroll-x", "0px");
   }, []);
 
   useEffect(() => {
