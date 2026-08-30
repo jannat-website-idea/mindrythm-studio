@@ -54,6 +54,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   const [activeService, setActiveService] = useState(0);
   const [workFilter, setWorkFilter] = useState<"all" | ServiceKey>("all");
   const [formState, setFormState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [formErrorMessage, setFormErrorMessage] = useState("");
   const [navigationOpen, setNavigationOpen] = useState(false);
   const formStartedAtRef = useRef(0);
 
@@ -154,7 +155,20 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
         headers: { "content-type": "application/json" },
         body: JSON.stringify(payload),
       });
-      if (!response.ok) throw new Error("Delivery failed");
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        const errorMsg =
+          data?.fields?.query?.[0] ||
+          data?.fields?.phone?.[0] ||
+          data?.fields?.email?.[0] ||
+          data?.fields?.name?.[0] ||
+          data?.fields?.service?.[0] ||
+          data?.error ||
+          "Your enquiry could not be delivered. Please email admin@mindrythm.com directly.";
+        setFormErrorMessage(errorMsg);
+        throw new Error(errorMsg);
+      }
+      setFormErrorMessage("");
       setFormState("sent");
       form.reset();
     } catch {
@@ -436,7 +450,13 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
               </div>
               <div className="form-field form-field-wide"><label htmlFor="contact-query">Your query *</label><textarea id="contact-query" name="query" rows={7} maxLength={1000} required /></div>
               <button type="submit" disabled={formState === "sending"}>{formState === "sending" ? "Sending…" : "Send enquiry"}</button>
-              <p className={`form-message ${formState}`} aria-live="polite">{formState === "sent" ? "Thank you. Your enquiry has been sent to admin@mindrythm.com." : formState === "error" ? "Your enquiry could not be delivered. Please email admin@mindrythm.com directly." : "Your message will be sent securely to admin@mindrythm.com."}</p>
+              <p className={`form-message ${formState}`} aria-live="polite">
+                {formState === "sent"
+                  ? "Thank you. Your enquiry has been sent to admin@mindrythm.com."
+                  : formState === "error"
+                    ? (formErrorMessage || "Your enquiry could not be delivered. Please email admin@mindrythm.com directly.")
+                    : "Your message will be sent securely to admin@mindrythm.com."}
+              </p>
             </form>
             <div className="contact-page-map"><iframe title="Mindrythm location" loading="lazy" src={`https://www.google.com/maps?q=${encodeURIComponent(settings.address)}&output=embed`} /></div>
           </div>

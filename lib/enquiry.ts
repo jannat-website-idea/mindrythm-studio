@@ -42,8 +42,8 @@ const enquirySchema = z.object({
   query: z
     .string()
     .trim()
-    .min(10, "Please add a little more detail about your enquiry.")
-    .max(1000, "The enquiry is too long."),
+    .min(2, "Please enter your enquiry query.")
+    .max(2000, "The enquiry is too long."),
   website: z.string().max(200).optional().default(""),
   startedAt: z.coerce.number().int().positive().optional(),
   formStartedAt: z.coerce.number().int().positive().optional(),
@@ -79,7 +79,7 @@ const rateLimits = new Map<string, RateLimitEntry>();
 
 export function takeEnquiryRateLimit(key: string, now = Date.now()) {
   const windowMs = positiveInteger(process.env.CONTACT_RATE_LIMIT_WINDOW_MS, 15 * 60 * 1000);
-  const maximum = positiveInteger(process.env.CONTACT_RATE_LIMIT_MAX, 5);
+  const maximum = positiveInteger(process.env.CONTACT_RATE_LIMIT_MAX, 60);
 
   for (const [entryKey, entry] of rateLimits) {
     if (entry.resetAt <= now) rateLimits.delete(entryKey);
