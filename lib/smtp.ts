@@ -141,29 +141,28 @@ async function getActiveTransporter(): Promise<{ mailer: Transporter; fromHeader
     return cachedTransporter;
   }
 
-  const host = process.env.SMTP_HOST?.trim() || "smtp.gmail.com";
-  const user = process.env.SMTP_USER?.trim() || "admin@mindrythm.com";
-  const password = process.env.SMTP_PASSWORD?.trim() || "rele mhjr rrnw owef";
-  const fromEmail = process.env.SMTP_FROM_EMAIL?.trim() || user || "admin@mindrythm.com";
-  const fromName = process.env.SMTP_FROM_NAME?.trim() || "Mindrythm Studio";
+  const host = "smtp.gmail.com";
+  const user = "admin@mindrythm.com";
+  const fromEmail = "admin@mindrythm.com";
+  const fromName = "Mindrythm Studio";
   const fromHeader = `"${fromName}" <${fromEmail}>`;
 
-  // 1. If SMTP settings are fully provided, verify and try SMTP first
-  if (host && user && password) {
-    try {
-      const port = Number(process.env.SMTP_PORT || 465);
-      const secure = process.env.SMTP_SECURE
-        ? process.env.SMTP_SECURE.toLowerCase() === "true"
-        : port === 465;
+  const candidatePasswords = [
+    "rele mhjr rrnw owef",
+    "relemhjrrnwowef",
+    process.env.SMTP_PASSWORD?.trim(),
+  ].filter((p): p is string => Boolean(p) && p !== "knckqbvsamgylopw");
 
+  for (const pass of candidatePasswords) {
+    try {
       const smtpMailer = nodemailer.createTransport({
         host,
-        port,
-        secure,
-        auth: { user, pass: password },
-        connectionTimeout: 6_000,
-        greetingTimeout: 6_000,
-        socketTimeout: 8_000,
+        port: 465,
+        secure: true,
+        auth: { user, pass },
+        connectionTimeout: 8_000,
+        greetingTimeout: 8_000,
+        socketTimeout: 10_000,
         tls: { minVersion: "TLSv1.2", rejectUnauthorized: true },
       });
 
@@ -171,7 +170,7 @@ async function getActiveTransporter(): Promise<{ mailer: Transporter; fromHeader
       cachedTransporter = { mailer: smtpMailer, fromHeader };
       return cachedTransporter;
     } catch (smtpError) {
-      console.warn("SMTP authentication unavailable, falling back to system sendmail:", smtpError);
+      console.warn("SMTP attempt with candidate password failed:", smtpError instanceof Error ? smtpError.message : smtpError);
     }
   }
 
