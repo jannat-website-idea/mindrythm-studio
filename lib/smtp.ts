@@ -62,17 +62,31 @@ export async function sendEnquiryEmail(enquiry: EnquiryInput) {
     </div>
   `;
 
-  const { mailer, fromHeader } = await getActiveTransporter();
+  let active = await getActiveTransporter();
 
-  // 1. Dispatch notification to admin/team
-  await mailer.sendMail({
-    from: fromHeader,
-    to: recipients.join(", "),
-    replyTo: safeEmail || undefined,
-    subject: adminSubject,
-    text: adminText,
-    html: adminHtml,
-  });
+  // 1. Dispatch notification to admin/team (with automatic retry on transient error)
+  try {
+    await active.mailer.sendMail({
+      from: active.fromHeader,
+      to: recipients.join(", "),
+      replyTo: safeEmail || undefined,
+      subject: adminSubject,
+      text: adminText,
+      html: adminHtml,
+    });
+  } catch (primaryError) {
+    console.warn("Primary SMTP delivery attempt failed, reconnecting and retrying:", primaryError);
+    cachedTransporter = null;
+    active = await getActiveTransporter();
+    await active.mailer.sendMail({
+      from: active.fromHeader,
+      to: recipients.join(", "),
+      replyTo: safeEmail || undefined,
+      subject: adminSubject,
+      text: adminText,
+      html: adminHtml,
+    });
+  }
 
   // 2. If visitor provided an email, send confirmation to the client
   if (safeEmail) {
@@ -123,8 +137,8 @@ export async function sendEnquiryEmail(enquiry: EnquiryInput) {
     `;
 
     try {
-      await mailer.sendMail({
-        from: fromHeader,
+      await active.mailer.sendMail({
+        from: active.fromHeader,
         to: safeEmail,
         subject: customerSubject,
         text: customerText,
@@ -183,8 +197,8 @@ async function getActiveTransporter(): Promise<{ mailer: Transporter; fromHeader
     path: "/usr/sbin/sendmail",
   });
 
-  cachedTransporter = { mailer: sendmailMailer, fromHeader };
-  return cachedTransporter;
+  // Do not permanently cache fallback so future attempts always prioritize verified Gmail SMTP
+  return { mailer: sendmailMailer, fromHeader };
 }
 
 function escapeHtml(value: string) {

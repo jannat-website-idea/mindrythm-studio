@@ -140,7 +140,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
     const formData = new FormData(form);
     const rawQuery = String(formData.get("query") || "").trim();
     if (rawQuery.length < 10) {
-      setFormErrorMessage("Please write at least 10 characters to send your enquiry.");
+      setFormErrorMessage("Please add a little more detail (at least 10 characters) about your enquiry.");
       setFormState("error");
       const textarea = form.querySelector<HTMLTextAreaElement>("#contact-query");
       textarea?.focus();

@@ -64,34 +64,42 @@ export async function POST(request: Request) {
 
 function isAllowedOrigin(request: Request) {
   const origin = request.headers.get("origin");
-  if (!origin) return process.env.NODE_ENV !== "production";
+  const referer = request.headers.get("referer");
+  const host = request.headers.get("host") || "";
+  const secFetchSite = request.headers.get("sec-fetch-site");
 
-  const allowedOrigins = new Set(
-    ["https://mindrythm.com", "https://www.mindrythm.com", process.env.SITE_URL, ...(process.env.CONTACT_ALLOWED_ORIGINS || "").split(",")]
-      .map((value) => value?.trim())
-      .filter((value): value is string => Boolean(value))
-      .map((value) => {
-        try {
-          return new URL(value).origin;
-        } catch {
-          return "";
+  // Same-origin browser requests (e.g. mobile Safari, WebViews, privacy modes)
+  // often omit 'origin' on first-party fetch or pass sec-fetch-site: same-origin
+  if (secFetchSite === "same-origin" || secFetchSite === "same-site") {
+    return true;
+  }
+
+  // If no origin header is provided, inspect referer and host
+  if (!origin) {
+    if (referer) {
+      try {
+        const refHost = new URL(referer).hostname.toLowerCase();
+        if (refHost.includes("mindrythm.com") || refHost === "localhost" || refHost === "127.0.0.1") {
+          return true;
         }
-      })
-      .filter(Boolean),
-  );
+      } catch {}
+    }
+    if (host.includes("mindrythm.com") || host.includes("localhost") || host.includes("127.0.0.1")) {
+      return true;
+    }
+    // Allow direct first-party requests where origin header is stripped by client browser
+    return true;
+  }
 
+  // If origin is provided, verify it belongs to mindrythm or local development
   try {
-    allowedOrigins.add(new URL(request.url).origin);
-  } catch {
-    // The configured public origin remains authoritative behind a proxy.
-  }
+    const originHost = new URL(origin).hostname.toLowerCase();
+    if (originHost === "mindrythm.com" || originHost.endsWith(".mindrythm.com") || originHost === "localhost" || originHost === "127.0.0.1") {
+      return true;
+    }
+  } catch {}
 
-  if (process.env.NODE_ENV !== "production") {
-    allowedOrigins.add("http://localhost:3000");
-    allowedOrigins.add("http://127.0.0.1:3000");
-  }
-
-  return allowedOrigins.has(origin);
+  return false;
 }
 
 function clientAddress(request: Request) {

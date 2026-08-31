@@ -347,7 +347,7 @@ export function Experience({ content }: { content: SiteContent }) {
     const rawQuery = String(form.get("query") || "").trim();
 
     if (rawQuery.length < 10) {
-      setEnquiryErrorMessage("Please write at least 10 characters to send your enquiry.");
+      setEnquiryErrorMessage("Please add a little more detail (at least 10 characters) about your enquiry.");
       setEnquiryState("error");
       const textarea = formElement.querySelector<HTMLTextAreaElement>("#query");
       textarea?.focus();

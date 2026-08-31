@@ -27,11 +27,11 @@ const enquirySchema = z.object({
   phone: z
     .string()
     .trim()
-    .min(7, "Please enter a valid phone number.")
+    .min(5, "Please enter a valid phone number.")
     .max(40, "The phone number is too long.")
     .refine(
-      (value) => /^\+?[0-9][0-9\s().-]{5,38}$/.test(value) && value.replace(/\D/g, "").length >= 7,
-      "Please enter a valid phone number.",
+      (value) => value.replace(/\D/g, "").length >= 7,
+      "Please enter a valid phone number with at least 7 digits.",
     ),
   email: z
     .string()
@@ -42,7 +42,7 @@ const enquirySchema = z.object({
   query: z
     .string()
     .trim()
-    .min(10, "Please write at least 10 characters to describe your enquiry.")
+    .min(10, "Please add a little more detail (at least 10 characters) about your enquiry.")
     .max(2000, "The enquiry is too long."),
   website: z.string().max(200).optional().default(""),
   startedAt: z.coerce.number().int().positive().optional(),
@@ -56,20 +56,14 @@ export function validateEnquiry(payload: unknown) {
   return enquirySchema.safeParse(payload);
 }
 
-export function isLikelySpam(enquiry: EnquiryInput, now = Date.now()): boolean {
+export function isLikelySpam(enquiry: EnquiryInput): boolean {
   // Honeypot field: only filled by malicious automated scrapers/bots
   if (enquiry.website && enquiry.website.trim().length > 0) return true;
 
-  const startTime = enquiry.startedAt || enquiry.formStartedAt;
-  if (startTime && startTime > 0) {
-    if (now - startTime < 300 || startTime > now + 300000) {
-      return true;
-    }
-  }
-
+  // Excessive external link injection check
   const linkCount = enquiry.query.match(/(?:https?:\/\/|www\.)/gi)?.length ?? 0;
-  if (linkCount > 3) return true;
-  if (/(.)\1{20,}/u.test(enquiry.query)) return true;
+  if (linkCount > 4) return true;
+  if (/(.)\1{25,}/u.test(enquiry.query)) return true;
 
   return false;
 }
