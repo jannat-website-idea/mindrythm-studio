@@ -346,8 +346,8 @@ export function Experience({ content }: { content: SiteContent }) {
     const form = new FormData(formElement);
     const rawQuery = String(form.get("query") || "").trim();
 
-    if (rawQuery.length < 10) {
-      setEnquiryErrorMessage("Please add a little more detail (at least 10 characters) about your enquiry.");
+    if (rawQuery.length < 2) {
+      setEnquiryErrorMessage("Please enter your enquiry.");
       setEnquiryState("error");
       const textarea = formElement.querySelector<HTMLTextAreaElement>("#query");
       textarea?.focus();
@@ -795,18 +795,14 @@ export function Experience({ content }: { content: SiteContent }) {
                     <label htmlFor="query">Your query *</label>
                     <span
                       className={`query-char-guide ${
-                        enquiryQuery.trim().length === 0
-                          ? ""
-                          : enquiryQuery.trim().length < 10
-                          ? "is-short"
-                          : "is-ready"
+                        enquiryQuery.trim().length >= 10 ? "is-ready" : ""
                       }`}
                       aria-live="polite"
                     >
                       {enquiryQuery.trim().length === 0
-                        ? "Min. 10 characters"
+                        ? "Min. 10 characters recommended"
                         : enquiryQuery.trim().length < 10
-                        ? `Please write at least 10 characters (${10 - enquiryQuery.trim().length} more needed)`
+                        ? `${enquiryQuery.trim().length}/10 characters`
                         : `✓ ${enquiryQuery.trim().length} characters`}
                     </span>
                   </div>
@@ -815,7 +811,7 @@ export function Experience({ content }: { content: SiteContent }) {
                     name="query"
                     required
                     maxLength={1000}
-                    minLength={10}
+                    minLength={2}
                     rows={6}
                     value={enquiryQuery}
                     onChange={(e) => {
@@ -823,7 +819,7 @@ export function Experience({ content }: { content: SiteContent }) {
                       if (enquiryErrorMessage) setEnquiryErrorMessage("");
                       if (enquiryState === "error") setEnquiryState("idle");
                     }}
-                    placeholder="Describe your project, vision, timelines or requirements (min. 10 characters)…"
+                    placeholder="Describe your project, vision, timelines or requirements…"
                   />
                 </div>
                 <button type="submit" disabled={enquiryState === "sending"}>{enquiryState === "sending" ? "Sending…" : "Send enquiry"}</button>

@@ -139,8 +139,8 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
     const form = event.currentTarget;
     const formData = new FormData(form);
     const rawQuery = String(formData.get("query") || "").trim();
-    if (rawQuery.length < 10) {
-      setFormErrorMessage("Please add a little more detail (at least 10 characters) about your enquiry.");
+    if (rawQuery.length < 2) {
+      setFormErrorMessage("Please enter your enquiry.");
       setFormState("error");
       const textarea = form.querySelector<HTMLTextAreaElement>("#contact-query");
       textarea?.focus();
@@ -464,18 +464,14 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                   <label htmlFor="contact-query">Your query *</label>
                   <span
                     className={`query-char-guide ${
-                      contactQuery.trim().length === 0
-                        ? ""
-                        : contactQuery.trim().length < 10
-                        ? "is-short"
-                        : "is-ready"
+                      contactQuery.trim().length >= 10 ? "is-ready" : ""
                     }`}
                     aria-live="polite"
                   >
                     {contactQuery.trim().length === 0
-                      ? "Min. 10 characters"
+                      ? "Min. 10 characters recommended"
                       : contactQuery.trim().length < 10
-                      ? `Please write at least 10 characters (${10 - contactQuery.trim().length} more needed)`
+                      ? `${contactQuery.trim().length}/10 characters`
                       : `✓ ${contactQuery.trim().length} characters`}
                   </span>
                 </div>
@@ -484,7 +480,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                   name="query"
                   rows={7}
                   maxLength={1000}
-                  minLength={10}
+                  minLength={2}
                   required
                   value={contactQuery}
                   onChange={(e) => {
@@ -492,7 +488,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                     if (formErrorMessage) setFormErrorMessage("");
                     if (formState === "error") setFormState("idle");
                   }}
-                  placeholder="Describe your project, vision, timelines or requirements (min. 10 characters)…"
+                  placeholder="Describe your project, vision, timelines or requirements…"
                 />
               </div>
               <button type="submit" disabled={formState === "sending"}>{formState === "sending" ? "Sending…" : "Send enquiry"}</button>

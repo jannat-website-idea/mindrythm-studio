@@ -62,12 +62,12 @@ export async function sendEnquiryEmail(enquiry: EnquiryInput) {
     </div>
   `;
 
-  let active = await getActiveTransporter();
+  const mailer = createSmtpMailer();
 
-  // 1. Dispatch notification to admin/team (with automatic retry on transient error)
+  // 1. Dispatch notification to admin/team (with instant retry on glitch)
   try {
-    await active.mailer.sendMail({
-      from: active.fromHeader,
+    await mailer.sendMail({
+      from: fromHeader,
       to: recipients.join(", "),
       replyTo: safeEmail || undefined,
       subject: adminSubject,
@@ -75,11 +75,10 @@ export async function sendEnquiryEmail(enquiry: EnquiryInput) {
       html: adminHtml,
     });
   } catch (primaryError) {
-    console.warn("Primary SMTP delivery attempt failed, reconnecting and retrying:", primaryError);
-    cachedTransporter = null;
-    active = await getActiveTransporter();
-    await active.mailer.sendMail({
-      from: active.fromHeader,
+    console.warn("Primary SMTP delivery attempt failed, retrying once:", primaryError);
+    const retryMailer = createSmtpMailer();
+    await retryMailer.sendMail({
+      from: fromHeader,
       to: recipients.join(", "),
       replyTo: safeEmail || undefined,
       subject: adminSubject,
@@ -88,7 +87,7 @@ export async function sendEnquiryEmail(enquiry: EnquiryInput) {
     });
   }
 
-  // 2. If visitor provided an email, send confirmation to the client
+  // 2. If visitor provided an email, send confirmation to the client (non-blocking)
   if (safeEmail) {
     const customerSubject = `New enquiry received — Mindrythm Studio`;
     const customerText = [
@@ -136,69 +135,36 @@ export async function sendEnquiryEmail(enquiry: EnquiryInput) {
       </div>
     `;
 
-    try {
-      await active.mailer.sendMail({
-        from: active.fromHeader,
-        to: safeEmail,
-        subject: customerSubject,
-        text: customerText,
-        html: customerHtml,
-      });
-    } catch (customerErr) {
+    mailer.sendMail({
+      from: fromHeader,
+      to: safeEmail,
+      subject: customerSubject,
+      text: customerText,
+      html: customerHtml,
+    }).catch((customerErr) => {
       console.warn("Notice: Customer confirmation email delivery failed:", customerErr);
-    }
+    });
   }
 }
 
-let cachedTransporter: { mailer: Transporter; fromHeader: string } | null = null;
+const host = "smtp.gmail.com";
+const user = "admin@mindrythm.com";
+const fromEmail = "admin@mindrythm.com";
+const fromName = "Mindrythm Studio";
+const fromHeader = `"${fromName}" <${fromEmail}>`;
+const verifiedAppPass = "rele mhjr rrnw owef";
 
-async function getActiveTransporter(): Promise<{ mailer: Transporter; fromHeader: string }> {
-  if (cachedTransporter) {
-    return cachedTransporter;
-  }
-
-  const host = "smtp.gmail.com";
-  const user = "admin@mindrythm.com";
-  const fromEmail = "admin@mindrythm.com";
-  const fromName = "Mindrythm Studio";
-  const fromHeader = `"${fromName}" <${fromEmail}>`;
-
-  const candidatePasswords = [
-    "rele mhjr rrnw owef",
-    "relemhjrrnwowef",
-    process.env.SMTP_PASSWORD?.trim(),
-  ].filter((p): p is string => Boolean(p) && p !== "knckqbvsamgylopw");
-
-  for (const pass of candidatePasswords) {
-    try {
-      const smtpMailer = nodemailer.createTransport({
-        host,
-        port: 465,
-        secure: true,
-        auth: { user, pass },
-        connectionTimeout: 8_000,
-        greetingTimeout: 8_000,
-        socketTimeout: 10_000,
-        tls: { minVersion: "TLSv1.2", rejectUnauthorized: true },
-      });
-
-      await smtpMailer.verify();
-      cachedTransporter = { mailer: smtpMailer, fromHeader };
-      return cachedTransporter;
-    } catch (smtpError) {
-      console.warn("SMTP attempt with candidate password failed:", smtpError instanceof Error ? smtpError.message : smtpError);
-    }
-  }
-
-  // 2. Fallback to server local sendmail (works directly on Hostinger CloudLinux/cPanel)
-  const sendmailMailer = nodemailer.createTransport({
-    sendmail: true,
-    newline: "unix",
-    path: "/usr/sbin/sendmail",
+function createSmtpMailer(): Transporter {
+  return nodemailer.createTransport({
+    host,
+    port: 465,
+    secure: true,
+    auth: { user, pass: verifiedAppPass },
+    connectionTimeout: 6000,
+    greetingTimeout: 6000,
+    socketTimeout: 7000,
+    tls: { minVersion: "TLSv1.2" },
   });
-
-  // Do not permanently cache fallback so future attempts always prioritize verified Gmail SMTP
-  return { mailer: sendmailMailer, fromHeader };
 }
 
 function escapeHtml(value: string) {
