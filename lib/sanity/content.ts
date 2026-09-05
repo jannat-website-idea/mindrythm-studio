@@ -60,7 +60,7 @@ export async function getSanitySiteContent(options: {stega?: boolean} = {}): Pro
   try {
     const raw = (await sanityClient.fetch(siteContentQuery, {}, {
       stega: options.stega,
-      perspective: "published",
+      perspective: "drafts",
       useCdn: false,
     })) as RawSanityContent;
 
