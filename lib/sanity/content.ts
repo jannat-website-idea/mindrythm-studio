@@ -44,7 +44,7 @@ function itemFromSanity(raw: Record<string, unknown>, kind: ContentItem["kind"],
     mediaUrl: text(raw.mediaUrl),
     mediaAlt: text(raw.mediaAlt, title),
     category: text(raw.category, "Spaces"),
-    mediaType: text(raw.mediaType, "image") as ContentItem["mediaType"],
+    mediaType: (text(raw.mediaType).toLowerCase() === "video" ? "video" : "image") as ContentItem["mediaType"],
     layoutType: text(raw.layoutType, "large") as ContentItem["layoutType"],
     year: text(raw.year),
     href: text(raw.href),
@@ -74,8 +74,35 @@ export async function getSanitySiteContent(options: {stega?: boolean} = {}): Pro
     const testimonialItems =
       (raw.testimonials || []).map((item, index) => itemFromSanity(item, "testimonial", 700 + index * 10)).filter((item): item is ContentItem => Boolean(item));
 
-    // The 8 official services defined in defaultContent.services
-    const services = defaultContent.services;
+    // Dynamic services: merges Sanity CMS edits onto official studio services
+    const sanityServices = (raw.services || []).map((s) => ({
+      key: text(s.key),
+      title: text(s.title),
+      copy: text(s.copy),
+      projectIds: Array.isArray(s.projectIds) ? s.projectIds.filter((p): p is string => typeof p === "string") : [],
+    })).filter((s) => Boolean(s.key && s.title));
+
+    const servicesMap = new Map(defaultContent.services.map((s) => [s.key, s]));
+    for (const ss of sanityServices) {
+      const targetKey = ss.key === "social-handling" ? "social-management" : ss.key;
+      const existing = servicesMap.get(targetKey);
+      if (existing) {
+        servicesMap.set(targetKey, {
+          ...existing,
+          title: ss.title || existing.title,
+          copy: ss.copy || existing.copy,
+          projectIds: ss.projectIds.length ? ss.projectIds : existing.projectIds,
+        });
+      } else {
+        servicesMap.set(targetKey, {
+          key: targetKey as any,
+          title: ss.title,
+          copy: ss.copy,
+          projectIds: ss.projectIds,
+        });
+      }
+    }
+    const services = Array.from(servicesMap.values());
 
     return {
       settings: {

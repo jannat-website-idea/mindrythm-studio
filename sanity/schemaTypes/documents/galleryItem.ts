@@ -10,13 +10,36 @@ export const galleryItem = defineType({
     defineField({name: "title", title: "Title", type: "string", validation: (Rule) => Rule.required().max(90)}),
     defineField({name: "body", title: "Description", type: "text", rows: 4}),
     defineField({name: "media", title: "Media", type: "mediaAsset", validation: (Rule) => Rule.required()}),
-    defineField({name: "category", title: "Gallery section", type: "string", options: {list: ["Spaces", "Celebrations"]}, validation: (Rule) => Rule.required()}),
+    defineField({
+      name: "category",
+      title: "Gallery section / category",
+      type: "string",
+      options: {
+        list: [
+          {title: "Spaces", value: "Spaces"},
+          {title: "Celebrations", value: "Celebrations"},
+          {title: "Interiors", value: "Interiors"},
+          {title: "Hospitality", value: "Hospitality"},
+          {title: "Wellness", value: "Wellness"},
+          {title: "Moments", value: "Moments"},
+          {title: "Aerial", value: "Aerial"},
+        ],
+      },
+      initialValue: "Spaces",
+      validation: (Rule) => Rule.required(),
+    }),
     defineField({
       name: "mediaType",
       title: "Media type",
       type: "string",
-      options: {list: ["Image", "Video"], layout: "dropdown"},
-      initialValue: "Image",
+      options: {
+        list: [
+          {title: "Image", value: "image"},
+          {title: "Video", value: "video"},
+        ],
+        layout: "dropdown",
+      },
+      initialValue: "image",
       validation: (Rule) => Rule.required(),
     }),
     defineField({

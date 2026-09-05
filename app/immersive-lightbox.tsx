@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { type ContentItem } from "@/lib/content";
 
 function isVideoUrl(url: string, mediaType?: string) {
-  if (mediaType === "video") return true;
+  if (typeof mediaType === "string" && mediaType.toLowerCase() === "video") return true;
   return /\.(mp4|webm|mov)(\?.*)?$/i.test(url);
 }
 

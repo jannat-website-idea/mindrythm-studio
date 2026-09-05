@@ -4,7 +4,7 @@ export const siteContentQuery = `{
     titleLineOne,
     titleLineTwo,
     visionHighlights,
-    "featuredProjectIds": featuredProjects[]->cmsId.current
+    "featuredProjectIds": featuredProjects[]->coalesce(cmsId.current, _id)
   },
   "about": *[_type == "aboutContent" && _id == "aboutContent"][0],
   "contact": *[_type == "contactInfo" && _id == "contactInfo"][0],
@@ -21,7 +21,7 @@ export const siteContentQuery = `{
     key,
     title,
     copy,
-    "projectIds": projects[]->cmsId.current
+    "projectIds": projects[]->coalesce(cmsId.current, _id)
   },
   "projects": *[_type == "project"] | order(sortOrder asc, _createdAt asc){
     "id": coalesce(cmsId.current, _id),
@@ -31,6 +31,7 @@ export const siteContentQuery = `{
     body,
     "mediaUrl": coalesce(media.image.asset->url, media.video.asset->url, media.externalUrl, image.asset->url, url),
     "mediaAlt": coalesce(media.alt, title),
+    "mediaType": coalesce(lower(mediaType), select(defined(media.video) => "video", "image")),
     category,
     year,
     href,
@@ -44,7 +45,7 @@ export const siteContentQuery = `{
     "mediaUrl": coalesce(media.image.asset->url, media.video.asset->url, media.externalUrl, image.asset->url, url),
     "mediaAlt": coalesce(media.alt, title),
     "category": coalesce(category, "Spaces"),
-    mediaType,
+    "mediaType": coalesce(lower(mediaType), select(defined(media.video) => "video", "image")),
     "layoutType": coalesce(lower(layoutType), "large"),
     href
   },

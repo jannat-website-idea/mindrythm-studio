@@ -8,7 +8,7 @@ export const contactInfo = defineType({
     defineField({name: "email", title: "Contact email", type: "string", validation: (Rule) => Rule.required().email()}),
     defineField({name: "phonePrimary", title: "Primary phone", type: "string", validation: (Rule) => Rule.required().min(8).max(30)}),
     defineField({name: "phoneSecondary", title: "Secondary phone", type: "string", validation: (Rule) => Rule.max(30)}),
-    defineField({name: "address", title: "Studio address", type: "text", rows: 3, validation: (Rule) => Rule.required().min(15)}),
+    defineField({name: "address", title: "Studio address", type: "text", rows: 3, validation: (Rule) => Rule.required()}),
   ],
   preview: {prepare: () => ({title: "Contact information", subtitle: "Phone, email and address"})},
 });

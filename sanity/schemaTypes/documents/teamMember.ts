@@ -9,7 +9,7 @@ export const teamMember = defineType({
     defineField({name: "sortOrder", title: "Display order", type: "number", validation: (Rule) => Rule.required().integer().min(0)}),
     defineField({name: "title", title: "Name or discipline", type: "string", validation: (Rule) => Rule.required().max(100)}),
     defineField({name: "role", title: "Role", type: "string", validation: (Rule) => Rule.required().max(80)}),
-    defineField({name: "bio", title: "Biography", type: "text", rows: 5, validation: (Rule) => Rule.required().min(30)}),
+    defineField({name: "bio", title: "Biography", type: "text", rows: 5, validation: (Rule) => Rule.required()}),
     defineField({name: "media", title: "Portrait", type: "mediaAsset", validation: (Rule) => Rule.required()}),
     defineField({
       name: "profileUrl",

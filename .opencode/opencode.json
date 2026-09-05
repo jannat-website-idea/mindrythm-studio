@@ -2,13 +2,13 @@
   "name": "mindrythm-studio",
   "description": "OpenCode configuration for the Mindrythm Studio Next.js + Sanity CMS website project.",
   "skills": [
-    ".opencode/skills/frontend-design-SKILL.md",
-    ".opencode/skills/web-artifacts-builder-SKILL.md",
-    ".opencode/skills/theme-factory-SKILL.md",
-    ".opencode/skills/canvas-design-SKILL.md",
-    ".opencode/skills/webapp-testing-SKILL.md"
+    { "path": ".opencode/skills/frontend-design-SKILL.md" },
+    { "path": ".opencode/skills/web-artifacts-builder-SKILL.md" },
+    { "path": ".opencode/skills/theme-factory-SKILL.md" },
+    { "path": ".opencode/skills/canvas-design-SKILL.md" },
+    { "path": ".opencode/skills/webapp-testing-SKILL.md" }
   ],
   "agent": {
-    "instructionsFile": "AGENTS.md"
+    "instructions": "AGENTS.md"
   }
 }

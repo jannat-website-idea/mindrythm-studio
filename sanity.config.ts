@@ -6,7 +6,7 @@ import {schemaTypes} from "./sanity/schemaTypes";
 import {presentationResolve} from "./sanity/presentation";
 import {mindrythmStructure} from "./sanity/structure";
 
-const previewUrl = process.env.SANITY_STUDIO_PREVIEW_URL || "http://localhost:3000";
+const previewUrl = process.env.SANITY_STUDIO_PREVIEW_URL || "https://mindrythm.com";
 
 export default defineConfig({
   name: "mindrythm",

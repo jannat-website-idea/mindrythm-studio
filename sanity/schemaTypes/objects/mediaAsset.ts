@@ -28,8 +28,9 @@ export const mediaAsset = defineType({
     defineField({
       name: "alt",
       title: "Accessible description",
+      description: "Optional alt text. Defaults to the item title if left blank.",
       type: "string",
-      validation: (Rule) => Rule.required().min(8).max(180),
+      validation: (Rule) => Rule.max(180),
     }),
   ],
   validation: (Rule) => Rule.custom((value) => value?.image || value?.video || value?.externalUrl ? true : "Add an image, video or existing media URL."),
