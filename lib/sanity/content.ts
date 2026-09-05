@@ -5,7 +5,7 @@ import {
   type ServiceContent,
   type SiteContent,
 } from "@/lib/content";
-import {sanityFetch} from "@/lib/sanity/live";
+import {sanityClient} from "@/lib/sanity/client";
 import {siteContentQuery} from "@/lib/sanity/query";
 
 type RawSanityContent = {
@@ -58,9 +58,13 @@ function legal(value: LegalPageContent | null | undefined, fallback: LegalPageCo
 
 export async function getSanitySiteContent(options: {stega?: boolean} = {}): Promise<SiteContent | null> {
   try {
-    const response = await sanityFetch({query: siteContentQuery, stega: options.stega});
-    const raw = response.data as RawSanityContent;
-    const hasContent = Boolean(raw.siteSettings || raw.hero || raw.projects?.length);
+    const raw = (await sanityClient.fetch(siteContentQuery, {}, {
+      stega: options.stega,
+      perspective: "published",
+      useCdn: false,
+    })) as RawSanityContent;
+
+    const hasContent = Boolean(raw.siteSettings || raw.hero || raw.projects?.length || raw.gallery?.length);
     if (!hasContent) return null;
 
     // Once Sanity responds, its collections are authoritative. This lets a client

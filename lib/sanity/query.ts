@@ -4,7 +4,7 @@ export const siteContentQuery = `{
     titleLineOne,
     titleLineTwo,
     visionHighlights,
-    "featuredProjectIds": featuredProjects[]->coalesce(cmsId.current, _id)
+    "featuredProjectIds": featuredProjects[]->{ "id": coalesce(cmsId.current, _id) }.id
   },
   "about": *[_type == "aboutContent" && _id == "aboutContent"][0],
   "contact": *[_type == "contactInfo" && _id == "contactInfo"][0],
@@ -21,7 +21,7 @@ export const siteContentQuery = `{
     key,
     title,
     copy,
-    "projectIds": projects[]->coalesce(cmsId.current, _id)
+    "projectIds": projects[]->{ "id": coalesce(cmsId.current, _id) }.id
   },
   "projects": *[_type == "project"] | order(sortOrder asc, _createdAt asc){
     "id": coalesce(cmsId.current, _id),
