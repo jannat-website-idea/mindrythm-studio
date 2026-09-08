@@ -551,15 +551,6 @@ export function Experience({ content }: { content: SiteContent }) {
               <summary><span>Where we begin</span><i>Read the thought +</i></summary>
               <p>{visionParagraphs[0]}</p>
             </details>
-            <div className="vision-scroll-strip" data-reveal>
-              <div className="vision-scroll-track">
-                {visionBridgeImages.map((src, i) => (
-                  <div key={i} className="vision-scroll-item">
-                    <img src={src} alt="Mindrythm visual production" loading="lazy" />
-                  </div>
-                ))}
-              </div>
-            </div>
           </section>
 
           <section className="services-experience" id="services" aria-label="Mindrythm services">
@@ -778,13 +769,26 @@ export function Experience({ content }: { content: SiteContent }) {
           </section>
 
           <section className="about-section" id="about">
-            <div className="about-narrative" data-reveal>
-              <div className="about-narrative-header"><span>Our core idea</span><h2>A conversation<br /><em>before a brief.</em></h2></div>
-              <p>{visionParagraphs[2] || visionParagraphs[0]}</p>
+            <div className="about-heading" data-reveal>
+              <span className="section-index">Our core idea</span>
+              <h2>A conversation<br /><em>before a brief.</em></h2>
+              <p className="about-heading-statement">
+                {visionParagraphs[2] || visionParagraphs[0]}
+              </p>
             </div>
-            <div className="about-pillars">
-              <a href="/story" data-reveal><h3>Why rhythm?</h3><p>Architecture, celebrations and visual identity all have cadence. We pay attention to the natural rhythm of light, space and emotion.</p><i>Discover our story →</i></a>
-              <a href="/story" data-reveal><h3>What is Mindrythm?</h3><p>We translate unseen narratives into honest, timeless imagery and films that reveal the essence already there.</p><i>Discover our story →</i></a>
+            <div className="about-pillars-grid">
+              <a href="/story" className="about-card-pillar" data-reveal>
+                <span className="about-card-eyebrow">Cadence &amp; Light</span>
+                <h3>Why rhythm?</h3>
+                <p>Architecture, celebrations and visual identity all have cadence. We pay attention to the natural rhythm of light, space and emotion.</p>
+                <span className="about-card-arrow">Discover our story →</span>
+              </a>
+              <a href="/story" className="about-card-pillar" data-reveal>
+                <span className="about-card-eyebrow">Intentional Narratives</span>
+                <h3>What is Mindrythm?</h3>
+                <p>We translate unseen narratives into honest, timeless imagery and films that reveal the essence already there.</p>
+                <span className="about-card-arrow">Discover our story →</span>
+              </a>
             </div>
           </section>
 
@@ -1025,6 +1029,7 @@ export function Experience({ content }: { content: SiteContent }) {
             items={unique}
             onClose={() => setSelectedItem(null)}
             onSelect={setSelectedItem}
+            hideDescription={selectedItem?.kind === "gallery"}
           />
         );
       })()}

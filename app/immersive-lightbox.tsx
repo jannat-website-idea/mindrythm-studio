@@ -70,11 +70,13 @@ export function ImmersiveLightbox({
   items,
   onClose,
   onSelect,
+  hideDescription,
 }: {
   selected: ContentItem;
   items: ContentItem[];
   onClose: () => void;
   onSelect: (item: ContentItem) => void;
+  hideDescription?: boolean;
 }) {
   const currentIndex = items.findIndex((item) => item.id === selected.id);
   const hasPrev = currentIndex > 0;
@@ -165,6 +167,7 @@ export function ImmersiveLightbox({
   return (
     <div
       className={`lightbox-immersive lightbox-layout-${layout}`}
+      data-kind={selected.kind}
       role="dialog"
       aria-modal="true"
       aria-label={selected.title}
@@ -241,13 +244,15 @@ export function ImmersiveLightbox({
         </div>
       </div>
 
-      <div className={`lightbox-copy-area ${isPortraitLike ? "lightbox-copy-side" : "lightbox-copy-docked"}`}>
-        <div className="lightbox-copy-inner">
-          <span>{selected.category || selected.eyebrow}</span>
-          <h2>{selected.title}</h2>
-          {selected.body && <div className="lightbox-copy-body">{selected.body}</div>}
+      {!hideDescription && selected.kind !== "gallery" && (
+        <div className={`lightbox-copy-area ${isPortraitLike ? "lightbox-copy-side" : "lightbox-copy-docked"}`}>
+          <div className="lightbox-copy-inner">
+            <span>{selected.category || selected.eyebrow}</span>
+            <h2>{selected.title}</h2>
+            {selected.body && <div className="lightbox-copy-body">{selected.body}</div>}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

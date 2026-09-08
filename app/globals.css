@@ -9911,5 +9911,139 @@ main {
   padding-bottom: 7rem !important;
 }
 
+/* ==========================================================================
+   Brand Styled About Section (Screenshot 2 Fix)
+   ========================================================================== */
+.about-section {
+  position: relative;
+  background: var(--ivory) !important;
+  padding: clamp(6rem, 9vw, 10rem) clamp(1.5rem, 5vw, 5rem) clamp(5rem, 8vw, 9rem) !important;
+  border-top: 1px solid var(--line);
+}
 
+.about-heading {
+  max-width: 960px;
+  margin-bottom: clamp(3rem, 5vw, 5.5rem);
+}
 
+.about-heading .section-index {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1.25rem;
+}
+
+.about-heading h2 {
+  font-size: clamp(2.8rem, 5.6vw, 5.2rem);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  color: var(--ink);
+  margin-bottom: 2rem;
+}
+
+.about-heading h2 em {
+  font-family: var(--font-accent), "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.about-heading-statement {
+  font-size: clamp(1.05rem, 1.6vw, 1.45rem);
+  font-weight: 350;
+  letter-spacing: -0.015em;
+  line-height: 1.65;
+  color: rgba(23, 23, 20, 0.78);
+  max-width: 780px;
+  margin: 0;
+}
+
+.about-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1.5rem, 3vw, 2.75rem);
+  max-width: 1200px;
+}
+
+.about-card-pillar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 320px;
+  padding: clamp(2rem, 3.5vw, 3.25rem);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: transform 0.35s var(--motion-ease), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.about-card-pillar:hover {
+  transform: translateY(-6px);
+  border-color: rgba(23, 23, 20, 0.3);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.05);
+}
+
+.about-card-eyebrow {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1.25rem;
+}
+
+.about-card-pillar h3 {
+  font-size: clamp(1.85rem, 2.6vw, 2.6rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--ink);
+  margin: 0 0 1rem;
+}
+
+.about-card-pillar p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(23, 23, 20, 0.72);
+  margin: 0 0 auto;
+  padding-bottom: 2rem;
+}
+
+.about-card-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  transition: transform 0.25s ease;
+}
+
+.about-card-pillar:hover .about-card-arrow {
+  transform: translateX(6px);
+  color: #000000;
+}
+
+@media (max-width: 768px) {
+  .about-pillars-grid {
+    grid-template-columns: 1fr;
+  }
+  .about-card-pillar {
+    min-height: auto;
+    padding: 1.75rem 1.35rem;
+  }
+}
+
+/* Gallery section: Pure image showcase without description overlay */
+.gallery-page-fullwidth .lightbox-copy-area,
+.lightbox-immersive[data-kind="gallery"] .lightbox-copy-area {
+  display: none !important;
+}

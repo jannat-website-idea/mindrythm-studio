@@ -636,6 +636,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
               items={allItems}
               onClose={() => setSelected(null)}
               onSelect={setSelected}
+              hideDescription={page === "gallery" || selected.kind === "gallery"}
             />
           );
         })()

@@ -13,12 +13,18 @@ tar -czf standalone.tar.gz -C .next/standalone .
 
 echo "=== 4. Uploading to Hostinger ==="
 expect -c "
-set timeout 300
-spawn scp -P 65002 -o StrictHostKeyChecking=no standalone.tar.gz u989720899@86.38.243.142:/home/u989720899/domains/mindrythm.com/hbuilds/standalone.tar.gz
+set timeout 1200
+spawn scp -P 65002 -o StrictHostKeyChecking=no -o ServerAliveInterval=15 -o ServerAliveCountMax=8 standalone.tar.gz u989720899@86.38.243.142:/home/u989720899/domains/mindrythm.com/hbuilds/standalone.tar.gz
 expect \"*assword*\"
 sleep 0.5
 send \"Salvator@1234\r\"
 expect eof
+catch wait result
+set exitCode [lindex \$result 3]
+if {\$exitCode != 0} {
+    puts \"SCP upload failed with exit code \$exitCode\"
+    exit 1
+}
 "
 
 echo "=== 5. Extracting and reloading on Hostinger ==="
