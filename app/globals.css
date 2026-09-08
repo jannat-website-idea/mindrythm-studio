@@ -1393,195 +1393,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .site-header.menu-active .menu-toggle-label::before { box-shadow: 0 0 0 4px rgba(11,11,10,.08); }
 .site-header.menu-active .menu-toggle i { color: var(--ivory); background: var(--ink); }
 /* ==========================================================================
-   Full-Screen Studio Menu Overlay (Web & Mobile)
+   Full-Screen Studio Menu Overlay - Reference Split Screen
    ========================================================================== */
-.menu-overlay {
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: 99999 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background: rgba(14, 14, 12, 0.97) !important;
-  backdrop-filter: blur(24px) !important;
-  -webkit-backdrop-filter: blur(24px) !important;
-  color: #f7f6f1 !important;
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s ease !important;
-}
-
-.menu-overlay.is-open,
-.menu-overlay.nav-open {
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-}
-
-.menu-overlay-panel {
-  position: relative;
-  width: min(920px, 92vw);
-  max-height: 92svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: clamp(1.75rem, 4vw, 3.5rem) clamp(1.25rem, 3.5vw, 2.75rem);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.menu-overlay-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  margin-bottom: 1.75rem;
-}
-
-.menu-overlay-title {
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.55);
-}
-
-.menu-overlay-close {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 44px;
-  min-height: 44px;
-  padding: 0.5rem 1.15rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  color: #ffffff;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.menu-overlay-close:hover {
-  background: #ffffff;
-  color: #0e0e0c;
-  transform: scale(1.04);
-}
-
-.menu-overlay-links {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(0.4rem, 1.2vh, 1rem);
-}
-
-.menu-overlay-link {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  padding: 0.5rem 0;
-  text-decoration: none;
-  color: #f7f6f1;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  transition: all 0.25s ease;
-}
-
-.menu-overlay-link span {
-  font-size: clamp(1.85rem, 4.5vw, 3.8rem);
-  font-weight: 350;
-  letter-spacing: -0.04em;
-  line-height: 1.05;
-  text-transform: uppercase;
-  color: #ffffff;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
-}
-
-.menu-overlay-link small {
-  font-size: 0.68rem;
-  font-weight: 400;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.45);
-  transition: color 0.2s ease;
-}
-
-.menu-overlay-link:hover span {
-  transform: translateX(10px);
-  color: #ffffff;
-}
-
-.menu-overlay-link:hover small {
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.menu-overlay-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1.25rem;
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.menu-overlay-socials {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.menu-overlay-socials a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
-  transition: all 0.2s ease;
-}
-
-.menu-overlay-socials a:hover {
-  background: #ffffff;
-  color: #0e0e0c;
-  transform: translateY(-2px);
-}
-
-.menu-overlay-meta > a {
-  color: rgba(255, 255, 255, 0.75);
-  text-decoration: none;
-  font-size: 0.82rem;
-  letter-spacing: 0.04em;
-  transition: color 0.2s ease;
-}
-
-.menu-overlay-meta > a:hover {
-  color: #ffffff;
-  text-decoration: underline;
-}
-
-@media (max-width: 680px) {
-  .menu-overlay-panel {
-    padding: 1.25rem 0.75rem;
-  }
-  .menu-overlay-link span {
-    font-size: clamp(1.6rem, 7.5vw, 2.25rem);
-  }
-  .menu-overlay-link small {
-    display: none;
-  }
-  .menu-overlay-meta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.85rem;
-  }
-}
 
 /* Full-viewport image hero with a restrained left-aligned statement */
 .hero { height: 100svh; min-height: 640px; background: #111; }
@@ -9064,201 +8877,6 @@ body:has(.gallery-page-dark),
   color: #ffffff !important;
 }
 
-/* ==========================================================================
-   Master Full-Screen Studio Menu Overlay (Authoritative Styles)
-   ========================================================================== */
-.menu-overlay {
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: 999999 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background: rgba(14, 14, 12, 0.98) !important;
-  backdrop-filter: blur(28px) !important;
-  -webkit-backdrop-filter: blur(28px) !important;
-  color: #f7f6f1 !important;
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s ease !important;
-  clip-path: none !important;
-  transform: none !important;
-  padding: 0 !important;
-}
-
-.menu-overlay.is-open,
-.menu-overlay.nav-open {
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-}
-
-.menu-overlay-panel {
-  position: relative !important;
-  width: min(920px, 92vw) !important;
-  max-height: 92svh !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: space-between !important;
-  padding: clamp(1.75rem, 4vw, 3.5rem) clamp(1.25rem, 3.5vw, 2.75rem) !important;
-  overflow-y: auto !important;
-  -webkit-overflow-scrolling: touch !important;
-  background: transparent !important;
-}
-
-.menu-overlay-header {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  padding-bottom: 1.25rem !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
-  margin-bottom: 1.75rem !important;
-}
-
-.menu-overlay-title {
-  font-size: 0.72rem !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.14em !important;
-  text-transform: uppercase !important;
-  color: rgba(255, 255, 255, 0.6) !important;
-}
-
-.menu-overlay-close {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  min-width: 48px !important;
-  min-height: 44px !important;
-  padding: 0.5rem 1.25rem !important;
-  border-radius: 999px !important;
-  background: rgba(255, 255, 255, 0.14) !important;
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
-  color: #ffffff !important;
-  font-size: 0.75rem !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.08em !important;
-  text-transform: uppercase !important;
-  cursor: pointer !important;
-  transition: all 0.2s ease !important;
-}
-
-.menu-overlay-close:hover {
-  background: #ffffff !important;
-  color: #0e0e0c !important;
-  transform: scale(1.04) !important;
-}
-
-.menu-overlay-links {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: clamp(0.35rem, 1vh, 0.85rem) !important;
-}
-
-.menu-overlay-link {
-  display: flex !important;
-  align-items: baseline !important;
-  justify-content: space-between !important;
-  padding: 0.55rem 0 !important;
-  text-decoration: none !important;
-  color: #f7f6f1 !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-  transition: all 0.25s ease !important;
-  background: transparent !important;
-}
-
-.menu-overlay-link span {
-  font-size: clamp(1.85rem, 4.5vw, 3.8rem) !important;
-  font-weight: 350 !important;
-  letter-spacing: -0.04em !important;
-  line-height: 1.05 !important;
-  text-transform: uppercase !important;
-  color: #ffffff !important;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease !important;
-}
-
-.menu-overlay-link small {
-  font-size: 0.68rem !important;
-  font-weight: 400 !important;
-  letter-spacing: 0.08em !important;
-  text-transform: uppercase !important;
-  color: rgba(255, 255, 255, 0.5) !important;
-  transition: color 0.2s ease !important;
-}
-
-.menu-overlay-link:hover span {
-  transform: translateX(10px) !important;
-  color: #ffffff !important;
-}
-
-.menu-overlay-link:hover small {
-  color: rgba(255, 255, 255, 0.9) !important;
-}
-
-.menu-overlay-meta {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  flex-wrap: wrap !important;
-  gap: 1.25rem !important;
-  margin-top: 2rem !important;
-  padding-top: 1.5rem !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.15) !important;
-}
-
-.menu-overlay-socials {
-  display: flex !important;
-  align-items: center !important;
-  gap: 1rem !important;
-}
-
-.menu-overlay-socials a {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 42px !important;
-  height: 42px !important;
-  border-radius: 50% !important;
-  background: rgba(255, 255, 255, 0.1) !important;
-  color: #ffffff !important;
-  transition: all 0.2s ease !important;
-}
-
-.menu-overlay-socials a:hover {
-  background: #ffffff !important;
-  color: #0e0e0c !important;
-  transform: translateY(-2px) !important;
-}
-
-.menu-overlay-meta > a {
-  color: rgba(255, 255, 255, 0.8) !important;
-  text-decoration: none !important;
-  font-size: 0.85rem !important;
-  letter-spacing: 0.04em !important;
-  transition: color 0.2s ease !important;
-}
-
-.menu-overlay-meta > a:hover {
-  color: #ffffff !important;
-  text-decoration: underline !important;
-}
-
-@media (max-width: 680px) {
-  .menu-overlay-panel {
-    padding: 1.25rem 0.75rem !important;
-  }
-  .menu-overlay-link span {
-    font-size: clamp(1.6rem, 7.5vw, 2.25rem) !important;
-  }
-  .menu-overlay-link small {
-    display: none !important;
-  }
-  .menu-overlay-meta {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 0.85rem !important;
-  }
-}
 
 /* ==========================================================================
    Master Studio Footer & Copyright Segment (Authoritative Styles)
@@ -10265,10 +9883,33 @@ main {
   transform: translateX(4px);
 }
 
-
-
-
-
+/* Team Section Editorial Link (Zero images on home screen) */
+.team-heading-actions {
+  margin-top: 2.25rem;
+}
+.team-editorial-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1.8rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--ivory);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: transform 0.3s var(--motion-ease), background 0.3s ease;
+}
+.team-editorial-link:hover {
+  transform: translateX(4px);
+  background: #2a2a26;
+  color: #ffffff;
+}
+.team-section-editorial {
+  padding-bottom: 7rem !important;
+}
 
 
 

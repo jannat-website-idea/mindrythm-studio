@@ -79,10 +79,11 @@ export function Experience({ content }: { content: SiteContent }) {
     if (content.copy.visionBridgeImages?.length) return content.copy.visionBridgeImages;
     return [
       "/images/tropical-interior.jpg",
-      "/images/resort-sunset.jpg",
-      "/images/wedding-celebration.jpg",
-      "/images/field-notes.jpg",
-      "/images/brand-identity.jpg",
+      "/images/luxury-interior.jpg",
+      "/images/resort-exterior.jpg",
+      "/images/villa-pool.jpg",
+      "/images/modern-house.jpg",
+      "/images/wellness-mud-bath.jpg",
     ];
   }, [content.copy.visionBridgeImages]);
 
@@ -471,28 +472,38 @@ export function Experience({ content }: { content: SiteContent }) {
           </button>
       </header>
 
-      <div className={`menu-overlay ${menuOpen ? "is-open nav-open" : ""}`} aria-hidden={!menuOpen}>
-        <div className="menu-overlay-panel">
-          <div className="menu-overlay-header">
-            <span className="menu-overlay-title">Navigation</span>
-            <button type="button" className="menu-overlay-close" aria-label="Close menu" onClick={() => setMenuOpen(false)}>
-              ✕ Close
-            </button>
+      <div className={`menu-overlay ${menuOpen ? "nav-open" : ""}`} aria-hidden={!menuOpen}>
+        <button type="button" className="menu-overlay-close" aria-label="Close navigation" onClick={() => setMenuOpen(false)}>
+          <span>Close</span>
+          <i aria-hidden="true">×</i>
+        </button>
+        <aside className="menu-overlay-brand" aria-hidden="true">
+          <div className="menu-brand-context">
+            <span>Creative professional studio</span>
+            <small>Independent visual practice</small>
           </div>
-          <nav className="menu-overlay-links" aria-label="Main menu">
+          <div className="menu-brand-feature">
+            <img src="/mindrythm-logomark.png" alt="" className="menu-brand-logo-centered" />
+            <p><span>Mindrythm</span></p>
+          </div>
+          <small>Every image begins with a pulse.</small>
+        </aside>
+        <div className="menu-overlay-index">
+          <div className="menu-overlay-heading"><span>Navigation</span><span>Studio directory</span></div>
+          <nav aria-label="Main navigation">
             {navigationItems.map((item) => (
               <a
-                key={item.href}
                 href={item.href}
-                className="menu-overlay-link"
-                onClick={(e) => {
+                key={item.label}
+                onClick={(event) => {
                   if (item.href === "#home") {
-                    returnToHero(e);
+                    returnToHero(event);
+                    return;
                   }
                   setMenuOpen(false);
                 }}
               >
-                <span>{item.label}</span>
+                <strong>{item.label}</strong>
                 <small>{item.note}</small>
               </a>
             ))}
@@ -751,24 +762,18 @@ export function Experience({ content }: { content: SiteContent }) {
 
           <aside className="story-whisper" data-reveal><span>On collaboration</span><p>“{brandTaglines[4]}”</p></aside>
 
-          <section className="team-section" id="team">
+          <section className="team-section team-section-editorial" id="team">
             <img className="section-watermark section-watermark-two" src="/mindrythm-logomark.png" alt="" aria-hidden="true" />
             <div className="team-heading" data-reveal>
               <span>The people behind Mindrythm</span>
               <h2>A focused core.<br /><em>The right specialists.</em></h2>
               <p>{teamIntroduction}</p>
-            </div>
-            <div className="team-member-grid">
-              {savedTeam.map((member) => (
-                <TeamMemberCard
-                  key={member.id}
-                  member={member}
-                  isActive={activeTeamCardId === member.id}
-                  onToggle={() => setActiveTeamCardId((current) => (current === member.id ? null : member.id))}
-                  onClose={() => setActiveTeamCardId(null)}
-                  onReadMore={() => setSelectedItem(member)}
-                />
-              ))}
+              <div className="team-heading-actions">
+                <a href="/team" className="team-editorial-link">
+                  <span>Explore our team &amp; craftspeople</span>
+                  <span aria-hidden="true">→</span>
+                </a>
+              </div>
             </div>
           </section>
 

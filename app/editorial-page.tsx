@@ -226,20 +226,29 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
         </button>
       </header>
 
-      <div className={`menu-overlay ${navigationOpen ? "is-open nav-open" : ""}`} aria-hidden={!navigationOpen}>
-        <div className="menu-overlay-panel">
-          <div className="menu-overlay-header">
-            <span className="menu-overlay-title">Navigation</span>
-            <button type="button" className="menu-overlay-close" aria-label="Close menu" onClick={() => setNavigationOpen(false)}>
-              ✕ Close
-            </button>
+      <div className={`menu-overlay ${navigationOpen ? "nav-open" : ""}`} aria-hidden={!navigationOpen}>
+        <button type="button" className="menu-overlay-close" aria-label="Close navigation" onClick={() => setNavigationOpen(false)}>
+          <span>Close</span>
+          <i aria-hidden="true">×</i>
+        </button>
+        <aside className="menu-overlay-brand" aria-hidden="true">
+          <div className="menu-brand-context">
+            <span>Creative professional studio</span>
+            <small>Independent visual practice</small>
           </div>
-          <nav className="menu-overlay-links" aria-label="Main menu">
+          <div className="menu-brand-feature">
+            <img src="/mindrythm-logomark.png" alt="" className="menu-brand-logo-centered" />
+            <p><span>Mindrythm</span></p>
+          </div>
+          <small>Every image begins with a pulse.</small>
+        </aside>
+        <div className="menu-overlay-index">
+          <div className="menu-overlay-heading"><span>Navigation</span><span>Studio directory</span></div>
+          <nav aria-label="Main navigation">
             {navigationItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="menu-overlay-link"
                 onClick={() => {
                   if (item.href === "/") {
                     returnToHero();
@@ -247,7 +256,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                   setNavigationOpen(false);
                 }}
               >
-                <span>{item.label}</span>
+                <strong>{item.label}</strong>
                 <small>{item.note}</small>
               </Link>
             ))}
