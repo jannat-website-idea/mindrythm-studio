@@ -25,6 +25,7 @@ export type ContentItem = {
   year: string;
   href: string;
   accent: string;
+  services?: string[];
 };
 
 export type SiteSettings = {
@@ -58,6 +59,19 @@ export type SiteCopy = {
   brandTaglines: string[];
   enquiryTaglines: string[];
   teamIntroduction: string;
+  visionBridgeImages?: string[];
+  processBanner?: { mediaUrl: string; mediaType: string };
+};
+
+export type ServiceWebsiteLink = {
+  title: string;
+  url: string;
+};
+
+export type ServiceLogoImage = {
+  url: string;
+  alt?: string;
+  caption?: string;
 };
 
 export type ServiceContent = {
@@ -65,6 +79,9 @@ export type ServiceContent = {
   title: string;
   copy: string;
   projectIds: string[];
+  galleryItemIds?: string[];
+  websiteLinks?: ServiceWebsiteLink[];
+  logoImages?: ServiceLogoImage[];
 };
 
 export type FooterContent = {
@@ -186,31 +203,41 @@ export const defaultCopy: SiteCopy = {
 export const defaultServices: ServiceContent[] = [
   {
     key: "visual-production",
-    title: "Premium visual production (photography + videography)",
+    title: "Visual production (photography + videography)",
     copy: "High-end photography and cinematic videography tailored for luxury properties, hospitality, architectural spaces, and brand narratives.",
     projectIds: ["field-notes", "tropical-pavilion", "sanctuary-interiors", "quiet-frequency", "resort-at-dusk"],
+    galleryItemIds: ["divine-retreats-mud-bath", "warm-interiors", "hand-painted-murals", "penthouse-interiors", "luxury-villa-pool-side-view", "serenity-villa-pool-view"],
   },
   {
     key: "drone-imagery",
     title: "Drone imagery",
     copy: "High-resolution aerial photography and 4K cinematic drone footage capturing landscape scale, architectural perspective, and surrounding context.",
     projectIds: ["quiet-frequency", "resort-at-dusk"],
+    galleryItemIds: ["luxury-villa-pool-side-view", "pool-view", "luxury-airbnb", "divine-retreats-mud-bath", "warm-interiors"],
   },
   {
     key: "web-development",
     title: "Website development",
     copy: "Bespoke, high-performance websites and digital experiences crafted with clean aesthetics, responsive architecture, and seamless interaction.",
     projectIds: ["field-notes", "object-ritual"],
+    websiteLinks: [
+      { title: "Khelat Bhawan", url: "https://www.khelatbhawan.com" },
+      { title: "Mindrythm Studio", url: "https://mindrythm.com" },
+    ],
   },
   {
     key: "logo-generation",
     title: "Logo generation",
     copy: "Distinctive, memorable visual identities and emblem design communicating brand essence with clarity and timeless appeal.",
     projectIds: ["sanctuary-interiors", "field-notes"],
+    logoImages: [
+      { url: "/mindrythm-logomark.png", caption: "Mindrythm Logomark" },
+      { url: "/images/tropical-interior.jpg", caption: "Emblem & Identity Design" },
+    ],
   },
   {
     key: "meta-ads",
-    title: "Meta Ads",
+    title: "Running Meta Ads",
     copy: "Data-driven, creative-led ad campaigns on Facebook and Instagram engineered to maximize reach, engagement, and direct conversions.",
     projectIds: ["quiet-frequency", "event-film"],
   },

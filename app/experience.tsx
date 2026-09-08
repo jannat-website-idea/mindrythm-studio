@@ -3,6 +3,7 @@
 import {
   mainInstagramUrl as defaultInstagramUrl,
   type ContentItem,
+  type ServiceContent,
   type SiteContent,
 } from "@/lib/content";
 import { BackToTop } from "@/app/back-to-top";
@@ -10,6 +11,7 @@ import { BentoGalleryGrid } from "@/app/bento-gallery";
 import { EmphasizedCopy } from "@/app/emphasized-copy";
 import { ImmersiveLightbox } from "@/app/immersive-lightbox";
 import { Media } from "@/app/media";
+import { ServiceModal } from "@/app/service-modal";
 import { SocialIcon } from "@/app/social-icon";
 import { TeamMemberCard } from "@/app/team-member-card";
 import { getServiceProjects } from "@/lib/services";
@@ -73,7 +75,18 @@ export function Experience({ content }: { content: SiteContent }) {
     return spaces.length ? spaces : galleryItems.slice(0, 7);
   }, [galleryItems]);
 
+  const visionBridgeImages = useMemo(() => {
+    if (content.copy.visionBridgeImages?.length) return content.copy.visionBridgeImages;
+    return [
+      "/images/tropical-interior.jpg",
+      "/images/resort-sunset.jpg",
+      "/images/wedding-celebration.jpg",
+      "/images/field-notes.jpg",
+      "/images/brand-identity.jpg",
+    ];
+  }, [content.copy.visionBridgeImages]);
 
+  const processMedia = content.copy.processBanner?.mediaUrl ? content.copy.processBanner : null;
 
   const bentoProjects = useMemo(() => projects.slice(0, 6), [projects]);
 
@@ -100,7 +113,8 @@ export function Experience({ content }: { content: SiteContent }) {
   const [sectionNavVisible, setSectionNavVisible] = useState(false);
   const [activeHash, setActiveHash] = useState("#home");
   const [activeTeamCardId, setActiveTeamCardId] = useState<string | null>(null);
-  const [activeService, setActiveService] = useState(0);
+  const [activeService, setActiveService] = useState<number | null>(null);
+  const [openedService, setOpenedService] = useState<ServiceContent | null>(null);
   const [enquiryState, setEnquiryState] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [enquiryErrorMessage, setEnquiryErrorMessage] = useState("");
   const [enquiryQuery, setEnquiryQuery] = useState("");
@@ -290,7 +304,22 @@ export function Experience({ content }: { content: SiteContent }) {
   useEffect(() => {
     const section = scrollCinemaRef.current;
     if (!section) return;
-    section.style.setProperty("--scroll-x", "0px");
+    const windowEl = section.querySelector<HTMLElement>(".scroll-cinema-window");
+    if (!windowEl) return;
+
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        const atLeft = windowEl.scrollLeft <= 0;
+        const atRight = windowEl.scrollLeft + windowEl.clientWidth >= windowEl.scrollWidth - 5;
+        if ((e.deltaY > 0 && !atRight) || (e.deltaY < 0 && !atLeft)) {
+          e.preventDefault();
+          windowEl.scrollBy({ left: e.deltaY * 1.5, behavior: "auto" });
+        }
+      }
+    };
+
+    windowEl.addEventListener("wheel", onWheel, { passive: false });
+    return () => windowEl.removeEventListener("wheel", onWheel);
   }, []);
 
   useEffect(() => {
@@ -511,21 +540,14 @@ export function Experience({ content }: { content: SiteContent }) {
               <summary><span>Where we begin</span><i>Read the thought +</i></summary>
               <p>{visionParagraphs[0]}</p>
             </details>
-            <div className="vision-bridge" data-reveal>
-              <a href="/work" className="vision-bridge-frame">
-                <img src="/images/tropical-interior.jpg" alt="Natural reception area photographed by Mindrythm" />
-                <span>Gallery / Hospitality</span>
-              </a>
-              <a href="/story" className="vision-bridge-centre">
-                <img src="/mindrythm-logomark.png" alt="" />
-                <span>One studio</span>
-                <strong>Many ways of seeing.</strong>
-                <i>Our story</i>
-              </a>
-              <a href="/work" className="vision-bridge-frame vision-bridge-frame-last">
-                <img src="/images/wedding-celebration.jpg" alt="Bengali wedding couple photographed by Mindrythm" />
-                <span>People / Celebrations</span>
-              </a>
+            <div className="vision-scroll-strip" data-reveal>
+              <div className="vision-scroll-track">
+                {visionBridgeImages.map((src, i) => (
+                  <div key={i} className="vision-scroll-item">
+                    <img src={src} alt="Mindrythm visual production" loading="lazy" />
+                  </div>
+                ))}
+              </div>
             </div>
           </section>
 
@@ -537,7 +559,12 @@ export function Experience({ content }: { content: SiteContent }) {
             </header>
             <div className="services-editorial-split" data-reveal>
               <div className="services-index-column">
-                <div className="services-index-list" role="tablist" aria-label="Services list">
+                <div
+                  className="services-index-list"
+                  role="tablist"
+                  aria-label="Services list"
+                  onMouseLeave={() => setActiveService(null)}
+                >
                   {serviceItems.map((service, index) => {
                     const isActive = activeService === index;
                     return (
@@ -545,23 +572,31 @@ export function Experience({ content }: { content: SiteContent }) {
                         key={service.key || service.title}
                         className={`services-index-row ${isActive ? "is-active" : ""}`}
                       >
-                        <a
-                          href={`/services#service-${service.key}`}
+                        <button
+                          type="button"
                           className="services-row-header"
+                          onClick={() => {
+                            setActiveService(index);
+                            setOpenedService(service);
+                          }}
                           onMouseEnter={() => setActiveService(index)}
                           onFocus={() => setActiveService(index)}
                         >
                           <span className="services-row-title">{service.title}</span>
                           <span className="services-row-arrow" aria-hidden="true">→</span>
-                        </a>
+                        </button>
                         {isActive && (
                           <div className="services-row-expanded">
                             <p className="services-row-description">{service.copy}</p>
                             <div className="services-row-actions">
-                              <a className="services-row-link" href={`/services#service-${service.key}`}>
-                                <span>See all {service.title}</span>
+                              <button
+                                type="button"
+                                className="services-row-link services-readmore-trigger"
+                                onClick={() => setOpenedService(service)}
+                              >
+                                <span>Read More</span>
                                 <span aria-hidden="true">→</span>
-                              </a>
+                              </button>
                             </div>
                           </div>
                         )}
@@ -574,26 +609,27 @@ export function Experience({ content }: { content: SiteContent }) {
               <div className="services-canvas-column" aria-live="polite">
                 <div className="services-canvas-box">
                   {serviceCollections.map((service, index) => {
-                    const isActive = activeService === index;
+                    const isDisplayed = activeService === null ? index === 0 : activeService === index;
                     const mainMedia = service.media[0] || projects[0];
                     const secondaryMedia = service.media[1];
                     return (
-                      <a
+                      <button
                         key={service.key}
-                        href={`/services#service-${service.key}`}
-                        className={`services-canvas-item ${isActive ? "is-active" : ""}`}
-                        aria-hidden={!isActive}
-                        aria-label={`View ${service.title} photos on services page`}
+                        type="button"
+                        onClick={() => setOpenedService(service)}
+                        className={`services-canvas-item ${isDisplayed ? "is-active" : ""}`}
+                        aria-hidden={!isDisplayed}
+                        aria-label={`Read more and view ${service.title} gallery`}
                       >
                         <div className="services-canvas-media-wrap">
                           {mainMedia && (
                             <div className="services-media-primary">
-                              <Media item={mainMedia} priority={isActive} active={isActive} />
+                              <Media item={mainMedia} priority={isDisplayed} active={isDisplayed} />
                             </div>
                           )}
                           {secondaryMedia && (
                             <div className="services-media-secondary">
-                              <Media item={secondaryMedia} active={isActive} />
+                              <Media item={secondaryMedia} active={isDisplayed} />
                             </div>
                           )}
                           <div className="services-media-vignette" />
@@ -604,11 +640,11 @@ export function Experience({ content }: { content: SiteContent }) {
                             <span className="services-bar-name">{service.title}</span>
                           </div>
                           <span className="services-bar-cta">
-                            <span>View photos &amp; details</span>
+                            <span>Read More</span>
                             <span aria-hidden="true" className="services-bar-arrow">→</span>
                           </span>
                         </div>
-                      </a>
+                      </button>
                     );
                   })}
                 </div>
@@ -620,7 +656,34 @@ export function Experience({ content }: { content: SiteContent }) {
 
           <section className="scroll-cinema" ref={scrollCinemaRef} aria-label="A scroll-led view of Mindrythm">
             <div className="scroll-cinema-sticky">
-              <div className="scroll-cinema-top"><span>Scroll through the visual portfolio</span><span>Selected stories / 2026</span></div>
+              <div className="scroll-cinema-top">
+                <span>Scroll through the visual portfolio</span>
+                <div className="scroll-cinema-nav-controls">
+                  <button
+                    type="button"
+                    className="scroll-cinema-arrow-btn"
+                    onClick={() => {
+                      const w = scrollCinemaRef.current?.querySelector(".scroll-cinema-window");
+                      w?.scrollBy({ left: -450, behavior: "smooth" });
+                    }}
+                    aria-label="Scroll left"
+                  >
+                    ←
+                  </button>
+                  <button
+                    type="button"
+                    className="scroll-cinema-arrow-btn"
+                    onClick={() => {
+                      const w = scrollCinemaRef.current?.querySelector(".scroll-cinema-window");
+                      w?.scrollBy({ left: 450, behavior: "smooth" });
+                    }}
+                    aria-label="Scroll right"
+                  >
+                    →
+                  </button>
+                  <span>Selected stories / 2026</span>
+                </div>
+              </div>
               <div className="scroll-cinema-window">
                 <div className="scroll-cinema-track">
                   {heroItems.slice(0, 3).map((item) => (
@@ -667,21 +730,6 @@ export function Experience({ content }: { content: SiteContent }) {
             </div>
           </section>
 
-          <section className="gallery-section-root" id="gallery">
-            <div className="gallery-section-container" id="gallery-spaces">
-              <header className="gallery-section-header" data-reveal>
-                <h2>Gallery</h2>
-              </header>
-              <BentoGalleryGrid
-                items={gallerySpaces}
-                editorialText="SPACES SHAPED BY LIGHT, MATERIAL AND A SENSE OF ARRIVAL."
-                onOpen={setSelectedItem}
-                showSocialCard
-                socialLinks={{ instagram: mainInstagramUrl, facebook: settings.facebook, youtube: settings.youtube }}
-              />
-            </div>
-          </section>
-
           <aside className="story-whisper story-whisper-light" data-reveal><span>Our point of view</span><p>“{brandTaglines[3]}”</p></aside>
 
           <section className="testimonials-section" id="testimonials">
@@ -706,19 +754,31 @@ export function Experience({ content }: { content: SiteContent }) {
           <section className="team-section" id="team">
             <img className="section-watermark section-watermark-two" src="/mindrythm-logomark.png" alt="" aria-hidden="true" />
             <div className="team-heading" data-reveal>
-              <span>Meet the team</span>
-              <h2>The right eye<br />for <em>every story.</em></h2>
-              <div className="team-heading-action"><p>{teamIntroduction}</p><a href="/team">Meet our team</a></div>
+              <span>The people behind Mindrythm</span>
+              <h2>A focused core.<br /><em>The right specialists.</em></h2>
+              <p>{teamIntroduction}</p>
             </div>
-            <a className="team-page-link" href="/team"><span>People behind the images</span><strong>Explore the full team →</strong></a>
+            <div className="team-member-grid">
+              {savedTeam.map((member) => (
+                <TeamMemberCard
+                  key={member.id}
+                  member={member}
+                  isActive={activeTeamCardId === member.id}
+                  onToggle={() => setActiveTeamCardId((current) => (current === member.id ? null : member.id))}
+                  onClose={() => setActiveTeamCardId(null)}
+                  onReadMore={() => setSelectedItem(member)}
+                />
+              ))}
+            </div>
           </section>
 
           <section className="about-section" id="about">
-            <div className="about-heading" data-reveal>
-              <span>About us</span>
-              <h2>“Mindrythm is where<br />ideas find a visual language.”</h2>
+            <div className="about-narrative" data-reveal>
+              <div className="about-narrative-header"><span>Our core idea</span><h2>A conversation<br /><em>before a brief.</em></h2></div>
+              <p>{visionParagraphs[2] || visionParagraphs[0]}</p>
             </div>
-            <div className="about-grid about-grid-single">
+            <div className="about-pillars">
+              <a href="/story" data-reveal><h3>Why rhythm?</h3><p>Architecture, celebrations and visual identity all have cadence. We pay attention to the natural rhythm of light, space and emotion.</p><i>Discover our story →</i></a>
               <a href="/story" data-reveal><h3>What is Mindrythm?</h3><p>We translate unseen narratives into honest, timeless imagery and films that reveal the essence already there.</p><i>Discover our story →</i></a>
             </div>
           </section>
@@ -729,7 +789,18 @@ export function Experience({ content }: { content: SiteContent }) {
               <h2>From first conversation<br />to <em>final frame.</em></h2>
               <p>A clear process gives every place and milestone the time, light and attention it deserves.</p>
             </div>
-            {heroItems[1] && <a className="process-film" href="/work" data-reveal><Media item={heroItems[1]} /><div><span>Brief / Plan / Capture</span><p>A calm production gives spaces, people and real emotion room to lead. <b>View our work</b></p></div></a>}
+            {processMedia ? (
+              <a className="process-film" href="/work" data-reveal>
+                {processMedia.mediaType === "video" ? (
+                  <video src={processMedia.mediaUrl} autoPlay loop muted playsInline className="process-film-video" />
+                ) : (
+                  <img src={processMedia.mediaUrl} alt="From first conversation to final frame" className="process-film-img" />
+                )}
+                <div><span>Brief / Plan / Capture</span><p>A calm production gives spaces, people and real emotion room to lead. <b>View our work</b></p></div>
+              </a>
+            ) : heroItems[1] ? (
+              <a className="process-film" href="/work" data-reveal><Media item={heroItems[1]} /><div><span>Brief / Plan / Capture</span><p>A calm production gives spaces, people and real emotion room to lead. <b>View our work</b></p></div></a>
+            ) : null}
             <div className="process-steps">
               <a href="/contact" data-reveal><h3>Discover</h3><p>We understand the place, people, audience and feeling the imagery needs to create.</p><i>Begin a brief</i></a>
               <a href="/contact" data-reveal><h3>Plan</h3><p>We shape the schedule, locations, light, shot list and practical details before the day.</p><i>Begin a brief</i></a>
@@ -929,6 +1000,15 @@ export function Experience({ content }: { content: SiteContent }) {
         </footer>
         <BackToTop />
       </div>
+
+      {openedService && (
+        <ServiceModal
+          service={openedService}
+          allGalleryItems={galleryItems}
+          onClose={() => setOpenedService(null)}
+          onOpenLightbox={(item) => setSelectedItem(item)}
+        />
+      )}
 
       {selectedItem && (() => {
         const allItems = [...projects, ...galleryItems];

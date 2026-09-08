@@ -630,11 +630,6 @@ function BentoGalleryMosaic({
             aria-label={`Open ${item.title}`}
           >
             <Media item={item} priority={index < 4} />
-            {item.category && <span className="bento-badge-tag">{item.category}</span>}
-            <div className="bento-card-gradient">
-              {item.eyebrow && <span className="bento-item-eyebrow">{item.eyebrow}</span>}
-              <h3 className="bento-item-title">{item.title}</h3>
-            </div>
           </button>
         );
       })}

@@ -3,6 +3,7 @@
 import {
   mainInstagramUrl as defaultInstagramUrl,
   type ContentItem,
+  type ServiceContent,
   type SiteContent,
 } from "@/lib/content";
 import { BackToTop } from "@/app/back-to-top";
@@ -13,6 +14,7 @@ import { Media } from "@/app/media";
 import { SocialIcon } from "@/app/social-icon";
 import { TeamMemberCard } from "@/app/team-member-card";
 import { TeamShowcase } from "@/app/team-showcase";
+import { ServiceModal } from "@/app/service-modal";
 import { getProjectService, getServiceProjects, isServiceKey, type ServiceKey } from "@/lib/services";
 import { type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
@@ -50,6 +52,7 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
     [content.items],
   );
   const [selected, setSelected] = useState<ContentItem | null>(null);
+  const [openedService, setOpenedService] = useState<ServiceContent | null>(null);
   const [activeTeamCardId, setActiveTeamCardId] = useState<string | null>(null);
   const [activeService, setActiveService] = useState(0);
   const [workFilter, setWorkFilter] = useState<"all" | ServiceKey>("all");
@@ -301,6 +304,14 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                         <p className="services-stream-copy">{service.copy}</p>
 
                         <div className="services-stream-actions">
+                          <button
+                            type="button"
+                            className="services-stream-readmore-cta"
+                            onClick={() => setOpenedService(service)}
+                          >
+                            <span>Read More</span>
+                            <span aria-hidden="true">→</span>
+                          </button>
                           <Link className="services-stream-primary-cta" href={`/contact?service=${encodeURIComponent(service.title)}`}>
                             <span>Book this service</span>
                             <span aria-hidden="true">→</span>
@@ -316,11 +327,11 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                           <button
                             type="button"
                             className="services-photo-thumb services-photo-single"
-                            onClick={() => setSelected(primaryMedia)}
-                            aria-label={`Open full size photo of ${service.title}`}
+                            onClick={() => setOpenedService(service)}
+                            aria-label={`Read more about ${service.title}`}
                           >
                             <Media item={primaryMedia} priority={index < 2} />
-                            <span className="services-photo-hint">Click to enlarge</span>
+                            <span className="services-photo-hint">Read More &amp; Gallery ↗</span>
                           </button>
                         )}
                       </div>
@@ -374,11 +385,10 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
         )}
 
         {page === "gallery" && (
-          <div className="gallery-page gallery-page-dark">
-            <section className="gallery-section-container" id="gallery">
-              <header className="gallery-section-header">
+          <div className="gallery-page gallery-page-dark gallery-page-fullwidth">
+            <section className="gallery-section-container gallery-section-fullbleed" id="gallery">
+              <header className="gallery-section-header sr-only">
                 <h2>Gallery</h2>
-                <p>Curated frames / Selected works</p>
               </header>
               <BentoTemplate
                 items={galleryItems}
@@ -620,6 +630,15 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
             />
           );
         })()
+      )}
+
+      {openedService && (
+        <ServiceModal
+          service={openedService}
+          allGalleryItems={galleryItems}
+          onClose={() => setOpenedService(null)}
+          onOpenLightbox={(item) => setSelected(item)}
+        />
       )}
     </div>
   );

@@ -20,6 +20,13 @@ export const project = defineType({
     }),
     defineField({name: "category", title: "Category label", type: "string", validation: (Rule) => Rule.required().max(70)}),
     defineField({name: "year", title: "Year", type: "string", validation: (Rule) => Rule.max(12)}),
+    defineField({
+      name: "services",
+      title: "Services provided for this project",
+      description: "Select all services that apply to this project (e.g. Visual Production, Website Development, Drone Imagery). This powers the filters in the Our Work menu.",
+      type: "array",
+      of: [{type: "reference", to: [{type: "service"}]}],
+    }),
     defineField({name: "href", title: "Project link or anchor", type: "string"}),
     defineField({name: "accent", title: "Editorial accent", type: "string", options: {list: ["forest", "rust", "ink", "sage", "lime"]}, initialValue: "forest", validation: (Rule) => Rule.required()}),
   ],

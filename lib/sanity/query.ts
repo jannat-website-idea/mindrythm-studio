@@ -6,7 +6,18 @@ export const siteContentQuery = `{
     visionHighlights,
     "featuredProjectIds": featuredProjects[]->{ "id": coalesce(cmsId.current, _id) }.id
   },
-  "about": *[_type == "aboutContent" && _id == "aboutContent"][0],
+  "about": *[_type == "aboutContent" && _id == "aboutContent"][0]{
+    visionParagraphs,
+    missionParagraphs,
+    teamIntroduction,
+    brandTaglines,
+    enquiryTaglines,
+    "visionBridgeImages": visionBridgeImages[].asset->url,
+    "processBanner": {
+      "mediaUrl": coalesce(processBannerMedia.image.asset->url, processBannerMedia.video.asset->url, processBannerMedia.externalUrl),
+      "mediaType": coalesce(lower(processBannerMedia.mediaType), select(defined(processBannerMedia.video) => "video", "image"))
+    }
+  },
   "contact": *[_type == "contactInfo" && _id == "contactInfo"][0],
   "social": *[_type == "socialLinks" && _id == "socialLinks"][0],
   "footer": *[_type == "footerSettings" && _id == "footerSettings"][0],
@@ -21,7 +32,10 @@ export const siteContentQuery = `{
     key,
     title,
     copy,
-    "projectIds": projects[]->{ "id": coalesce(cmsId.current, _id) }.id
+    "projectIds": projects[]->{ "id": coalesce(cmsId.current, _id) }.id,
+    "galleryItemIds": galleryItems[]->{ "id": coalesce(cmsId.current, _id) }.id,
+    websiteLinks[]{title, url},
+    "logoImages": logoImages[]{ "url": asset->url, alt, caption }
   },
   "projects": *[_type == "project"] | order(sortOrder asc, _createdAt asc){
     "id": coalesce(cmsId.current, _id),
@@ -33,6 +47,7 @@ export const siteContentQuery = `{
     "mediaAlt": coalesce(media.alt, title),
     "mediaType": coalesce(lower(mediaType), select(defined(media.video) => "video", "image")),
     category,
+    "services": coalesce(services[]->key, []),
     year,
     href,
     accent

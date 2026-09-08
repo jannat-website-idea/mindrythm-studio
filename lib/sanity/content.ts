@@ -49,6 +49,7 @@ function itemFromSanity(raw: Record<string, unknown>, kind: ContentItem["kind"],
     year: text(raw.year),
     href: text(raw.href),
     accent: text(raw.accent, "forest"),
+    services: Array.isArray(raw.services) ? raw.services.filter((s): s is string => typeof s === "string") : [],
   };
 }
 
@@ -81,14 +82,30 @@ export async function getSanitySiteContent(options: {stega?: boolean} = {}): Pro
     // Dynamic services: merges Sanity CMS edits onto official studio services
     const sanityServices = (raw.services || []).map((s) => ({
       key: text(s.key),
-      title: text(s.title),
+      title: text(s.title).replace(/^Premium\s+/i, ""),
       copy: text(s.copy),
       projectIds: Array.isArray(s.projectIds) ? s.projectIds.filter((p): p is string => typeof p === "string") : [],
+      galleryItemIds: Array.isArray(s.galleryItemIds) ? s.galleryItemIds.filter((p): p is string => typeof p === "string") : [],
+      websiteLinks: Array.isArray(s.websiteLinks)
+        ? (s.websiteLinks as any[])
+            .map((w) => ({ title: text(w?.title), url: text(w?.url) }))
+            .filter((w) => Boolean(w.title && w.url))
+        : undefined,
+      logoImages: Array.isArray(s.logoImages)
+        ? (s.logoImages as any[])
+            .map((l) => ({ url: text(l?.url), alt: text(l?.alt), caption: text(l?.caption) }))
+            .filter((l) => Boolean(l.url))
+        : undefined,
     })).filter((s) => Boolean(s.key && s.title));
 
     const servicesMap = new Map(defaultContent.services.map((s) => [s.key, s]));
     for (const ss of sanityServices) {
-      const targetKey = ss.key === "social-handling" ? "social-management" : ss.key;
+      let targetKey = ss.key === "social-handling" ? "social-management" : ss.key;
+      // Item 8: Normalize duplicate logo generation
+      if (targetKey === "wellness" || ss.title.toLowerCase().includes("logo generation")) {
+        targetKey = "logo-generation";
+      }
+
       const existing = servicesMap.get(targetKey);
       if (existing) {
         servicesMap.set(targetKey, {
@@ -96,6 +113,9 @@ export async function getSanitySiteContent(options: {stega?: boolean} = {}): Pro
           title: ss.title || existing.title,
           copy: ss.copy || existing.copy,
           projectIds: ss.projectIds.length ? ss.projectIds : existing.projectIds,
+          galleryItemIds: ss.galleryItemIds.length ? ss.galleryItemIds : existing.galleryItemIds,
+          websiteLinks: ss.websiteLinks?.length ? ss.websiteLinks : existing.websiteLinks,
+          logoImages: ss.logoImages?.length ? ss.logoImages : existing.logoImages,
         });
       } else {
         servicesMap.set(targetKey, {
@@ -103,6 +123,9 @@ export async function getSanitySiteContent(options: {stega?: boolean} = {}): Pro
           title: ss.title,
           copy: ss.copy,
           projectIds: ss.projectIds,
+          galleryItemIds: ss.galleryItemIds,
+          websiteLinks: ss.websiteLinks,
+          logoImages: ss.logoImages,
         });
       }
     }
@@ -136,6 +159,15 @@ export async function getSanitySiteContent(options: {stega?: boolean} = {}): Pro
         brandTaglines: strings(raw.about?.brandTaglines, defaultContent.copy.brandTaglines),
         enquiryTaglines: strings(raw.about?.enquiryTaglines, defaultContent.copy.enquiryTaglines),
         teamIntroduction: text(raw.about?.teamIntroduction, defaultContent.copy.teamIntroduction),
+        visionBridgeImages: Array.isArray(raw.about?.visionBridgeImages)
+          ? (raw.about?.visionBridgeImages as any[]).filter((u): u is string => typeof u === "string" && Boolean(u))
+          : undefined,
+        processBanner: raw.about?.processBanner && typeof (raw.about.processBanner as any).mediaUrl === "string" && (raw.about.processBanner as any).mediaUrl.trim()
+          ? {
+              mediaUrl: text((raw.about.processBanner as any).mediaUrl),
+              mediaType: text((raw.about.processBanner as any).mediaType, "image"),
+            }
+          : undefined,
       },
       services,
       footer: {

@@ -1,7 +1,7 @@
 import {z} from "zod";
 
 export const enquiryServices = [
-  "Premium visual production (photography + videography)",
+  "Visual production (photography + videography)",
   "Drone imagery",
   "Website development",
   "Logo generation",
