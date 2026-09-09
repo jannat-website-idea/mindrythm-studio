@@ -506,6 +506,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   min-height: 270px;
   scroll-snap-align: start;
 }
+@media (max-width: 680px) {
+  .testimonials-scroll .testimonial-card {
+    width: clamp(270px, 84vw, 360px) !important;
+    min-height: 240px;
+    padding: 1.25rem 1.4rem;
+  }
+}
 .testimonial-card { position: relative; display: flex; min-height: 260px; flex-direction: column; justify-content: space-between; padding: 1.6rem 1.8rem; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); transition: transform 0.3s ease; text-decoration: none; }
 .testimonial-card:hover { transform: translateY(-5px); }
 .testimonial-card:nth-child(even) { background: var(--ink); color: var(--ivory); }
@@ -9800,6 +9807,30 @@ main {
   color: #a89f91;
   margin-top: 10px;
   text-align: center;
+}
+
+@media (max-width: 640px) {
+  .service-modal-backdrop {
+    padding: 0.75rem;
+  }
+  .service-modal-card {
+    max-height: 94vh;
+    border-radius: 16px;
+  }
+  .service-modal-header {
+    padding: 0.85rem 1.25rem;
+  }
+  .service-modal-body {
+    padding: 1.25rem 1.25rem 2.5rem;
+  }
+  .service-logo-showcase-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+  }
+  .service-website-links-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
 }
 
 /* Item 15: Full-Width Left-to-Right Vision Scroll Strip */
