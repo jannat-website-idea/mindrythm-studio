@@ -31,6 +31,17 @@ const navigationItems = [
   { label: "Enquire", href: "/contact", note: "Start a conversation" },
 ] as const;
 
+const SERVICE_META: Record<string, { discipline: string; highlights: string[] }> = {
+  "visual-production": { discipline: "Cinema & Stills", highlights: ["Luxury Properties", "Cinematic Film", "Fine-Art Stills", "Color Grading"] },
+  "drone-imagery": { discipline: "Aerial Perspective", highlights: ["4K Drone Footage", "Topographic Scale", "Architectural Angles", "FPV Flythroughs"] },
+  "web-development": { discipline: "Digital Engineering", highlights: ["Bespoke Web Design", "Next.js Architecture", "CMS Integration", "Interactive UI"] },
+  "logo-generation": { discipline: "Identity Marks", highlights: ["Brand Emblems", "Vector Systems", "Typography Design", "Brand Guidelines"] },
+  "meta-ads": { discipline: "Performance Growth", highlights: ["Audience Targeting", "Creative Campaigns", "Conversion Optimization", "ROI Analytics"] },
+  "social-management": { discipline: "Community Cadence", highlights: ["Strategic Scheduling", "Visual Cohesion", "Audience Engagement", "Copywriting"] },
+  "commercial-branding": { discipline: "Commercial Identity", highlights: ["Brand Architecture", "Positioning Strategy", "Visual Toolkits", "Brand Guidelines"] },
+  "social-creatives": { discipline: "Content Creation", highlights: ["Short-Form Video", "Editorial Carousels", "Motion Graphics", "Brand Assets"] },
+};
+
 export function EditorialPage({ content, page }: { content: SiteContent; page: EditorialPageKind }) {
   const { settings } = content;
   const contactEmail = settings.contactEmail === "hello@mindrythm.studio" ? "Admin@mindrythm.com" : settings.contactEmail;
@@ -296,54 +307,50 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
         {page === "services" && (
           <div className="services-page-root">
             <section className="services-stream-section" aria-label="Mindrythm studio services catalogue">
-              <div className="services-stream-list">
+              <div className="services-stream-grid">
                 {serviceCollections.map((service, index) => {
-                  const primaryMedia = service.media[0] || projects[index % Math.max(1, projects.length)];
-                  const isEven = index % 2 === 1;
+                  const meta = SERVICE_META[service.key] || {
+                    discipline: "Studio Discipline",
+                    highlights: ["Bespoke Creative", "Calm Production", "High-End Standards"],
+                  };
                   return (
                     <article
-                      className={`services-stream-card ${isEven ? "is-reversed" : ""}`}
+                      className="services-hero-card"
                       id={`service-${service.key}`}
                       key={service.key}
                     >
                       {service.key === "commercial-branding" && <span id="service-trademark-registration" className="sr-only" aria-hidden="true" />}
-                      <div className="services-stream-info">
-                        <span className="services-clean-index">{String(index + 1).padStart(2, "0")}</span>
-                        <h2 className="services-stream-title">{service.title}</h2>
-                        <p className="services-stream-copy">{service.copy}</p>
-
-                        <div className="services-stream-actions">
-                          <button
-                            type="button"
-                            className="services-stream-readmore-cta"
-                            onClick={() => setOpenedService(service)}
-                          >
-                            <span>Read More</span>
-                            <span aria-hidden="true">→</span>
-                          </button>
-                          <Link className="services-stream-primary-cta" href={`/contact?service=${encodeURIComponent(service.title)}`}>
-                            <span>Book this service</span>
-                            <span aria-hidden="true">→</span>
-                          </Link>
-                          <Link className="services-stream-secondary-cta" href={`/work?service=${service.key}`}>
-                            <span>View work</span>
-                          </Link>
-                        </div>
+                      <div className="services-hero-card-header">
+                        <span className="services-hero-index">{String(index + 1).padStart(2, "0")}</span>
+                        <span className="services-hero-discipline">{meta.discipline}</span>
                       </div>
 
-                        <div className="services-stream-visual">
-                          {primaryMedia && (
-                            <button
-                              type="button"
-                              className="services-photo-thumb services-photo-single"
-                              onClick={() => setSelected(primaryMedia)}
-                              aria-label={`View ${service.title} full size image`}
-                            >
-                              <Media item={primaryMedia} priority={index < 2} />
-                              <span className="services-photo-hint">Click to enlarge ↗</span>
-                            </button>
-                          )}
-                        </div>
+                      <h2 className="services-hero-title">{service.title}</h2>
+                      <p className="services-hero-copy">{service.copy}</p>
+
+                      <div className="services-hero-highlights">
+                        {meta.highlights.map((tag) => (
+                          <span key={tag} className="services-hero-pill">{tag}</span>
+                        ))}
+                      </div>
+
+                      <div className="services-hero-actions">
+                        <button
+                          type="button"
+                          className="services-hero-readmore-btn"
+                          onClick={() => setOpenedService(service)}
+                        >
+                          <span>Read More</span>
+                          <span aria-hidden="true">→</span>
+                        </button>
+                        <Link className="services-hero-book-btn" href={`/contact?service=${encodeURIComponent(service.title)}`}>
+                          <span>Book this service</span>
+                          <span aria-hidden="true">→</span>
+                        </Link>
+                        <Link className="services-hero-work-btn" href={`/work?service=${service.key}`}>
+                          <span>View work ↗</span>
+                        </Link>
+                      </div>
                     </article>
                   );
                 })}
