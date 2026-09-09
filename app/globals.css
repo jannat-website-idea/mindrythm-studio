@@ -6751,13 +6751,23 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   display: flex;
   flex-direction: column;
   position: relative;
-  background: var(--ivory, #fbfaf5);
-  border: 1px solid rgba(23, 23, 20, 0.12);
   border-radius: 12px;
   padding: clamp(2.25rem, 3.2vw, 3rem);
   box-shadow: 0 4px 20px -4px rgba(23, 23, 20, 0.04);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
   scroll-margin-top: clamp(5rem, 8vh, 7rem);
+}
+
+/* Shade A: Crisp Studio Ivory / Porcelain White */
+.services-hero-card-shade-a {
+  background: #ffffff;
+  border: 1px solid rgba(23, 23, 20, 0.12);
+}
+
+/* Shade B: Mindrythm Signature Studio Sage */
+.services-hero-card-shade-b {
+  background: var(--sage, #d4ddcc);
+  border: 1px solid rgba(36, 59, 49, 0.16);
 }
 
 .services-hero-card:hover {
@@ -6768,21 +6778,11 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
 
 .services-hero-card-header {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.85rem;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
   border-bottom: 1px solid rgba(23, 23, 20, 0.08);
-}
-
-.services-hero-index {
-  font-size: clamp(1.35rem, 2vw, 1.85rem);
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-  font-family: var(--font-accent), "Bodoni Moda", Georgia, serif;
-  line-height: 1;
-  opacity: 0.85;
 }
 
 .services-hero-discipline {
@@ -6791,6 +6791,14 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--muted);
+}
+
+.services-hero-card-shade-b .services-hero-card-header {
+  border-bottom-color: rgba(36, 59, 49, 0.12);
+}
+
+.services-hero-card-shade-b .services-hero-discipline {
+  color: #3b5044;
 }
 
 .services-hero-title {
@@ -6810,6 +6818,10 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   color: #4a4944;
   font-weight: 300;
   flex-grow: 1;
+}
+
+.services-hero-card-shade-b .services-hero-copy {
+  color: #2f3832;
 }
 
 .services-hero-highlights {
@@ -6839,6 +6851,17 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   border-color: rgba(23, 23, 20, 0.14);
 }
 
+.services-hero-card-shade-b .services-hero-pill {
+  background: rgba(36, 59, 49, 0.07);
+  border-color: rgba(36, 59, 49, 0.12);
+  color: #1c2e26;
+}
+
+.services-hero-card-shade-b:hover .services-hero-pill {
+  background: rgba(36, 59, 49, 0.11);
+  border-color: rgba(36, 59, 49, 0.2);
+}
+
 .services-hero-actions {
   display: flex;
   flex-wrap: wrap;
@@ -6846,6 +6869,10 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   gap: 0.65rem;
   padding-top: 1.25rem;
   border-top: 1px solid rgba(23, 23, 20, 0.08);
+}
+
+.services-hero-card-shade-b .services-hero-actions {
+  border-top-color: rgba(36, 59, 49, 0.12);
 }
 
 .services-hero-readmore-btn {
@@ -6917,6 +6944,15 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
   background: rgba(18, 18, 16, 0.04);
 }
 
+.services-hero-card-shade-b .services-hero-work-btn {
+  border-color: rgba(36, 59, 49, 0.26);
+}
+
+.services-hero-card-shade-b .services-hero-work-btn:hover {
+  border-color: var(--ink);
+  background: rgba(36, 59, 49, 0.06);
+}
+
 @media (max-width: 900px) {
   .services-stream-grid {
     grid-template-columns: 1fr;
@@ -6926,6 +6962,45 @@ a, button, summary { -webkit-tap-highlight-color: transparent; }
 
   .services-hero-card {
     padding: 1.75rem 1.35rem;
+  }
+
+  /* Mobile single-column strictly alternating rhythm */
+  .services-hero-card:nth-child(odd) {
+    background: #ffffff !important;
+    border-color: rgba(23, 23, 20, 0.12) !important;
+  }
+
+  .services-hero-card:nth-child(odd) .services-hero-discipline {
+    color: var(--muted) !important;
+  }
+
+  .services-hero-card:nth-child(odd) .services-hero-copy {
+    color: #4a4944 !important;
+  }
+
+  .services-hero-card:nth-child(odd) .services-hero-pill {
+    background: rgba(23, 23, 20, 0.04) !important;
+    border-color: rgba(23, 23, 20, 0.08) !important;
+    color: #55544e !important;
+  }
+
+  .services-hero-card:nth-child(even) {
+    background: var(--sage, #d4ddcc) !important;
+    border-color: rgba(36, 59, 49, 0.16) !important;
+  }
+
+  .services-hero-card:nth-child(even) .services-hero-discipline {
+    color: #3b5044 !important;
+  }
+
+  .services-hero-card:nth-child(even) .services-hero-copy {
+    color: #2f3832 !important;
+  }
+
+  .services-hero-card:nth-child(even) .services-hero-pill {
+    background: rgba(36, 59, 49, 0.07) !important;
+    border-color: rgba(36, 59, 49, 0.12) !important;
+    color: #1c2e26 !important;
   }
 }
 

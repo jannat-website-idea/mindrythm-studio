@@ -313,15 +313,15 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                     discipline: "Studio Discipline",
                     highlights: ["Bespoke Creative", "Calm Production", "High-End Standards"],
                   };
+                  const isShadeB = index % 4 === 1 || index % 4 === 2;
                   return (
                     <article
-                      className="services-hero-card"
+                      className={`services-hero-card ${isShadeB ? "services-hero-card-shade-b" : "services-hero-card-shade-a"}`}
                       id={`service-${service.key}`}
                       key={service.key}
                     >
                       {service.key === "commercial-branding" && <span id="service-trademark-registration" className="sr-only" aria-hidden="true" />}
                       <div className="services-hero-card-header">
-                        <span className="services-hero-index">{String(index + 1).padStart(2, "0")}</span>
                         <span className="services-hero-discipline">{meta.discipline}</span>
                       </div>
 
