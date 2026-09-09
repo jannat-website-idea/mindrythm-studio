@@ -14,12 +14,14 @@ import {termsConditions} from "./documents/termsConditions";
 import {testimonial} from "./documents/testimonial";
 import {legalSection} from "./objects/legalSection";
 import {mediaAsset} from "./objects/mediaAsset";
+import {processBanner} from "./documents/processBanner";
 
 export const schemaTypes = [
   mediaAsset,
   legalSection,
   siteSettings,
   heroSection,
+  processBanner,
   aboutContent,
   service,
   project,

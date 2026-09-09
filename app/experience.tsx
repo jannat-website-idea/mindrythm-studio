@@ -98,7 +98,17 @@ export function Experience({ content }: { content: SiteContent }) {
   const testimonials = useMemo(
     () => content.items
       .filter((item) => item.kind === "testimonial" && item.accent !== "rejected")
-      .sort((a, b) => a.sortOrder - b.sortOrder),
+      .filter((item) => {
+        const rating = Number(item.year || 5);
+        return isNaN(rating) || rating >= 4;
+      })
+      .sort((a, b) => {
+        const ratingA = Number(a.year || 5);
+        const ratingB = Number(b.year || 5);
+        if (ratingB !== ratingA) return ratingB - ratingA;
+        return a.sortOrder - b.sortOrder;
+      })
+      .slice(0, 5),
     [content.items],
   );
 
@@ -820,13 +830,16 @@ export function Experience({ content }: { content: SiteContent }) {
               <p>A clear process gives every place and milestone the time, light and attention it deserves.</p>
             </div>
             {processMedia ? (
-              <a className="process-film" href="/work" data-reveal>
+              <a className="process-film" href={processMedia.linkUrl || "/work"} data-reveal>
                 {processMedia.mediaType === "video" ? (
                   <video src={processMedia.mediaUrl} autoPlay loop muted playsInline className="process-film-video" />
                 ) : (
                   <img src={processMedia.mediaUrl} alt="From first conversation to final frame" className="process-film-img" />
                 )}
-                <div><span>Brief / Plan / Capture</span><p>A calm production gives spaces, people and real emotion room to lead. <b>View our work</b></p></div>
+                <div>
+                  <span>{processMedia.overlayBadge || "Brief / Plan / Capture"}</span>
+                  <p>{processMedia.overlayText || "A calm production gives spaces, people and real emotion room to lead."} <b>{processMedia.ctaLabel || "View our work"}</b></p>
+                </div>
               </a>
             ) : heroItems[1] ? (
               <a className="process-film" href="/work" data-reveal><Media item={heroItems[1]} /><div><span>Brief / Plan / Capture</span><p>A calm production gives spaces, people and real emotion room to lead. <b>View our work</b></p></div></a>

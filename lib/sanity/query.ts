@@ -6,7 +6,7 @@ export const siteContentQuery = `{
     visionHighlights,
     "featuredProjectIds": featuredProjects[]->{ "id": coalesce(cmsId.current, _id) }.id
   },
-  "about": *[_type == "aboutContent" && _id == "aboutContent"][0]{
+  "about": *[_type == "aboutContent" || _id == "aboutContent"][0]{
     visionParagraphs,
     missionParagraphs,
     teamIntroduction,
@@ -18,6 +18,20 @@ export const siteContentQuery = `{
       "mediaType": coalesce(lower(processBannerMedia.mediaType), select(defined(processBannerMedia.video) => "video", "image"))
     }
   },
+  "processBanner": coalesce(
+    *[_type == "processBanner" || _id == "processBanner"][0]{
+      "mediaUrl": coalesce(video.asset->url, image.asset->url, externalUrl),
+      "mediaType": coalesce(mediaType, select(defined(video) => "video", "image")),
+      overlayBadge,
+      overlayText,
+      ctaLabel,
+      linkUrl
+    },
+    *[_type == "aboutContent" || _id == "aboutContent"][0]{
+      "mediaUrl": coalesce(processBannerMedia.image.asset->url, processBannerMedia.video.asset->url, processBannerMedia.externalUrl),
+      "mediaType": coalesce(lower(processBannerMedia.mediaType), select(defined(processBannerMedia.video) => "video", "image"))
+    }
+  ),
   "contact": *[_type == "contactInfo" && _id == "contactInfo"][0],
   "social": *[_type == "socialLinks" && _id == "socialLinks"][0],
   "footer": *[_type == "footerSettings" && _id == "footerSettings"][0],
@@ -75,14 +89,14 @@ export const siteContentQuery = `{
     "category": role,
     "href": coalesce(profileUrl, instagram, instagramUrl, socialUrl, href)
   },
-  "testimonials": *[_type == "testimonial"] | order(sortOrder asc){
+  "testimonials": *[_type == "testimonial"] | order(rating desc, sortOrder asc){
     "id": _id,
     sortOrder,
     "title": title,
     "eyebrow": clientType,
     "body": quote,
     "category": clientType,
-    "year": string(rating),
+    "year": string(coalesce(rating, 5)),
     "href": reviewUrl,
     "accent": select(theme == "dark" => "ink", "approved")
   }

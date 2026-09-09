@@ -18,6 +18,7 @@ type RawSanityContent = {
   seo?: Record<string, unknown> | null;
   privacyPolicy?: LegalPageContent | null;
   termsConditions?: LegalPageContent | null;
+  processBanner?: Record<string, unknown> | null;
   services?: Array<Record<string, unknown>>;
   projects?: Array<Record<string, unknown>>;
   gallery?: Array<Record<string, unknown>>;
@@ -174,12 +175,20 @@ export async function getSanitySiteContent(options: {stega?: boolean} = {}): Pro
         visionBridgeImages: Array.isArray(raw.about?.visionBridgeImages)
           ? (raw.about?.visionBridgeImages as any[]).filter((u): u is string => typeof u === "string" && Boolean(u))
           : undefined,
-        processBanner: raw.about?.processBanner && typeof (raw.about.processBanner as any).mediaUrl === "string" && (raw.about.processBanner as any).mediaUrl.trim()
-          ? {
-              mediaUrl: text((raw.about.processBanner as any).mediaUrl),
-              mediaType: text((raw.about.processBanner as any).mediaType, "image"),
-            }
-          : undefined,
+        processBanner: (() => {
+          const pb = raw.processBanner || raw.about?.processBanner;
+          if (pb && typeof (pb as any).mediaUrl === "string" && (pb as any).mediaUrl.trim()) {
+            return {
+              mediaUrl: text((pb as any).mediaUrl),
+              mediaType: text((pb as any).mediaType, "image"),
+              overlayBadge: text((pb as any).overlayBadge, "Brief / Plan / Capture"),
+              overlayText: text((pb as any).overlayText, "A calm production gives spaces, people and real emotion room to lead."),
+              ctaLabel: text((pb as any).ctaLabel, "View our work"),
+              linkUrl: text((pb as any).linkUrl, "/work"),
+            };
+          }
+          return undefined;
+        })(),
       },
       services,
       footer: {

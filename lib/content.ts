@@ -60,7 +60,14 @@ export type SiteCopy = {
   enquiryTaglines: string[];
   teamIntroduction: string;
   visionBridgeImages?: string[];
-  processBanner?: { mediaUrl: string; mediaType: string };
+  processBanner?: {
+    mediaUrl: string;
+    mediaType: string;
+    overlayBadge?: string;
+    overlayText?: string;
+    ctaLabel?: string;
+    linkUrl?: string;
+  };
 };
 
 export type ServiceWebsiteLink = {
