@@ -231,8 +231,8 @@ export const defaultServices: ServiceContent[] = [
     copy: "Distinctive, memorable visual identities and emblem design communicating brand essence with clarity and timeless appeal.",
     projectIds: ["sanctuary-interiors", "field-notes"],
     logoImages: [
-      { url: "/mindrythm-logomark.png", caption: "Mindrythm Logomark" },
-      { url: "/images/tropical-interior.jpg", caption: "Emblem & Identity Design" },
+      { url: "/mindrythm-logomark.png", caption: "Mindrythm Studio Emblem" },
+      { url: "/apple-touch-icon.png", caption: "Geometric Brand Monogram" },
     ],
   },
   {

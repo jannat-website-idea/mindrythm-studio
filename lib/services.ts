@@ -65,7 +65,13 @@ export function getServiceGalleryItems(
   services: readonly ServiceDefinition[] = serviceItems
 ): ContentItem[] {
   const service = services.find((item) => item.key === key);
-  if (!service) return gallery.slice(0, 6);
+  if (!service) return [];
+
+  // ONLY visual-production and drone-imagery have a mini-gallery (items 1 & 2 in client brief)
+  const isVisualOrDrone = key === "visual-production" || key === "drone-imagery";
+  if (!isVisualOrDrone && (!service.galleryItemIds || service.galleryItemIds.length === 0)) {
+    return [];
+  }
 
   // 1. Direct matches if client selected gallery items in Sanity CMS
   if (service.galleryItemIds && service.galleryItemIds.length > 0) {
@@ -94,7 +100,6 @@ export function getServiceGalleryItems(
     if (visualMatches.length > 0) return visualMatches.slice(0, 6);
   }
 
-  // 3. Fallback: first 6 gallery items so the mini-gallery is always complete
-  return gallery.slice(0, 6);
+  return [];
 }
 

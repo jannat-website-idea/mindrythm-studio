@@ -43,10 +43,7 @@ export function ServiceModal({
 
   const isWebDev = service.key === "web-development";
   const isLogoGen = service.key === "logo-generation" || service.key === "wellness";
-  const isVisualOrDrone =
-    service.key === "visual-production" ||
-    service.key === "drone-imagery" ||
-    (!isWebDev && !isLogoGen && miniGallery.length > 0);
+  const isVisualOrDrone = service.key === "visual-production" || service.key === "drone-imagery";
 
   const websiteLinks = service.websiteLinks || [];
   const logoImages = service.logoImages || [];
@@ -158,7 +155,9 @@ export function ServiceModal({
           {isVisualOrDrone && (
             <div className="service-modal-gallery-wrap">
               <div className="service-modal-gallery-header">
-                <span className="service-modal-gallery-title">Curated Visuals &amp; Film</span>
+                <span className="service-modal-gallery-title">
+                  {service.key === "drone-imagery" ? "Curated Aerial & Drone Sequences" : "Curated Visuals & Film"}
+                </span>
                 <span className="service-modal-gallery-count">{miniGallery.length} Items</span>
               </div>
 

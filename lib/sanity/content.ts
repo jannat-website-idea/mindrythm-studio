@@ -101,8 +101,8 @@ export async function getSanitySiteContent(options: {stega?: boolean} = {}): Pro
     const servicesMap = new Map(defaultContent.services.map((s) => [s.key, s]));
     for (const ss of sanityServices) {
       let targetKey = ss.key === "social-handling" ? "social-management" : ss.key;
-      // Item 8: Normalize duplicate logo generation
-      if (targetKey === "wellness" || ss.title.toLowerCase().includes("logo generation")) {
+      // Item 8: Normalize duplicate logo generation and aliases
+      if (targetKey === "wellness" || ss.title.toLowerCase().includes("logo generation") || targetKey === "logo-generation") {
         targetKey = "logo-generation";
       }
 
@@ -129,7 +129,19 @@ export async function getSanitySiteContent(options: {stega?: boolean} = {}): Pro
         });
       }
     }
-    const services = Array.from(servicesMap.values());
+
+    // Strict deduplication by normalized key and title
+    const seenKeys = new Set<string>();
+    const seenTitles = new Set<string>();
+    const services: ServiceContent[] = [];
+    for (const s of servicesMap.values()) {
+      const normKey = s.key.toLowerCase().trim();
+      const normTitle = s.title.toLowerCase().trim();
+      if (seenKeys.has(normKey) || seenTitles.has(normTitle)) continue;
+      seenKeys.add(normKey);
+      seenTitles.add(normTitle);
+      services.push(s);
+    }
 
     return {
       settings: {
