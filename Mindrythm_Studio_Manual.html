@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mindrythm Studio - Master Website & CMS Manual</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    @page {
+      size: A4;
+      margin: 1.6cm 1.4cm 1.8cm 1.4cm;
+      @bottom-right {
+        content: counter(page);
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 8pt;
+        color: #888;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #1a1e24;
+      background: #ffffff;
+      line-height: 1.55;
+      font-size: 10pt;
+      margin: 0;
+      padding: 0;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    /* Cover Page */
+    .cover-page {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 40px 20px 20px 20px;
+      page-break-after: always;
+      border-left: 6px solid #6366f1;
+      padding-left: 32px;
+    }
+
+    .cover-badge {
+      display: inline-block;
+      background: #eef2ff;
+      color: #4f46e5;
+      font-weight: 700;
+      font-size: 9pt;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid #c7d2fe;
+    }
+
+    .cover-title {
+      font-size: 32pt;
+      font-weight: 800;
+      line-height: 1.15;
+      color: #0f172a;
+      margin: 20px 0 10px 0;
+    }
+
+    .cover-subtitle {
+      font-size: 14pt;
+      color: #475569;
+      font-weight: 400;
+      max-width: 520px;
+      line-height: 1.5;
+    }
+
+    .cover-meta {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      background: #f8fafc;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      max-width: 540px;
+    }
+
+    .meta-item label {
+      display: block;
+      font-size: 8pt;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #64748b;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .meta-item span {
+      font-size: 10.5pt;
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    .cover-footer {
+      border-top: 1px solid #e2e8f0;
+      padding-top: 16px;
+      font-size: 8.5pt;
+      color: #64748b;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Headings */
+    h1 {
+      font-size: 18pt;
+      font-weight: 800;
+      color: #0f172a;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 8px;
+      margin-top: 0;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h2 {
+      font-size: 13pt;
+      font-weight: 700;
+      color: #1e293b;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h3 {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: #334155;
+      margin-top: 14px;
+      margin-bottom: 6px;
+    }
+
+    p {
+      margin-top: 0;
+      margin-bottom: 10px;
+      color: #334155;
+    }
+
+    /* Cards & Boxes */
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+    }
+
+    .alert {
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      font-size: 9.5pt;
+    }
+
+    .alert-tip {
+      background: #f0fdf4;
+      border-left: 4px solid #16a34a;
+      color: #14532d;
+    }
+
+    .alert-warning {
+      background: #fffbeb;
+      border-left: 4px solid #d97706;
+      color: #78350f;
+    }
+
+    .alert-info {
+      background: #eff6ff;
+      border-left: 4px solid #2563eb;
+      color: #1e3a8a;
+    }
+
+    .alert-danger {
+      background: #fef2f2;
+      border-left: 4px solid #dc2626;
+      color: #7f1d1d;
+    }
+
+    /* Step lists */
+    .step-box {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 14px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+
+    .step-number {
+      width: 28px;
+      height: 28px;
+      background: #6366f1;
+      color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 10pt;
+      flex-shrink: 0;
+    }
+
+    .step-content {
+      flex: 1;
+    }
+
+    .step-title {
+      font-weight: 700;
+      font-size: 10.5pt;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 14px;
+      font-size: 9pt;
+    }
+
+    th {
+      background: #f1f5f9;
+      color: #334155;
+      font-weight: 700;
+      text-align: left;
+      padding: 8px 12px;
+      border-bottom: 2px solid #cbd5e1;
+    }
+
+    td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #e2e8f0;
+      color: #1e293b;
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    /* Code & badges */
+    code, .code-pill {
+      font-family: 'JetBrains Mono', monospace;
+      background: #e2e8f0;
+      color: #0f172a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 8.5pt;
+    }
+
+    .url-link {
+      font-family: 'JetBrains Mono', monospace;
+      color: #4f46e5;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 7.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-success { background: #dcfce7; color: #15803d; }
+    .badge-warning { background: #fef3c7; color: #b45309; }
+    .badge-primary { background: #e0e7ff; color: #4338ca; }
+    .badge-danger  { background: #fee2e2; color: #b91c1c; }
+
+    /* Grid layout for cards */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .rule-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 12px;
+      background: #fff;
+    }
+
+    .rule-card.do {
+      border-top: 3px solid #16a34a;
+    }
+
+    .rule-card.dont {
+      border-top: 3px solid #dc2626;
+    }
+
+    ul {
+      margin: 0 0 10px 0;
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- COVER PAGE -->
+  <div class="cover-page">
+    <div>
+      <span class="cover-badge">Official Client Manual & Architecture Reference</span>
+      <h1 class="cover-title">Mindrythm Studio<br>Website & CMS Operating Guide</h1>
+      <p class="cover-subtitle">A comprehensive, zero-technical-friction guide for the Mindrythm administrative team to manage content, media, services, leads, and deployments seamlessly.</p>
+    </div>
+
+    <div>
+      <div class="cover-meta">
+        <div class="meta-item">
+          <label>Website URL</label>
+          <span>https://mindrythm.com</span>
+        </div>
+        <div class="meta-item">
+          <label>CMS Cloud Studio</label>
+          <span>mindrythm-cms.sanity.studio</span>
+        </div>
+        <div class="meta-item">
+          <label>Production Host</label>
+          <span>Hostinger VPS (Singapore)</span>
+        </div>
+        <div class="meta-item">
+          <label>Support / Admin Email</label>
+          <span>admin@mindrythm.com</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cover-footer">
+      <span>Mindrythm Studio &bull; Creative Agency Architecture</span>
+      <span>Confidential &bull; Version 2.0 &bull; 2026</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1: MASTER ACCESS DIRECTORY -->
+  <div>
+    <h1>1. Master Access & Credentials Directory</h1>
+    <p>Keep these credentials private. This directory provides direct links to every administrative portal powering Mindrythm Studio.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>System / Console</th>
+          <th>Direct URL / Endpoint</th>
+          <th>Access ID / Username</th>
+          <th>Password / Key Info</th>
+          <th>Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Live Website</strong></td>
+          <td><a class="url-link" href="https://mindrythm.com">https://mindrythm.com</a></td>
+          <td>Public</td>
+          <td>Publicly Accessible</td>
+          <td>Primary customer-facing website and portfolio.</td>
+        </tr>
+        <tr>
+          <td><strong>Sanity CMS Studio</strong></td>
+          <td><a class="url-link" href="https://mindrythm-cms.sanity.studio">https://mindrythm-cms.sanity.studio</a><br><small style="color:#64748b;">(Also at: mindrythm.com/studio)</small></td>
+          <td><code>admin@mindrythm.com</code></td>
+          <td>Invited via email / Google Login</td>
+          <td>Visual dashboard to edit services, gallery, work, team, and copy.</td>
+        </tr>
+        <tr>
+          <td><strong>Sanity Cloud Account</strong></td>
+          <td><a class="url-link" href="https://sanity.io/manage">https://sanity.io/manage</a></td>
+          <td><code>admin@mindrythm.com</code></td>
+          <td>Project ID: <code>n9nyugiq</code></td>
+          <td>Manage billing, project members, API tokens, and datasets.</td>
+        </tr>
+        <tr>
+          <td><strong>Hostinger hPanel</strong></td>
+          <td><a class="url-link" href="https://hpanel.hostinger.com">https://hpanel.hostinger.com</a></td>
+          <td>Hostinger Account Email</td>
+          <td>Client Hostinger Password</td>
+          <td>DNS settings, domains, SSL certificates, and VPS controls.</td>
+        </tr>
+        <tr>
+          <td><strong>Hostinger Production VPS</strong></td>
+          <td>IP: <code>86.38.243.142</code><br>Port: <code>65002</code></td>
+          <td><code>u989720899</code></td>
+          <td><code>Salvator@1234</code></td>
+          <td>Underlying server hosting the live Next.js high-speed node.</td>
+        </tr>
+        <tr>
+          <td><strong>Contact & Enquiry Mail</strong></td>
+          <td>Gmail / Google Workspace</td>
+          <td><code>admin@mindrythm.com</code></td>
+          <td>SMTP App Password:<br><code>rele mhjr rrnw owef</code></td>
+          <td>Where all website customer leads & quotes are delivered immediately.</td>
+        </tr>
+        <tr>
+          <td><strong>GitHub Source Repo</strong></td>
+          <td><a class="url-link" href="https://github.com/jannat-website-idea/mindrythm-studio.git">GitHub Repo</a></td>
+          <td>Developer / Admin</td>
+          <td>Repository Access</td>
+          <td>Version control codebase and automated deployment pipeline.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="alert alert-tip">
+      <strong>✨ Pro-Tip for Instant Access:</strong> You can bookmark <code>https://mindrythm-cms.sanity.studio</code> on your phone or laptop browser. Whenever you open it, you can make live updates to the website in seconds!
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 2: HOW THE CMS WORKS & AUTO-DRAFT SYNC -->
+  <div>
+    <h1>2. Understanding How Your CMS Works</h1>
+
+    <h2>Real-Time Autosave & The Draft Sync Engine</h2>
+    <p>Unlike standard older websites (WordPress) where mistakes can easily break the live page, your site is powered by <strong>Next.js + Sanity Content Lake</strong>. Here is the golden mechanism configured specifically for you:</p>
+
+    <div class="card">
+      <h3>🚀 You Don't Have to Fear Losing Work</h3>
+      <ul>
+        <li><strong>Every keystroke is autosaved:</strong> As you type a new title, upload a photo, or change a price, Sanity automatically saves your changes to cloud servers every millisecond.</li>
+        <li><strong>Instant Live Draft Reflection:</strong> We configured a secure server viewer token (<code>perspective: "drafts"</code>) on your live server. Even if you forget to click the green "Publish" button, your changes are already queued and reflected on the live site!</li>
+        <li><strong>Best Practice:</strong> Always click the green <strong>"Publish"</strong> button in the bottom right corner when you are completely finished with an item. This seals the version and clears the "Draft" tag.</li>
+      </ul>
+    </div>
+
+    <h2>Website Content Map (What You Can Edit)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Section</th>
+          <th>CMS Schema Name</th>
+          <th>What You Can Change</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Hero Section</strong></td>
+          <td>Site Settings / Homepage</td>
+          <td>Main headline, dynamic animated tagline, primary CTA button text and destination.</td>
+        </tr>
+        <tr>
+          <td><strong>Our Services</strong></td>
+          <td>Services (8 active)</td>
+          <td>Service titles, descriptions, feature bullet points, icons, and order of display.</td>
+        </tr>
+        <tr>
+          <td><strong>Featured Work / Projects</strong></td>
+          <td>Projects / Case Studies</td>
+          <td>Client name, project title, year, tags, thumbnail images, video showcase reels, and deliverables.</td>
+        </tr>
+        <tr>
+          <td><strong>Bento Grid Gallery</strong></td>
+          <td>Gallery Items (15 active)</td>
+          <td>Photos, portrait reels, video loops, layout width (Large 2x2 vs Standard 1x1), and titles.</td>
+        </tr>
+        <tr>
+          <td><strong>About & Story</strong></td>
+          <td>About / Story</td>
+          <td>The studio manifesto, philosophy paragraph, company stats (e.g. 50+ Projects, 99% Satisfaction).</td>
+        </tr>
+        <tr>
+          <td><strong>Creative Team</strong></td>
+          <td>Team Members</td>
+          <td>Name, role/designation, profile headshot, Instagram and LinkedIn links.</td>
+        </tr>
+        <tr>
+          <td><strong>Contact Information</strong></td>
+          <td>Site Settings</td>
+          <td>Studio address, direct telephone, display email, and social media URLs (IG, LinkedIn, YouTube).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 3: STEP-BY-STEP HOW-TO GUIDES -->
+  <div>
+    <h1>3. Step-by-Step Instructions for Everyday Tasks</h1>
+
+    <div class="step-box">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <div class="step-title">How to Log In to the CMS Studio</div>
+        <p>1. Open your browser and go to <a class="url-link" href="https://mindrythm-cms.sanity.studio">https://mindrythm-cms.sanity.studio</a>.</p>
+        <p>2. Click <strong>"Log in with Google"</strong> or <strong>"Log in with Email"</strong> using <code>admin@mindrythm.com</code>.</p>
+        <p>3. You will immediately land on your clean visual dashboard showing all content categories in the left sidebar.</p>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-number">2</div>
+      <div class="step-content">
+        <div class="step-title">How to Add or Edit a Service</div>
+        <p>1. In the left sidebar, click on <strong>"Services"</strong>.</p>
+        <p>2. To edit an existing service (e.g., <em>Commercial Video</em> or <em>3D CGI Animation</em>), click on its name.</p>
+        <p>3. To add a new one, click the <strong>"+" (Create New)</strong> button at the top.</p>
+        <p>4. Fill in: <strong>Title</strong> &rarr; Click <strong>"Generate"</strong> next to Slug &rarr; Write the <strong>Short Description</strong> &rarr; Add <strong>Features</strong>.</p>
+        <p>5. Click the green <strong>"Publish"</strong> button in the bottom right corner.</p>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-number">3</div>
+      <div class="step-content">
+        <div class="step-title">How to Add a Photo or Video to the Bento Gallery</div>
+        <p>1. In the left sidebar, click <strong>"Gallery"</strong>.</p>
+        <p>2. Click the <strong>"+" (Create)</strong> button.</p>
+        <p>3. Enter a <strong>Title</strong> (e.g. <em>Studio BTS - Fashion Shoot</em>).</p>
+        <p>4. Select <strong>Type</strong>: Choose <em>"Image"</em> or <em>"Video"</em>.</p>
+        <p>5. Choose <strong>Layout Size</strong>:
+          <br>&bull; <strong>Normal (1x1)</strong>: Standard square/vertical card.
+          <br>&bull; <strong>Featured Large (2x2)</strong>: Takes double width/height in the grid for hero visuals.</p>
+        <p>6. Drag and drop your image (JPG/PNG/WebP) or MP4 video file.</p>
+        <p>7. Click <strong>"Publish"</strong>.</p>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-number">4</div>
+      <div class="step-content">
+        <div class="step-title">How to Add or Update a Portfolio Project</div>
+        <p>1. In the left sidebar, click <strong>"Projects"</strong>.</p>
+        <p>2. Click <strong>"+"</strong> to create a project or click an existing one.</p>
+        <p>3. Enter <strong>Title</strong>, click <strong>Generate</strong> for Slug, enter <strong>Client Name</strong> and <strong>Category</strong>.</p>
+        <p>4. Upload the <strong>Hero Cover Image</strong> and any supporting project gallery shots.</p>
+        <p>5. Click <strong>"Publish"</strong>.</p>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-number">5</div>
+      <div class="step-content">
+        <div class="step-title">How to Update Social Media Links & Contact Phone</div>
+        <p>1. In the left sidebar, click <strong>"Site Settings"</strong>.</p>
+        <p>2. Update your phone number, studio address, or social links (Instagram, LinkedIn, Behance, YouTube).</p>
+        <p>3. Click <strong>"Publish"</strong>. Your footer and contact page update immediately.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 4: MEDIA UPLOAD RULES & FORMATS -->
+  <div>
+    <h1>4. Media Upload Rules & Guidelines (Read Before Uploading)</h1>
+    <p>90% of website issues happen when files are in the wrong format or too large. Follow these golden rules to keep the website lightning fast and flawless across all iPhones, Androids, and Macs.</p>
+
+    <div class="grid-2">
+      <div class="rule-card do">
+        <h3 style="color:#16a34a; margin-top:0;">✅ DO USE THESE FORMATS</h3>
+        <ul>
+          <li><strong>Photos:</strong> <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.webp</code></li>
+          <li><strong>Videos:</strong> <code>.mp4</code> or <code>.webm</code> (Encoded with H.264 codec)</li>
+          <li><strong>Dimensions:</strong>
+            <br>&bull; Bento Grid Large: 1200 &times; 1200 px
+            <br>&bull; Bento Grid Standard: 800 &times; 800 px
+            <br>&bull; Hero Project Covers: 1920 &times; 1080 px</li>
+          <li><strong>Max File Size:</strong> Under 3 MB for images; Under 20 MB for background videos.</li>
+        </ul>
+      </div>
+
+      <div class="rule-card dont">
+        <h3 style="color:#dc2626; margin-top:0;">❌ NEVER USE THESE FORMATS</h3>
+        <ul>
+          <li><strong>NO iPhone <code>.heic</code> photos:</strong> Apple iPhones save photos as HEIC by default. Web browsers CANNOT display HEIC. Always export as JPG!</li>
+          <li><strong>NO RAW camera files:</strong> Never upload <code>.CR2</code>, <code>.NEF</code>, <code>.ARW</code>, or uncompressed <code>.TIFF</code> files.</li>
+          <li><strong>NO 4K/8K 500MB Video Files:</strong> Huge video files take 45 seconds to load and consume client mobile data. Always compress to 1080p MP4 before uploading.</li>
+          <li><strong>NO Special Characters in file names:</strong> Avoid names like <code>Shoot#1 (final)@2.jpg</code>. Use <code>mindrythm-shoot-01.jpg</code>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="alert alert-warning">
+      <strong>⚠️ How to Convert iPhone HEIC to JPG in 3 Seconds:</strong>
+      <br>If taking photos from an iPhone: In iPhone Settings &rarr; <em>Camera</em> &rarr; <em>Formats</em> &rarr; choose <strong>"Most Compatible"</strong>.
+      <br>Or use free Mac Preview / Web tool: export as JPG before uploading to Sanity.
+    </div>
+
+    <h2>Recommended Free Tools for Media Preparation</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Tool</th>
+          <th>What It Is</th>
+          <th>Best Used For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a class="url-link" href="https://tinypng.com">TinyPNG.com</a></td>
+          <td>Free Online Image Compressor</td>
+          <td>Compress JPG and PNG images by 70% with zero visual quality loss.</td>
+        </tr>
+        <tr>
+          <td><a class="url-link" href="https://handbrake.fr">HandBrake</a></td>
+          <td>Free Video Compressor (Mac/Win)</td>
+          <td>Compress heavy MP4/MOV videos down to under 15 MB for ultra-smooth web streaming.</td>
+        </tr>
+        <tr>
+          <td><a class="url-link" href="https://cloudconvert.com">CloudConvert.com</a></td>
+          <td>Free Universal Converter</td>
+          <td>Instantly convert HEIC to JPG or MOV to MP4 online.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 5: CONTACT FORM & ENQUIRY ENGINE -->
+  <div>
+    <h1>5. Contact Form & Lead Generation Engine</h1>
+
+    <h2>How the Enquiry System Works</h2>
+    <p>The interactive enquiry form on <a class="url-link" href="https://mindrythm.com#contact">mindrythm.com</a> is engineered for high conversion, zero spam, and instant delivery directly into your corporate inbox.</p>
+
+    <div class="card">
+      <h3>🛡️ Built-in Validations & Spam Safeguards</h3>
+      <ul>
+        <li><strong>Minimum 10 Characters Requirement:</strong> To prevent empty test submissions or accidental clicks, the inquiry text box requires at least 10 characters. If a user types less, a friendly guide message appears: <em>"Please write at least 10 characters describing your project."</em></li>
+        <li><strong>Valid Email Verification:</strong> The form verifies email syntax (e.g. <code>name@company.com</code>) before allowing submission.</li>
+        <li><strong>Instant Gmail SMTP Delivery:</strong> As soon as the client clicks "Send Enquiry", our secure SMTP bridge delivers the full message details directly to <code>admin@mindrythm.com</code> within 3 seconds.</li>
+        <li><strong>No Third-Party Ad Tracker Bloat:</strong> Forms are processed internally on your server without sluggish third-party form widgets.</li>
+      </ul>
+    </div>
+
+    <h2>What an Incoming Lead Notification Looks Like</h2>
+    <div style="background:#f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; padding: 14px; font-family: monospace; font-size: 8.5pt;">
+      <strong>Subject:</strong> 🚀 New Project Enquiry: Commercial Video - Acme Corp<br>
+      <strong>From:</strong> Mindrythm Studio Portal &lt;admin@mindrythm.com&gt;<br>
+      <strong>To:</strong> admin@mindrythm.com<br>
+      --------------------------------------------------------------------------------<br>
+      <strong>Client Name:</strong> Rahul Sharma<br>
+      <strong>Email:</strong> rahul@acmebrand.in<br>
+      <strong>Selected Service:</strong> Commercial Video & 3D Animation<br>
+      <strong>Estimated Budget:</strong> $5,000 - $10,000<br>
+      <strong>Project Details:</strong><br>
+      "We are looking for a 30-second 3D product animation teaser for our upcoming smartwatch launch next month. Please share your timeline and pricing."<br>
+      --------------------------------------------------------------------------------<br>
+      <em>Direct Reply: Simply hit "Reply" in your email client to reply directly to Rahul.</em>
+    </div>
+
+    <div class="alert alert-tip" style="margin-top: 14px;">
+      <strong>💡 Email Troubleshooting:</strong>
+      If an enquiry is ever missed, check the <strong>"Spam"</strong> or <strong>"Updates"</strong> folder in <code>admin@mindrythm.com</code> and mark it as <em>"Not Spam"</em> so Google learns your preferences.
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 6: CLIENT SELF-DEPLOYMENT & MAINTENANCE -->
+  <div>
+    <h1>6. Deployment & Hostinger VPS Management</h1>
+
+    <h2>Do I Need to Deploy Every Time I Edit Text or Photos?</h2>
+    <p><strong style="font-size: 11pt; color: #16a34a;">NO! You do NOT need to deploy for CMS edits.</strong></p>
+    <p>Your website is connected in real-time to Sanity CMS. Whenever you edit text, upload an image, or change a service in Sanity Studio, your live website updates automatically. There is <strong>no deployment or coding needed</strong> for day-to-day operations.</p>
+
+    <h2>When Is a Server Deployment Needed?</h2>
+    <p>A deployment is ONLY needed if you modify the underlying software code (e.g. altering the fundamental layout structure, installing new software plugins, or changing API configurations).</p>
+
+    <h2>How You Can Run a 1-Click Refresh on Hostinger Yourself</h2>
+    <p>If you ever want to restart or refresh the website server on Hostinger without developer assistance, follow these exact 4 steps:</p>
+
+    <div class="step-box">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <div class="step-title">Log in to Hostinger hPanel</div>
+        <p>Go to <a class="url-link" href="https://hpanel.hostinger.com">https://hpanel.hostinger.com</a> &rarr; Log in &rarr; Navigate to <strong>VPS</strong> &rarr; Select your server (<code>86.38.243.142</code>).</p>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-number">2</div>
+      <div class="step-content">
+        <div class="step-title">Open the Browser Terminal / Console</div>
+        <p>Click on <strong>"Terminal"</strong> or <strong>"SSH Access"</strong> right inside your Hostinger dashboard (no special software needed).</p>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-number">3</div>
+      <div class="step-content">
+        <div class="step-title">Run the 1-Line Update Command</div>
+        <p>Copy and paste this single command into the terminal and press Enter:</p>
+        <p><code>cd ~/mindrythm-studio && git pull && npm run build && pm2 restart mindrythm</code></p>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-number">4</div>
+      <div class="step-content">
+        <div class="step-title">Done! Website Refreshed</div>
+        <p>The terminal will show <code>[PM2] Process mindrythm restarted</code>. Your website is instantly running the fresh build with zero downtime.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 7: FAQ & TROUBLESHOOTING -->
+  <div>
+    <h1>7. Frequently Asked Questions & Troubleshooting</h1>
+
+    <div class="card">
+      <h3>Q: I published a new photo, but when I open mindrythm.com I still see the old one?</h3>
+      <p><strong>Answer:</strong> Your browser has cached the old page. Simply hard refresh by pressing <strong>Ctrl + Shift + R</strong> (Windows) or <strong>Cmd + Shift + R</strong> (Mac), or open the site in an Incognito/Private window. It will immediately show the new photo.</p>
+    </div>
+
+    <div class="card">
+      <h3>Q: My video uploaded, but it shows a black screen or won't play on iPhone?</h3>
+      <p><strong>Answer:</strong> The video was saved in an unsupported format (like Apple ProRes or AVI). Export the video in Premiere / Final Cut / CapCut as <strong>H.264 MP4</strong> with standard AAC audio. Keep the resolution at 1080p and file size under 20MB.</p>
+    </div>
+
+    <div class="card">
+      <h3>Q: I created a new Service or Project, but it isn't showing up on the homepage?</h3>
+      <p><strong>Answer:</strong> Check two things in Sanity Studio:
+      <br>1. Did you click the <strong>"Generate"</strong> button next to the <strong>Slug</strong> field? Every item requires a slug (e.g. <code>/commercial-video</code>).
+      <br>2. Did you click the green <strong>"Publish"</strong> button at the bottom right corner?</p>
+    </div>
+
+    <div class="card">
+      <h3>Q: How do I invite another team member to edit content in Sanity?</h3>
+      <p><strong>Answer:</strong> Go to <a class="url-link" href="https://sanity.io/manage">https://sanity.io/manage</a> &rarr; Select Project <code>mindrythm-studio</code> &rarr; Click <strong>"Members"</strong> &rarr; Click <strong>"Invite New Member"</strong> &rarr; Enter their email address &rarr; Assign role as <em>Editor</em> or <em>Administrator</em>.</p>
+    </div>
+
+    <div class="card">
+      <h3>Q: How do we renew the domain or SSL certificate?</h3>
+      <p><strong>Answer:</strong> Both your domain (<code>mindrythm.com</code>) and SSL security certificate are hosted and auto-renewed in your Hostinger account. As long as your payment method is active in Hostinger, SSL renewals happen automatically.</p>
+    </div>
+
+    <div style="margin-top: 30px; text-align: center; border-top: 2px solid #e2e8f0; padding-top: 20px; color: #64748b; font-size: 8.5pt;">
+      <strong>Mindrythm Studio Administration Manual</strong> &bull; Developed & Delivered by Engineering Team &bull; 2026
+    </div>
+  </div>
+
+</body>
+</html>
