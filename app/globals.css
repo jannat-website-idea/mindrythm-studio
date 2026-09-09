@@ -803,25 +803,31 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
 .lightbox-close-btn {
   pointer-events: auto;
-  padding: 0.45rem 1.15rem;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.45);
   border-radius: 999px;
-  background: rgba(18, 18, 16, 0.28);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(18, 18, 16, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   color: #ffffff;
   font-size: 0.72rem;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
   transition: all 0.25s ease;
 }
 
 .lightbox-close-btn:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: #ffffff;
+  color: #171714;
   border-color: #ffffff;
   transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.55);
 }
 
 .lightbox-nav {
@@ -921,9 +927,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   box-sizing: border-box;
 }
 
-.lightbox-layout-portrait .lightbox-immersive-toolbar,
-.lightbox-layout-square .lightbox-immersive-toolbar,
-.lightbox-layout-tall-portrait .lightbox-immersive-toolbar {
+.lightbox-layout-portrait:has(.lightbox-copy-side) .lightbox-immersive-toolbar,
+.lightbox-layout-square:has(.lightbox-copy-side) .lightbox-immersive-toolbar,
+.lightbox-layout-tall-portrait:has(.lightbox-copy-side) .lightbox-immersive-toolbar {
   top: clamp(1.5rem, 4vh, 2.5rem);
   right: clamp(1.5rem, 4vw, 2.5rem);
   left: auto;
@@ -931,15 +937,15 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   padding: 0;
 }
 
-.lightbox-layout-portrait .lightbox-grid-btn,
-.lightbox-layout-square .lightbox-grid-btn,
-.lightbox-layout-tall-portrait .lightbox-grid-btn {
+.lightbox-layout-portrait:has(.lightbox-copy-side) .lightbox-grid-btn,
+.lightbox-layout-square:has(.lightbox-copy-side) .lightbox-grid-btn,
+.lightbox-layout-tall-portrait:has(.lightbox-copy-side) .lightbox-grid-btn {
   display: none;
 }
 
-.lightbox-layout-portrait .lightbox-close-btn,
-.lightbox-layout-square .lightbox-close-btn,
-.lightbox-layout-tall-portrait .lightbox-close-btn {
+.lightbox-layout-portrait:has(.lightbox-copy-side) .lightbox-close-btn,
+.lightbox-layout-square:has(.lightbox-copy-side) .lightbox-close-btn,
+.lightbox-layout-tall-portrait:has(.lightbox-copy-side) .lightbox-close-btn {
   border-color: rgba(23, 23, 20, 0.35);
   background: rgba(23, 23, 20, 0.1);
   color: var(--ink);
@@ -10464,4 +10470,107 @@ main {
 .gallery-page-fullwidth .lightbox-copy-area,
 .lightbox-immersive[data-kind="gallery"] .lightbox-copy-area {
   display: none !important;
+}
+
+/* Gallery Lightbox: Full-width centered presentation & prominent, unmistakable close controls */
+.lightbox-immersive[data-kind="gallery"] {
+  background: #060605 !important;
+}
+
+.lightbox-immersive[data-kind="gallery"] .lightbox-media-area {
+  flex: 1 1 100% !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  border-radius: 0 !important;
+  padding: clamp(1rem, 4vh, 3rem) clamp(1rem, 4vw, 3rem) !important;
+}
+
+.lightbox-immersive[data-kind="gallery"] .lightbox-media-frame {
+  width: 100% !important;
+  max-width: 92vw !important;
+  height: 100% !important;
+  max-height: 88vh !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.lightbox-immersive[data-kind="gallery"] .lightbox-media-frame img,
+.lightbox-immersive[data-kind="gallery"] .lightbox-media-frame video {
+  max-width: 90vw !important;
+  max-height: 85vh !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain !important;
+  border-radius: 8px !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65) !important;
+}
+
+.lightbox-immersive[data-kind="gallery"] .lightbox-immersive-toolbar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: clamp(1.25rem, 3.5vh, 2.25rem) clamp(1.25rem, 3.5vw, 2.75rem) !important;
+  z-index: 100020 !important;
+  pointer-events: none !important;
+}
+
+.lightbox-immersive[data-kind="gallery"] .lightbox-grid-btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 44px !important;
+  height: 44px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  background: rgba(18, 18, 16, 0.65) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  color: #ffffff !important;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+  transition: all 0.25s ease !important;
+}
+
+.lightbox-immersive[data-kind="gallery"] .lightbox-grid-btn:hover {
+  background: #ffffff !important;
+  color: #171714 !important;
+  border-color: #ffffff !important;
+  transform: scale(1.08) !important;
+}
+
+.lightbox-immersive[data-kind="gallery"] .lightbox-close-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.55rem !important;
+  padding: 0.65rem 1.4rem !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 999px !important;
+  background: rgba(18, 18, 16, 0.75) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  color: #ffffff !important;
+  font-size: 0.74rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  box-shadow: 0 6px 26px rgba(0, 0, 0, 0.6) !important;
+  transition: all 0.25s ease !important;
+}
+
+.lightbox-immersive[data-kind="gallery"] .lightbox-close-btn:hover {
+  background: #ffffff !important;
+  color: #171714 !important;
+  border-color: #ffffff !important;
+  transform: translateY(-2px) scale(1.04) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.75) !important;
 }

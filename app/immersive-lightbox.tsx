@@ -188,8 +188,12 @@ export function ImmersiveLightbox({
             <circle cx="20" cy="20" r="2" />
           </svg>
         </button>
-        <button type="button" className="lightbox-close-btn" onClick={onClose} aria-label="Close">
-          Close ×
+        <button type="button" className="lightbox-close-btn" onClick={onClose} aria-label="Close lightbox">
+          <span>Close</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
         </button>
       </div>
 
