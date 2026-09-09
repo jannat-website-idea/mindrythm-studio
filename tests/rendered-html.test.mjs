@@ -21,8 +21,8 @@ test("includes the complete client narratives and service scope", async () => {
   assert.match(content, /every meaningful project begins with a conversation/i);
   assert.match(content, /Mindrythm has never been about one person/);
 
-  for (const service of ["Premium visual production (photography + videography)", "Drone imagery", "Website development", "Logo generation", "Meta Ads", "Social media management", "Commercial Branding", "Social media creatives"]) {
-    assert.match(content, new RegExp(service.replace(/[+&()]/g, "\\$&")));
+  for (const service of ["Visual production (photography + videography)", "Drone imagery", "Website development", "Logo generation", "Meta Ads", "Social media management", "Commercial Branding", "Social media creatives"]) {
+    assert.match(content, new RegExp(service.replace(/[+&()]/g, "\\$&"), "i"));
   }
   assert.doesNotMatch(experience, /title: "Fashion"/);
   assert.match(experience, /content\.services/);

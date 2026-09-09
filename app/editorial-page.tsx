@@ -613,6 +613,15 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
       </footer>
       <BackToTop />
 
+      {openedService && (
+        <ServiceModal
+          service={openedService}
+          allGalleryItems={galleryItems}
+          onClose={() => setOpenedService(null)}
+          onOpenLightbox={(item) => setSelected(item)}
+        />
+      )}
+
       {selected && (
         selected.kind === "team" ? (
           <TeamShowcase
@@ -640,15 +649,6 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
             />
           );
         })()
-      )}
-
-      {openedService && (
-        <ServiceModal
-          service={openedService}
-          allGalleryItems={galleryItems}
-          onClose={() => setOpenedService(null)}
-          onOpenLightbox={(item) => setSelected(item)}
-        />
       )}
     </div>
   );

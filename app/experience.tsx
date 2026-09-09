@@ -116,6 +116,7 @@ export function Experience({ content }: { content: SiteContent }) {
   const [activeTeamCardId, setActiveTeamCardId] = useState<string | null>(null);
   const [activeService, setActiveService] = useState<number | null>(null);
   const [openedService, setOpenedService] = useState<ServiceContent | null>(null);
+  const [aboutExpanded, setAboutExpanded] = useState(false);
   const [enquiryState, setEnquiryState] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [enquiryErrorMessage, setEnquiryErrorMessage] = useState("");
   const [enquiryQuery, setEnquiryQuery] = useState("");
@@ -781,9 +782,20 @@ export function Experience({ content }: { content: SiteContent }) {
             <div className="about-heading" data-reveal>
               <span className="section-index">Our core idea</span>
               <h2>A conversation<br /><em>before a brief.</em></h2>
-              <p className="about-heading-statement">
-                {visionParagraphs[2] || visionParagraphs[0]}
-              </p>
+              <div className="about-statement-wrapper">
+                <p className={`about-heading-statement ${aboutExpanded ? "is-expanded" : "is-collapsed"}`}>
+                  {visionParagraphs[2] || visionParagraphs[0]}
+                </p>
+                <button
+                  type="button"
+                  className="about-readmore-btn"
+                  onClick={() => setAboutExpanded((prev) => !prev)}
+                  aria-expanded={aboutExpanded}
+                >
+                  <span>{aboutExpanded ? "Read Less" : "Read More"}</span>
+                  <span aria-hidden="true">{aboutExpanded ? "−" : "+"}</span>
+                </button>
+              </div>
             </div>
             <div className="about-pillars-grid">
               <a href="/story" className="about-card-pillar" data-reveal>
