@@ -7146,6 +7146,9 @@ video {
   grid-template-columns: 1fr;
   background: #0c0c0a;
   overflow: hidden;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
 
 .services-canvas-media-wrap:has(.services-media-secondary) {
@@ -7203,7 +7206,12 @@ video {
   align-items: center;
   justify-content: space-between;
   gap: 1.25rem;
+  border: none;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  width: 100%;
 }
 
 .services-bar-info {
@@ -9917,13 +9925,13 @@ main {
 .about-section {
   position: relative;
   background: var(--ivory) !important;
-  padding: clamp(6rem, 9vw, 10rem) clamp(1.5rem, 5vw, 5rem) clamp(5rem, 8vw, 9rem) !important;
+  padding: clamp(3rem, 4.5vw, 4.5rem) clamp(1.5rem, 5vw, 5rem) clamp(3.5rem, 5vw, 5rem) !important;
   border-top: 1px solid var(--line);
 }
 
 .about-heading {
   max-width: 960px;
-  margin-bottom: clamp(3rem, 5vw, 5.5rem);
+  margin-bottom: clamp(2rem, 3vw, 3rem);
 }
 
 .about-heading .section-index {

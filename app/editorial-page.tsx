@@ -331,19 +331,19 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                         </div>
                       </div>
 
-                      <div className="services-stream-visual">
-                        {primaryMedia && (
-                          <button
-                            type="button"
-                            className="services-photo-thumb services-photo-single"
-                            onClick={() => setOpenedService(service)}
-                            aria-label={`Read more about ${service.title}`}
-                          >
-                            <Media item={primaryMedia} priority={index < 2} />
-                            <span className="services-photo-hint">Read More &amp; Gallery ↗</span>
-                          </button>
-                        )}
-                      </div>
+                        <div className="services-stream-visual">
+                          {primaryMedia && (
+                            <button
+                              type="button"
+                              className="services-photo-thumb services-photo-single"
+                              onClick={() => setSelected(primaryMedia)}
+                              aria-label={`View ${service.title} full size image`}
+                            >
+                              <Media item={primaryMedia} priority={index < 2} />
+                              <span className="services-photo-hint">Click to enlarge ↗</span>
+                            </button>
+                          )}
+                        </div>
                     </article>
                   );
                 })}

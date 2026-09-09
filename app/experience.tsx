@@ -615,15 +615,19 @@ export function Experience({ content }: { content: SiteContent }) {
                     const mainMedia = service.media[0] || projects[0];
                     const secondaryMedia = service.media[1];
                     return (
-                      <button
+                      <div
                         key={service.key}
-                        type="button"
-                        onClick={() => setOpenedService(service)}
                         className={`services-canvas-item ${isDisplayed ? "is-active" : ""}`}
                         aria-hidden={!isDisplayed}
-                        aria-label={`Read more and view ${service.title} gallery`}
                       >
-                        <div className="services-canvas-media-wrap">
+                        <button
+                          type="button"
+                          className="services-canvas-media-wrap"
+                          onClick={() => {
+                            if (mainMedia) setSelectedItem(mainMedia);
+                          }}
+                          aria-label={`Open ${service.title} full size image window`}
+                        >
                           {mainMedia && (
                             <div className="services-media-primary">
                               <Media item={mainMedia} priority={isDisplayed} active={isDisplayed} />
@@ -635,9 +639,14 @@ export function Experience({ content }: { content: SiteContent }) {
                             </div>
                           )}
                           <div className="services-media-vignette" />
-                        </div>
+                        </button>
 
-                        <div className="services-canvas-bar">
+                        <button
+                          type="button"
+                          className="services-canvas-bar"
+                          onClick={() => setOpenedService(service)}
+                          aria-label={`Read more details about ${service.title}`}
+                        >
                           <div className="services-bar-info">
                             <span className="services-bar-name">{service.title}</span>
                           </div>
@@ -645,8 +654,8 @@ export function Experience({ content }: { content: SiteContent }) {
                             <span>Read More</span>
                             <span aria-hidden="true" className="services-bar-arrow">→</span>
                           </span>
-                        </div>
-                      </button>
+                        </button>
+                      </div>
                     );
                   })}
                 </div>
