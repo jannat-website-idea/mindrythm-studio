@@ -15,12 +15,14 @@ import {testimonial} from "./documents/testimonial";
 import {legalSection} from "./objects/legalSection";
 import {mediaAsset} from "./objects/mediaAsset";
 import {processBanner} from "./documents/processBanner";
+import {visualPortfolio} from "./documents/visualPortfolio";
 
 export const schemaTypes = [
   mediaAsset,
   legalSection,
   siteSettings,
   heroSection,
+  visualPortfolio,
   processBanner,
   aboutContent,
   service,

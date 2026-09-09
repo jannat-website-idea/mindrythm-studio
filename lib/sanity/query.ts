@@ -6,6 +6,22 @@ export const siteContentQuery = `{
     visionHighlights,
     "featuredProjectIds": featuredProjects[]->{ "id": coalesce(cmsId.current, _id) }.id
   },
+  "visualPortfolio": *[_type == "visualPortfolio" && _id == "visualPortfolio"][0]{
+    sectionTitle,
+    tagline,
+    items[]{
+      "id": coalesce(_key, title),
+      title,
+      eyebrow,
+      category,
+      body,
+      "mediaUrl": coalesce(media.video.asset->url, media.image.asset->url, media.externalUrl, project->media.video.asset->url, project->media.image.asset->url, project->media.externalUrl),
+      "mediaAlt": coalesce(media.alt, title),
+      "mediaType": coalesce(lower(mediaType), select(defined(media.video) => "video", "image"), lower(project->mediaType), "image"),
+      "href": coalesce(href, project->href, "/work"),
+      "projectRef": project->_id
+    }
+  },
   "about": *[_type == "aboutContent" || _id == "aboutContent"][0]{
     visionParagraphs,
     missionParagraphs,

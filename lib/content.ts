@@ -115,11 +115,30 @@ export type LegalPageContent = {
   sections: LegalSection[];
 };
 
+export type VisualPortfolioItem = {
+  id: string;
+  title: string;
+  eyebrow?: string;
+  category?: string;
+  body?: string;
+  mediaUrl: string;
+  mediaAlt?: string;
+  mediaType: MediaType;
+  href?: string;
+};
+
+export type VisualPortfolioContent = {
+  sectionTitle?: string;
+  tagline?: string;
+  items?: VisualPortfolioItem[];
+};
+
 export type SiteContent = {
   settings: SiteSettings;
   items: ContentItem[];
   hero: HeroContent;
   copy: SiteCopy;
+  visualPortfolio?: VisualPortfolioContent;
   services: ServiceContent[];
   footer: FooterContent;
   seo: SeoSettings;
@@ -191,11 +210,73 @@ export const teamIntroduction = "Mindrythm has never been about one person—it 
 export const defaultHero: HeroContent = {
   titleLineOne: "Every story",
   titleLineTwo: "has a rhythm.",
-  featuredProjectIds: ["event-photography", "quiet-frequency", "wedding-celebration"],
+  featuredProjectIds: ["event-photography", "quiet-frequency", "wedding-celebration", "event-film", "in-passing"],
   visionHighlights: [
     "Our vision is to create a place where ideas find their visual language.",
     "Where artists find one another.",
     "Where every project contributes to a body of work that is intentional and beautiful.",
+  ],
+};
+
+export const defaultVisualPortfolio: VisualPortfolioContent = {
+  sectionTitle: "Scroll through the visual portfolio",
+  tagline: "Selected stories / 2026",
+  items: [
+    {
+      id: "event-photography",
+      title: "Earth & Stillness",
+      eyebrow: "WELLNESS RITUAL",
+      category: "WELLNESS PHOTOGRAPHY",
+      body: "A tactile portrait of an elemental mud ritual, photographed with natural light, quiet detail and a strong sense of place.",
+      mediaUrl: "/images/wellness-mud-bath.jpg",
+      mediaAlt: "Earth & Stillness",
+      mediaType: "image",
+      href: "#earth-and-stillness",
+    },
+    {
+      id: "quiet-frequency",
+      title: "Svabodha Wellness",
+      eyebrow: "WELLNESS RETREAT / FILM",
+      category: "WELLNESS FILM",
+      body: "A cinematic retreat story moving through shoreline, forest, ritual and the slower rhythm of a restorative stay.",
+      mediaUrl: "/videos/resort-pool.mp4",
+      mediaAlt: "Svabodha Wellness",
+      mediaType: "video",
+      href: "#svabodha-wellness",
+    },
+    {
+      id: "wedding-celebration",
+      title: "Vows in Bloom",
+      eyebrow: "WEDDING / PHOTOGRAPHY",
+      category: "WEDDING PHOTOGRAPHY",
+      body: "A warm, candid wedding story balancing traditional portraits, joyful details and the unscripted moments between them.",
+      mediaUrl: "/images/wedding-celebration.jpg",
+      mediaAlt: "Vows in Bloom",
+      mediaType: "image",
+      href: "#vows-in-bloom",
+    },
+    {
+      id: "event-film",
+      title: "A Guided Pause",
+      eyebrow: "WELLNESS PRACTICE / FILM",
+      category: "WELLNESS FILM",
+      body: "A quiet film study of guided movement, breath and the attentive human connection at the heart of a retreat.",
+      mediaUrl: "/videos/event-film.mp4",
+      mediaAlt: "A Guided Pause",
+      mediaType: "video",
+      href: "#guided-pause",
+    },
+    {
+      id: "in-passing",
+      title: "Hands of Stillness",
+      eyebrow: "THERAPEUTIC RITUAL / FILM",
+      category: "WELLNESS RITUAL",
+      body: "An intimate moving portrait of restorative touch, attentive care and the calm created through a considered wellness ritual.",
+      mediaUrl: "/videos/hotel-room.mp4",
+      mediaAlt: "Hands of Stillness",
+      mediaType: "video",
+      href: "#hands-of-stillness",
+    },
   ],
 };
 
@@ -817,6 +898,48 @@ export const defaultItems: ContentItem[] = withItemDefaults([
     href: "https://www.google.com/search?kgmid=%2Fg%2F11njpxjhwk&q=Mindrythm+Studios",
     accent: "dark",
   },
+  {
+    id: "testimonial-rohit-sengupta",
+    kind: "testimonial",
+    sortOrder: 30,
+    title: "Rohit Sengupta",
+    eyebrow: "Verified Client · Google review",
+    body: "Incredible visual storytelling. The team captured the exact essence of our resort and wellness retreat with cinematic depth and absolute professionalism. Highly recommended for premium hospitality branding.",
+    mediaUrl: "",
+    mediaAlt: "",
+    category: "Verified Client · Google review",
+    year: "5",
+    href: "https://www.google.com/search?kgmid=%2Fg%2F11njpxjhwk&q=Mindrythm+Studios",
+    accent: "light",
+  },
+  {
+    id: "testimonial-ananya-roy",
+    kind: "testimonial",
+    sortOrder: 40,
+    title: "Ananya Roy",
+    eyebrow: "Client · Google review",
+    body: "Working with Mindrythm was an absolute delight. Their calm process, attention to lighting, and ability to frame unscripted emotions turned our event into timeless art. Truly masters of their craft.",
+    mediaUrl: "",
+    mediaAlt: "",
+    category: "Client · Google review",
+    year: "5",
+    href: "https://www.google.com/search?kgmid=%2Fg%2F11njpxjhwk&q=Mindrythm+Studios",
+    accent: "dark",
+  },
+  {
+    id: "testimonial-vikramaditya-mehta",
+    kind: "testimonial",
+    sortOrder: 50,
+    title: "Vikramaditya Mehta",
+    eyebrow: "Architectural Partner · Google review",
+    body: "Mindrythm delivers world-class production standards. From drone cinematography to architectural stills, their compositions are clean, modern, and evocative. Our entire brand visual language was elevated.",
+    mediaUrl: "",
+    mediaAlt: "",
+    category: "Architectural Partner · Google review",
+    year: "5",
+    href: "https://www.google.com/search?kgmid=%2Fg%2F11njpxjhwk&q=Mindrythm+Studios",
+    accent: "light",
+  },
 ]);
 
 export const defaultContent: SiteContent = {
@@ -824,6 +947,7 @@ export const defaultContent: SiteContent = {
   items: defaultItems,
   hero: defaultHero,
   copy: defaultCopy,
+  visualPortfolio: defaultVisualPortfolio,
   services: defaultServices,
   footer: defaultFooter,
   seo: defaultSeo,

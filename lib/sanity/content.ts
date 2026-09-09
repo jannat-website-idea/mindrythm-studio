@@ -19,6 +19,7 @@ type RawSanityContent = {
   privacyPolicy?: LegalPageContent | null;
   termsConditions?: LegalPageContent | null;
   processBanner?: Record<string, unknown> | null;
+  visualPortfolio?: Record<string, unknown> | null;
   services?: Array<Record<string, unknown>>;
   projects?: Array<Record<string, unknown>>;
   gallery?: Array<Record<string, unknown>>;
@@ -190,6 +191,34 @@ export async function getSanitySiteContent(options: {stega?: boolean} = {}): Pro
           return undefined;
         })(),
       },
+      visualPortfolio: (() => {
+        const vp = raw.visualPortfolio;
+        if (!vp) return defaultContent.visualPortfolio;
+        const rawItems = Array.isArray((vp as any).items) ? (vp as any).items : [];
+        const mappedItems = rawItems
+          .map((item: any, index: number) => {
+            const title = text(item.title);
+            if (!title) return null;
+            return {
+              id: text(item.id, `visual-story-${index}`),
+              title,
+              eyebrow: text(item.eyebrow),
+              category: text(item.category),
+              body: text(item.body),
+              mediaUrl: text(item.mediaUrl),
+              mediaAlt: text(item.mediaAlt, title),
+              mediaType: (text(item.mediaType).toLowerCase() === "video" ? "video" : "image") as any,
+              href: text(item.href, "/work"),
+            };
+          })
+          .filter(Boolean);
+
+        return {
+          sectionTitle: text((vp as any).sectionTitle, defaultContent.visualPortfolio?.sectionTitle || "Scroll through the visual portfolio"),
+          tagline: text((vp as any).tagline, defaultContent.visualPortfolio?.tagline || "Selected stories / 2026"),
+          items: mappedItems.length ? mappedItems : defaultContent.visualPortfolio?.items,
+        };
+      })(),
       services,
       footer: {
         callout: text(raw.footer?.callout, defaultContent.footer.callout),

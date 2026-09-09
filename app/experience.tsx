@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  defaultItems,
   mainInstagramUrl as defaultInstagramUrl,
   type ContentItem,
   type ServiceContent,
@@ -43,8 +44,60 @@ export function Experience({ content }: { content: SiteContent }) {
     const featured = featuredIds
       .map((id) => projects.find((project) => project.id === id))
       .filter((project): project is ContentItem => Boolean(project));
-    return [...featured, ...projects.filter((project) => !featuredIds.includes(project.id))].slice(0, 3);
+    return [...featured, ...projects.filter((project) => !featuredIds.includes(project.id))].slice(0, 5);
   }, [content.hero.featuredProjectIds, projects]);
+
+  const scrollCinemaItems = useMemo(() => {
+    const customItems = (content.visualPortfolio?.items || []).filter((item) => Boolean(item.mediaUrl || item.title));
+    const featuredIds = content.hero.featuredProjectIds;
+    const featured = featuredIds
+      .map((id) => projects.find((project) => project.id === id))
+      .filter((project): project is ContentItem => Boolean(project));
+    const remaining = projects.filter((project) => !featuredIds.includes(project.id));
+    const pool = [...featured, ...remaining];
+
+    if (customItems.length >= 5) {
+      return customItems.map((item, index) => ({
+        id: item.id || `visual-story-${index}`,
+        kind: "project" as const,
+        sortOrder: index * 10,
+        title: item.title,
+        eyebrow: item.eyebrow || "",
+        body: item.body || "",
+        mediaUrl: item.mediaUrl,
+        mediaAlt: item.mediaAlt || item.title,
+        category: item.category || "Selected frame",
+        mediaType: item.mediaType,
+        layoutType: "large" as const,
+        year: "2026",
+        href: item.href || "/work",
+        accent: "forest",
+      }));
+    }
+
+    if (customItems.length > 0) {
+      const convertedCustom = customItems.map((item, index) => ({
+        id: item.id || `visual-story-${index}`,
+        kind: "project" as const,
+        sortOrder: index * 10,
+        title: item.title,
+        eyebrow: item.eyebrow || "",
+        body: item.body || "",
+        mediaUrl: item.mediaUrl,
+        mediaAlt: item.mediaAlt || item.title,
+        category: item.category || "Selected frame",
+        mediaType: item.mediaType,
+        layoutType: "large" as const,
+        year: "2026",
+        href: item.href || "/work",
+        accent: "forest",
+      }));
+      const needed = Math.max(0, 5 - convertedCustom.length);
+      return [...convertedCustom, ...pool.slice(0, needed)];
+    }
+
+    return pool.slice(0, 5);
+  }, [content.visualPortfolio?.items, content.hero.featuredProjectIds, projects]);
   const serviceCollections = useMemo(
     () =>
       serviceItems.map((service, index) => {
@@ -95,8 +148,8 @@ export function Experience({ content }: { content: SiteContent }) {
     () => content.items.filter((item) => item.kind === "team").sort((a, b) => a.sortOrder - b.sortOrder),
     [content.items],
   );
-  const testimonials = useMemo(
-    () => content.items
+  const testimonials = useMemo(() => {
+    const activeTestimonials = content.items
       .filter((item) => item.kind === "testimonial" && item.accent !== "rejected")
       .filter((item) => {
         const rating = Number(item.year || 5);
@@ -107,10 +160,22 @@ export function Experience({ content }: { content: SiteContent }) {
         const ratingB = Number(b.year || 5);
         if (ratingB !== ratingA) return ratingB - ratingA;
         return a.sortOrder - b.sortOrder;
-      })
-      .slice(0, 5),
-    [content.items],
-  );
+      });
+
+    if (activeTestimonials.length >= 5) {
+      return activeTestimonials.slice(0, 10);
+    }
+
+    const defaultTestimonials = defaultItems.filter((item) => item.kind === "testimonial");
+    const combined = [...activeTestimonials];
+    for (const def of defaultTestimonials) {
+      if (combined.length >= 5) break;
+      if (!combined.some((t) => t.id === def.id || t.title.toLowerCase() === def.title.toLowerCase())) {
+        combined.push(def);
+      }
+    }
+    return combined;
+  }, [content.items]);
 
   const team = savedTeam;
 
@@ -132,6 +197,7 @@ export function Experience({ content }: { content: SiteContent }) {
   const [enquiryQuery, setEnquiryQuery] = useState("");
   const heroRef = useRef<HTMLElement | null>(null);
   const scrollCinemaRef = useRef<HTMLElement | null>(null);
+  const testimonialsScrollRef = useRef<HTMLDivElement | null>(null);
   const enquiryStartedAtRef = useRef(0);
 
   useEffect(() => {
@@ -673,14 +739,16 @@ export function Experience({ content }: { content: SiteContent }) {
           <section className="scroll-cinema" ref={scrollCinemaRef} aria-label="A scroll-led view of Mindrythm">
             <div className="scroll-cinema-sticky">
               <div className="scroll-cinema-top">
-                <span>Scroll through the visual portfolio</span>
+                <span>{content.visualPortfolio?.sectionTitle || "Scroll through the visual portfolio"}</span>
                 <div className="scroll-cinema-nav-controls">
                   <button
                     type="button"
                     className="scroll-cinema-arrow-btn"
                     onClick={() => {
                       const w = scrollCinemaRef.current?.querySelector(".scroll-cinema-window");
-                      w?.scrollBy({ left: -450, behavior: "smooth" });
+                      const panel = scrollCinemaRef.current?.querySelector(".scroll-cinema-panel");
+                      const step = (panel as HTMLElement)?.offsetWidth ? (panel as HTMLElement).offsetWidth + 24 : 450;
+                      w?.scrollBy({ left: -step, behavior: "smooth" });
                     }}
                     aria-label="Scroll left"
                   >
@@ -691,18 +759,20 @@ export function Experience({ content }: { content: SiteContent }) {
                     className="scroll-cinema-arrow-btn"
                     onClick={() => {
                       const w = scrollCinemaRef.current?.querySelector(".scroll-cinema-window");
-                      w?.scrollBy({ left: 450, behavior: "smooth" });
+                      const panel = scrollCinemaRef.current?.querySelector(".scroll-cinema-panel");
+                      const step = (panel as HTMLElement)?.offsetWidth ? (panel as HTMLElement).offsetWidth + 24 : 450;
+                      w?.scrollBy({ left: step, behavior: "smooth" });
                     }}
                     aria-label="Scroll right"
                   >
                     →
                   </button>
-                  <span>Selected stories / 2026</span>
+                  <span>{content.visualPortfolio?.tagline || "Selected stories / 2026"}</span>
                 </div>
               </div>
               <div className="scroll-cinema-window">
                 <div className="scroll-cinema-track">
-                  {heroItems.slice(0, 3).map((item) => (
+                  {scrollCinemaItems.map((item) => (
                     <button type="button" className="scroll-cinema-panel" key={`scroll-${item.id}`} onClick={() => setSelectedItem(item)} aria-label={`Open ${item.title}`}>
                       <Media item={item} />
                       <div><span>{item.category || "Selected frame"}</span><h2>{item.title}</h2><p>{item.eyebrow}</p></div>
@@ -751,9 +821,46 @@ export function Experience({ content }: { content: SiteContent }) {
           <section className="testimonials-section" id="testimonials">
             <div className="testimonials-heading" data-reveal>
               <h2>Testimonial</h2>
-              <div className="testimonial-source"><span>Mindrythm on Google</span><a href={googleBusinessUrl} target="_blank" rel="noreferrer">Read all reviews on Google</a></div>
+              <div className="testimonial-source">
+                <div className="testimonials-nav-controls">
+                  <button
+                    type="button"
+                    className="testimonials-arrow-btn"
+                    onClick={() => {
+                      const w = testimonialsScrollRef.current;
+                      const card = w?.querySelector(".testimonial-card");
+                      const step = (card as HTMLElement)?.offsetWidth ? (card as HTMLElement).offsetWidth + 20 : 380;
+                      w?.scrollBy({ left: -step, behavior: "smooth" });
+                    }}
+                    aria-label="Previous review"
+                  >
+                    ←
+                  </button>
+                  <button
+                    type="button"
+                    className="testimonials-arrow-btn"
+                    onClick={() => {
+                      const w = testimonialsScrollRef.current;
+                      const card = w?.querySelector(".testimonial-card");
+                      const step = (card as HTMLElement)?.offsetWidth ? (card as HTMLElement).offsetWidth + 20 : 380;
+                      w?.scrollBy({ left: step, behavior: "smooth" });
+                    }}
+                    aria-label="Next review"
+                  >
+                    →
+                  </button>
+                </div>
+                <span>Mindrythm on Google</span>
+                <a href={googleBusinessUrl} target="_blank" rel="noreferrer">Read all reviews on Google</a>
+              </div>
             </div>
-            <div className={`testimonials-scroll ${testimonials.length <= 2 ? "testimonials-scroll--compact" : ""}`} role="region" aria-label="Google reviews" tabIndex={0}>
+            <div
+              className="testimonials-scroll"
+              ref={testimonialsScrollRef}
+              role="region"
+              aria-label="Google reviews"
+              tabIndex={0}
+            >
               {testimonials.map((item) => (
                 <a className="testimonial-card" href={item.href || googleBusinessUrl} target="_blank" rel="noreferrer" data-reveal key={item.id}>
                   <div className="review-stars" aria-label={`${item.year || "5"} out of 5 stars`}>{"★".repeat(Number(item.year || 5))}</div>

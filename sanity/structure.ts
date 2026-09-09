@@ -10,6 +10,7 @@ export const mindrythmStructure: StructureResolver = (S) =>
       S.listItem().title("Website content").child(
         S.list().title("Website content").items([
           singleton(S, "Hero section", "heroSection", "heroSection"),
+          singleton(S, "Visual portfolio ('Selected stories')", "visualPortfolio", "visualPortfolio"),
           singleton(S, "Process banner ('Final frame')", "processBanner", "processBanner"),
           singleton(S, "About & studio story", "aboutContent", "aboutContent"),
           singleton(S, "Contact information", "contactInfo", "contactInfo"),
@@ -17,6 +18,7 @@ export const mindrythmStructure: StructureResolver = (S) =>
           singleton(S, "Social media links", "socialLinks", "socialLinks"),
         ]),
       ),
+      singleton(S, "Visual portfolio (5 Scrollable Images/Videos)", "visualPortfolio", "visualPortfolio"),
       singleton(S, "Process banner ('Final frame' Image/Video)", "processBanner", "processBanner"),
       S.divider(),
       S.documentTypeListItem("service").title("Services"),

@@ -9,11 +9,11 @@ export const heroSection = defineType({
     defineField({name: "titleLineTwo", title: "Headline — second line", type: "string", validation: (Rule) => Rule.required().max(40)}),
     defineField({
       name: "featuredProjects",
-      title: "Hero media — featured projects",
-      description: "Pick up to three projects to feature. Deleting a project removes it from the hero automatically; the website fills from remaining projects.",
+      title: "Hero & visual portfolio — featured projects",
+      description: "Pick 5 or more projects to feature in the hero banner and scrollable visual portfolio. Deleting a project removes it automatically; the website fills from remaining projects.",
       type: "array",
       of: [{type: "reference", to: [{type: "project"}]}],
-      validation: (Rule) => Rule.max(3).unique(),
+      validation: (Rule) => Rule.max(10).unique(),
     }),
     defineField({
       name: "visionHighlights",
