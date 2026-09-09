@@ -624,7 +624,6 @@ export function Experience({ content }: { content: SiteContent }) {
                   {serviceCollections.map((service, index) => {
                     const isDisplayed = activeService === null ? index === 0 : activeService === index;
                     const mainMedia = service.media[0] || projects[0];
-                    const secondaryMedia = service.media[1];
                     return (
                       <div
                         key={service.key}
@@ -642,11 +641,6 @@ export function Experience({ content }: { content: SiteContent }) {
                           {mainMedia && (
                             <div className="services-media-primary">
                               <Media item={mainMedia} priority={isDisplayed} active={isDisplayed} />
-                            </div>
-                          )}
-                          {secondaryMedia && (
-                            <div className="services-media-secondary">
-                              <Media item={secondaryMedia} active={isDisplayed} />
                             </div>
                           )}
                           <div className="services-media-vignette" />

@@ -7142,8 +7142,9 @@ video {
   position: absolute;
   inset: 0;
   z-index: 1;
-  display: grid;
-  grid-template-columns: 1fr;
+  display: block;
+  width: 100%;
+  height: 100%;
   background: #0c0c0a;
   overflow: hidden;
   border: none;
@@ -7151,13 +7152,7 @@ video {
   cursor: pointer;
 }
 
-.services-canvas-media-wrap:has(.services-media-secondary) {
-  grid-template-columns: 1.4fr 0.9fr;
-  gap: 3px;
-}
-
-.services-media-primary,
-.services-media-secondary {
+.services-media-primary {
   position: relative;
   width: 100%;
   height: 100%;
