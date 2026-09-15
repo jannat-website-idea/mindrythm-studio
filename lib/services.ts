@@ -34,6 +34,20 @@ export const SERVICE_META: Record<string, { discipline: string; highlights: stri
   "social-creatives": { discipline: "Content Creation", highlights: ["Short-Form Video", "Editorial Carousels", "Motion Graphics", "Brand Assets"] },
 };
 
+export function getServiceMeta(service: ServiceContent): { discipline: string; highlights: string[]; deliverables: string[]; details?: string } {
+  const fallback = SERVICE_META[service.key] || {
+    discipline: "Studio Discipline",
+    highlights: ["Bespoke Creative", "Calm Production", "High-End Standards"],
+  };
+
+  return {
+    discipline: service.discipline?.trim() || fallback.discipline,
+    highlights: service.highlights && service.highlights.length > 0 ? service.highlights : fallback.highlights,
+    deliverables: service.deliverables && service.deliverables.length > 0 ? service.deliverables : [],
+    details: service.details,
+  };
+}
+
 export function getServiceProjects(projects: ContentItem[], key: ServiceKey, services: readonly ServiceDefinition[] = serviceItems): ContentItem[] {
   const service = services.find((item) => item.key === key);
   if (!service) return [];

@@ -85,7 +85,11 @@ export async function getSanitySiteContent(options: {stega?: boolean} = {}): Pro
     const sanityServices = (raw.services || []).map((s) => ({
       key: text(s.key),
       title: text(s.title).replace(/^Premium\s+/i, ""),
+      discipline: text((s as any).discipline),
       copy: text(s.copy),
+      details: text((s as any).details),
+      highlights: Array.isArray((s as any).highlights) ? ((s as any).highlights as any[]).map((h) => text(h)).filter(Boolean) : undefined,
+      deliverables: Array.isArray((s as any).deliverables) ? ((s as any).deliverables as any[]).map((d) => text(d)).filter(Boolean) : undefined,
       projectIds: Array.isArray(s.projectIds) ? s.projectIds.filter((p): p is string => typeof p === "string") : [],
       galleryItemIds: Array.isArray(s.galleryItemIds) ? s.galleryItemIds.filter((p): p is string => typeof p === "string") : [],
       coverMedia: (s as any).coverMedia?.mediaUrl
@@ -93,6 +97,16 @@ export async function getSanitySiteContent(options: {stega?: boolean} = {}): Pro
             mediaUrl: text((s as any).coverMedia.mediaUrl),
             mediaType: text((s as any).coverMedia.mediaType, "image"),
           }
+        : undefined,
+      showcaseMedia: Array.isArray((s as any).showcaseMedia)
+        ? ((s as any).showcaseMedia as any[])
+            .map((m) => ({
+              mediaUrl: text(m?.mediaUrl),
+              mediaType: (text(m?.mediaType, "image") === "video" ? "video" : "image") as "image" | "video",
+              alt: text(m?.alt),
+              caption: text(m?.caption),
+            }))
+            .filter((m) => Boolean(m.mediaUrl))
         : undefined,
       websiteLinks: Array.isArray(s.websiteLinks)
         ? (s.websiteLinks as any[])
@@ -119,8 +133,13 @@ export async function getSanitySiteContent(options: {stega?: boolean} = {}): Pro
         servicesMap.set(targetKey, {
           ...existing,
           title: ss.title || existing.title,
+          discipline: ss.discipline || existing.discipline,
           copy: ss.copy || existing.copy,
+          details: ss.details || existing.details,
+          highlights: ss.highlights && ss.highlights.length ? ss.highlights : existing.highlights,
+          deliverables: ss.deliverables && ss.deliverables.length ? ss.deliverables : existing.deliverables,
           coverMedia: ss.coverMedia || existing.coverMedia,
+          showcaseMedia: ss.showcaseMedia?.length ? ss.showcaseMedia : existing.showcaseMedia,
           projectIds: ss.projectIds.length ? ss.projectIds : existing.projectIds,
           galleryItemIds: ss.galleryItemIds.length ? ss.galleryItemIds : existing.galleryItemIds,
           websiteLinks: ss.websiteLinks?.length ? ss.websiteLinks : existing.websiteLinks,
@@ -130,8 +149,13 @@ export async function getSanitySiteContent(options: {stega?: boolean} = {}): Pro
         servicesMap.set(targetKey, {
           key: targetKey as any,
           title: ss.title,
+          discipline: ss.discipline,
           copy: ss.copy,
+          details: ss.details,
+          highlights: ss.highlights,
+          deliverables: ss.deliverables,
           coverMedia: ss.coverMedia,
+          showcaseMedia: ss.showcaseMedia,
           projectIds: ss.projectIds,
           galleryItemIds: ss.galleryItemIds,
           websiteLinks: ss.websiteLinks,

@@ -61,13 +61,23 @@ export const siteContentQuery = `{
   "services": *[_type == "service"] | order(sortOrder asc){
     key,
     title,
+    discipline,
     copy,
+    details,
+    highlights,
+    deliverables,
     "coverMedia": {
       "mediaUrl": coalesce(coverMedia.video.asset->url, coverMedia.image.asset->url, coverMedia.externalUrl),
       "mediaType": coalesce(lower(coverMedia.mediaType), select(defined(coverMedia.video) => "video", "image"))
     },
     "projectIds": projects[]->{ "id": coalesce(cmsId.current, _id) }.id,
     "galleryItemIds": galleryItems[]->{ "id": coalesce(cmsId.current, _id) }.id,
+    "showcaseMedia": showcaseMedia[]{
+      "mediaUrl": coalesce(video.asset->url, image.asset->url, externalUrl),
+      "mediaType": coalesce(select(defined(video) => "video", "image")),
+      "alt": title,
+      "caption": title
+    },
     websiteLinks[]{title, url},
     "logoImages": logoImages[]{ "url": asset->url, alt, caption }
   },

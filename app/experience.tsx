@@ -15,7 +15,7 @@ import { Media } from "@/app/media";
 import { ServiceModal } from "@/app/service-modal";
 import { SocialIcon } from "@/app/social-icon";
 import { TeamMemberCard } from "@/app/team-member-card";
-import { getServiceProjects, isVisualOrDroneService, SERVICE_META } from "@/lib/services";
+import { getServiceMeta, getServiceProjects, isVisualOrDroneService, SERVICE_META } from "@/lib/services";
 import { type CSSProperties, type FormEvent, type MouseEvent as ReactMouseEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const googleBusinessUrl = "https://www.google.com/search?kgmid=/g/11njpxjhwk&q=Mindrythm+Studios";
@@ -747,10 +747,7 @@ export function Experience({ content }: { content: SiteContent }) {
                     const isDisplayed = activeService === null ? index === 0 : activeService === index;
                     const isVisual = isVisualOrDroneService(service.key);
                     const mainMedia = isVisual ? (service.media[0] || projects[0]) : null;
-                    const meta = SERVICE_META[service.key] || {
-                      discipline: "Studio Service",
-                      highlights: ["Bespoke Creative", "Calm Production", "High-End Standards"],
-                    };
+                    const meta = getServiceMeta(service);
 
                     return (
                       <div

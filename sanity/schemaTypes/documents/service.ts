@@ -26,25 +26,72 @@ export const service = defineType({
     }),
     defineField({name: "sortOrder", title: "Display order", type: "number", initialValue: 10, validation: (Rule) => Rule.required().integer().min(0)}),
     defineField({name: "title", title: "Service name", type: "string", validation: (Rule) => Rule.required().max(100)}),
-    defineField({name: "copy", title: "Service description", type: "text", rows: 4, validation: (Rule) => Rule.required().max(500)}),
+    defineField({
+      name: "discipline",
+      title: "Discipline / Category Tag",
+      description: "e.g. Cinema & Stills, Aerial Perspective, Digital Infrastructure, Brand Identity, Performance Growth, Community Cadence, Commercial Strategy, Content Creation",
+      type: "string",
+    }),
+    defineField({name: "copy", title: "Service description / summary", type: "text", rows: 3, validation: (Rule) => Rule.required().max(500)}),
+    defineField({
+      name: "details",
+      title: "Extended details / Overview narrative",
+      description: "Long-form description shown inside the Read More pop-up window.",
+      type: "text",
+      rows: 4,
+    }),
+    defineField({
+      name: "highlights",
+      title: "Service highlight pills / Badges",
+      description: "Badges shown on the service card (e.g. 'Bespoke Web Design', 'Next.js Architecture', 'CMS Integration').",
+      type: "array",
+      of: [{type: "string"}],
+    }),
+    defineField({
+      name: "deliverables",
+      title: "Key Deliverables & Scope Items",
+      description: "Deliverables list shown inside the Read More pop-up window.",
+      type: "array",
+      of: [{type: "string"}],
+    }),
     defineField({
       name: "coverMedia",
-      title: "Featured Cover Media (Image or Video) — Visual Production & Drone Imagery only",
-      description: "Directly upload a high-res photo or video for Visual Production & Drone Imagery shown on the homepage.",
+      title: "Featured Cover Media (Image or Video)",
+      description: "Directly upload a high-res photo or video for Visual Production & Drone Imagery.",
       type: "mediaAsset",
     }),
     defineField({
       name: "galleryItems",
-      title: "Mini-gallery items (5-6 pictures/videos for Visual Production & Drone Imagery only)",
-      description: "Select 5-6 items from your Gallery to display in the Read More pop-up window for this service.",
+      title: "Mini-gallery items (Selected from Gallery)",
+      description: "Select items from your Gallery to display in the Read More pop-up window for this service.",
       type: "array",
       of: [{type: "reference", to: [{type: "galleryItem"}]}],
-      validation: (Rule) => Rule.max(10).unique(),
+      validation: (Rule) => Rule.max(12).unique(),
+    }),
+    defineField({
+      name: "showcaseMedia",
+      title: "Direct Media Showcase Uploads (Images / Videos)",
+      description: "Upload any pictures or videos directly to display in the Read More pop-up window for this service.",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            defineField({name: "title", title: "Media title / caption", type: "string"}),
+            defineField({name: "image", title: "Image upload", type: "image", options: {hotspot: true}}),
+            defineField({name: "video", title: "Video upload (MP4/WebM)", type: "file", options: {accept: "video/mp4,video/webm,video/quicktime"}}),
+            defineField({name: "externalUrl", title: "External Video/Image URL", type: "string"}),
+          ],
+          preview: {
+            select: {title: "title", media: "image"},
+          },
+        },
+      ],
     }),
     defineField({
       name: "websiteLinks",
-      title: "Website links / buttons (for Website Development)",
-      description: "Add links to live websites (e.g. Www.khelatbhawan.com). These will render as square/rounded-square clickable buttons inside the Read More window. You can add as many as needed.",
+      title: "Website links / buttons",
+      description: "Add links to live websites (e.g. www.khelatbhawan.com). These render as clickable buttons inside the Read More window.",
       type: "array",
       of: [
         {
@@ -59,7 +106,7 @@ export const service = defineType({
     }),
     defineField({
       name: "logoImages",
-      title: "Logo showcase images (for Logo Generation)",
+      title: "Logo showcase images",
       description: "Upload logo images in PNG or JPG format to show inside the Read More window for Logo Generation.",
       type: "array",
       of: [
@@ -78,3 +125,4 @@ export const service = defineType({
   orderings: [{title: "Display order", name: "sortOrderAsc", by: [{field: "sortOrder", direction: "asc"}]}],
   preview: {select: {title: "title", subtitle: "copy"}},
 });
+

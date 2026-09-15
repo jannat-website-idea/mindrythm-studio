@@ -15,7 +15,7 @@ import { SocialIcon } from "@/app/social-icon";
 import { TeamMemberCard } from "@/app/team-member-card";
 import { TeamShowcase } from "@/app/team-showcase";
 import { ServiceModal } from "@/app/service-modal";
-import { getProjectService, getServiceProjects, isServiceKey, isVisualOrDroneService, SERVICE_META, type ServiceKey } from "@/lib/services";
+import { getProjectService, getServiceMeta, getServiceProjects, isServiceKey, isVisualOrDroneService, SERVICE_META, type ServiceKey } from "@/lib/services";
 import { type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 
@@ -299,11 +299,9 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
             <section className="services-stream-section" aria-label="Mindrythm studio services catalogue">
               <div className="services-stream-grid">
                 {serviceCollections.map((service, index) => {
-                  const meta = SERVICE_META[service.key] || {
-                    discipline: "Studio Discipline",
-                    highlights: ["Bespoke Creative", "Calm Production", "High-End Standards"],
-                  };
+                  const meta = getServiceMeta(service);
                   const isShadeB = index % 4 === 1 || index % 4 === 2;
+                  const isVisual = isVisualOrDroneService(service.key);
                   return (
                     <article
                       className={`services-hero-card ${isShadeB ? "services-hero-card-shade-b" : "services-hero-card-shade-a"}`}
@@ -337,9 +335,11 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                           <span>Book this service</span>
                           <span aria-hidden="true">→</span>
                         </Link>
-                        <Link className="services-hero-work-btn" href={`/work?service=${service.key}`}>
-                          <span>View work ↗</span>
-                        </Link>
+                        {isVisual && (
+                          <Link className="services-hero-work-btn" href={`/work?service=${service.key}`}>
+                            <span>View work ↗</span>
+                          </Link>
+                        )}
                       </div>
                     </article>
                   );
@@ -355,9 +355,11 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
               <span>Filter work</span>
               <div className="work-filter-chips">
                 <button type="button" className={workFilter === "all" ? "active" : ""} onClick={() => setWorkFilter("all")}>All commissions</button>
-                {serviceItems.map((service) => (
-                  <button type="button" key={service.key} className={workFilter === service.key ? "active" : ""} onClick={() => setWorkFilter(service.key as ServiceKey)}>{service.title}</button>
-                ))}
+                {serviceItems
+                  .filter((service) => isVisualOrDroneService(service.key))
+                  .map((service) => (
+                    <button type="button" key={service.key} className={workFilter === service.key ? "active" : ""} onClick={() => setWorkFilter(service.key as ServiceKey)}>{service.title}</button>
+                  ))}
               </div>
             </section>
             <section className="work-page-grid" aria-label="Mindrythm project highlights">

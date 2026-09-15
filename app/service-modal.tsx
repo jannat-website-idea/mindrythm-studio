@@ -3,7 +3,7 @@
 import { useEffect, useMemo } from "react";
 import Link from "next/link";
 import { type ContentItem, type ServiceContent } from "@/lib/content";
-import { getServiceGalleryItems } from "@/lib/services";
+import { getServiceGalleryItems, getServiceMeta } from "@/lib/services";
 
 export function ServiceModal({
   service,
@@ -41,12 +41,14 @@ export function ServiceModal({
 
   if (!service) return null;
 
+  const meta = getServiceMeta(service);
   const isWebDev = service.key === "web-development";
   const isLogoGen = service.key === "logo-generation" || service.key === "wellness";
   const isVisualOrDrone = service.key === "visual-production" || service.key === "drone-imagery";
 
   const websiteLinks = service.websiteLinks || [];
   const logoImages = service.logoImages || [];
+  const showcaseMedia = service.showcaseMedia || [];
 
   return (
     <div
@@ -63,7 +65,7 @@ export function ServiceModal({
         <div className="service-modal-header">
           <div className="service-modal-tag">
             <span className="service-modal-dot" aria-hidden="true" />
-            <span>Studio Service</span>
+            <span>{meta.discipline}</span>
           </div>
           <button
             type="button"
@@ -80,6 +82,19 @@ export function ServiceModal({
           <div className="service-modal-hero">
             <h2 className="service-modal-title">{service.title}</h2>
             <p className="service-modal-description">{service.copy}</p>
+
+            {meta.details && meta.details !== service.copy && (
+              <p className="service-modal-narrative">{meta.details}</p>
+            )}
+
+            {meta.highlights && meta.highlights.length > 0 && (
+              <div className="service-modal-pills">
+                {meta.highlights.map((pill) => (
+                  <span key={pill} className="service-modal-pill">{pill}</span>
+                ))}
+              </div>
+            )}
+
             <div className="service-modal-actions">
               <Link
                 href={`/contact?service=${encodeURIComponent(service.title)}`}
@@ -91,6 +106,64 @@ export function ServiceModal({
               </Link>
             </div>
           </div>
+
+          {/* DELIVERABLES & SCOPE ITEMS */}
+          {meta.deliverables && meta.deliverables.length > 0 && (
+            <div className="service-modal-section service-modal-deliverables-section">
+              <div className="service-modal-gallery-header">
+                <span className="service-modal-gallery-title">Key Deliverables &amp; Scope</span>
+                <span className="service-modal-gallery-count">{meta.deliverables.length} Scope Items</span>
+              </div>
+              <ul className="service-modal-deliverables-list">
+                {meta.deliverables.map((deliv, idx) => (
+                  <li key={idx} className="service-modal-deliverable-item">
+                    <span className="service-deliverable-check" aria-hidden="true">✓</span>
+                    <span>{deliv}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* DIRECT CMS SHOWCASE MEDIA (IMAGES / VIDEOS UPLOADED FOR ANY SERVICE) */}
+          {showcaseMedia.length > 0 && (
+            <div className="service-modal-section">
+              <div className="service-modal-gallery-header">
+                <span className="service-modal-gallery-title">Creative Showcase &amp; Media</span>
+                <span className="service-modal-gallery-count">{showcaseMedia.length} Assets</span>
+              </div>
+              <div className="service-showcase-media-grid">
+                {showcaseMedia.map((media, idx) => {
+                  const isVideo = media.mediaType === "video" || /\.(mp4|webm|mov)(\?.*)?$/i.test(media.mediaUrl);
+                  return (
+                    <div key={idx} className="service-showcase-card">
+                      {isVideo ? (
+                        <video
+                          src={media.mediaUrl}
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          preload="metadata"
+                          className="service-showcase-video"
+                        />
+                      ) : (
+                        <img
+                          src={media.mediaUrl}
+                          alt={media.alt || media.caption || service.title}
+                          className="service-showcase-img"
+                          loading="lazy"
+                        />
+                      )}
+                      {(media.caption || media.alt) && (
+                        <span className="service-showcase-caption">{media.caption || media.alt}</span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           {/* ITEM 3: WEBSITE DEVELOPMENT - Square/Rounded-Square Link Buttons */}
           {isWebDev && (
