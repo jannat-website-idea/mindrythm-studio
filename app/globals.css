@@ -189,10 +189,28 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .scroll-cinema-window {
   width: 100%;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   display: flex;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  user-select: none;
+  cursor: grab;
+  touch-action: pan-y pinch-zoom;
+}
+
+.scroll-cinema-window.is-dragging {
+  cursor: grabbing !important;
+  scroll-behavior: auto !important;
+  scroll-snap-type: none !important;
+  user-select: none !important;
+}
+
+.scroll-cinema-window.is-dragging * {
+  user-select: none !important;
+  pointer-events: none !important;
 }
 
 .scroll-cinema-window::-webkit-scrollbar {
@@ -1238,7 +1256,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   .scroll-cinema-sticky { position: static; height: auto; overflow: visible; padding: 0; }
   .scroll-cinema-top { margin: 0 1rem 1rem; }
   .scroll-cinema-top span:last-child { display: none; }
-  .scroll-cinema-window { overflow-x: auto; scroll-snap-type: x mandatory; }
+  .scroll-cinema-window { overflow-x: auto; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; }
   .scroll-cinema-track { height: 70svh; gap: 0.65rem; padding: 0 1rem; transform: none !important; }
   .scroll-cinema-panel, .scroll-cinema-statement { width: 86vw; scroll-snap-align: start; }
   .scroll-cinema-panel h2 { font-size: clamp(3rem, 14vw, 5.2rem); }

@@ -3,6 +3,7 @@ import {
   defaultContent,
   defaultItems,
   defaultSettings,
+  defaultVisualPortfolio,
   mainInstagramUrl,
 } from "../../lib/content";
 
@@ -55,6 +56,27 @@ const singletons = [
     titleLineTwo: defaultContent.hero.titleLineTwo,
     featuredProjects: defaultContent.hero.featuredProjectIds.map(reference),
     visionHighlights: defaultContent.hero.visionHighlights,
+  },
+  {
+    _id: "visualPortfolio",
+    _type: "visualPortfolio",
+    sectionTitle: defaultVisualPortfolio.sectionTitle,
+    tagline: defaultVisualPortfolio.tagline,
+    items: defaultVisualPortfolio.items?.map((item, index) => ({
+      _key: `story-card-${index}`,
+      _type: "portfolioCard",
+      title: item.title,
+      category: item.category,
+      eyebrow: item.eyebrow,
+      mediaType: item.mediaType || "image",
+      media: {
+        _type: "mediaAsset",
+        externalUrl: item.mediaUrl,
+        alt: item.mediaAlt || item.title,
+      },
+      href: item.href,
+      body: item.body,
+    })),
   },
   {
     _id: "aboutContent",

@@ -8,19 +8,21 @@ export const visualPortfolio = defineType({
     defineField({
       name: "sectionTitle",
       title: "Section title",
+      description: "Header text shown above the scrollable strip (e.g. 'Scroll through the visual portfolio').",
       type: "string",
       initialValue: "Scroll through the visual portfolio",
     }),
     defineField({
       name: "tagline",
       title: "Tagline / Year badge",
+      description: "Right-hand tag badge (e.g. 'Selected stories / 2026').",
       type: "string",
       initialValue: "Selected stories / 2026",
     }),
     defineField({
       name: "items",
       title: "Scrollable items (Images & Videos)",
-      description: "Manage the scrollable visual stories. Add 5 or more items with custom images/videos, or link to projects.",
+      description: "Manage the scrollable visual stories. Add, delete, reorder, or edit any story card with custom photos, videos (MP4/WebM/MOV), or project links.",
       type: "array",
       of: [
         {
@@ -36,12 +38,12 @@ export const visualPortfolio = defineType({
             }),
             defineField({
               name: "category",
-              title: "Category badge (e.g. WELLNESS PHOTOGRAPHY)",
+              title: "Category badge (e.g. WELLNESS PHOTOGRAPHY / WEDDING FILM)",
               type: "string",
             }),
             defineField({
               name: "eyebrow",
-              title: "Subtitle / Type (e.g. WELLNESS RITUAL)",
+              title: "Subtitle / Type (e.g. WELLNESS RITUAL / FILM)",
               type: "string",
             }),
             defineField({
@@ -60,13 +62,13 @@ export const visualPortfolio = defineType({
             defineField({
               name: "media",
               title: "Primary media (Image or Video)",
-              description: "Upload an image or video file, or specify an external media URL.",
+              description: "Upload a high-res photo or video file (MP4/WebM/MOV), or specify an external media URL.",
               type: "mediaAsset",
             }),
             defineField({
               name: "project",
               title: "Link to existing Project (Optional)",
-              description: "Optionally pick a project to inherit its media and details if custom media is omitted.",
+              description: "Optionally pick an existing project to inherit its media and details if custom media is omitted.",
               type: "reference",
               to: [{type: "project"}],
             }),
@@ -77,7 +79,7 @@ export const visualPortfolio = defineType({
             }),
             defineField({
               name: "body",
-              title: "Description (optional, shown when clicked)",
+              title: "Description (optional, shown when story is clicked)",
               type: "text",
               rows: 3,
             }),
@@ -85,8 +87,18 @@ export const visualPortfolio = defineType({
           preview: {
             select: {
               title: "title",
-              subtitle: "category",
-              media: "media.image",
+              category: "category",
+              eyebrow: "eyebrow",
+              mediaImage: "media.image",
+              mediaType: "mediaType",
+            },
+            prepare({title, category, eyebrow, mediaImage, mediaType}) {
+              const badge = [category, eyebrow, mediaType ? `[${mediaType.toUpperCase()}]` : ""].filter(Boolean).join(" · ");
+              return {
+                title: title || "Untitled Story Card",
+                subtitle: badge || "Story card",
+                media: mediaImage,
+              };
             },
           },
         },
@@ -94,9 +106,15 @@ export const visualPortfolio = defineType({
     }),
   ],
   preview: {
-    prepare: () => ({
-      title: "Visual Portfolio",
-      subtitle: "5 scrollable images / videos ('Selected stories')",
-    }),
+    select: {
+      title: "sectionTitle",
+      tagline: "tagline",
+    },
+    prepare({title, tagline}) {
+      return {
+        title: title || "Visual Portfolio",
+        subtitle: tagline || "Scrollable Stories (Images & Videos)",
+      };
+    },
   },
 });

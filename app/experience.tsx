@@ -16,7 +16,7 @@ import { ServiceModal } from "@/app/service-modal";
 import { SocialIcon } from "@/app/social-icon";
 import { TeamMemberCard } from "@/app/team-member-card";
 import { getServiceProjects } from "@/lib/services";
-import { type CSSProperties, type FormEvent, type MouseEvent as ReactMouseEvent, useEffect, useMemo, useRef, useState } from "react";
+import { type CSSProperties, type FormEvent, type MouseEvent as ReactMouseEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const googleBusinessUrl = "https://www.google.com/search?kgmid=/g/11njpxjhwk&q=Mindrythm+Studios";
 
@@ -56,7 +56,7 @@ export function Experience({ content }: { content: SiteContent }) {
     const remaining = projects.filter((project) => !featuredIds.includes(project.id));
     const pool = [...featured, ...remaining];
 
-    if (customItems.length >= 5) {
+    if (customItems.length > 0) {
       return customItems.map((item, index) => ({
         id: item.id || `visual-story-${index}`,
         kind: "project" as const,
@@ -67,33 +67,12 @@ export function Experience({ content }: { content: SiteContent }) {
         mediaUrl: item.mediaUrl,
         mediaAlt: item.mediaAlt || item.title,
         category: item.category || "Selected frame",
-        mediaType: item.mediaType,
+        mediaType: ((item.mediaType?.toLowerCase() === "video" || /\.(mp4|webm|mov)(\?.*)?$/i.test(item.mediaUrl || "")) ? "video" : "image") as ContentItem["mediaType"],
         layoutType: "large" as const,
         year: "2026",
         href: item.href || "/work",
-        accent: "forest",
+        accent: "forest" as const,
       }));
-    }
-
-    if (customItems.length > 0) {
-      const convertedCustom = customItems.map((item, index) => ({
-        id: item.id || `visual-story-${index}`,
-        kind: "project" as const,
-        sortOrder: index * 10,
-        title: item.title,
-        eyebrow: item.eyebrow || "",
-        body: item.body || "",
-        mediaUrl: item.mediaUrl,
-        mediaAlt: item.mediaAlt || item.title,
-        category: item.category || "Selected frame",
-        mediaType: item.mediaType,
-        layoutType: "large" as const,
-        year: "2026",
-        href: item.href || "/work",
-        accent: "forest",
-      }));
-      const needed = Math.max(0, 5 - convertedCustom.length);
-      return [...convertedCustom, ...pool.slice(0, needed)];
     }
 
     return pool.slice(0, 5);
@@ -197,6 +176,8 @@ export function Experience({ content }: { content: SiteContent }) {
   const [enquiryQuery, setEnquiryQuery] = useState("");
   const heroRef = useRef<HTMLElement | null>(null);
   const scrollCinemaRef = useRef<HTMLElement | null>(null);
+  const scrollCinemaWindowRef = useRef<HTMLDivElement | null>(null);
+  const hasDraggedCinemaRef = useRef(false);
   const testimonialsScrollRef = useRef<HTMLDivElement | null>(null);
   const enquiryStartedAtRef = useRef(0);
 
@@ -379,25 +360,99 @@ export function Experience({ content }: { content: SiteContent }) {
     };
   }, [selectedItem]);
 
-  useEffect(() => {
-    const section = scrollCinemaRef.current;
-    if (!section) return;
-    const windowEl = section.querySelector<HTMLElement>(".scroll-cinema-window");
-    if (!windowEl) return;
+  const scrollCinema = useCallback((direction: "left" | "right") => {
+    const el = scrollCinemaWindowRef.current;
+    if (!el) return;
+    const panel = el.querySelector<HTMLElement>(".scroll-cinema-panel");
+    const gap = 24;
+    const step = panel ? panel.offsetWidth + gap : 450;
+    el.scrollBy({
+      left: direction === "left" ? -step : step,
+      behavior: "smooth",
+    });
+  }, []);
 
-    const onWheel = (e: WheelEvent) => {
-      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        const atLeft = windowEl.scrollLeft <= 0;
-        const atRight = windowEl.scrollLeft + windowEl.clientWidth >= windowEl.scrollWidth - 5;
-        if ((e.deltaY > 0 && !atRight) || (e.deltaY < 0 && !atLeft)) {
-          e.preventDefault();
-          windowEl.scrollBy({ left: e.deltaY * 1.5, behavior: "auto" });
-        }
-      }
+  useEffect(() => {
+    const el = scrollCinemaWindowRef.current;
+    if (!el) return;
+
+    let isDown = false;
+    let startX = 0;
+    let startScrollLeft = 0;
+    let lastX = 0;
+    let lastTime = 0;
+    let velocity = 0;
+    let momentumId = 0;
+    let dragTimeout: NodeJS.Timeout | null = null;
+
+    const onPointerDown = (e: PointerEvent) => {
+      if (e.button !== 0) return; // Only primary mouse button
+      isDown = true;
+      cancelAnimationFrame(momentumId);
+      if (dragTimeout) clearTimeout(dragTimeout);
+      hasDraggedCinemaRef.current = false;
+      startX = e.pageX - el.offsetLeft;
+      startScrollLeft = el.scrollLeft;
+      lastX = e.pageX;
+      lastTime = performance.now();
+      velocity = 0;
+      el.classList.add("is-dragging");
     };
 
-    windowEl.addEventListener("wheel", onWheel, { passive: false });
-    return () => windowEl.removeEventListener("wheel", onWheel);
+    const onPointerMove = (e: PointerEvent) => {
+      if (!isDown) return;
+      const x = e.pageX - el.offsetLeft;
+      const walk = x - startX;
+      if (Math.abs(walk) > 4) {
+        hasDraggedCinemaRef.current = true;
+      }
+      el.scrollLeft = startScrollLeft - walk;
+
+      const now = performance.now();
+      const dt = now - lastTime;
+      if (dt > 0) {
+        velocity = (e.pageX - lastX) / dt;
+      }
+      lastX = e.pageX;
+      lastTime = now;
+    };
+
+    const onPointerUp = () => {
+      if (!isDown) return;
+      isDown = false;
+      el.classList.remove("is-dragging");
+
+      if (hasDraggedCinemaRef.current && Math.abs(velocity) > 0.1) {
+        let currentVelocity = velocity * 16;
+        const friction = 0.94;
+        const momentumStep = () => {
+          if (Math.abs(currentVelocity) > 0.4) {
+            el.scrollLeft -= currentVelocity;
+            currentVelocity *= friction;
+            momentumId = requestAnimationFrame(momentumStep);
+          }
+        };
+        momentumId = requestAnimationFrame(momentumStep);
+      }
+
+      dragTimeout = setTimeout(() => {
+        hasDraggedCinemaRef.current = false;
+      }, 60);
+    };
+
+    el.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerup", onPointerUp);
+    window.addEventListener("pointercancel", onPointerUp);
+
+    return () => {
+      cancelAnimationFrame(momentumId);
+      if (dragTimeout) clearTimeout(dragTimeout);
+      el.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerup", onPointerUp);
+      window.removeEventListener("pointercancel", onPointerUp);
+    };
   }, []);
 
   useEffect(() => {
@@ -744,12 +799,7 @@ export function Experience({ content }: { content: SiteContent }) {
                   <button
                     type="button"
                     className="scroll-cinema-arrow-btn"
-                    onClick={() => {
-                      const w = scrollCinemaRef.current?.querySelector(".scroll-cinema-window");
-                      const panel = scrollCinemaRef.current?.querySelector(".scroll-cinema-panel");
-                      const step = (panel as HTMLElement)?.offsetWidth ? (panel as HTMLElement).offsetWidth + 24 : 450;
-                      w?.scrollBy({ left: -step, behavior: "smooth" });
-                    }}
+                    onClick={() => scrollCinema("left")}
                     aria-label="Scroll left"
                   >
                     ←
@@ -757,12 +807,7 @@ export function Experience({ content }: { content: SiteContent }) {
                   <button
                     type="button"
                     className="scroll-cinema-arrow-btn"
-                    onClick={() => {
-                      const w = scrollCinemaRef.current?.querySelector(".scroll-cinema-window");
-                      const panel = scrollCinemaRef.current?.querySelector(".scroll-cinema-panel");
-                      const step = (panel as HTMLElement)?.offsetWidth ? (panel as HTMLElement).offsetWidth + 24 : 450;
-                      w?.scrollBy({ left: step, behavior: "smooth" });
-                    }}
+                    onClick={() => scrollCinema("right")}
                     aria-label="Scroll right"
                   >
                     →
@@ -770,10 +815,19 @@ export function Experience({ content }: { content: SiteContent }) {
                   <span>{content.visualPortfolio?.tagline || "Selected stories / 2026"}</span>
                 </div>
               </div>
-              <div className="scroll-cinema-window">
+              <div className="scroll-cinema-window" ref={scrollCinemaWindowRef}>
                 <div className="scroll-cinema-track">
                   {scrollCinemaItems.map((item) => (
-                    <button type="button" className="scroll-cinema-panel" key={`scroll-${item.id}`} onClick={() => setSelectedItem(item)} aria-label={`Open ${item.title}`}>
+                    <button
+                      type="button"
+                      className="scroll-cinema-panel"
+                      key={`scroll-${item.id}`}
+                      onClick={() => {
+                        if (hasDraggedCinemaRef.current) return;
+                        setSelectedItem(item);
+                      }}
+                      aria-label={`Open ${item.title}`}
+                    >
                       <Media item={item} />
                       <div><span>{item.category || "Selected frame"}</span><h2>{item.title}</h2><p>{item.eyebrow}</p></div>
                     </button>

@@ -6,7 +6,7 @@ export const siteContentQuery = `{
     visionHighlights,
     "featuredProjectIds": featuredProjects[]->{ "id": coalesce(cmsId.current, _id) }.id
   },
-  "visualPortfolio": *[_type == "visualPortfolio" && _id == "visualPortfolio"][0]{
+  "visualPortfolio": coalesce(*[_type == "visualPortfolio" && _id == "visualPortfolio"][0], *[_type == "visualPortfolio"][0]){
     sectionTitle,
     tagline,
     items[]{
