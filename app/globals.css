@@ -10038,43 +10038,6 @@ main {
   transform: translateX(3px);
 }
 
-.service-modal-deliverables-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 12px;
-}
-
-.service-modal-deliverable-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
-  font-size: 0.9rem;
-  color: #eae6df;
-  line-height: 1.45;
-}
-
-.service-deliverable-check {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
-  color: #ffffff;
-  font-size: 0.75rem;
-  font-weight: bold;
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-
 .service-showcase-media-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));

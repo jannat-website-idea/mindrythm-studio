@@ -43,35 +43,59 @@ export const service = defineType({
     defineField({
       name: "highlights",
       title: "Service highlight pills / Badges",
-      description: "Badges shown on the service card (e.g. 'Bespoke Web Design', 'Next.js Architecture', 'CMS Integration').",
+      description: "Badges shown on the service card (e.g. 'Bespoke Web Design', 'Next.js Architecture', 'CMS Integration'). You can add, edit, or delete as many tags as needed.",
       type: "array",
       of: [{type: "string"}],
     }),
     defineField({
-      name: "deliverables",
-      title: "Key Deliverables & Scope Items",
-      description: "Deliverables list shown inside the Read More pop-up window.",
+      name: "websiteLinks",
+      title: "Featured Live Websites (Add as many as needed)",
+      description: "Add links to live websites (e.g. www.khelatbhawan.com, www.mindrythm.com). The client can add, edit, reorder, or delete as many websites as needed. They render as clickable project buttons inside the Read More window.",
       type: "array",
-      of: [{type: "string"}],
+      of: [
+        {
+          type: "object",
+          fields: [
+            defineField({name: "title", title: "Button label / Website Title", type: "string", validation: (Rule) => Rule.required()}),
+            defineField({name: "url", title: "Website URL (https://...)", type: "string", validation: (Rule) => Rule.required()}),
+          ],
+          preview: {select: {title: "title", subtitle: "url"}},
+        },
+      ],
+    }),
+    defineField({
+      name: "logoImages",
+      title: "Logo Showcase Marks (Upload as many as needed)",
+      description: "Upload logo marks in PNG or JPG format with optional brand captions. The client can add, upload, replace, reorder, or delete as many logos as needed to showcase in the Read More window.",
+      type: "array",
+      of: [
+        {
+          type: "image",
+          options: {hotspot: true},
+          fields: [
+            defineField({name: "caption", title: "Brand name / caption", type: "string"}),
+            defineField({name: "alt", title: "Alternative text", type: "string"}),
+          ],
+        },
+      ],
     }),
     defineField({
       name: "coverMedia",
-      title: "Featured Cover Media (Image or Video)",
-      description: "Directly upload a high-res photo or video for Visual Production & Drone Imagery.",
+      title: "Featured Cover Media (Photo or Video)",
+      description: "Directly upload or replace the high-res photo or video for Visual Production & Drone Imagery.",
       type: "mediaAsset",
     }),
     defineField({
       name: "galleryItems",
-      title: "Mini-gallery items (Selected from Gallery)",
-      description: "Select items from your Gallery to display in the Read More pop-up window for this service.",
+      title: "Curated Mini-Gallery Items (Selected from Gallery)",
+      description: "Select, add, delete, or reorder items from your Gallery to display in the Read More pop-up window for this service.",
       type: "array",
       of: [{type: "reference", to: [{type: "galleryItem"}]}],
-      validation: (Rule) => Rule.max(12).unique(),
     }),
     defineField({
       name: "showcaseMedia",
-      title: "Direct Media Showcase Uploads (Images / Videos)",
-      description: "Upload any pictures or videos directly to display in the Read More pop-up window for this service.",
+      title: "Direct Media Showcase Uploads (Photos / Videos)",
+      description: "Upload any pictures or videos directly to display in the Read More pop-up window for this service. You can add, replace, reorder, or delete as many media assets as you want.",
       type: "array",
       of: [
         {
@@ -88,39 +112,7 @@ export const service = defineType({
         },
       ],
     }),
-    defineField({
-      name: "websiteLinks",
-      title: "Website links / buttons",
-      description: "Add links to live websites (e.g. www.khelatbhawan.com). These render as clickable buttons inside the Read More window.",
-      type: "array",
-      of: [
-        {
-          type: "object",
-          fields: [
-            defineField({name: "title", title: "Button label / Title", type: "string", validation: (Rule) => Rule.required()}),
-            defineField({name: "url", title: "Website URL", type: "string", validation: (Rule) => Rule.required()}),
-          ],
-          preview: {select: {title: "title", subtitle: "url"}},
-        },
-      ],
-    }),
-    defineField({
-      name: "logoImages",
-      title: "Logo showcase images",
-      description: "Upload logo images in PNG or JPG format to show inside the Read More window for Logo Generation.",
-      type: "array",
-      of: [
-        {
-          type: "image",
-          options: {hotspot: true},
-          fields: [
-            defineField({name: "alt", title: "Alternative text", type: "string"}),
-            defineField({name: "caption", title: "Brand name / caption", type: "string"}),
-          ],
-        },
-      ],
-    }),
-    defineField({name: "projects", title: "Relevant projects", description: "Optional. The service falls back to other projects if none are selected.", type: "array", of: [{type: "reference", to: [{type: "project"}]}], validation: (Rule) => Rule.max(6).unique()}),
+    defineField({name: "projects", title: "Relevant portfolio projects", description: "Optional. Link projects to this service.", type: "array", of: [{type: "reference", to: [{type: "project"}]}]}),
   ],
   orderings: [{title: "Display order", name: "sortOrderAsc", by: [{field: "sortOrder", direction: "asc"}]}],
   preview: {select: {title: "title", subtitle: "copy"}},

@@ -65,7 +65,6 @@ export const siteContentQuery = `{
     copy,
     details,
     highlights,
-    deliverables,
     "coverMedia": {
       "mediaUrl": coalesce(coverMedia.video.asset->url, coverMedia.image.asset->url, coverMedia.externalUrl),
       "mediaType": coalesce(lower(coverMedia.mediaType), select(defined(coverMedia.video) => "video", "image"))

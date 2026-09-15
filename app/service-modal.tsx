@@ -107,24 +107,6 @@ export function ServiceModal({
             </div>
           </div>
 
-          {/* DELIVERABLES & SCOPE ITEMS */}
-          {meta.deliverables && meta.deliverables.length > 0 && (
-            <div className="service-modal-section service-modal-deliverables-section">
-              <div className="service-modal-gallery-header">
-                <span className="service-modal-gallery-title">Key Deliverables &amp; Scope</span>
-                <span className="service-modal-gallery-count">{meta.deliverables.length} Scope Items</span>
-              </div>
-              <ul className="service-modal-deliverables-list">
-                {meta.deliverables.map((deliv, idx) => (
-                  <li key={idx} className="service-modal-deliverable-item">
-                    <span className="service-deliverable-check" aria-hidden="true">✓</span>
-                    <span>{deliv}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
           {/* DIRECT CMS SHOWCASE MEDIA (IMAGES / VIDEOS UPLOADED FOR ANY SERVICE) */}
           {showcaseMedia.length > 0 && (
             <div className="service-modal-section">

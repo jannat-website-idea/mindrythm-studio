@@ -95,7 +95,6 @@ export type ServiceContent = {
   copy: string;
   details?: string;
   highlights?: string[];
-  deliverables?: string[];
   coverMedia?: {
     mediaUrl: string;
     mediaType: string;
@@ -312,7 +311,6 @@ export const defaultServices: ServiceContent[] = [
     copy: "High-end photography and cinematic videography tailored for luxury properties, hospitality, architectural spaces, and brand narratives.",
     details: "Mindrythm produces immersive visual narratives across still photography, cinematic brand films, and architectural documentation. Every frame is graded and composed for luxury presentation.",
     highlights: ["Luxury Properties", "Cinematic Film", "Fine-Art Stills", "Color Grading"],
-    deliverables: ["High-Resolution Architectural Stills", "4K Brand & Property Films", "Commercial Color Grading & Retouching", "Full Licensing & Raw Master Delivery"],
     projectIds: ["field-notes", "tropical-pavilion", "sanctuary-interiors", "quiet-frequency", "resort-at-dusk"],
     galleryItemIds: ["divine-retreats-mud-bath", "warm-interiors", "hand-painted-murals", "penthouse-interiors", "luxury-villa-pool-side-view", "serenity-villa-pool-view"],
   },
@@ -323,7 +321,6 @@ export const defaultServices: ServiceContent[] = [
     copy: "High-resolution aerial photography and 4K cinematic drone footage capturing landscape scale, architectural perspective, and surrounding context.",
     details: "Licensed aerial cinematography utilizing high-end UAV systems to capture expansive property footprints, topography, and dramatic establishing sequences.",
     highlights: ["4K Drone Footage", "Topographic Scale", "Architectural Angles", "FPV Flythroughs"],
-    deliverables: ["4K Ultra-HD Aerial Video Sequences", "Ultra-High-Res Topographic Photography", "Architectural Elevation Surveys", "FPV Indoor/Outdoor Motion Flythroughs"],
     projectIds: ["quiet-frequency", "resort-at-dusk"],
     galleryItemIds: ["luxury-villa-pool-side-view", "pool-view", "luxury-airbnb", "divine-retreats-mud-bath", "warm-interiors"],
   },
@@ -334,7 +331,6 @@ export const defaultServices: ServiceContent[] = [
     copy: "Bespoke, high-performance websites and digital experiences crafted with clean aesthetics, responsive architecture, and seamless interaction.",
     details: "Custom digital platforms built with modern web architecture (Next.js, React, Sanity CMS) offering lightning-fast performance, bespoke typography, and seamless content management.",
     highlights: ["Bespoke Web Design", "Next.js Architecture", "CMS Integration", "Interactive UI"],
-    deliverables: ["Custom Responsive Frontend Design", "Headless CMS Setup & Training", "Technical SEO & Schema Optimization", "High-Performance Hosting & SSL Deployment"],
     projectIds: ["field-notes", "object-ritual"],
     websiteLinks: [
       { title: "Khelat Bhawan", url: "https://www.khelatbhawan.com" },
@@ -348,7 +344,6 @@ export const defaultServices: ServiceContent[] = [
     copy: "Distinctive, memorable visual identities and emblem design communicating brand essence with clarity and timeless appeal.",
     details: "Crafting iconic emblems, typography systems, and identity marks that position your brand with distinct visual authority across print and digital media.",
     highlights: ["Brand Emblems", "Vector Systems", "Typography Design", "Brand Guidelines"],
-    deliverables: ["Primary & Secondary Logo Lockups", "Vector Master Assets (SVG, EPS, PNG)", "Typography & Color Palette Guidelines", "Social & Favicon Asset Kit"],
     projectIds: ["sanctuary-interiors", "field-notes"],
     logoImages: [
       { url: "/mindrythm-logomark.png", caption: "Mindrythm Studio Emblem" },
@@ -362,7 +357,6 @@ export const defaultServices: ServiceContent[] = [
     copy: "Data-driven, creative-led ad campaigns on Facebook and Instagram engineered to maximize reach, engagement, and direct conversions.",
     details: "End-to-end performance marketing combining creative visual storytelling with targeted audience segmentation and conversion rate optimization.",
     highlights: ["Audience Targeting", "Creative Campaigns", "Conversion Optimization", "ROI Analytics"],
-    deliverables: ["Meta Ads Account Setup & Pixel Tracking", "Target Audience Strategy & Retargeting", "Ad Creative Direction & Copywriting", "Weekly Performance & ROI Reporting"],
     projectIds: ["quiet-frequency", "event-film"],
   },
   {
@@ -372,7 +366,6 @@ export const defaultServices: ServiceContent[] = [
     copy: "Comprehensive social media strategy, content curation, scheduling, and community engagement to build an authentic brand presence.",
     details: "Curated social presence management ensuring your channels reflect your brand's aesthetic standards while cultivating engaged community loyalty.",
     highlights: ["Strategic Scheduling", "Visual Cohesion", "Audience Engagement", "Copywriting"],
-    deliverables: ["Monthly Content Calendar & Strategy", "Curated Grid Aesthetic & Story Flow", "Community Engagement & Inbox Management", "Monthly Reach & Growth Insights"],
     projectIds: ["wedding-celebration", "event-photography"],
   },
   {
@@ -382,7 +375,6 @@ export const defaultServices: ServiceContent[] = [
     copy: "Strategic brand identity, commercial visual direction, and trademark registration assistance to secure and scale your brand's presence in the marketplace.",
     details: "Holistic commercial strategy and brand positioning designed to elevate brand equity and navigate trademark registration with clarity.",
     highlights: ["Brand Architecture", "Positioning Strategy", "Visual Toolkits", "Brand Guidelines"],
-    deliverables: ["Comprehensive Brand Strategy Blueprint", "Visual System & Identity Toolkit", "Trademark Documentation Support", "Multi-Channel Brand Application Guidelines"],
     projectIds: ["object-ritual", "tropical-pavilion"],
   },
   {
@@ -392,7 +384,6 @@ export const defaultServices: ServiceContent[] = [
     copy: "Custom visual content, editorial graphics, and motion assets designed specifically for engaging social feeds, stories, and campaigns.",
     details: "High-impact short-form visual assets, motion graphics, and carousel layouts designed to capture attention and elevate feed aesthetics.",
     highlights: ["Short-Form Video", "Editorial Carousels", "Motion Graphics", "Brand Assets"],
-    deliverables: ["Custom Motion Graphics & Reel Templates", "Editorial Multi-Slide Carousel Graphics", "Stories & Highlights Graphic Assets", "Ready-to-Post Formatted Deliverables"],
     projectIds: ["tropical-pavilion", "in-passing"],
   },
 ];
