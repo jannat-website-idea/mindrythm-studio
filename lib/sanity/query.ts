@@ -62,6 +62,10 @@ export const siteContentQuery = `{
     key,
     title,
     copy,
+    "coverMedia": {
+      "mediaUrl": coalesce(coverMedia.video.asset->url, coverMedia.image.asset->url, coverMedia.externalUrl),
+      "mediaType": coalesce(lower(coverMedia.mediaType), select(defined(coverMedia.video) => "video", "image"))
+    },
     "projectIds": projects[]->{ "id": coalesce(cmsId.current, _id) }.id,
     "galleryItemIds": galleryItems[]->{ "id": coalesce(cmsId.current, _id) }.id,
     websiteLinks[]{title, url},

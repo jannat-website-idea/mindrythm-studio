@@ -15,7 +15,7 @@ import { Media } from "@/app/media";
 import { ServiceModal } from "@/app/service-modal";
 import { SocialIcon } from "@/app/social-icon";
 import { TeamMemberCard } from "@/app/team-member-card";
-import { getServiceProjects } from "@/lib/services";
+import { getServiceProjects, isVisualOrDroneService, SERVICE_META } from "@/lib/services";
 import { type CSSProperties, type FormEvent, type MouseEvent as ReactMouseEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const googleBusinessUrl = "https://www.google.com/search?kgmid=/g/11njpxjhwk&q=Mindrythm+Studios";
@@ -79,12 +79,13 @@ export function Experience({ content }: { content: SiteContent }) {
   }, [content.visualPortfolio?.items, content.hero.featuredProjectIds, projects]);
   const serviceCollections = useMemo(
     () =>
-      serviceItems.map((service, index) => {
+      serviceItems.map((service) => {
+        const isVisual = isVisualOrDroneService(service.key);
+        if (!isVisual) {
+          return { ...service, media: [] };
+        }
         const directMedia = getServiceProjects(projects, service.key, serviceItems);
-        if (directMedia.length) return { ...service, media: directMedia };
-        const offset = (index * 2) % Math.max(1, projects.length);
-        const fallback = [...projects.slice(offset), ...projects.slice(0, offset)].slice(0, 3);
-        return { ...service, media: fallback.length ? fallback : projects.slice(0, 3) };
+        return { ...service, media: directMedia };
       }),
     [projects, serviceItems],
   );
@@ -744,43 +745,84 @@ export function Experience({ content }: { content: SiteContent }) {
                 <div className="services-canvas-box">
                   {serviceCollections.map((service, index) => {
                     const isDisplayed = activeService === null ? index === 0 : activeService === index;
-                    const mainMedia = service.media[0] || projects[0];
+                    const isVisual = isVisualOrDroneService(service.key);
+                    const mainMedia = isVisual ? (service.media[0] || projects[0]) : null;
+                    const meta = SERVICE_META[service.key] || {
+                      discipline: "Studio Service",
+                      highlights: ["Bespoke Creative", "Calm Production", "High-End Standards"],
+                    };
+
                     return (
                       <div
                         key={service.key}
-                        className={`services-canvas-item ${isDisplayed ? "is-active" : ""}`}
+                        className={`services-canvas-item ${isDisplayed ? "is-active" : ""} ${isVisual ? "is-visual-service" : "is-info-service"}`}
                         aria-hidden={!isDisplayed}
                       >
-                        <button
-                          type="button"
-                          className="services-canvas-media-wrap"
-                          onClick={() => {
-                            if (mainMedia) setSelectedItem(mainMedia);
-                          }}
-                          aria-label={`Open ${service.title} full size image window`}
-                        >
-                          {mainMedia && (
-                            <div className="services-media-primary">
-                              <Media item={mainMedia} priority={isDisplayed} active={isDisplayed} />
-                            </div>
-                          )}
-                          <div className="services-media-vignette" />
-                        </button>
+                        {isVisual && mainMedia ? (
+                          <>
+                            <button
+                              type="button"
+                              className="services-canvas-media-wrap"
+                              onClick={() => {
+                                if (mainMedia) setSelectedItem(mainMedia);
+                              }}
+                              aria-label={`Open ${service.title} full size image window`}
+                            >
+                              <div className="services-media-primary">
+                                <Media item={mainMedia} priority={isDisplayed} active={isDisplayed} />
+                              </div>
+                              <div className="services-media-vignette" />
+                            </button>
 
-                        <button
-                          type="button"
-                          className="services-canvas-bar"
-                          onClick={() => setOpenedService(service)}
-                          aria-label={`Read more details about ${service.title}`}
-                        >
-                          <div className="services-bar-info">
-                            <span className="services-bar-name">{service.title}</span>
+                            <button
+                              type="button"
+                              className="services-canvas-bar"
+                              onClick={() => setOpenedService(service)}
+                              aria-label={`Read more details about ${service.title}`}
+                            >
+                              <div className="services-bar-info">
+                                <span className="services-bar-name">{service.title}</span>
+                              </div>
+                              <span className="services-bar-cta">
+                                <span>Read More</span>
+                                <span aria-hidden="true" className="services-bar-arrow">→</span>
+                              </span>
+                            </button>
+                          </>
+                        ) : (
+                          <div className="services-canvas-info-card">
+                            <div className="services-info-header">
+                              <span className="services-info-badge">{meta.discipline}</span>
+                              <span className="services-info-tag">Studio Service</span>
+                            </div>
+                            <h3 className="services-info-title">{service.title}</h3>
+                            <p className="services-info-description">{service.copy}</p>
+
+                            <div className="services-info-highlights">
+                              {meta.highlights.map((h) => (
+                                <span key={h} className="services-info-pill">{h}</span>
+                              ))}
+                            </div>
+
+                            <div className="services-info-actions">
+                              <button
+                                type="button"
+                                className="services-info-readmore-btn"
+                                onClick={() => setOpenedService(service)}
+                              >
+                                <span>Read More Details</span>
+                                <span aria-hidden="true">→</span>
+                              </button>
+                              <a
+                                href={`/contact?service=${encodeURIComponent(service.title)}`}
+                                className="services-info-book-btn"
+                              >
+                                <span>Book this service</span>
+                                <span aria-hidden="true">→</span>
+                              </a>
+                            </div>
                           </div>
-                          <span className="services-bar-cta">
-                            <span>Read More</span>
-                            <span aria-hidden="true" className="services-bar-arrow">→</span>
-                          </span>
-                        </button>
+                        )}
                       </div>
                     );
                   })}

@@ -28,9 +28,15 @@ export const service = defineType({
     defineField({name: "title", title: "Service name", type: "string", validation: (Rule) => Rule.required().max(100)}),
     defineField({name: "copy", title: "Service description", type: "text", rows: 4, validation: (Rule) => Rule.required().max(500)}),
     defineField({
+      name: "coverMedia",
+      title: "Featured Cover Media (Image or Video) — Visual Production & Drone Imagery only",
+      description: "Directly upload a high-res photo or video for Visual Production & Drone Imagery shown on the homepage.",
+      type: "mediaAsset",
+    }),
+    defineField({
       name: "galleryItems",
-      title: "Mini-gallery items (5-6 pictures/videos from Gallery)",
-      description: "Select 5-6 items from your Gallery to display in the Read More pop-up window for this service. These are directly linked to your Gallery.",
+      title: "Mini-gallery items (5-6 pictures/videos for Visual Production & Drone Imagery only)",
+      description: "Select 5-6 items from your Gallery to display in the Read More pop-up window for this service.",
       type: "array",
       of: [{type: "reference", to: [{type: "galleryItem"}]}],
       validation: (Rule) => Rule.max(10).unique(),

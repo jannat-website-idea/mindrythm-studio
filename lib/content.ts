@@ -85,6 +85,10 @@ export type ServiceContent = {
   key: string;
   title: string;
   copy: string;
+  coverMedia?: {
+    mediaUrl: string;
+    mediaType: string;
+  };
   projectIds: string[];
   galleryItemIds?: string[];
   websiteLinks?: ServiceWebsiteLink[];

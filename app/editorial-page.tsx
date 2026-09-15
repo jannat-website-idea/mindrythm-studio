@@ -15,7 +15,7 @@ import { SocialIcon } from "@/app/social-icon";
 import { TeamMemberCard } from "@/app/team-member-card";
 import { TeamShowcase } from "@/app/team-showcase";
 import { ServiceModal } from "@/app/service-modal";
-import { getProjectService, getServiceProjects, isServiceKey, type ServiceKey } from "@/lib/services";
+import { getProjectService, getServiceProjects, isServiceKey, isVisualOrDroneService, SERVICE_META, type ServiceKey } from "@/lib/services";
 import { type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 
@@ -31,17 +31,6 @@ const navigationItems = [
   { label: "Enquire", href: "/contact", note: "Start a conversation" },
 ] as const;
 
-const SERVICE_META: Record<string, { discipline: string; highlights: string[] }> = {
-  "visual-production": { discipline: "Cinema & Stills", highlights: ["Luxury Properties", "Cinematic Film", "Fine-Art Stills", "Color Grading"] },
-  "drone-imagery": { discipline: "Aerial Perspective", highlights: ["4K Drone Footage", "Topographic Scale", "Architectural Angles", "FPV Flythroughs"] },
-  "web-development": { discipline: "Digital Engineering", highlights: ["Bespoke Web Design", "Next.js Architecture", "CMS Integration", "Interactive UI"] },
-  "logo-generation": { discipline: "Identity Marks", highlights: ["Brand Emblems", "Vector Systems", "Typography Design", "Brand Guidelines"] },
-  "meta-ads": { discipline: "Performance Growth", highlights: ["Audience Targeting", "Creative Campaigns", "Conversion Optimization", "ROI Analytics"] },
-  "social-management": { discipline: "Community Cadence", highlights: ["Strategic Scheduling", "Visual Cohesion", "Audience Engagement", "Copywriting"] },
-  "commercial-branding": { discipline: "Commercial Identity", highlights: ["Brand Architecture", "Positioning Strategy", "Visual Toolkits", "Brand Guidelines"] },
-  "social-creatives": { discipline: "Content Creation", highlights: ["Short-Form Video", "Editorial Carousels", "Motion Graphics", "Brand Assets"] },
-};
-
 export function EditorialPage({ content, page }: { content: SiteContent; page: EditorialPageKind }) {
   const { settings } = content;
   const contactEmail = settings.contactEmail === "hello@mindrythm.studio" ? "Admin@mindrythm.com" : settings.contactEmail;
@@ -51,12 +40,13 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
   const projects = content.items.filter((item) => item.kind === "project").sort((a, b) => a.sortOrder - b.sortOrder);
   const gallery = content.items.filter((item) => item.kind === "gallery");
   const galleryItems = gallery;
-  const serviceCollections = serviceItems.map((service, index) => {
+  const serviceCollections = serviceItems.map((service) => {
+    const isVisual = isVisualOrDroneService(service.key);
+    if (!isVisual) {
+      return { ...service, media: [] };
+    }
     const directMedia = getServiceProjects(projects, service.key, serviceItems);
-    if (directMedia.length) return { ...service, media: directMedia };
-    const offset = (index * 2) % Math.max(1, projects.length);
-    const fallback = [...projects.slice(offset), ...projects.slice(0, offset)].slice(0, 3);
-    return { ...service, media: fallback.length ? fallback : projects.slice(0, 3) };
+    return { ...service, media: directMedia };
   });
   const team = useMemo(
     () => content.items.filter((item) => item.kind === "team").sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0)),

@@ -88,6 +88,12 @@ export async function getSanitySiteContent(options: {stega?: boolean} = {}): Pro
       copy: text(s.copy),
       projectIds: Array.isArray(s.projectIds) ? s.projectIds.filter((p): p is string => typeof p === "string") : [],
       galleryItemIds: Array.isArray(s.galleryItemIds) ? s.galleryItemIds.filter((p): p is string => typeof p === "string") : [],
+      coverMedia: (s as any).coverMedia?.mediaUrl
+        ? {
+            mediaUrl: text((s as any).coverMedia.mediaUrl),
+            mediaType: text((s as any).coverMedia.mediaType, "image"),
+          }
+        : undefined,
       websiteLinks: Array.isArray(s.websiteLinks)
         ? (s.websiteLinks as any[])
             .map((w) => ({ title: text(w?.title), url: text(w?.url) }))
@@ -114,6 +120,7 @@ export async function getSanitySiteContent(options: {stega?: boolean} = {}): Pro
           ...existing,
           title: ss.title || existing.title,
           copy: ss.copy || existing.copy,
+          coverMedia: ss.coverMedia || existing.coverMedia,
           projectIds: ss.projectIds.length ? ss.projectIds : existing.projectIds,
           galleryItemIds: ss.galleryItemIds.length ? ss.galleryItemIds : existing.galleryItemIds,
           websiteLinks: ss.websiteLinks?.length ? ss.websiteLinks : existing.websiteLinks,
@@ -124,6 +131,7 @@ export async function getSanitySiteContent(options: {stega?: boolean} = {}): Pro
           key: targetKey as any,
           title: ss.title,
           copy: ss.copy,
+          coverMedia: ss.coverMedia,
           projectIds: ss.projectIds,
           galleryItemIds: ss.galleryItemIds,
           websiteLinks: ss.websiteLinks,

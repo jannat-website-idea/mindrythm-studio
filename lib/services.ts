@@ -9,9 +9,39 @@ export function isServiceKey(value: string | null, services: readonly ServiceDef
   return services.some((service) => service.key === value);
 }
 
+export function isVisualOrDroneService(key: string): boolean {
+  if (!key) return false;
+  const k = key.toLowerCase().trim();
+  return (
+    k === "visual-production" ||
+    k === "drone-imagery" ||
+    k === "property" ||
+    k === "events" ||
+    k.includes("visual") ||
+    k.includes("drone") ||
+    k.includes("aerial")
+  );
+}
+
+export const SERVICE_META: Record<string, { discipline: string; highlights: string[] }> = {
+  "visual-production": { discipline: "Cinema & Stills", highlights: ["Luxury Properties", "Cinematic Film", "Fine-Art Stills", "Color Grading"] },
+  "drone-imagery": { discipline: "Aerial Perspective", highlights: ["4K Drone Footage", "Topographic Scale", "Architectural Angles", "FPV Flythroughs"] },
+  "web-development": { discipline: "Digital Infrastructure", highlights: ["Bespoke Web Design", "Next.js Architecture", "CMS Integration", "Interactive UI"] },
+  "logo-generation": { discipline: "Brand Identity", highlights: ["Brand Emblems", "Vector Systems", "Typography Design", "Brand Guidelines"] },
+  "meta-ads": { discipline: "Performance Growth", highlights: ["Audience Targeting", "Creative Campaigns", "Conversion Optimization", "ROI Analytics"] },
+  "social-management": { discipline: "Community Cadence", highlights: ["Strategic Scheduling", "Visual Cohesion", "Audience Engagement", "Copywriting"] },
+  "commercial-branding": { discipline: "Commercial Strategy", highlights: ["Brand Architecture", "Positioning Strategy", "Visual Toolkits", "Brand Guidelines"] },
+  "social-creatives": { discipline: "Content Creation", highlights: ["Short-Form Video", "Editorial Carousels", "Motion Graphics", "Brand Assets"] },
+};
+
 export function getServiceProjects(projects: ContentItem[], key: ServiceKey, services: readonly ServiceDefinition[] = serviceItems): ContentItem[] {
   const service = services.find((item) => item.key === key);
-  if (!service) return projects;
+  if (!service) return [];
+
+  // ONLY Visual Production & Drone Imagery show images / project media
+  if (!isVisualOrDroneService(key)) {
+    return [];
+  }
 
   // 1. Projects where this service was explicitly selected in CMS
   const taggedMatches = projects.filter((project) =>
@@ -26,21 +56,17 @@ export function getServiceProjects(projects: ContentItem[], key: ServiceKey, ser
 
   if (directMatches.length > 0) return directMatches;
 
-  // Flexible category & keyword matching for future items added via CMS
-  const keyTerms = service.key.toLowerCase().split("-").filter((term) => term.length > 2);
-  const titleTerms = service.title.toLowerCase().split(/[\s+,()]+/).filter((term) => term.length > 2);
-  const terms = Array.from(new Set([...keyTerms, ...titleTerms]));
+  // 3. Category & keyword matching based on service key
+  const lowerKey = key.toLowerCase();
+  if (lowerKey.includes("drone") || lowerKey.includes("aerial")) {
+    const droneMatches = projects.filter((project) => {
+      const cat = (project.category || "").toLowerCase();
+      const title = (project.title || "").toLowerCase();
+      return cat.includes("aerial") || title.includes("resort") || title.includes("pool") || cat.includes("events");
+    });
+    if (droneMatches.length > 0) return droneMatches;
+  }
 
-  const categoryMatches = projects.filter((project) => {
-    const cat = (project.category || "").toLowerCase();
-    const eyebrow = (project.eyebrow || "").toLowerCase();
-    const title = (project.title || "").toLowerCase();
-    return terms.some((term) => cat.includes(term) || eyebrow.includes(term) || title.includes(term));
-  });
-
-  if (categoryMatches.length > 0) return categoryMatches;
-
-  // Fallback to initial projects so the gallery frame is always rich and error-free
   return projects.slice(0, 4);
 }
 
