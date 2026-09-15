@@ -350,20 +350,8 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
         )}
 
         {page === "work" && (
-          <>
-            <section className="work-filter-bar" aria-label="Work filters">
-              <span>Filter work</span>
-              <div className="work-filter-chips">
-                <button type="button" className={workFilter === "all" ? "active" : ""} onClick={() => setWorkFilter("all")}>All commissions</button>
-                {serviceItems
-                  .filter((service) => isVisualOrDroneService(service.key))
-                  .map((service) => (
-                    <button type="button" key={service.key} className={workFilter === service.key ? "active" : ""} onClick={() => setWorkFilter(service.key as ServiceKey)}>{service.title}</button>
-                  ))}
-              </div>
-            </section>
-            <section className="work-page-grid" aria-label="Mindrythm project highlights">
-              {visibleProjects.map((project, index) => (
+          <section className="work-page-grid" aria-label="Mindrythm project highlights">
+            {projects.map((project, index) => (
                 <article className="work-page-card" key={project.id}>
                   <button
                     type="button"
@@ -389,7 +377,6 @@ export function EditorialPage({ content, page }: { content: SiteContent; page: E
                 </article>
               ))}
             </section>
-          </>
         )}
 
         {page === "gallery" && (
